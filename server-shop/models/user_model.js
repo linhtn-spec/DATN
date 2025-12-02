@@ -1,5 +1,6 @@
+import bcrypt from 'bcryptjs';
 import mongoose from "mongoose";
-import moongosePaginate from 'mongoose-paginate-v2'
+import moongosePaginate from 'mongoose-paginate-v2';
 
 const user_schema = new mongoose.Schema({
     username: {
@@ -80,5 +81,42 @@ const user_schema = new mongoose.Schema({
     })
 
 user_schema.plugin(moongosePaginate)
+
+// Hash password before saving a new user or when password is modified
+user_schema.pre('save', async function (next) {
+    try {
+        if (this.isModified && this.isModified('password')) {
+            const salt = await bcrypt.genSalt(12);
+            this.password = await bcrypt.hash(this.password, salt);
+        }
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Hash password on findOneAndUpdate or update queries when password is present
+user_schema.pre('findOneAndUpdate', async function (next) {
+    try {
+        const update = this.getUpdate();
+        if (!update) return next();
+
+        // password may be at top-level or under $set
+        let newPassword = update.password || (update.$set && update.$set.password);
+        if (newPassword) {
+            const salt = await bcrypt.genSalt(12);
+            const hashed = await bcrypt.hash(newPassword, salt);
+            if (update.password) update.password = hashed;
+            else {
+                update.$set = update.$set || {};
+                update.$set.password = hashed;
+            }
+            this.setUpdate(update);
+        }
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
 export default mongoose.model("User", user_schema);
 

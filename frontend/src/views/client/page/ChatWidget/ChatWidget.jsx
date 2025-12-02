@@ -1,17 +1,15 @@
-import { CloseOutlined, CommentOutlined, SendOutlined } from '@ant-design/icons'
+import { CommentOutlined, SendOutlined } from '@ant-design/icons'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Flex, FloatButton, Form, Input, Layout, Typography } from 'antd'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { io } from 'socket.io-client'
+import { detail_room, send_message } from '../../../../services/chat_service'
+import { UserContext } from '../../../../store/user'
+import animationData from '../../../../utils/animation.json'
+import Notification from '../../../../utils/configToastify'
 import './ChatWidget.css'
 import { Message } from './Message'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
-import { UserContext } from '../../../../store/user'
-import { detail_room, send_message } from '../../../../services/chat_service'
-import Notification from '../../../../utils/configToastify'
-import { io } from 'socket.io-client'
-const END_POINT = "http://localhost:8081";
-import { Spin } from 'antd';
-import Lottie from 'react-lottie'
-import animationData from '../../../../utils/animation.json'
+const END_POINT = import.meta.env.VITE_SOCKET_ENDPOINT || "http://localhost:5000";
 
 const defaultOptions = {
     loop: true,

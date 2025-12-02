@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken"
-import user_model from "../models/user_model.js"
-import { filterXSS } from 'xss'
+import jwt from "jsonwebtoken";
+import { filterXSS } from 'xss';
+import user_model from "../models/user_model.js";
 export const checkAuth = async (req, res, next) => {
     try {
         const accessToken = filterXSS(req.cookies.access_token);
@@ -8,33 +8,40 @@ export const checkAuth = async (req, res, next) => {
             return res.status(401).json({ message: "Unauthorized" });
         }
         const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
-        await jwt.verify(
+        
+        // Use callback-based jwt.verify (not await)
+        jwt.verify(
             accessToken,
             accessTokenSecret,
             async (err, decoded) => {
-                if (err) {
-                    if (err.name === 'TokenExpiredError') {
-                        return res
-                            .status(401)
-                            .json({ message: err.message });
-
+                try {
+                    if (err) {
+                        if (err.name === 'TokenExpiredError') {
+                            return res
+                                .status(401)
+                                .json({ message: err.message });
+                        }
+                        if (err.name === 'JsonWebTokenError') {
+                            return res
+                                .status(403)
+                                .json({ message: err.message });
+                        }
+                        // Catch-all for other errors
+                        return res.status(403).json({ message: "Invalid token" });
                     }
-                    if (err.name === 'JsonWebTokenError') {
-                        return res
-                            .status(403)
-                            .json({ message: err.message });
+                    const user = await user_model.findOne({ username: decoded.username })
+                    if (!user) {
+                        return res.status(404).json({ message: "Not found user" });
                     }
+                    if (decoded.role < 0 || decoded.role > 4) {
+                        return res.status(405).json({ message: "Not allowed to access" });
+                    }
+                    const { password, refreshToken, ...userWithoutPassword } = user._doc;
+                    req.user = userWithoutPassword;
+                    next();
+                } catch (innerErr) {
+                    return res.status(500).json({ message: innerErr.message });
                 }
-                const user = await user_model.findOne({ username: decoded.username })
-                if (!user) {
-                    return res.status(404).json({ message: "Not found user" });
-                }
-                if (decoded.role < 0 || decoded.role > 4) {
-                    return res.status(405).json({ message: "Not allowed to access" });
-                }
-                const { password, refreshToken, ...userWithoutPassword } = user._doc;
-                req.user = userWithoutPassword;
-                next();
             });
 
     } catch (err) {

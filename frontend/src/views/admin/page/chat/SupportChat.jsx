@@ -1,15 +1,15 @@
-import { Button, Card, Flex, Form, Input, Layout, Typography } from 'antd'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { MessageRender } from './MessageRender'
 import { SendOutlined } from '@ant-design/icons'
-import './SupportChat.css'
-import { useParams } from 'react-router'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { detail_room, send_message } from '../../../../services/chat_service'
-import Notification from '../../../../utils/configToastify'
+import { Button, Card, Flex, Form, Input, Layout } from 'antd'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router'
 import { io } from 'socket.io-client'
+import { detail_room, send_message } from '../../../../services/chat_service'
 import { UserContext } from '../../../../store/user'
-const END_POINT = "http://localhost:8081";
+import Notification from '../../../../utils/configToastify'
+import { MessageRender } from './MessageRender'
+import './SupportChat.css'
+const END_POINT = import.meta.env.VITE_SOCKET_ENDPOINT || "http://localhost:5000";
 export const SupportChat = () => {
     const { Footer, Content } = Layout
     const { chat_id } = useParams()

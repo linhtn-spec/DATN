@@ -1,32 +1,37 @@
-import cookieParser from "cookie-parser";
-import cors from "cors";
 import Express from "express";
-import mongoSanitize from 'express-mongo-sanitize';
-import rateLimit from "express-rate-limit";
-import session from "express-session";
-import helmet from "helmet";
-import multer from "multer";
-import passport from "passport";
+const app = Express();
+import router_upload from "./router/upload_router.js";
 import router_elastic from './elastic_search/elastic_search.js';
 import './google/google-auth.js';
-import { connectToGoogle } from "./google/google-auth.js";
-import router_banner from './router/banner_router.js';
-import router_blog from './router/blog_router.js';
 import router_category from "./router/category_router.js";
 import router_chat from './router/chat_router.js';
-import router_comment from './router/comment_router.js';
-import router_consignment from './router/consignment_router.js';
-import router_favourite from './router/favourite_router.js';
 import router_order from "./router/order_router.js";
 import router_product from "./router/product_router.js";
-import router_rating from './router/rating_router.js';
-import router_sale from './router/sale_router.js';
-import router_statitics from './router/statitics_router.js';
-import router_upload from "./router/upload_router.js";
 import router_auth from "./router/user_router.js";
 import { router as order_router } from './vnpay/vnpay.js';
-const app = Express();
+import helmet from "helmet";
+import mongoSanitize from 'express-mongo-sanitize';
+import cookieParser from "cookie-parser";
+import multer from "multer";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
+import router_banner from './router/banner_router.js'
+import router_blog from './router/blog_router.js'
+import router_rating from './router/rating_router.js'
+import router_comment from './router/comment_router.js'
+import router_favourite from './router/favourite_router.js'
+import router_sale from './router/sale_router.js'
+import router_consignment from './router/consignment_router.js'
+import router_statitics from './router/statitics_router.js'
+import session from "express-session";
+import passport from "passport";
+import { connectToGoogle } from "./google/google-auth.js";
 
+import cron from 'node-cron'
+import consignment_model from "./models/consignment_model.js";
+import product_model from "./models/product_model.js";
+import order_model from "./models/order_model.js";
+import { isToday } from "./helper/function.js";
 
 app.use(
     session({
@@ -44,20 +49,16 @@ app.use(upload.array('images', 100))
 
 app.use(cors({
     origin: function (origin, callback) {
-        const whiteList = [
-            "http://localhost",
-            "http://localhost:80",
-            "http://localhost:3000",
-            "http://localhost:5173",
-            "http://127.0.0.1",
-            "http://127.0.0.1:80",
-            process.env.WHITE_URL_1 || "http://localhost",
-            process.env.WHITE_URL_2 || "http://localhost:5173"
-        ];
-        if (!origin || whiteList.some(url => origin.includes(url.split("://")[1] || url))) {
-            return callback(null, true);
+        // console.log(origin);
+        if (!origin) return callback(null, true)
+        if (
+            origin.includes(process.env.WHITE_URL_1) ||
+            origin.includes(process.env.WHITE_URL_2)
+        ) {
+            return callback(null, true)
         }
-        return callback(new Error("Not allowed by CORS"));
+
+        return callback(new Error('Not allowed by CORS'))
     },
     credentials: true,
     preflightContinue: true

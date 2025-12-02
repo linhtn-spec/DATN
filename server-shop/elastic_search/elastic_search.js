@@ -1,16 +1,44 @@
-import { Client } from '@elastic/elasticsearch'
+import { Client } from '@elastic/elasticsearch';
 import { Router } from "express";
-import fs from 'fs'
 
 const router = Router();
 
+// Build Elasticsearch connection URL based on environment variables
+const buildElasticsearchUrl = () => {
+    let host = process.env.ELASTICSEARCH_HOST || 'http://localhost:9200';
+    const username = process.env.ELASTICSEARCH_USERNAME || 'elastic';
+    const password = process.env.ELASTICSEARCH_PASSWORD || '';
+    
+    // Ensure host has protocol
+    if (!host.startsWith('http://') && !host.startsWith('https://')) {
+        host = `http://${host}`;
+    }
+    
+    // If password is empty, return host as-is
+    if (!password || password.trim() === '') {
+        return host;
+    }
+    
+    // Parse and rebuild URL with auth
+    try {
+        const url = new URL(host);
+        url.username = username;
+        url.password = password;
+        return url.toString();
+    } catch (e) {
+        // Fallback: simple string building
+        const protocol = host.startsWith('https://') ? 'https' : 'http';
+        const hostOnly = host.replace(/^https?:\/\//, '');
+        return `${protocol}://${username}:${password}@${hostOnly}`;
+    }
+};
+
 const client = new Client({
-    node: 'https://elastic:NoiLk3W_uvCJG-LpMEK=@localhost:9200',
+    node: buildElasticsearchUrl(),
     tls: {
-        ca: fs.readFileSync('http_ca.crt'),
         rejectUnauthorized: false
     }
-})
+});
 
 router.get('/search', async (req, res) => {
     const { searchParam, page } = req.query;

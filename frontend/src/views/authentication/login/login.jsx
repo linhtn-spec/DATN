@@ -1,14 +1,14 @@
 import { GoogleOutlined } from "@ant-design/icons";
-import { Button, Divider, Flex, Form, Input, Typography } from "antd";
-import { login } from "../../../services/user_service";
-import "./login.css";
-import { Link, useNavigate } from "react-router-dom";
-import Notification from "../../../utils/configToastify";
-import { useContext, useEffect } from "react";
-import { ACTION_USER, UserContext } from "../../../store/user";
 import { useMutation } from "@tanstack/react-query";
-import { LogContext } from "../../../store/typeLog/provider";
+import { Button, Divider, Flex, Form, Input, Typography } from "antd";
+import { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../../services/user_service";
 import { ACTION_LOG } from "../../../store/typeLog";
+import { LogContext } from "../../../store/typeLog/provider";
+import { ACTION_USER, UserContext } from "../../../store/user";
+import Notification from "../../../utils/configToastify";
+import "./login.css";
 function Login() {
     const { dispatch } = useContext(UserContext)
     const logGoogle = useContext(LogContext)
@@ -31,7 +31,8 @@ function Login() {
 
     const loginByGoogle = () => {
         logGoogle.dispatch({ type: ACTION_LOG.IN })
-        window.open('http://localhost:8081/api/auth/google', '_self')
+        const socketEndpoint = import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:5000';
+        window.open(`${socketEndpoint}/api/auth/google`, '_self')
     }
 
 

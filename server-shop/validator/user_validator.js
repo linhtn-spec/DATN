@@ -1,4 +1,4 @@
-import { check, body, validationResult } from "express-validator";
+import { body, validationResult } from "express-validator";
 
 export const register_validator = [
     body("username")
@@ -16,7 +16,7 @@ export const register_validator = [
         .isLength({ min: 6, max: 50 }).withMessage("Confirm password has at least 6 characters and max 50 characters")
         .custom((value, { req }) => {
             if (value !== req.body.password) {
-                throw new Error('Confirm pasword is not match');
+                return Promise.reject(new Error('Confirm password is not match'));
             }
             return true;
         }),
@@ -54,7 +54,7 @@ export const forgot_password_validator = [
         .isLength({ min: 6, max: 50 }).withMessage("Confirm password has at least 6 characters and max 50 characters")
         .custom((value, { req }) => {
             if (value !== req.body.password) {
-                throw new Error('Confirm pasword is not match');
+                return Promise.reject(new Error('Confirm password is not match'));
             }
             return true;
         }),
@@ -87,7 +87,7 @@ export const reset_password_validator = [
         .isLength({ min: 6, max: 50 }).withMessage("Confirm password has at least 6 characters and max 50 characters")
         .custom((value, { req }) => {
             if (value !== req.body.new_password) {
-                throw new Error('Confirm pasword is not match');
+                return Promise.reject(new Error('Confirm password is not match'));
             }
             return true;
         }),

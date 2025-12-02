@@ -1,10 +1,9 @@
-import bcrypt from "bcryptjs"
-import user_model from "../models/user_model.js";
-import jwt, { decode } from "jsonwebtoken"
-import { filterXSS } from 'xss'
-import { options } from "../paginate/options.js";
-import { sendEmail } from "../nodemailer/nodemailer_config.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { forget_password_form, forget_password_subject, forget_password_text } from "../form_mail/forget_password.js";
+import user_model from "../models/user_model.js";
+import { sendEmail } from "../nodemailer/nodemailer_config.js";
+import { options } from "../paginate/options.js";
 
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -194,7 +193,12 @@ export const refresh_token = async (req, res) => {
             return res.status(401).json({ message: "Refresh token not available" });
         }
 
-        const decoded = await jwt.verify(accessToken, accessTokenSecret, { ignoreExpiration: true });
+        let decoded;
+        try {
+            decoded = jwt.verify(accessToken, accessTokenSecret, { ignoreExpiration: true });
+        } catch (err) {
+            return res.status(401).json({ message: "Invalid access token" });
+        }
 
         if (!decoded) {
             return res.status(404).json({ message: "Not available" });
@@ -208,8 +212,11 @@ export const refresh_token = async (req, res) => {
         if (refreshToken !== user.refreshToken) {
             return res.status(403).json({ message: "Not allowed" });
         }
-        const checkRT = await jwt.verify(refreshToken, refreshTokenSecret);
-        if (!checkRT) {
+        let checkRT;
+        try {
+            checkRT = jwt.verify(refreshToken, refreshTokenSecret);
+        } catch (err) {
+            // Refresh token expired or invalid - create new one
             const dataForRefreshToken = {
                 username: user.username,
                 user_id: user._id
@@ -222,12 +229,13 @@ export const refresh_token = async (req, res) => {
             }
             await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshTokenNew })
             res.cookie("refresh_token", refreshTokenNew, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
+            checkRT = jwt.verify(refreshTokenNew, refreshTokenSecret);
         }
-        if (checkRT.user_id !== user.user_id || checkRT.username !== user.username)
+        if (checkRT.user_id !== user._id || checkRT.username !== user.username)
             return res.status(403).json({ message: "Not allowed" });
 
         const dataForAccessToken = {
-            username,
+            username: user.username,
             role
         };
         const accessTokenNew = jwt.sign(dataForAccessToken, accessTokenSecret, { expiresIn: accessTokenLife });

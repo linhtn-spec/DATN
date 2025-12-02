@@ -1,5 +1,6 @@
 export const order_form = (data) => {
     const { total, tax, products, paymentStatus } = data;
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     let subTotal
     if (Array.isArray(products)) {
         subTotal = products.reduce((pre, cur) => pre + cur.subPrice, 0)
@@ -153,7 +154,7 @@ export const order_form = (data) => {
             <h4>Scart</h4>
             <hr>
             <div class="button_wrap" style="cursor:pointer">
-                <a href="http://localhost:5173/client" class="button">
+                <a href="${frontendUrl}/client" class="button">
                     <button>
                         Click here to continue purchasing
                     </button>

@@ -1,4 +1,7 @@
-export const forget_password_form = (token) => `
+export const forget_password_form = (token) => {
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const changePasswordPath = process.env.FRONTEND_CHANGE_PASSWORD_PATH || '/change-password';
+    return `
 <html>
 
 <head>
@@ -79,7 +82,7 @@ export const forget_password_form = (token) => `
             <h4>Hello!</h4>
             <p>You have requested to reset password of your account. Click the button below.</p>
             <div class="button_wrap">
-                    <a style="color: white;" href="http://localhost:5173/change-password/${token}" class="button">
+                    <a style="color: white;" href="${frontendUrl}${changePasswordPath}/${token}" class="button">
                 <button>
                         Reset password
                 </button>
@@ -89,14 +92,15 @@ export const forget_password_form = (token) => `
             <h4>Scart</h4>
             <hr>
             <p>If you're having trouble clicking the "Reset password" button, copy and paste the URL below into your web
-                browser:<a href="http://localhost:5173/change-password/${token}">
-                    http://localhost:5173/change-password/${token}</a>
+                browser:<a href="${frontendUrl}${changePasswordPath}/${token}">
+                    ${frontendUrl}${changePasswordPath}/${token}</a>
             </p>
         </div>
     </div>
 </body>
 
 </html>`
+}
 
 export const forget_password_subject = `Reset Password Request`
 

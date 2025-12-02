@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
-import http from 'http';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import mongoose from "mongoose";
-import { Server } from 'socket.io';
-import app from "./app.js";
 import Express from "express";
+import http from 'http';
+import mongoose from "mongoose";
+import { dirname, join } from 'path';
+import { Server } from 'socket.io';
+import { fileURLToPath } from 'url';
+import app from "./app.js";
 dotenv.config();
 const serverSocket = http.createServer(app)
 
