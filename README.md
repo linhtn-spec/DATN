@@ -16,15 +16,7 @@
    - Startup procedures
    - Troubleshooting
 
-2. **[FRONTEND_STATUS.md](FRONTEND_STATUS.md)** - Frontend-specific details
-
-   - Dependencies (395 MB, 18 packages)
-   - Configuration files
-   - Source code structure
-   - Build status
-   - Available scripts
-
-3. **[DOCKER_DEPLOYMENT_GUIDE.md](DOCKER_DEPLOYMENT_GUIDE.md)** - Docker setup for production
+2. **[DOCKER_DEPLOYMENT_GUIDE.md](DOCKER_DEPLOYMENT_GUIDE.md)** - Docker setup for production
 
    - System requirements
    - Installation steps
@@ -32,13 +24,6 @@
    - Environment variables
    - Monitoring & troubleshooting
    - Backup procedures
-
-4. **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - AI Agent Guide
-   - Architecture overview
-   - 10 critical patterns
-   - Key files reference
-   - Developer workflows
-   - Debugging tips
 
 ---
 
@@ -60,10 +45,6 @@
 
 👉 Read: **QUICK_START.md** (2 min)
 
-### "I want to understand the architecture"
-
-👉 Read: **[.github/copilot-instructions.md](.github/copilot-instructions.md)** (10 min)
-
 ### "I need complete setup instructions"
 
 👉 Read: **PROJECT_READINESS.md** (15 min)
@@ -71,10 +52,6 @@
 ### "I'm deploying to production with Docker"
 
 👉 Read: **DOCKER_DEPLOYMENT_GUIDE.md** (20 min)
-
-### "I need frontend-specific info"
-
-👉 Read: **FRONTEND_STATUS.md** (10 min)
 
 ---
 
@@ -145,10 +122,6 @@
 │   ├── server.js            # HTTP + Socket.IO
 │   ├── package.json
 │   └── .env
-│
-├── .github/
-│   └── copilot-instructions.md   # AI agent guide
-│
 ├── QUICK_START.md           # Fast launch guide
 ├── PROJECT_READINESS.md     # Complete setup
 ├── FRONTEND_STATUS.md       # Frontend details
@@ -205,9 +178,6 @@ A: Yes, locally OR in Docker
 **Q: Can I use this with existing data?**  
 A: Yes, but configure DATABASE URL in .env
 
-**Q: How do I add a new feature?**  
-A: See .github/copilot-instructions.md for patterns
-
 **Q: Is it production-ready?**  
 A: Use Docker deployment guide for production setup
 
@@ -216,9 +186,7 @@ A: Use Docker deployment guide for production setup
 ## 📞 Support
 
 - **Issues with setup?** → Check PROJECT_READINESS.md troubleshooting
-- **Architecture questions?** → See .github/copilot-instructions.md
 - **Docker deployment?** → Read DOCKER_DEPLOYMENT_GUIDE.md
-- **Frontend issues?** → Check FRONTEND_STATUS.md
 
 ---
 
@@ -232,6 +200,5 @@ Everything is configured and ready to run. Pick your startup option and go! 🚀
 
 ---
 
-**Last Updated**: December 1, 2025  
 **Project Status**: ✅ READY FOR LAUNCH  
 **Location**: `/home/hieunv1/Documents/DATN`
