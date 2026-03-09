@@ -1,14 +1,12 @@
-import { Empty, Flex, Pagination } from "antd";
-import { Breadcrumb } from "antd";
-import { NavLink, useSearchParams } from "react-router-dom";
-import Product_Grid from "../layout/product_grid";
-import "./../style/search.css";
-import Banner_Big from "../layout/banner_big";
-import { useEffect, useState } from "react";
-import { product_by_code, product_by_name, searchProduct } from "../../../services/product_service";
-import ProductGrid from "../layout/product_grid";
 import { useQuery } from "@tanstack/react-query";
+import { Breadcrumb, Empty, Flex, Pagination } from "antd";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { NavLink, useSearchParams } from "react-router-dom";
+import { searchProduct } from "../../../services/product_service";
+import Banner_Big from "../layout/banner_big";
+import ProductGrid from "../layout/product_grid";
+import "./../style/search.css";
 function Search() {
     const [searchInput] = useSearchParams();
     const keyword = searchInput.get('keyword')

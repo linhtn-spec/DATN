@@ -6,7 +6,7 @@ RUN mkdir -p /var/log/mongodb && \
     chmod 755 /var/log/mongodb
 
 # Copy MongoDB configuration file
-COPY mongo/mongod.conf /etc/mongod.conf
+COPY mongod.conf /etc/mongod.conf
 
 # Tạo thư mục scripts cho init
 RUN mkdir -p /scripts

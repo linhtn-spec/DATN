@@ -3,98 +3,118 @@ import { AuthProvider } from "../components/AuthProvider";
 import { ProtectRoute } from "../components/ProtectRoute";
 import { LayoutAdmin } from "../layouts/LayoutAdmin";
 import { LayoutClient } from "../layouts/LayoutClient";
+import { CartProvider } from "../store/cart";
+import { FavouriteProvider } from "../store/favourite";
 import { ModalProvider } from "../store/modal/provider";
+import { OrderProvider } from "../store/order/provider";
+import { LastViewProductProvider } from "../store/productLastView";
+import { LogProvider } from "../store/typeLog/provider";
+
+// Admin pages
+import PageNotFound from "../views/admin/page/404notfound";
+import { Overview } from "../views/admin/page/OverviewAdmin";
 import { BannerList } from "../views/admin/page/banner/banner-list/Banner";
 import CreateBanner from "../views/admin/page/banner/create-banner/CreateBanner";
 import UpdateBanner from "../views/admin/page/banner/update-banner/UpdateBanner";
 import { CategoryList } from "../views/admin/page/category/category-list/Category";
 import CreateCategory from "../views/admin/page/category/create-category/CreateCategory";
 import UpdateCategory from "../views/admin/page/category/update-category/UpdateCategory";
-import { Overview } from "../views/admin/page/OverviewAdmin";
-import CreateProduct from "../views/admin/page/product/create-product/CreateProduct";
-import { DetailProduct } from "../views/admin/page/product/detail-product/DetailProduct";
-import { ProductList } from "../views/admin/page/product/product-list/ProductList";
-import Forget from "../views/authentication/forget/forget";
-import Login from '../views/authentication/login/login';
-import Register from "../views/authentication/register/register";
-import Reset from "../views/authentication/reset/reset";
-import Cart from "../views/client/page/cart";
-import Category from "../views/client/page/category";
-import { ChangePassword } from "../views/client/page/ChangePassword";
-import Checkout from "../views/client/page/checkout";
-import CheckoutConfirm from "../views/client/page/checkout_confirm";
-import { DetailUser } from "../views/client/page/DetailUser";
-import Home from "../views/client/page/home";
-import OrderSuccess from "../views/client/page/order_success";
-import ProductDetail from "../views/client/page/ProductDetail";
-import Search from "../views/client/page/search";
-import Shop from "../views/client/page/shop";
-import { Wishlist } from "../views/client/page/Wishlist";
-import { OrderDetail } from "../views/client/page/Orders/OrderDetail";
-import { OrderList } from "../views/client/page/Orders/OrderList";
-import { LastViewProductProvider } from "../store/productLastView";
-import { CartProvider } from "../store/cart";
-import { OrderProvider } from "../store/order/provider";
-import { LogProvider } from "../store/typeLog/provider";
-import { FavouriteProvider } from "../store/favourite";
-import { ListOfUser } from "../views/admin/page/user/ListOfUser";
-import { CrudUser } from "../views/admin/page/user/CrudUser";
-import { ListOfCustomer } from "../views/admin/page/customer/ListOfCustomer";
-import { DetailCustomer } from "../views/admin/page/customer/DetailCustomer";
-import { ListOfOrder } from "../views/admin/page/order/ListOfOrder";
-import { DetailOrder } from "../views/admin/page/order/DetailOrder";
-import UpdateProduct from "../views/admin/page/product/detail-product/update-product/UpdateProduct";
-import { ListOfComment } from "../views/admin/page/product/detail-product/comment/ListOfComment";
-import { ListOfRating } from "../views/admin/page/product/detail-product/rating/ListOfRating";
-import { DetailRating } from "../views/admin/page/product/detail-product/rating/DetailRating";
-import { DetailComment } from "../views/admin/page/product/detail-product/comment/DetailComment";
-import { ListOfSale } from "../views/admin/page/sale/ListOfSale";
-import { DetailSale } from "../views/admin/page/sale/DetailSale";
-import { ListOfConsignment } from "../views/admin/page/consignment/ListOfConsignment";
-import { DetailConsignment } from "../views/admin/page/consignment/DetailConsignment";
-import { Infomation } from "../views/admin/page/customer/Information";
-import { ListOfOrderCustomer } from "../views/admin/page/customer/customer_order/ListOfOrderCustomer";
-import { DetailOrderCustomer } from "../views/admin/page/customer/customer_order/DetailOrderCustomer";
-import PageNotFound from "../views/admin/page/404notfound";
 import { ManageChat } from "../views/admin/page/chat/ManageChat";
 import { SupportChat } from "../views/admin/page/chat/SupportChat";
+import { DetailConsignment } from "../views/admin/page/consignment/DetailConsignment";
+import { ListOfConsignment } from "../views/admin/page/consignment/ListOfConsignment";
+import { DetailCustomer } from "../views/admin/page/customer/DetailCustomer";
+import { Infomation } from "../views/admin/page/customer/Information";
+import { ListOfCustomer } from "../views/admin/page/customer/ListOfCustomer";
+import { DetailOrderCustomer } from "../views/admin/page/customer/customer_order/DetailOrderCustomer";
+import { ListOfOrderCustomer } from "../views/admin/page/customer/customer_order/ListOfOrderCustomer";
+import { DetailOrder } from "../views/admin/page/order/DetailOrder";
+import { ListOfOrder } from "../views/admin/page/order/ListOfOrder";
+import CreateProduct from "../views/admin/page/product/create-product/CreateProduct";
+import { DetailProduct } from "../views/admin/page/product/detail-product/DetailProduct";
+import { DetailComment } from "../views/admin/page/product/detail-product/comment/DetailComment";
+import { ListOfComment } from "../views/admin/page/product/detail-product/comment/ListOfComment";
+import { DetailRating } from "../views/admin/page/product/detail-product/rating/DetailRating";
+import { ListOfRating } from "../views/admin/page/product/detail-product/rating/ListOfRating";
+import UpdateProduct from "../views/admin/page/product/detail-product/update-product/UpdateProduct";
+import { ProductList } from "../views/admin/page/product/product-list/ProductList";
+import { DetailSale } from "../views/admin/page/sale/DetailSale";
+import { ListOfSale } from "../views/admin/page/sale/ListOfSale";
+import { CrudUser } from "../views/admin/page/user/CrudUser";
+import { ListOfUser } from "../views/admin/page/user/ListOfUser";
 
-export const router = createBrowserRouter([
+// Auth pages
+import Forget from "../views/authentication/forget/forget";
+import Login from "../views/authentication/login/login";
+import Register from "../views/authentication/register/register";
+import Reset from "../views/authentication/reset/reset";
+
+// Client pages
+import { ChangePassword } from "../views/client/page/ChangePassword";
+import { DetailUser } from "../views/client/page/DetailUser";
+import { OrderDetail } from "../views/client/page/Orders/OrderDetail";
+import { OrderList } from "../views/client/page/Orders/OrderList";
+import ProductDetail from "../views/client/page/ProductDetail";
+import { Wishlist } from "../views/client/page/Wishlist";
+import Cart from "../views/client/page/cart";
+import Category from "../views/client/page/category";
+import Checkout from "../views/client/page/checkout";
+import CheckoutConfirm from "../views/client/page/checkout_confirm";
+import Home from "../views/client/page/home";
+import OrderSuccess from "../views/client/page/order_success";
+import Search from "../views/client/page/search";
+import Shop from "../views/client/page/shop";
+
+// ---------------------------------------------------------------------------
+// Route definitions split by area for easier maintenance
+// ---------------------------------------------------------------------------
+
+const authRoutes = [
   {
-    path: '/',
-    element:
-      (<ProtectRoute>
+    path: "/",
+    element: (
+      <ProtectRoute>
         <LogProvider>
           <Login />
         </LogProvider>
-      </ProtectRoute>)
+      </ProtectRoute>
+    ),
   },
   {
-    path: 'forget-password', element:
-      (<ProtectRoute>
+    path: "forget-password",
+    element: (
+      <ProtectRoute>
         <LogProvider>
           <Forget />
         </LogProvider>
-      </ProtectRoute>)
+      </ProtectRoute>
+    ),
   },
   {
-    path: 'change-password/:token', element:
-      (<ProtectRoute>
+    path: "change-password/:token",
+    element: (
+      <ProtectRoute>
         <LogProvider>
           <Reset />
         </LogProvider>
-      </ProtectRoute>)
+      </ProtectRoute>
+    ),
   },
   {
-    path: 'register', element:
-      (<ProtectRoute>
+    path: "register",
+    element: (
+      <ProtectRoute>
         <LogProvider>
           <Register />
         </LogProvider>
-      </ProtectRoute>)
+      </ProtectRoute>
+    ),
   },
+];
+
+const adminRoutes = [
   {
-    path: 'admin',
+    path: "admin",
     element: (
       <ProtectRoute>
         <AuthProvider>
@@ -104,144 +124,140 @@ export const router = createBrowserRouter([
             </LogProvider>
           </ModalProvider>
         </AuthProvider>
-      </ProtectRoute>),
+      </ProtectRoute>
+    ),
     children: [
-      { path: 'overview', element: <Overview /> },
+      { path: "overview", element: <Overview /> },
+
       {
-        path: 'category',
+        path: "category",
         element: <Outlet />,
         children: [
           { index: true, element: <CategoryList /> },
-          { path: 'create', element: <CreateCategory /> },
-          { path: ':category_id', element: <UpdateCategory /> }
-        ]
+          { path: "create", element: <CreateCategory /> },
+          { path: ":category_id", element: <UpdateCategory /> },
+        ],
       },
+
       {
-        path: 'banner',
+        path: "banner",
         element: <Outlet />,
         children: [
           { index: true, element: <BannerList /> },
-          { path: 'create', element: <CreateBanner /> },
-          { path: ':banner_id', element: <UpdateBanner /> }
-        ]
+          { path: "create", element: <CreateBanner /> },
+          { path: ":banner_id", element: <UpdateBanner /> },
+        ],
       },
+
       {
-        path: 'product',
+        path: "product",
         element: <Outlet />,
         children: [
           { index: true, element: <ProductList /> },
-          { path: 'create', element: <CreateProduct /> },
+          { path: "create", element: <CreateProduct /> },
           {
-            path: ':product_id',
+            path: ":product_id",
             element: <DetailProduct />,
             children: [
               { index: true, element: <UpdateProduct /> },
-              { path: 'comments', element: <ListOfComment /> },
               {
-                path: 'ratings', element: <Outlet />, children: [
-                  { index: true, element: <ListOfRating /> },
-                  { path: ":rating_id", element: <DetailRating /> }
-                ]
-              },
-              {
-                path: 'comments', element: <Outlet />, children: [
+                path: "comments",
+                element: <Outlet />,
+                children: [
                   { index: true, element: <ListOfComment /> },
-                  { path: ":comment_id", element: <DetailComment /> }
-                ]
+                  { path: ":comment_id", element: <DetailComment /> },
+                ],
               },
-            ]
-          }
-        ]
+              {
+                path: "ratings",
+                element: <Outlet />,
+                children: [
+                  { index: true, element: <ListOfRating /> },
+                  { path: ":rating_id", element: <DetailRating /> },
+                ],
+              },
+            ],
+          },
+        ],
       },
+
       {
-        path: 'users',
+        path: "users",
         element: <Outlet />,
         children: [
           { index: true, element: <ListOfUser /> },
-          { path: 'create', element: <CrudUser /> },
-          {
-            path: ':user_id',
-            element: <CrudUser />
-          }
-        ]
+          { path: "create", element: <CrudUser /> },
+          { path: ":user_id", element: <CrudUser /> },
+        ],
       },
+
       {
-        path: 'customers',
+        path: "customers",
         element: <Outlet />,
         children: [
           { index: true, element: <ListOfCustomer /> },
           {
-            path: ':user_id',
+            path: ":user_id",
             element: <Infomation />,
             children: [
               { index: true, element: <DetailCustomer /> },
               {
-                path: 'orders', element: <Outlet />, children: [
+                path: "orders",
+                element: <Outlet />,
+                children: [
                   { index: true, element: <ListOfOrderCustomer /> },
-                  { index: ':order_id', element: <DetailOrderCustomer /> }
-                ]
-              }
-            ]
-          }
-        ]
+                  { path: ":order_id", element: <DetailOrderCustomer /> },
+                ],
+              },
+            ],
+          },
+        ],
       },
+
       {
-        path: 'orders',
+        path: "orders",
         element: <Outlet />,
         children: [
           { index: true, element: <ListOfOrder /> },
-          {
-            path: ':order_id',
-            element: <DetailOrder />
-          }
-        ]
+          { path: ":order_id", element: <DetailOrder /> },
+        ],
       },
+
       {
-        path: 'sales',
+        path: "sales",
         element: <Outlet />,
         children: [
           { index: true, element: <ListOfSale /> },
-          {
-            path: ':sale_id',
-            element: <DetailSale />
-          },
-          {
-            path: 'create',
-            element: <DetailSale />
-          }
-        ]
+          { path: "create", element: <DetailSale /> },
+          { path: ":sale_id", element: <DetailSale /> },
+        ],
       },
+
       {
-        path: 'consignment',
+        path: "consignment",
         element: <Outlet />,
         children: [
           { index: true, element: <ListOfConsignment /> },
-          {
-            path: ':consignment_id',
-            element: <DetailConsignment />
-          },
-          {
-            path: 'create',
-            element: <DetailConsignment />
-          },
-        ]
+          { path: "create", element: <DetailConsignment /> },
+          { path: ":consignment_id", element: <DetailConsignment /> },
+        ],
       },
+
       {
-        path: 'customer-support',
+        path: "customer-support",
         element: <Outlet />,
         children: [
           { index: true, element: <ManageChat /> },
-          {
-            path: ':chat_id',
-            element: <SupportChat />
-          },
-
-        ]
-      }
-    ]
+          { path: ":chat_id", element: <SupportChat /> },
+        ],
+      },
+    ],
   },
+];
+
+const clientRoutes = [
   {
-    path: '/client',
+    path: "/client",
     element: (
       <ProtectRoute>
         <AuthProvider>
@@ -259,70 +275,74 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <Home /> },
-      { path: 'home', element: <Home /> },
-      { path: 'search', element: <Search /> },
+      { path: "home", element: <Home /> },
+      { path: "search", element: <Search /> },
+      { path: "shop", element: <Shop /> },
+      { path: "cart", element: <Cart /> },
+      { path: "category/:category_id", element: <Category /> },
       {
-        path: 'product/:id', element:
+        path: "product/:id",
+        element: (
           <LastViewProductProvider>
             <ProductDetail />
           </LastViewProductProvider>
+        ),
       },
       {
-        path: 'shop',
-        element: <Shop />,
-      },
-      {
-        path: 'cart',
-        element: <Cart />
-      },
-      {
-        path: 'category/:category_id',
-        element: <Category />
-      },
-      {
-        path: 'user',
+        path: "user",
         element: <Outlet />,
         children: [
           { index: true, element: <DetailUser /> },
-          { path: 'wishlist', element: <Wishlist /> },
-          { path: 'change-password', element: <ChangePassword /> },
+          { path: "wishlist", element: <Wishlist /> },
+          { path: "change-password", element: <ChangePassword /> },
           {
-            path: 'orders',
+            path: "orders",
             element: <Outlet />,
             children: [
-              {
-                index: true,
-                element: <OrderList />
-              },
-              { path: ':order_id', element: <OrderDetail /> }
-            ]
-          }
-        ]
+              { index: true, element: <OrderList /> },
+              { path: ":order_id", element: <OrderDetail /> },
+            ],
+          },
+        ],
       },
       {
-        path: 'checkout',
+        path: "checkout",
         element: <Outlet />,
         children: [
           {
-            index: true, element:
+            index: true,
+            element: (
               <OrderProvider>
                 <Checkout />
               </OrderProvider>
+            ),
           },
           {
-            path: "confirm", element:
+            path: "confirm",
+            element: (
               <OrderProvider>
                 <CheckoutConfirm />
               </OrderProvider>
+            ),
           },
-          { path: "success", element: <OrderSuccess /> }
-
-        ]
-      }
-    ]
+          { path: "success", element: <OrderSuccess /> },
+        ],
+      },
+    ],
   },
-  {
-    path: '*', element: <PageNotFound />
-  }
+];
 
-])
+// ---------------------------------------------------------------------------
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Outlet />,
+    children: [
+      ...authRoutes,
+      ...adminRoutes,
+      ...clientRoutes,
+      { path: "*", element: <PageNotFound /> },
+    ]
+  }
+]);

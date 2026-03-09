@@ -1,13 +1,12 @@
 import { RouterProvider } from 'react-router-dom';
-import './App.css';
-import { ToastContainer } from 'react-toastify'
-import { router } from './routes/route';
-import ScrollToTop from 'react-scroll-to-top'
+import ScrollToTop from 'react-scroll-to-top';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import { router } from './routes/route';
 import { UserProvider } from './store/user';
 
 function App() {
-
   return (
     <UserProvider>
       <RouterProvider router={router} />

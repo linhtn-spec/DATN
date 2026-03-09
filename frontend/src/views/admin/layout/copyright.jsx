@@ -1,16 +1,16 @@
-import "./../style/copyright.css"
 import { Footer } from "antd/es/layout/layout";
+import "./../style/copyright.css";
 function Copyright() {
     return (
         <Footer style={{ textAlign: 'center' }} className="wrap-copyright">
             <div>
-                © 2024  S-Cart : An organic fruits store.  All rights reserved
+                © 2026  S-Cart : An organic fruits store.  All rights reserved
             </div>
             <div>
-                Powered by Anh Nguyen
+                Powered by Thai Linh
             </div>
             <div>
-                <a href="https://github.com/Cr4zY9uy/DATN" target="_blank">Link Github</a>
+                <a href="https://github.com/onlyu66/DATN" target="_blank">Link Github</a>
             </div>
         </Footer>
     );

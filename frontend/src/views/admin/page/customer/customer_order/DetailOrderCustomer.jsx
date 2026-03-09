@@ -20,12 +20,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import './DetailOrderCustomer.css';
-import { detailOrder, editOrder } from "../../../../../services/order_service";
-import { queryClient } from "../../../../../main";
-import Notification from "../../../../../utils/configToastify";
+import { orderStatusOptions, paymentMethodOptions, paymentStatusOptions, shippingMethodOptions, shippingStatusOptions } from "../../../../../constants/orderOptions";
 import convertToDate from "../../../../../functions/convertDate";
-import { orderStatusOptions, paymentMethodOptions, paymentStatusOptions, shippingMethodOptions, shippingStatusOptions } from "../../../../../utils/options";
+import { queryClient } from "../../../../../main";
+import { detailOrder, editOrder } from "../../../../../services/order_service";
+import Notification from "../../../../../utils/configToastify";
+import './DetailOrderCustomer.css';
 
 const formItemLayout = {
     labelCol: {

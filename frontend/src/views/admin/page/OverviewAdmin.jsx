@@ -1,16 +1,16 @@
+import { LoginOutlined, ProductOutlined, ShoppingCartOutlined, TagOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
+import { Button, Card, Flex, Image, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { PieChart, Pie, Tooltip, Sector, YAxis, Line, Bar, Legend, ResponsiveContainer, ComposedChart, CartesianGrid, XAxis, BarChart, LineChart } from 'recharts'
+import { useNavigate } from 'react-router';
+import { Bar, BarChart, CartesianGrid, ComposedChart, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from 'recharts';
+import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../constants/orderOptions';
+import { detailCategory } from '../../../services/category_service';
 import { count_order, count_product_category, count_statitics, order_per_day, order_per_month, statiticsPerday, unsold } from '../../../services/statitics_service';
 import { getLabelByValue } from '../../../utils/getLabelByValue';
-import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../utils/options';
-import { Button, Card, Flex, Image, Typography } from 'antd';
-import { LoginOutlined, ProductOutlined, ShoppingCartOutlined, TagOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
-import randomHexColorCode from '../../../utils/randomColor';
-import './OverviewAdmin.css'
-import { useNavigate } from 'react-router';
-import { detailCategory } from '../../../services/category_service';
 import { transformData } from '../../../utils/megreArray';
+import randomHexColorCode from '../../../utils/randomColor';
+import './OverviewAdmin.css';
 
 const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;

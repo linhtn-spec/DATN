@@ -14,16 +14,15 @@ import {
     Upload
 } from 'antd';
 import Card from "antd/es/card/Card";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { ROLE } from "../../../../constants/roles";
 import { queryClient } from '../../../../main';
 import { uploadImage } from '../../../../services/upload_service';
 import { createUser, detailUser, updateUser } from '../../../../services/user_service';
+import { UserContext } from "../../../../store/user";
 import Notification from '../../../../utils/configToastify';
 import './CrudUser.css';
-import { useContext } from "react";
-import { UserContext } from "../../../../store/user";
-import { ROLE } from "../../../../enum/roleUser";
 
 
 export function CrudUser() {

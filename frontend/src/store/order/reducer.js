@@ -1,5 +1,5 @@
 import { ACTION_ORDER } from "./action";
-import { UpdateLocalStorage } from "../../utils/updateLocalStorage";
+import { updateLocalStorage } from "../../utils/updateLocalStorage";
 
 const initialOrderState = {
     currentOrder: localStorage.getItem('currentOrder') ? JSON.parse(localStorage.getItem('currentOrder'))?.currentOrder : {},
@@ -11,12 +11,12 @@ export const orderReducer = (state = initialOrderState, action) => {
     switch (action.type) {
         case ACTION_ORDER.ADD_ORDER: {
             newState = { ...state, currentOrder: action.payload };
-            UpdateLocalStorage(newState, "currentOrder");
+            updateLocalStorage(newState, "currentOrder");
             return newState;
         }
         case ACTION_ORDER.REMOVE_ORDER: {
             newState = { ...state, currentOrder: {} };
-            UpdateLocalStorage(newState, "currentOrder");
+            updateLocalStorage(newState, "currentOrder");
             return newState;
         }
         default:

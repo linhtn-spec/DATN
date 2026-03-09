@@ -1,4 +1,4 @@
-import { UpdateLocalStorage } from "../../utils/updateLocalStorage";
+import { updateLocalStorage } from "../../utils/updateLocalStorage";
 import { ACTION_FAVOURITE } from "./action";
 
 const initialFavouriteState = {
@@ -20,24 +20,24 @@ export const favouriteReducer = (state = initialFavouriteState, action) => {
                     favourite: [...state.favourite, action.payload]
                 };
             }
-            UpdateLocalStorage(newState, "favourite");
+            updateLocalStorage(newState, "favourite");
             return newState;
         }
         case ACTION_FAVOURITE.FETCH_FAVOURITE: {
             newState = { ...state, favourite: action.payload }
-            UpdateLocalStorage(newState, "favourite")
+            updateLocalStorage(newState, "favourite")
             return newState
         }
         case ACTION_FAVOURITE.DELETE_ITEM: {
             console.log(1234);
             const filter = state.favourite.filter(item => item.id !== action.payload);
             newState = { ...state, favourite: filter }
-            UpdateLocalStorage(newState, "favourite")
+            updateLocalStorage(newState, "favourite")
             return newState
         }
         case ACTION_FAVOURITE.REMOVE_FAVOURITE: {
             newState = { ...state, favourite: [] }
-            UpdateLocalStorage(newState, "favourite")
+            updateLocalStorage(newState, "favourite")
             return newState
         }
         default:

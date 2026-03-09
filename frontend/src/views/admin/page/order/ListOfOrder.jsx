@@ -4,13 +4,13 @@ import { Button, Flex, Form, Input, Select, Table, Tooltip, Typography } from 'a
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 // import { updateProduct } from '../../../../../services/product_service';
+import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../../constants/orderOptions';
 import convertToDate from '../../../../functions/convertDate';
 import { queryClient } from '../../../../main';
 import { editOrder, listOrder } from '../../../../services/order_service';
 import Notification from '../../../../utils/configToastify';
 import useDebounce from '../../../../utils/useDebounce';
 import './ListOfOrder.css';
-import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../../utils/options';
 
 
 

@@ -1,95 +1,95 @@
-import { useContext, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { ROLE } from '../enum/roleUser'
-import { UserContext } from '../store/user'
+import { useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ROLE } from "../constants/roles";
+import { UserContext } from "../store/user";
 
+// Maps each role to its allowed base path
+const ROLE_HOME_PATH = {
+    [ROLE.CUSTOMER]: "/client",
+    [ROLE.STAFF]: "/admin",
+    [ROLE.MANAGER]: "/admin",
+    [ROLE.ADMIN]: "/admin",
+};
+
+// Paths that require authentication (logged-in user)
+const AUTH_REQUIRED_PATHS = [
+    "/client/cart",
+    "/client/checkout",
+    "/client/checkout/confirm",
+    "/client/checkout/success",
+    "/client/user",
+];
+
+// Paths accessible without login
+const PUBLIC_PATHS = ["/client", "/register", "/forget-password", "/change-password", "/"];
+
+// Paths blocked per role (roles can access /admin base but not these sub-paths)
+const ROLE_BLOCKED_PATHS = {
+    [ROLE.STAFF]: [
+        "/admin/product",
+        "/admin/consignment",
+        "/admin/users",
+        "/admin/sales",
+        "/admin/category",
+        "/admin/banner",
+        "/admin/overview",
+    ],
+    [ROLE.ADMIN]: [
+        "/admin/product",
+        "/admin/consignment",
+        "/admin/sales",
+        "/admin/category",
+        "/admin/banner",
+        "/admin/overview",
+        "/admin/orders",
+        "/admin/customer-support",
+        "/admin/customers",
+    ],
+    [ROLE.MANAGER]: [
+        "/admin/customer-support",
+        "/admin/users",
+        "/admin/orders",
+        "/admin/customers",
+    ],
+};
 
 export const ProtectRoute = ({ children }) => {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { state } = useContext(UserContext)
-    const userRole = state?.currentUser?.role
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { state } = useContext(UserContext);
+    const { pathname } = location;
+    const user = state?.currentUser;
+    const role = user?.role;
+
     useEffect(() => {
-        if (!state.currentUser) {
-            if (location.pathname.includes("/client/cart")
-                || location.pathname.includes("/client/checkout")
-                || location.pathname.includes("/client/checkout/confirm")
-                || location.pathname.includes("/client/checkout/success")
-                || location.pathname.includes("/client/checkout/user")
-            ) {
-                navigate('/client', { replace: true })
+        // Not logged in
+        if (!user) {
+            const needsAuth = AUTH_REQUIRED_PATHS.some((p) => pathname.includes(p));
+            if (needsAuth) {
+                navigate("/client", { replace: true });
+                return;
             }
-            if (location.pathname.startsWith('/client')
-                || location.pathname.startsWith('/register')
-                || location.pathname.startsWith('/forget-password')
-                || location.pathname.startsWith('/change-password')
-                || location.pathname === '/') {
-                return
-            }
+            const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+            if (isPublic) return;
 
-            navigate('/', { replace: true })
+            navigate("/", { replace: true });
+            return;
         }
 
-        const isAllowed = location.pathname.startsWith(
-            state?.currentUser?.role === ROLE.CUSTOMER
-                ? '/client'
-                : [ROLE.ADMIN, ROLE.MANAGER, ROLE.STAFF].includes(state?.currentUser?.role) ? '/admin' : null
-        )
-
-        if (!isAllowed) {
-            let redirectPath;
-            switch (state?.currentUser?.role) {
-                case ROLE.ADMIN:
-                    redirectPath = '/admin'
-                    break
-                case ROLE.CUSTOMER:
-                    redirectPath = '/client'
-                    break
-                case ROLE.MANAGER:
-                    redirectPath = '/admin'
-                    break
-                case ROLE.STAFF:
-                    redirectPath = '/admin'
-                    break
-                default: redirectPath = '/'
-
-            }
-            navigate(redirectPath, { replace: true })
-        }
-        if (state?.currentUser?.role === ROLE.STAFF && (
-            location.pathname.startsWith('/admin/product') ||
-            location.pathname.startsWith('/admin/consignment') ||
-            location.pathname.startsWith('/admin/users') ||
-            location.pathname.startsWith('/admin/sales') ||
-            location.pathname.startsWith('/admin/category') ||
-            location.pathname.startsWith('/admin/banner') ||
-            location.pathname.startsWith('/admin/overview')
-        )) {
-            navigate('/admin', { replace: true });
+        // Logged in — ensure user is on their allowed base path
+        const homePath = ROLE_HOME_PATH[role];
+        if (homePath && !pathname.startsWith(homePath)) {
+            navigate(homePath, { replace: true });
+            return;
         }
 
-        if (state?.currentUser?.role === ROLE.ADMIN && (
-            location.pathname.startsWith('/admin/product') ||
-            location.pathname.startsWith('/admin/consignment') ||
-            location.pathname.startsWith('/admin/sales') ||
-            location.pathname.startsWith('/admin/category') ||
-            location.pathname.startsWith('/admin/banner') ||
-            location.pathname.startsWith('/admin/overview') ||
-            location.pathname.startsWith('/admin/orders') ||
-            location.pathname.startsWith('/admin/customer-support') ||
-            location.pathname.startsWith('/admin/customers')
-        )) {
-            navigate('/admin', { replace: true });
+        // Check role-specific blocked paths
+        const blocked = ROLE_BLOCKED_PATHS[role] ?? [];
+        const isBlocked = blocked.some((p) => pathname.startsWith(p));
+        if (isBlocked) {
+            navigate("/admin", { replace: true });
         }
-        if (state?.currentUser?.role === ROLE.MANAGER && (
-            location.pathname.startsWith('/admin/customer-support') ||
-            location.pathname.startsWith('/admin/users') ||
-            location.pathname.startsWith('/admin/orders') ||
-            location.pathname.startsWith('/admin/customers')
-        )) {
-            navigate('/admin', { replace: true });
-        }
-    }, [state?.currentUser, navigate, location.pathname])
+    }, [user, navigate, pathname, role]);
 
-    return children
-}
+    return children;
+};

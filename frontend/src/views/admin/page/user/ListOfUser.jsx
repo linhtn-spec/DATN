@@ -4,14 +4,14 @@ import { Button, Flex, Form, Input, Select, Switch, Table, Typography } from 'an
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 // import { updateProduct } from '../../../../../services/product_service';
-import { listUser, updateUser } from '../../../../services/user_service';
-import './ListOfUser.css';
-import useDebounce from '../../../../utils/useDebounce';
+import { ROLE } from '../../../../constants/roles';
 import { queryClient } from '../../../../main';
-import Notification from '../../../../utils/configToastify';
+import { listUser, updateUser } from '../../../../services/user_service';
 import { UserContext } from '../../../../store/user';
-import { ROLE } from '../../../../enum/roleUser';
+import Notification from '../../../../utils/configToastify';
 import { getLabelByValue } from '../../../../utils/getLabelByValue';
+import useDebounce from '../../../../utils/useDebounce';
+import './ListOfUser.css';
 
 
 

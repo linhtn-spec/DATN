@@ -1,11 +1,11 @@
 import { ShoppingOutlined } from "@ant-design/icons";
 import { Badge, Button, Flex, Typography } from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import "./../style/product_list.css";
 import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ACTION_CART, CartContext } from "../../../store/cart";
-import Notification from "../../../utils/configToastify";
 import { UserContext } from "../../../store/user";
+import Notification from "../../../utils/configToastify";
+import "./../style/product_list.css";
 
 function Product_List(props) {
   const product = props.products;
@@ -45,7 +45,7 @@ function Product_List(props) {
             })}
           </Typography.Text>}
 
-          <Typography.Text className="price" style={(!product?.pricePromotion ? { textDecoration: "none", color: "black", fontSize: "16px", fontWeight: 500, color: "red" } : {})}>
+          <Typography.Text className="price" style={(!product?.pricePromotion ? { textDecoration: "none", fontSize: "16px", fontWeight: 500, color: "red" } : {})}>
             {product?.price.toLocaleString('en-US', {
               style: 'currency',
               currency: 'USD', // Adjust currency code as needed

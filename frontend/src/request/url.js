@@ -22,7 +22,7 @@ const URL = {
         LOGIN: 'login',
         REGISTER: 'register',
         DELETE: "users/delete/",
-        DETAIL: "uses/detail/",
+        DETAIL: "users/detail/",
         UPDATE: "users/update/",
         GET_ME: 'user',
         REFRESH_ACCESS_TOKEN: 'refresh_access_token',

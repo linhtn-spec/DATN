@@ -15,9 +15,9 @@ import {
 import { Flex, Layout, Menu } from 'antd';
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import "./../style/navbar.css";
+import { ROLE } from '../../../constants/roles';
 import { UserContext } from '../../../store/user';
-import { ROLE } from '../../../enum/roleUser';
+import "./../style/navbar.css";
 
 function getItem(label, key, icon, children, type) {
     return {

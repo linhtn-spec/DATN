@@ -1,7 +1,7 @@
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Breadcrumb, Button, Divider, Flex, Typography } from 'antd'
 import { NavLink } from 'react-router-dom'
 import '../style/DetailBlog.css'
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 
 
 export const DetailBlog = () => {
@@ -17,7 +17,7 @@ export const DetailBlog = () => {
             </Breadcrumb>
             <Flex className="content" vertical>
                 <Typography.Title>OVERVIEW OF THE WELCOME EVENT FROM THE WASHINGTON STATE DEPARTMENT OF AGRICULTURE</Typography.Title>
-                <Typography.Text>10, March, 2024</Typography.Text>
+                <Typography.Text>10, March, 2026</Typography.Text>
                 <Typography.Paragraph>
                     Ngày 9/4 vừa qua Klever Fruit đã có vinh dự được tiếp đón Bộ nông nghiệp Bang Washington (Mỹ) và trao đổi về phương hướng hợp tác kinh doanh trong tương lai.
 

@@ -19,11 +19,11 @@ import TextArea from "antd/es/input/TextArea";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import { orderStatusOptions, paymentMethodOptions, paymentStatusOptions, shippingMethodOptions, shippingStatusOptions } from "../../../../constants/orderOptions";
 import convertToDate from "../../../../functions/convertDate";
 import { queryClient } from '../../../../main';
 import { detailOrder, editOrder } from "../../../../services/order_service";
 import Notification from '../../../../utils/configToastify';
-import { orderStatusOptions, paymentMethodOptions, paymentStatusOptions, shippingMethodOptions, shippingStatusOptions } from "../../../../utils/options";
 import './DetailOrder.css';
 
 const formItemLayout = {

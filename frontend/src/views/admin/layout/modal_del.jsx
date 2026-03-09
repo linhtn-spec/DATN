@@ -1,16 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { Button, Flex, Modal } from 'antd';
 import { useContext } from 'react';
+import { TypeDeleteAdmin } from '../../../constants/deleteTypes';
 import { queryClient } from '../../../main';
+import { deleteBannerList, deleteBannerOne } from '../../../services/banner_service';
 import { deleteCategoryList, deleteCategoryOne } from '../../../services/category_service';
+import { deleteProductList, deleteProductOne } from '../../../services/product_service';
+import { deleteSale } from '../../../services/sale_service';
 import { ACTION_MODAL } from '../../../store/modal';
 import { ModalContext } from '../../../store/modal/provider';
 import Notification from '../../../utils/configToastify';
-import { TypeDeleteAdmin } from '../../../utils/enum';
 import '../style/modal_del.css';
-import { deleteBannerList, deleteBannerOne } from '../../../services/banner_service';
-import { deleteSale } from '../../../services/sale_service';
-import { deleteProductList, deleteProductOne } from '../../../services/product_service';
 function DeleteModal(props) {
     const id = props.id_del;
     const type = props.type_del;

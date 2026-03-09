@@ -6,11 +6,11 @@ import { useNavigate, useParams } from 'react-router';
 // import { updateProduct } from '../../../../../services/product_service';
 
 
+import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../../../constants/orderOptions';
 import convertToDate from '../../../../../functions/convertDate';
 import { queryClient } from '../../../../../main';
 import { editOrder, orderByUserPaginate } from '../../../../../services/order_service';
 import Notification from '../../../../../utils/configToastify';
-import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../../../utils/options';
 import useDebounce from '../../../../../utils/useDebounce';
 import './ListOfOrderCustomer.css';
 

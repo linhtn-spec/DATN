@@ -5,13 +5,13 @@ function Copyright() {
         <div className="wrap-copyright">
             <div className="copyright container">
                 <div>
-                    © 2024  S-Cart : An organic fruits store.  All rights reserved
+                    © 2026  S-Cart : An organic fruits store.  All rights reserved
                 </div>
                 <div>
-                    Powered by Anh Nguyen
+                    Powered by Thai Linh
                 </div>
                 <div>
-                    <a href="https://github.com/Cr4zY9uy/DATN/" target="blank" >Link Github</a>
+                    <a href="https://github.com/onlyu66/DATN" target="blank" >Link Github</a>
                 </div>
             </div>
         </div>

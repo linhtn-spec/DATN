@@ -87,9 +87,6 @@ export const register = async (req, res) => {
         if (checkEmail) {
             return res.status(400).json({ message: "Email existed" });
         }
-        const salt = await bcrypt.genSalt(12);
-        const hashed = await bcrypt.hash(data.password, salt)
-        data.password = hashed;
         const user = await user_model.create(data);
         if (user) {
             const dataForRefreshToken = {
@@ -328,9 +325,7 @@ export const resetPassword = async (req, res) => {
     try {
         const { username, user_id } = jwt.verify(token, refreshTokenSecret)
         if (user_id) {
-            const salt = await bcrypt.genSalt(12);
-            const hashed = await bcrypt.hash(password, salt)
-            const data = await user_model.findOneAndUpdate({ _id: user_id, username: username }, { password: hashed }, { new: true })
+            const data = await user_model.findOneAndUpdate({ _id: user_id, username: username }, { password: password }, { new: true })
             if (data) {
                 return res.status(200).json({ message: "Reset password successfully" });
             }
@@ -371,9 +366,7 @@ export const resetPasswordCurrentUser = async (req, res) => {
         if (!verify) {
             return res.status(404).json({ message: "Current password not true" });
         }
-        const salt = await bcrypt.genSalt(12);
-        const hashed = await bcrypt.hash(data.new_password, salt)
-        const updatedUser = await user_model.findOneAndUpdate({ _id: currentUser._id }, { password: hashed }, { new: true })
+        const updatedUser = await user_model.findOneAndUpdate({ _id: currentUser._id }, { password: data.new_password }, { new: true })
         if (updatedUser) {
             return res.status(200).json({ message: "Reset password successfully" });
         }

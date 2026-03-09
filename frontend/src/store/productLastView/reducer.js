@@ -1,4 +1,4 @@
-import { UpdateLocalStorage } from "../../utils/updateLocalStorage";
+import { updateLocalStorage } from "../../utils/updateLocalStorage";
 import { ACTION_PRODUCT_LASTVIEW } from "./action";
 
 const initialLastViewProductState = {
@@ -28,7 +28,7 @@ export const productLastViewReducer = (state = initialLastViewProductState, acti
 
             }
 
-            UpdateLocalStorage(newState, "lastViewProduct");
+            updateLocalStorage(newState, "lastViewProduct");
             return newState;
         }
         default:
