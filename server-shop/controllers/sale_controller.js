@@ -36,47 +36,37 @@ export const updateSale = async (req, res) => {
         const findSale = await sale_model.findById(saleId)
         if (!findSale) return res.status(404).json({ message: "Sale not existed." });
 
-        const existingProductsInSale = data.products ? findSale.products.filter(item => !products.some(p => p.productId === item.productId)) : [];
+        const oldProductIds = findSale.products.map(p => p.productId.toString());
+        const newProductIds = products ? products.map(p => p.productId.toString()) : oldProductIds;
 
-        if (existingProductsInSale.length !== 0) {
-            await Promise.all(existingProductsInSale.map(async item => {
-                await product_model.findByIdAndUpdate(item.productId, { $pull: { saleId: saleId } });
-            }));
+        // Products removed from sale
+        const removedProducts = oldProductIds.filter(id => !newProductIds.includes(id));
+        // Products added to sale
+        const addedProducts = newProductIds.filter(id => !oldProductIds.includes(id));
 
-            // Tìm các sản phẩm trong products của sale mà đã có saleId
-            const existingProducts = await Promise.all(products.map(async item => {
-                const product = await product_model.findById(item?.productId);
-                if (product.saleId.includes(saleId)) {
-                    return item.productId;
-                }
-            }));
-
-            // Lọc ra các sản phẩm không có trong danh sách existingProducts
-            const filteredProducts = products.filter(item => !existingProducts.includes(item.productId));
-
-            if (filteredProducts.length === 0) {
-                return res.status(200).json({ message: "All products already have saleId." });
-            }
-
-            const productPromises = filteredProducts.map(async item => {
-                return await product_model.findById(item?.productId);
-            });
-            const productResults = await Promise.all(productPromises);
-            const nonExistentProducts = productResults.some(result => !result);
-            if (nonExistentProducts) {
-                return res.status(404).json({ message: "One or more products not existed." });
-
-            }
-            await Promise.all(filteredProducts.map(async item => {
-                await product_model.findByIdAndUpdate(item?.productId, { $push: { saleId: saleId } });
-            }));
-            const updateResult = await sale_model.findByIdAndUpdate(saleId, data, { new: true });
-            if (!updateResult) return res.status(404).json({ message: "Update sale unsuccessful!" })
-            return res.status(200).json(updateResult);
+        if (removedProducts.length > 0) {
+            await product_model.updateMany(
+                { _id: { $in: removedProducts } },
+                { $pull: { saleId: saleId } }
+            );
         }
-        const updateResultStatus = await sale_model.findByIdAndUpdate(saleId, data, { new: true });
-        if (!updateResultStatus) return res.status(404).json({ message: "Update sale unsuccessful!" })
-        return res.status(200).json(updateResultStatus);
+
+        if (addedProducts.length > 0) {
+            // Verify if products exist
+            const existingProducts = await product_model.find({ _id: { $in: addedProducts } });
+            if (existingProducts.length !== addedProducts.length) {
+                return res.status(404).json({ message: "One or more products not existed." });
+            }
+
+            await product_model.updateMany(
+                { _id: { $in: addedProducts } },
+                { $push: { saleId: saleId } }
+            );
+        }
+
+        const updateResult = await sale_model.findByIdAndUpdate(saleId, data, { new: true });
+        if (!updateResult) return res.status(404).json({ message: "Update sale unsuccessful!" })
+        return res.status(200).json(updateResult);
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }

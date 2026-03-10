@@ -28,7 +28,7 @@ function Product_Hot(props) {
     return (
         <Flex className='item' key={product?.id} vertical>
             <Link to={`/client/product/${product?.id}`} style={{ backgroundColor: "white" }}>
-                <Badge.Ribbon text={`-${product.sale * 100}%`} color="red" placement="start">
+                <Badge.Ribbon text={`-${product.sale}%`} color="red" placement="start">
                     <img src={product?.image} loading="lazy" />
                 </Badge.Ribbon>
             </Link>
@@ -37,7 +37,7 @@ function Product_Hot(props) {
                 <Typography.Title level={4} className="title">{product?.name}</Typography.Title >
                 <Typography.Text className="price_promo">
                     <Typography.Text className="promotion">
-                        {parseFloat(product?.price * (1 - parseFloat(product?.sale))).toLocaleString('en-US', {
+                        {parseFloat(product?.price * (1 - parseFloat(product?.sale) / 100)).toLocaleString('en-US', {
                             style: 'currency',
                             currency: 'USD', // Adjust currency code as needed
                             minimumFractionDigits: 0, // Set minimum decimal places to 0

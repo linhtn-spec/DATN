@@ -11,7 +11,7 @@ import RecommendedProduct from "../layout/RecommendedProduct";
 import { ACTION_USER, UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
 import { LogContext } from "../../../store/typeLog/provider";
-import { lastestlSale, listSale } from "../../../services/sale_service";
+import { latestSale, listSale } from "../../../services/sale_service";
 import dayjs from "dayjs";
 
 function Home() {
@@ -30,7 +30,7 @@ function Home() {
 
     const querySale = useQuery({
         queryKey: ['sale_products_lastest'],
-        queryFn: () => lastestlSale()
+        queryFn: () => latestSale()
     })
 
 

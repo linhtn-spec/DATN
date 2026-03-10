@@ -37,7 +37,7 @@ function Product_List(props) {
         <Typography.Title level={4} className="title">{product?.name}</Typography.Title >
         <Typography.Text className="price_promo">
           {product?.pricePromotion !== 0 && <Typography.Text className="promotion">
-            {parseFloat(product?.price * (1 - parseFloat(product?.pricePromotion))).toLocaleString('en-US', {
+            {parseFloat(product?.price * (1 - parseFloat(product?.pricePromotion) / 100)).toLocaleString('en-US', {
               style: 'currency',
               currency: 'USD', // Adjust currency code as needed
               minimumFractionDigits: 0, // Set minimum decimal places to 0

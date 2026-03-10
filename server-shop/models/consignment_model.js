@@ -31,7 +31,7 @@ const consignment_schema = new mongoose.Schema(
             }],
         money: {
             type: Number,
-            requiredd: true,
+            required: true,
             min: 1
         },
         importDate: {

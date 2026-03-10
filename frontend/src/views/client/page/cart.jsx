@@ -47,7 +47,7 @@ function Cart() {
             no: index + 1,
             id: item?.id,
             name: item?.name,
-            price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion)) : item?.price,
+            price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
             quantityBuy: item?.quantityBuy,
             image: item?.images && item?.images.length > 0 ? item?.images : item?.image,
             maxQuantity: item?.quantity

@@ -15,4 +15,4 @@ export const updateSale = ({ id, ...data }) => api.put(URL.SALE.CRUD + `/${id}`,
 
 export const deleteSale = (id) => api.delete(URL.SALE.CRUD + `/${id}`)
 
-export const lastestlSale = () => api.get(URL.SALE.LASTEST)
+export const latestSale = () => api.get(URL.SALE.LASTEST)

@@ -68,7 +68,7 @@ function CheckoutConfirm() {
                 ...order?.state?.currentOrder,
                 products: cart?.state?.currentCart.map(item => ({
                     productId: item?.id,
-                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion)) : item?.price),
+                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price),
                     quantity: item?.quantityBuy
                 })),
                 userId: user?.state?.currentUser?.user_id,
@@ -82,7 +82,7 @@ function CheckoutConfirm() {
                 ...order?.state?.currentOrder,
                 products: cart?.state?.currentCart.map(item => ({
                     productId: item?.id,
-                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion)) : item?.price),
+                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price),
                     quantity: item?.quantityBuy
                 })),
                 userId: user?.state?.currentUser?.user_id,
@@ -100,7 +100,7 @@ function CheckoutConfirm() {
     useEffect(() => {
         setProducts(cart?.state?.currentCart?.map(item => ({
             name: item?.name,
-            price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion)) : item?.price,
+            price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
             quantity: item?.quantityBuy
         })))
 

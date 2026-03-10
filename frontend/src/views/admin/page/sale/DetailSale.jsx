@@ -58,7 +58,7 @@ export function DetailSale() {
         mutationFn: (data) => condition ? updateSale(data) : addSale(data),
         onSuccess: () => {
             Notification({ message: `${condition ? "Update" : "Create"} sale  successfully!`, type: "success" })
-            queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
+            queryClient.invalidateQueries({ queryKey: ['sales_admin_list'] })
             navigate(`/admin/sales`, { replace: true })
         },
         onError: () => {
@@ -210,13 +210,13 @@ export function DetailSale() {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please input price promotion"
+                                                        message: "Please input price promotion (0-100)"
                                                     },
                                                 ]}
                                                 style={{ marginBottom: 0, width: "20%" }}
 
                                             >
-                                                <InputNumber min={0} max={1} placeholder="Price promotion" step={0.1} />
+                                                <InputNumber min={0} max={100} placeholder="Price promotion (0-100)" step={1} />
                                             </Form.Item>
                                             <Flex style={{ width: "10%", marginLeft: "70px" }}>
                                                 <MinusCircleOutlined style={{ color: 'red' }} onClick={() => remove(field.name)} />

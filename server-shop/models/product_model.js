@@ -4,7 +4,7 @@ import moongosePaginate from 'mongoose-paginate-v2'
 const product_schema = new mongoose.Schema({
     name: {
         type: String,
-        requiredd: true,
+        required: true,
         min: 3,
         max: 50,
         trim: true
@@ -29,7 +29,7 @@ const product_schema = new mongoose.Schema({
     price: {
         type: Number,
         min: 1,
-        requiredd: true
+        required: true
     },
     quantity: {
         sold: {
@@ -51,11 +51,11 @@ const product_schema = new mongoose.Schema({
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
-        requiredd: true,
+        required: true,
     },
     images: [{
         type: String,
-        requiredd: true
+        required: true
     }],
     isActive: {
         type: Boolean,

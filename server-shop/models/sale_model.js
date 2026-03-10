@@ -12,7 +12,7 @@ const sale_schema = new mongoose.Schema({
             pricePromotion: {
                 type: Number,
                 min: 0,
-                max: 1,
+                max: 100,
                 required: true
             }
         }

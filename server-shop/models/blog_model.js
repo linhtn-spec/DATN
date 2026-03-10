@@ -32,7 +32,7 @@ const blog_schema = new mongoose.Schema({
     },
     content: {
         type: String,
-        requiredd: true,
+        required: true,
         trim: true,
         min: 20,
     },

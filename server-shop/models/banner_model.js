@@ -12,7 +12,7 @@ const banner_schema = new mongoose.Schema({
     },
     description: {
         type: String,
-        requiredd: true,
+        required: true,
         trim: true,
         min: 6,
         max: 300

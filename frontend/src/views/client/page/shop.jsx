@@ -263,7 +263,7 @@ function Shop() {
                                             <Typography.Text className="discount">
                                                 {item?.pricePromotion ? (
                                                     <>
-                                                        {parseFloat(item?.price * (1 - parseFloat(item?.pricePromotion))).toLocaleString('en-US', {
+                                                        {parseFloat(item?.price * (1 - parseFloat(item?.pricePromotion) / 100)).toLocaleString('en-US', {
                                                             style: 'currency',
                                                             currency: 'USD', // Adjust currency code as needed
                                                             minimumFractionDigits: 0, // Set minimum decimal places to 0
