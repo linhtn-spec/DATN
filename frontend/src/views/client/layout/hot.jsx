@@ -14,8 +14,8 @@ function Hot(props) {
             <Flex vertical>
                 <Tooltip>  <Typography.Text level={4} ellipsis={true}>{product.title}</Typography.Text></Tooltip>
                 <h5>
-                    {Math.floor(product.price * (1 - parseFloat(product.price_promotion)))}$
-                    {product.price_promotion === 0 ? "" : <span className="discount">{`${product.price}$`}</span>}
+                    ${Math.floor(product.price * (1 - parseFloat(product.price_promotion)))}
+                    {product.price_promotion === 0 ? "" : <span className="discount">${product.price}</span>}
                 </h5>
             </Flex>
         </Flex>

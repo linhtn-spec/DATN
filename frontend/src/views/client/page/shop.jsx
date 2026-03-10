@@ -268,7 +268,7 @@ function Shop() {
                                                             currency: 'USD', // Adjust currency code as needed
                                                             minimumFractionDigits: 0, // Set minimum decimal places to 0
                                                             maximumFractionDigits: 0,  // Adjust currency code as needed
-                                                        })}<span className="price">{item?.price}$</span>
+                                                        })}<span className="price">${item?.price}</span>
                                                     </>
                                                 ) : (
                                                     `$${item?.price}`

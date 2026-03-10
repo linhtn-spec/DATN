@@ -150,7 +150,7 @@ function CheckoutConfirm() {
             title: 'Subtotal',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            render: (text, row) => <p>{row.price * row.quantity}$</p>
+            render: (text, row) => <p>${Number(row.price * row.quantity).toLocaleString('en-US')}</p>
         },
 
     ];
@@ -165,14 +165,14 @@ function CheckoutConfirm() {
         {
             key: '2',
             label: 'Tax',
-            children: <Typography.Text>{(subTotal * 0.09).toFixed(2)}$</Typography.Text>,
+            children: <Typography.Text>${(subTotal * 0.09).toFixed(2)}</Typography.Text>,
             span: 3
 
         },
         {
             key: '3',
             label: 'Total',
-            children: <Typography.Text>{(subTotal * 1.09).toFixed(2)}$</Typography.Text>,
+            children: <Typography.Text>${(subTotal * 1.09).toFixed(2)}</Typography.Text>,
             span: 3
 
         }

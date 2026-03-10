@@ -4,7 +4,8 @@ const URL = {
         OPTIONS: 'product/options/all',
         RECOMMEND: 'product/recommend',
         MAY_LIKE: 'product/may_like/test',
-        SEARCH: '/search'
+        SEARCH: 'search',
+        SUGGEST: 'suggest'
     },
     CATEGORY: {
         CRUD: 'category',

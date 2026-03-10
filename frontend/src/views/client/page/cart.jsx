@@ -97,7 +97,7 @@ function Cart() {
             dataIndex: 'price',
             key: 'adpricedress',
             width: "150px",
-            render: (text) => <Typography.Text>{text}$</Typography.Text>
+            render: (text) => <Typography.Text>${text}</Typography.Text>
 
         },
         {
@@ -124,7 +124,7 @@ function Cart() {
             dataIndex: 'subtotal',
             key: 'subtotal',
             width: "250px",
-            render: (text, row) => <Typography.Text>{row.price * row.quantityBuy}$</Typography.Text>
+            render: (text, row) => <Typography.Text>${Number(row.price * row.quantityBuy).toLocaleString('en-US')}</Typography.Text>
         },
         {
             title: 'Action',

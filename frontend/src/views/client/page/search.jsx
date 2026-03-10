@@ -16,7 +16,7 @@ function Search() {
 
     const { data, isSuccess } = useQuery({
         queryKey: ['search_product', keyword, page],
-        queryFn: () => searchProduct(searchInput, page)
+        queryFn: () => searchProduct(keyword, page)
     })
 
 

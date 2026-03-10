@@ -4,6 +4,8 @@ import useDebounce from "../functions/useDebounce";
 import { useEffect, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import { suggestProduct } from "../../../services/product_service";
 function Modal_Search(props) {
     const { Option } = Select;
     const [searchOption, setSearchOption] = useState("name");
@@ -23,7 +25,24 @@ function Modal_Search(props) {
             })}`
         });
     }
-    const inputSearch = useDebounce(searchInput, 2000);
+    const inputSearch = useDebounce(searchInput, 500);
+
+    const { data: suggestions } = useQuery({
+        queryKey: ['suggest_product', inputSearch],
+        queryFn: () => suggestProduct(inputSearch),
+        enabled: inputSearch.length > 0
+    });
+
+    const handleSuggestionClick = (name) => {
+        props.onClose();
+        navigate({
+            pathname: "search",
+            search: `?${createSearchParams({
+                keyword: name
+            })}`
+        });
+    }
+
     useEffect(() => {
         console.log(inputSearch);
         console.log(searchOption);
@@ -42,7 +61,28 @@ function Modal_Search(props) {
                     }
                     }
                     autoFocus
+                    placeholder="Search for products..."
                 />
+                <div className="suggestions_list">
+                    {suggestions?.data?.map((item) => (
+                        <div 
+                            key={item.id} 
+                            className="suggestion_item"
+                            onClick={() => handleSuggestionClick(item.name)}
+                        >
+                            {item.image && (
+                                <img src={item.image} alt={item.name} className="suggestion_img" />
+                            )}
+                            <div className="suggestion_info">
+                                <span className="suggestion_name">{item.name}</span>
+                                <span className="suggestion_meta">
+                                    ${item.price?.toLocaleString('en-US')}
+                                    {item.origin ? ` · ${item.origin}` : ''}
+                                </span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

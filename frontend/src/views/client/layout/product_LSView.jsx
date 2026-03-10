@@ -67,7 +67,7 @@ function Product_LSView(props) {
                 <Typography.Title className="title" level={4} ellipsis={true} style={{ maxWidth: "70%" }}>{product.name}</Typography.Title>
                 <p>
                     {product?.pricePromotion !== 0 && <>{product?.price * (1 - parseFloat(product?.pricePromotion) / 100)}$</>}
-                    {product.pricePromotion !== 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "20px", textDecoration: "none", paddingLeft: 0 } : {})}>{`${product.price}$`}</span>}
+                    {product.pricePromotion !== 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "20px", textDecoration: "none", paddingLeft: 0 } : {})}>{`$${product.price}`}</span>}
                 </p>
             </Flex>
             <Flex className="button_group" justify="space-evenly">

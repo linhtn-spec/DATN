@@ -15,7 +15,7 @@
   "dependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
-    "@elastic/elasticsearch": "^8.12.2",
+    "@elastic/elasticsearch": "^7.13.0",
     "@jest/globals": "^29.7.0",
     "@paypal/paypal-js": "^8.0.4",
     "babel-jest": "^29.7.0",

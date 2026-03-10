@@ -328,7 +328,7 @@ function ProductDetail() {
                                             <Flex gap={30}>
                                                 <Typography.Title level={3}>
                                                     {product?.pricePromotion !== 0 && <>{product?.price * (1 - parseFloat(product?.pricePromotion) / 100)}$</>}
-                                                    {product?.price === 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "24px", textDecoration: "none" } : {})}>{`${product?.price}$`}</span>}
+                                                    {product?.price === 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "24px", textDecoration: "none" } : {})}>{`$${product?.price}`}</span>}
                                                 </Typography.Title>
                                                 <Button shape="circle" className="fav" onClick={() => addToFavourite()}><HeartOutlined /></Button>
                                             </Flex>

@@ -3,21 +3,31 @@
     height: 100vh;
     z-index: 10000;
     position: fixed;
-    background-color: #d9a1a3;
-    opacity: 0.8;
+    /* Use rgba directly so child elements are NOT affected by opacity */
+    background-color: rgba(30, 20, 35, 0.88);
 }
 
 .modal_search .close_btn {
     width: 35px;
     height: 35px;
-    border: 0.2rem solid white;
+    border: 1px solid rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    line-height: 20px;
+    line-height: 1;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+    cursor: pointer;
 }
 
-
 .modal_search .close_btn:hover {
-    color: rgb(114, 114, 114);
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: white;
+    color: #f5c2c5;
+    transform: scale(1.1);
 }
 
 .modal_search .wrap_close {
@@ -31,11 +41,74 @@
 
 .modal_search .wrap_query {
     width: 100%;
-    height: 30%;
+    height: auto;
+    min-height: 30%;
     display: flex;
-    align-items: end;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
+
+/* Suggestions list - solid dark card so text is always crisp */
+.modal_search .suggestions_list {
+    width: 70%;
+    max-height: 360px;
+    overflow-y: auto;
+    margin-top: 12px;
+    background-color: #1e1225;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.modal_search .suggestion_item {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: background-color 0.18s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.modal_search .suggestion_item:hover {
+    background-color: rgba(217, 161, 163, 0.25);
+    /* matches brand color */
+}
+
+.modal_search .suggestion_item:last-child {
+    border-bottom: none;
+}
+
+.modal_search .suggestion_img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.modal_search .suggestion_info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal_search .suggestion_name {
+    font-size: 15px;
+    color: #f5f0ff;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.modal_search .suggestion_meta {
+    font-size: 13px;
+    color: #d9a1a3;
+    /* brand accent color - readable + on-theme */
+    font-weight: 400;
+}
+
 
 .modal_search .wrap_query .ant-select-selector {
     border: none;
