@@ -43,33 +43,36 @@ export const Countdown = (props) => {
     }, [props.expires])
 
     return (
-        <>
-            <Flex className="wrap_countdown" align="center">
-                <img src="https://theme.hstatic.net/200000528965/1001037678/14/home_collection_1_title_ico.png?v=473" />
-                <Typography.Title level={1} style={{ margin: 0, textTransform: 'uppercase', fontSize: '24px' }}>flash sale</Typography.Title>
-                <div className="countdown">
-                    <article>
-                        <div>{days}
-                            <h3>Days</h3>
-                        </div>
-                    </article>
-                    <article>
-                        <div>{hours}
-                            <h3>Hours</h3>
-                        </div>
-                    </article>
-                    <article>
-                        <div>{minutes}
-                            <h3>Minutes</h3>
-                        </div>
-                    </article>
-                    <article>
-                        <div>{seconds}
-                            <h3>Seconds</h3>
-                        </div>
-                    </article>
+        <div className="flash-sale-container">
+            <Flex className="flash-sale-header" align="center" gap={12}>
+                <img 
+                    src="https://theme.hstatic.net/200000528965/1001037678/14/home_collection_1_title_ico.png?v=473" 
+                    alt="flash sale icon"
+                />
+                <Typography.Title level={2} className="flash-sale-title">Flash Sale</Typography.Title>
+                
+                <div className="countdown-wrapper">
+                    <div className="countdown-item">
+                        <span className="countdown-value">{days}</span>
+                        <span className="countdown-label">Days</span>
+                    </div>
+                    <span className="countdown-separator">:</span>
+                    <div className="countdown-item">
+                        <span className="countdown-value">{hours}</span>
+                        <span className="countdown-label">Hours</span>
+                    </div>
+                    <span className="countdown-separator">:</span>
+                    <div className="countdown-item">
+                        <span className="countdown-value">{minutes}</span>
+                        <span className="countdown-label">Mins</span>
+                    </div>
+                    <span className="countdown-separator">:</span>
+                    <div className="countdown-item">
+                        <span className="countdown-value">{seconds}</span>
+                        <span className="countdown-label">Secs</span>
+                    </div>
                 </div>
             </Flex>
-        </>
+        </div>
     )
 }
