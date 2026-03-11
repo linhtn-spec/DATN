@@ -22,20 +22,21 @@ export const sync_cart = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     const { products } = req.body; // Array of { productId, quantity }
 
+    // Get existing cart
     let cart = await cart_model.findOne({ userId });
-    
-    if (!cart) {
-        cart = await cart_model.create({ userId, products: [] });
-    }
 
     let dbProductsMap = new Map();
-    cart.products.forEach(p => {
-        dbProductsMap.set(p.productId.toString(), p.quantity);
-    });
+    if (cart) {
+        cart.products.forEach(p => {
+            dbProductsMap.set(p.productId.toString(), p.quantity);
+        });
+    }
 
     if (products && Array.isArray(products)) {
         for (let p of products) {
-            dbProductsMap.set(p.productId.toString(), p.quantity); 
+            if (p.productId && p.quantity > 0) {
+                dbProductsMap.set(p.productId.toString(), p.quantity);
+            }
         }
     }
 
@@ -44,10 +45,12 @@ export const sync_cart = asyncHandler(async (req, res) => {
         mergedProducts.push({ productId, quantity });
     }
 
-    cart.products = mergedProducts;
-    await cart.save();
-
-    const updatedCart = await cart_model.findOne({ userId }).populate({
+    // Use findOneAndUpdate with upsert to avoid VersionError
+    const updatedCart = await cart_model.findOneAndUpdate(
+        { userId },
+        { $set: { products: mergedProducts } },
+        { new: true, upsert: true }
+    ).populate({
         path: "products.productId",
         model: "Product",
         select: 'name price quantity origin images pricePromotion'

@@ -305,32 +305,56 @@ export const product_by_category = async (req, res) => {
 
 export const product_may_like = async (req, res) => {
     const productId = req?.query?.id
+    const hasProductId = productId && productId.trim() !== '';
     try {
-        if (productId) {
+        if (hasProductId) {
             const toCategory = await product_model.findById(productId)
+            if (!toCategory) {
+                return res.status(404).json({ message: "Product not found" });
+            }
 
             const dataToCategory = await product_model.find({
-                categoryId: toCategory.categoryId
-            })
-            const data = await product_model.find({
-                'quantity.sold': { $gt: 0 }
+                categoryId: toCategory.categoryId,
+                _id: { $ne: productId },
+                isActive: true
+            }).limit(10);
+
+            const topSold = await product_model.find({
+                'quantity.sold': { $gt: 0 },
+                isActive: true,
+                _id: { $ne: productId }
             }).populate('saleId').sort({
-                'quantity.sold': - 1
-            })
-            return res.status(200).json({ ...data, ...dataToCategory })
+                'quantity.sold': -1
+            }).limit(10);
+
+            // Merge and deduplicate
+            const combined = [...dataToCategory, ...topSold];
+            const uniqueData = Array.from(new Map(combined.map(item => [item._id.toString(), item])).values());
+            
+            return res.status(200).json({ data: uniqueData });
         }
         else {
-            const data = await product_model.find({
-                'quantity.sold': { $gt: 0 }
+            // Home page recommendations: Top sold + Newest if needed
+            let data = await product_model.find({
+                'quantity.sold': { $gt: 0 },
+                isActive: true
             }).populate('saleId').sort({
-                'quantity.sold': - 1
-            })
+                'quantity.sold': -1
+            }).limit(5);
+
+            if (data.length < 5) {
+                const existing = data.map(i => i._id);
+                const recent = await product_model.find({
+                    _id: { $nin: existing },
+                    isActive: true
+                }).sort({ createdAt: -1 }).limit(5 - data.length);
+                data = [...data, ...recent];
+            }
+
             return res.status(200).json({ data })
         }
 
     } catch (error) {
         return res.status(500).json({ message: error.message });
-
     }
 }
-
