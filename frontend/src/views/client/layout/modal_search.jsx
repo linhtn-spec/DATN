@@ -1,11 +1,11 @@
-import "../style/modal_search.css"
-import { Flex, Select } from "antd";
-import useDebounce from "../functions/useDebounce";
-import { useEffect, useState } from "react";
-import { useNavigate, createSearchParams } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
+import { Select } from "antd";
+import { useEffect, useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { suggestProduct } from "../../../services/product_service";
+import useDebounce from "../functions/useDebounce";
+import "../style/modal_search.css";
 function Modal_Search(props) {
     const { Option } = Select;
     const [searchOption, setSearchOption] = useState("name");
@@ -65,8 +65,8 @@ function Modal_Search(props) {
                 />
                 <div className="suggestions_list">
                     {suggestions?.data?.map((item) => (
-                        <div 
-                            key={item.id} 
+                        <div
+                            key={item.id}
                             className="suggestion_item"
                             onClick={() => handleSuggestionClick(item.name)}
                         >
@@ -76,7 +76,7 @@ function Modal_Search(props) {
                             <div className="suggestion_info">
                                 <span className="suggestion_name">{item.name}</span>
                                 <span className="suggestion_meta">
-                                    ${item.price?.toLocaleString('en-US')}
+                                    ${item.price}
                                     {item.origin ? ` · ${item.origin}` : ''}
                                 </span>
                             </div>

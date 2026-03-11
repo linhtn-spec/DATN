@@ -343,15 +343,15 @@ function ProductDetail() {
 
                                             <Flex vertical gap={8} style={{ height: "30vh" }}>
                                                 <Flex className='form-group' gap={7}>
-                                                    <Input value={quantity < product?.quantity ? quantity : product?.quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
+                                                    <Input disabled={product?.quantity === 0} value={quantity < product?.quantity ? quantity : product?.quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
                                                         if (e.target.value > 0)
                                                             setQuantity(e.target.value)
                                                     }} />
                                                     <Flex vertical justify="space-between">
-                                                        <Button variant="light" onClick={plus} style={{ height: "45%" }}>
+                                                        <Button variant="light" onClick={plus} style={{ height: "45%" }} disabled={product?.quantity === 0}>
                                                             <PlusOutlined />
                                                         </Button>
-                                                        <Button variant="light" onClick={minus} style={{ height: "45%" }}>
+                                                        <Button variant="light" onClick={minus} style={{ height: "45%" }} disabled={product?.quantity === 0}>
                                                             <MinusOutlined />
                                                         </Button >
                                                     </Flex>

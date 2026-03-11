@@ -45,11 +45,14 @@
 .cart_page .wrap_btn button {
     text-transform: uppercase;
     width: 200px;
-    height: 80px;
-    font-size: 20px;
-    font-weight: 400;
-    background-color: #922a8d;
+    height: 60px;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #922a8d !important;
     color: white;
+    border-radius: 8px;
+    border: 2px solid #922a8d !important;
+    transition: all 0.3s ease;
 }
 
 .cart_page .delete button {
@@ -61,10 +64,16 @@
     color: red !important;
 }
 
-.cart_page .wrap_btn button:hover {
+.cart_page .wrap_btn button:hover:not([disabled]) {
     background-color: white !important;
-    color: #808080 !important;
-    border: 0.01em solid grey !important;
+    color: #922a8d !important;
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2) !important;
+    transform: translateY(-2px);
+}
+
+.cart_page .wrap_btn button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .cart_page .wrap_btn {
@@ -79,9 +88,23 @@
 }
 
 .cart_page thead {
-    background-color: #eaebec;
+    background-color: #f9f9f9;
 }
 
 .cart_page thead tr th {
     background-color: inherit;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.cart_page .ant-table-wrapper {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cart_page .ant-table-thead>tr>th {
+    background-color: #f9f9f9;
 }

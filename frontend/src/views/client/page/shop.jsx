@@ -1,16 +1,16 @@
 import { CloseOutlined, ShoppingOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Button, Checkbox, Empty, Flex, Pagination, Radio, Rate, Select, Space, Tag, Typography } from "antd";
+import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { optionCategory } from "../../../services/category_service";
 import { listProduct } from "../../../services/product_service";
+import { ACTION_CART, CartContext } from "../../../store/cart";
+import { UserContext } from "../../../store/user";
+import Notification from "../../../utils/configToastify";
 import useDebounce from "../../../utils/useDebounce";
 import "../style/shop.css";
-import { ACTION_CART, CartContext } from "../../../store/cart";
-import Notification from "../../../utils/configToastify";
-import { UserContext } from "../../../store/user";
-import dayjs from "dayjs";
 
 const getCategoryLabels = (categoryFilter, optionsCategory) => {
     return categoryFilter.map(filterId => {
@@ -263,12 +263,7 @@ function Shop() {
                                             <Typography.Text className="discount">
                                                 {item?.pricePromotion ? (
                                                     <>
-                                                        {parseFloat(item?.price * (1 - parseFloat(item?.pricePromotion) / 100)).toLocaleString('en-US', {
-                                                            style: 'currency',
-                                                            currency: 'USD', // Adjust currency code as needed
-                                                            minimumFractionDigits: 0, // Set minimum decimal places to 0
-                                                            maximumFractionDigits: 0,  // Adjust currency code as needed
-                                                        })}<span className="price">${item?.price}</span>
+                                                        ${parseFloat(item?.price * (1 - parseFloat(item?.pricePromotion) / 100)).toFixed(2)}<span className="price">${item?.price}</span>
                                                     </>
                                                 ) : (
                                                     `$${item?.price}`
@@ -279,7 +274,7 @@ function Shop() {
                                                 onClick={() => navigate(`/client/product/${item?.id}`)}
                                             >view detail</Button> :
 
-                                                <Button icon={<ShoppingOutlined />} onClick={() => addToCart(item)}>add to cart</Button>
+                                                <Button icon={<ShoppingOutlined />} disabled={item?.quantity === 0} onClick={() => addToCart(item)}>add to cart</Button>
 
                                             }
                                         </Flex>

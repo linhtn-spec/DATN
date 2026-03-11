@@ -135,10 +135,15 @@
     text-decoration: none;
 }
 
-.product_detail-client .cart:hover {
+.product_detail-client .cart:hover:not([disabled]) {
     color: white !important;
     background-color: #922a8d !important;
     box-shadow: 0 8px 20px rgba(146, 42, 141, 0.2) !important;
+}
+
+.product_detail-client .cart[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .product_detail-client .last_view hr {
