@@ -175,8 +175,8 @@ function CreateProduct() {
 
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 3,
+                                            message: "Minimum 3 characters"
                                         },
                                         {
                                             max: 50,
@@ -266,16 +266,35 @@ function CreateProduct() {
                                             message: "Unit must be not empty"
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 1,
+                                            message: "Minimum 1 character"
                                         },
                                         {
                                             max: 20,
-                                            message: "Maximum 20 character"
+                                            message: "Maximum 20 characters"
                                         }
                                     ]}
                                     hasFeedback >
                                     <Input placeholder="Unit" />
+                                </Form.Item>
+                            </Flex>
+                            <Flex vertical style={{ width: "100%" }}>
+                                <Typography.Title level={5}>Quantity</Typography.Title>
+                                <Form.Item
+                                    name="quantity"
+                                    validateDebounce={1500}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Quantity must be not empty"
+                                        },
+                                        {
+                                            pattern: new RegExp(/^[0-9]+$/),
+                                            message: "Quantity must be a positive number"
+                                        }
+                                    ]}
+                                    hasFeedback >
+                                    <InputNumber min={0} placeholder="Quantity" style={{ width: "100%" }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>

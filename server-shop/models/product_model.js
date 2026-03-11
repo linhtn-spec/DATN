@@ -5,8 +5,8 @@ const product_schema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        min: 3,
-        max: 50,
+        minlength: 3,
+        maxlength: 50,
         trim: true
     },
     description: {
@@ -17,8 +17,8 @@ const product_schema = new mongoose.Schema({
     },
     unit: {
         type: String,
-        min: 5,
-        max: 20,
+        minlength: 1,
+        maxlength: 20,
         required: true,
     },
     origin: {

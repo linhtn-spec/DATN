@@ -5,6 +5,12 @@ import { options } from "../paginate/options.js";
 export const add_product = async (req, res) => {
     try {
         const data = req.body;
+        
+        // Optimize quantity input: convert number to object
+        if (typeof data.quantity === 'number') {
+            data.quantity = { inTrade: data.quantity, sold: 0, unSold: 0 };
+        }
+
         const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'i') } });
         if (checkExistName) {
             return res.status(400).json({ message: "Product name is existed" });
@@ -40,6 +46,19 @@ export const edit_product = async (req, res) => {
         if (!product) {
             return res.status(404).json({ message: "Product does not exist" });
         }
+
+        // Optimize quantity update
+        if (quantity !== undefined) {
+            if (typeof quantity === 'number') {
+                data.quantity = {
+                    ...product.quantity,
+                    inTrade: quantity
+                };
+            } else {
+                data.quantity = quantity;
+            }
+        }
+
         if (data.name !== product.name && data.name) {
             const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'iyu') } });
             if (checkExistName) {

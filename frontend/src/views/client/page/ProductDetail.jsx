@@ -9,6 +9,7 @@ import { Avatar, Breadcrumb, Button, Empty, Flex, Form, Image, Input, Rate, Tabs
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { NavLink, useParams } from "react-router-dom";
 import { queryClient } from "../../../main";
 import { addComment, commentOfProductAll } from "../../../services/comment_service";
@@ -23,7 +24,6 @@ import Notification from "../../../utils/configToastify";
 import Banner_Big from "../layout/banner_big";
 import LastView from "../layout/last_view";
 import Product_LSView from "../layout/product_LSView";
-import { Helmet } from "react-helmet-async";
 import "./../style/product_detail.css";
 
 function ProductDetail() {
@@ -76,9 +76,9 @@ function ProductDetail() {
         if (!detailProductClient?.isSuccess) return
         const rawData = detailProductClient?.data?.data
         setProduct({
-            status: rawData?.isActive,
+            status: rawData?.isActive ?? false,
             id: rawData?._id,
-            quantity: rawData?.quantity?.inTrade,
+            quantity: rawData?.quantity,
             images: rawData?.images,
             name: rawData?.name,
             unit: rawData?.unit,
@@ -98,7 +98,6 @@ function ProductDetail() {
             setProduct({})
         }
     }, [detailProductClient?.isSuccess, detailProductClient?.data])
-    console.log(product);
 
     useEffect(() => {
         if (!productsMayLike?.isSuccess) return
@@ -114,7 +113,7 @@ function ProductDetail() {
                     0 :
                     (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
                 : 0,
-            quantity: item?.quantity?.inTrade
+            quantity: item?.quantity
 
         })))
         return () => {
@@ -153,10 +152,10 @@ function ProductDetail() {
 
 
     const plus = () => {
-        if (quantity < product.quantity) {
-            setQuantity(prevQuantity => prevQuantity + 1);
+        if (Number(quantity) < Number(product.quantity)) {
+            setQuantity(prevQuantity => Number(prevQuantity) + 1);
         } else {
-            setQuantity(product.quantity);
+            setQuantity(Number(product.quantity));
         }
     }
 
@@ -378,9 +377,13 @@ function ProductDetail() {
 
                                             <Flex vertical gap={8} style={{ height: "30vh" }}>
                                                 <Flex className='form-group' gap={7}>
-                                                    <Input disabled={product?.quantity === 0} value={quantity < product?.quantity ? quantity : product?.quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
-                                                        if (e.target.value > 0)
-                                                            setQuantity(e.target.value)
+                                                    <Input disabled={product?.quantity === 0} value={quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
+                                                        const val = parseInt(e.target.value);
+                                                        if (!isNaN(val) && val > 0) {
+                                                            setQuantity(Math.min(val, product.quantity));
+                                                        } else if (e.target.value === '') {
+                                                            setQuantity(1);
+                                                        }
                                                     }} />
                                                     <Flex vertical justify="space-between">
                                                         <Button variant="light" onClick={plus} style={{ height: "45%" }} disabled={product?.quantity === 0}>

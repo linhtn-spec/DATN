@@ -30,7 +30,16 @@ export const add_order = asyncHandler(async (req, res) => {
 
             // 2. Update Product Quantities
             for (const product of products) {
-                const updatedProduct = await product_model.findByIdAndUpdate(
+                // Check stock availability before updating
+                const currentProduct = await product_model.findById(product.productId).session(session);
+                if (!currentProduct) {
+                    throw new Error(`Product not found: ${product.productId}`);
+                }
+                if (currentProduct.quantity.inTrade < product.quantity) {
+                    throw new Error(`Insufficient stock for product: ${currentProduct.name}. Available: ${currentProduct.quantity.inTrade}`);
+                }
+
+                await product_model.findByIdAndUpdate(
                     product.productId,
                     {
                         $inc: {
@@ -40,19 +49,6 @@ export const add_order = asyncHandler(async (req, res) => {
                     },
                     { session, new: true }
                 );
-
-                if (!updatedProduct) {
-                    throw new Error(`Product not found: ${product.productId}`);
-                }
-
-                // Ensure inTrade doesn't go below 0
-                if (updatedProduct.quantity.inTrade < 0) {
-                    await product_model.findByIdAndUpdate(
-                        product.productId,
-                        { $set: { 'quantity.inTrade': 0 } },
-                        { session }
-                    );
-                }
             }
         });
 
@@ -113,13 +109,12 @@ export const edit_order = asyncHandler(async (req, res) => {
     if (orderStatus === "canceled") {
         const products = order.products;
         for (const product of products) {
-            const originalProduct = await product_model.findById(product.productId);
-            if (originalProduct) {
-                const newInTrade = originalProduct.quantity.inTrade + product.quantity;
-                await product_model.findByIdAndUpdate(product.productId, {
-                    $set: { 'quantity.inTrade': newInTrade }
-                });
-            }
+            await product_model.findByIdAndUpdate(product.productId, {
+                $inc: { 
+                    'quantity.inTrade': product.quantity,
+                    'quantity.sold': -product.quantity
+                }
+            });
         }
     }
     const updated_order = await order_model.findOneAndUpdate(

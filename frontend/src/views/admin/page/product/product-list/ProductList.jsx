@@ -98,7 +98,8 @@ export const ProductList = () => {
         price: item?.price,
         origin: item?.origin,
         isActive: item?.isActive,
-        unit: item?.unit
+        unit: item?.unit,
+        quantity: item?.quantity
       }))
     );
 
@@ -140,6 +141,12 @@ export const ProductList = () => {
       align: 'center',
     },
     {
+      title: 'Qty',
+      dataIndex: 'quantity',
+      width: 80,
+      align: 'center',
+    },
+    {
       title: 'Origin',
       dataIndex: 'origin',
       width: 100,
@@ -151,7 +158,7 @@ export const ProductList = () => {
       width: 100,
       sorter: (a, b) => a.price - b.price,
       align: 'center',
-      render: (text) => <Typography.Text>{text}$</Typography.Text>
+      render: (text) => <Typography.Text>${text}</Typography.Text>
     },
 
     {

@@ -91,8 +91,8 @@ function UpdateProduct() {
             queryClient.invalidateQueries({ queryKey: ['product_admin'] })
             navigate('/admin/product', { replace: true })
         },
-        onError: () => {
-            Notification({ message: "Update product unsuccessfully!", type: "error" })
+        onError: (error) => {
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
     const handleSubmit = (value) => {
@@ -127,6 +127,7 @@ function UpdateProduct() {
         form.setFieldValue('isActive', rawData?.isActive)
         form.setFieldValue('unit', rawData?.unit)
         form.setFieldValue('price', rawData?.price)
+        form.setFieldValue('quantity', rawData?.quantity)
         setFileList(
             rawData?.images.map((item, index) => ({
                 uid: `${index}`,
@@ -206,8 +207,8 @@ function UpdateProduct() {
 
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 3,
+                                            message: "Minimum 3 characters"
                                         },
                                         {
                                             max: 50,
@@ -303,16 +304,35 @@ function UpdateProduct() {
                                             message: "Unit must be not empty"
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 1,
+                                            message: "Minimum 1 character"
                                         },
                                         {
                                             max: 20,
-                                            message: "Maximum 20 character"
+                                            message: "Maximum 20 characters"
                                         }
                                     ]}
                                     hasFeedback >
                                     <Input placeholder="Unit" />
+                                </Form.Item>
+                            </Flex>
+                            <Flex vertical style={{ width: "100%" }}>
+                                <Typography.Title level={5}>Quantity</Typography.Title>
+                                <Form.Item
+                                    name="quantity"
+                                    validateDebounce={1500}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Quantity must be not empty"
+                                        },
+                                        {
+                                            pattern: new RegExp(/^[0-9]+$/),
+                                            message: "Quantity must be a positive number"
+                                        }
+                                    ]}
+                                    hasFeedback >
+                                    <InputNumber min={0} placeholder="Quantity" style={{ width: "100%" }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>

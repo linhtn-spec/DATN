@@ -1,6 +1,6 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Flex, Table, Typography } from 'antd';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
 import Notification from '../../../utils/configToastify';
@@ -10,54 +10,40 @@ function Cart() {
     document.title = "Cart";
     const navigate = useNavigate();
     const { state, dispatch } = useContext(CartContext)
-    const [products, setProducts] = useState([])
+
+    // Helper: normalize quantity to a plain number regardless of backend shape
+    const getMaxQty = (qty) => {
+        if (qty == null) return 0;
+        if (typeof qty === 'object') return Number(qty.inTrade ?? 0);
+        return Number(qty);
+    };
+
+    // Derived state – no local useState needed
+    const products = (state?.currentCart ?? []).map((item, index) => ({
+        no: index + 1,
+        id: item?.id || item?._id,
+        name: item?.name,
+        originalPrice: item?.price,
+        pricePromotion: item?.pricePromotion,
+        price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
+        quantityBuy: Number(item?.quantityBuy ?? 1),
+        image: item?.images && item?.images.length > 0 ? item?.images : item?.image,
+        maxQuantity: getMaxQty(item?.quantity),
+        quantity: item?.quantity,   // keep for dispatch payloads
+    }));
+
     const minus = (productId) => {
-        const updatedProducts = products.map(product => {
-            if (product.id === productId && product.quantityBuy > 1) {
-                return { ...product, quantityBuy: product.quantityBuy - 1 };
-            }
-            return product;
-        });
-
-        setProducts(updatedProducts);
-        dispatch({ type: ACTION_CART.UPDATE_CART, payload: updatedProducts });
-
+        dispatch({ type: ACTION_CART.MINUS_ITEM, payload: { id: productId } });
     };
 
-    const plus = (productId, maxQuantity) => {
-        const updatedProducts = products.map(product => {
-            if (product.id === productId && product.quantityBuy < maxQuantity) {
-                return { ...product, quantityBuy: product.quantityBuy + 1 };
-            }
-            return product;
-        });
-        setProducts(updatedProducts);
-        dispatch({ type: ACTION_CART.UPDATE_CART, payload: updatedProducts });
-
+    const plus = (productId) => {
+        dispatch({ type: ACTION_CART.PLUS_ITEM, payload: { id: productId } });
     };
-
 
     const deleteItem = (id) => {
         dispatch({ type: ACTION_CART.DELETE_ITEM, payload: id })
         Notification({ message: "Delete item successfully!", type: "success" })
     }
-
-    useEffect(() => {
-        setProducts(state?.currentCart?.map((item, index) => ({
-            no: index + 1,
-            id: item?.id,
-            name: item?.name,
-            originalPrice: item?.price,
-            pricePromotion: item?.pricePromotion,
-            price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
-            quantityBuy: item?.quantityBuy,
-            image: item?.images && item?.images.length > 0 ? item?.images : item?.image,
-            maxQuantity: item?.quantity
-        })))
-        return () => {
-            setProducts([])
-        }
-    }, [state, setProducts])
 
     const checkout = () => {
         navigate("/client/checkout")
@@ -129,10 +115,13 @@ function Cart() {
             width: "200px",
             align: 'center',
             render: (text, row) =>
-                <Flex align='center' justify='center'>
-                    <Button icon={<PlusOutlined />} onClick={() => plus(row.id, row.maxQuantity)} />
-                    <Typography.Text style={{ margin: "0 20px" }}>{text}</Typography.Text>
-                    <Button icon={<MinusOutlined />} onClick={() => minus(row.id)} />
+                <Flex align='center' justify='center' vertical>
+                    <Flex align='center' justify='center'>
+                        <Button icon={<PlusOutlined />} onClick={() => plus(row.id)} />
+                        <Typography.Text style={{ margin: "0 20px" }}>{text}</Typography.Text>
+                        <Button icon={<MinusOutlined />} onClick={() => minus(row.id)} />
+                    </Flex>
+
                 </Flex>
         },
         {
@@ -168,11 +157,9 @@ function Cart() {
     ];
     useEffect(() => {
         window.scrollTo(0, 0)
-    }, [])
-
-    useEffect(() => {
         document.title = "Cart"
     }, [])
+
     return (
         <Flex className='container cart_page' vertical>
             <Breadcrumb

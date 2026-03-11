@@ -93,7 +93,7 @@ function Headers() {
             mutate()
         }
         order?.dispatch({ type: ACTION_ORDER.REMOVE_ORDER })
-        cart?.dispatch({ type: ACTION_CART.REMOVE_CART })
+        cart?.dispatch({ type: ACTION_CART.CLEAR_CART_LOCAL })
         favourite?.dispatch({ type: ACTION_FAVOURITE.REMOVE_FAVOURITE })
     }
 
