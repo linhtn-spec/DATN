@@ -42,7 +42,12 @@ function Headers() {
         else {
             setFetched(false)
             const rawData = getFavouriteNow?.data?.data?.products
-            favourite.dispatch({ type: ACTION_FAVOURITE.FETCH_FAVOURITE, payload: rawData })
+            // Backend already calculates pricePromotion, just ensure it's mapped correctly if needed
+            const mappedData = rawData?.map(item => ({
+                ...item,
+                id: item._id // Ensure id is set for consistency
+            }))
+            favourite.dispatch({ type: ACTION_FAVOURITE.FETCH_FAVOURITE, payload: mappedData })
         }
     }, [getFavouriteNow?.isSuccess, getFavouriteNow?.data])
 

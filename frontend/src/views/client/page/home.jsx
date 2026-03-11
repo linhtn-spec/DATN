@@ -42,7 +42,7 @@ function Home() {
             image: item?.productId?.images[0],
             id: item?.productId?._id,
             origin: item?.productId?.origin,
-            sale: item?.pricePromotion,
+            pricePromotion: item?.pricePromotion,
             status: item?.productId?.isActive,
             quantity: item?.productId.quantity?.inTrade
 

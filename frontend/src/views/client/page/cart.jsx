@@ -47,6 +47,8 @@ function Cart() {
             no: index + 1,
             id: item?.id,
             name: item?.name,
+            originalPrice: item?.price,
+            pricePromotion: item?.pricePromotion,
             price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
             quantityBuy: item?.quantityBuy,
             image: item?.images && item?.images.length > 0 ? item?.images : item?.image,
@@ -97,8 +99,28 @@ function Cart() {
             dataIndex: 'price',
             key: 'adpricedress',
             width: "150px",
-            render: (text) => <Typography.Text>${Number(text).toFixed(2)}</Typography.Text>
-
+            render: (text, row) => (
+                <Flex vertical>
+                    <Typography.Text className="promotion">
+                        {Number(text).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                        })}
+                    </Typography.Text>
+                    {row.pricePromotion > 0 && (
+                        <Typography.Text className="price">
+                            {Number(row.originalPrice).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 2,
+                            })}
+                        </Typography.Text>
+                    )}
+                </Flex>
+            )
         },
         {
             title: 'Quantity',
@@ -124,7 +146,16 @@ function Cart() {
             dataIndex: 'subtotal',
             key: 'subtotal',
             width: "250px",
-            render: (text, row) => <Typography.Text>${Number(row.price * row.quantityBuy).toLocaleString('en-US')}</Typography.Text>
+            render: (text, row) => (
+                <Typography.Text style={{ fontWeight: 600 }}>
+                    {(row.price * row.quantityBuy).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                    })}
+                </Typography.Text>
+            )
         },
         {
             title: 'Action',

@@ -71,15 +71,18 @@
     border-color: #c32a2a !important;
 }
 
-.product_relate-list .item_related p {
-    font-weight: 600 !important;
-    font-size: 20px;
+.product_relate-list .item_related .promotion {
+    color: #ff2c26;
+    font-weight: 700;
+    font-size: 16px;
+    margin-right: 8px;
 }
 
-.product_relate-list .item_related .discount {
-    font-weight: 600 !important;
-    font-size: 18px;
-    color: #d9a1a3;
+.product_relate-list .item_related .price {
+    font-weight: 400;
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
 }
 
 .product_relate-list .item_related .title {

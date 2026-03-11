@@ -260,13 +260,35 @@ function Shop() {
                                         <Flex className="shop_item col-4" vertical align="center" key={item?.id}>
                                             <img src={item?.image} alt={item?.name} width={60} style={{ cursor: "pointer" }} height={150} onClick={() => navigate(`/client/product/${item?.id}`)} />
                                             <Typography.Title level={5} ellipsis={true}>{item?.name}</Typography.Title>
-                                            <Typography.Text className="discount">
-                                                {item?.pricePromotion ? (
-                                                    <>
-                                                        ${parseFloat(item?.price * (1 - parseFloat(item?.pricePromotion) / 100)).toFixed(2)}<span className="price">${item?.price}</span>
-                                                    </>
+                                            <Typography.Text className="price_promo">
+                                                {Number(item?.pricePromotion) > 0 ? (
+                                                    <Flex gap={8} align="center" justify="center">
+                                                        <span className="promotion">
+                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD',
+                                                                minimumFractionDigits: 0,
+                                                                maximumFractionDigits: 0,
+                                                            })}
+                                                        </span>
+                                                        <span className="price">
+                                                            {item.price?.toLocaleString('en-US', {
+                                                                style: 'currency',
+                                                                currency: 'USD',
+                                                                minimumFractionDigits: 0,
+                                                                maximumFractionDigits: 0,
+                                                            })}
+                                                        </span>
+                                                    </Flex>
                                                 ) : (
-                                                    `$${item?.price}`
+                                                    <span className="promotion">
+                                                        {item.price?.toLocaleString('en-US', {
+                                                            style: 'currency',
+                                                            currency: 'USD',
+                                                            minimumFractionDigits: 0,
+                                                            maximumFractionDigits: 0,
+                                                        })}
+                                                    </span>
                                                 )}
                                             </Typography.Text>
                                             <Rate allowHalf disabled defaultValue={item?.stars} />

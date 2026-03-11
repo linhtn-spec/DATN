@@ -108,3 +108,16 @@
 .cart_page .ant-table-thead>tr>th {
     background-color: #f9f9f9;
 }
+
+.cart_page .promotion {
+    color: #ff2c26;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.cart_page .price {
+    font-weight: 400;
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+}

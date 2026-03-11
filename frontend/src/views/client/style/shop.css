@@ -120,15 +120,15 @@
 }
 
 .shop .shop_item .price {
+    font-weight: 400;
     text-decoration: line-through;
-    color: rgb(128, 128, 128);
-    margin-left: 10px;
+    color: #999;
     font-size: 14px;
 }
 
-.shop .shop_item .discount {
-    color: red;
-    font-weight: 500;
+.shop .shop_item .promotion {
+    color: #ff2c26;
+    font-weight: 700;
     font-size: 16px;
 }
 

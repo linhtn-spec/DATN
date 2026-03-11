@@ -62,6 +62,8 @@ function Checkout() {
     useEffect(() => {
         setProducts(cart?.state?.currentCart?.map(item => ({
             name: item?.name,
+            originalPrice: item?.price,
+            pricePromotion: item?.pricePromotion,
             price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
             quantity: item?.quantityBuy
         })))
@@ -93,8 +95,28 @@ function Checkout() {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => <p>${Number(text).toFixed(2)}</p>
-
+            render: (text, row) => (
+                <Flex vertical>
+                    <Typography.Text className="promotion">
+                        {Number(text).toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 2,
+                        })}
+                    </Typography.Text>
+                    {row.pricePromotion > 0 && (
+                        <Typography.Text className="price">
+                            {Number(row.originalPrice).toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 2,
+                            })}
+                        </Typography.Text>
+                    )}
+                </Flex>
+            )
         },
         {
             title: 'Quantity',
@@ -105,7 +127,16 @@ function Checkout() {
             title: 'Subtotal',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            render: (text, row) => <p>${Number(row.price * row.quantity).toLocaleString('en-US')}</p>
+            render: (text, row) => (
+                <Typography.Text style={{ fontWeight: 600 }}>
+                    {(row.price * row.quantity).toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2,
+                    })}
+                </Typography.Text>
+            )
         },
 
     ];
@@ -114,20 +145,20 @@ function Checkout() {
         {
             key: '1',
             label: 'Subtotal',
-            children: <Typography.Text>{subTotal}$</Typography.Text>,
+            children: <Typography.Text>{subTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
             span: 3
         },
         {
             key: '2',
             label: 'Tax',
-            children: <Typography.Text>${(subTotal * 0.09).toFixed(2)}</Typography.Text>,
+            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
             span: 3
 
         },
         {
             key: '3',
             label: 'Total',
-            children: <Typography.Text>${(subTotal * 1.09).toFixed(2)}</Typography.Text>,
+            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
             span: 3
 
         }

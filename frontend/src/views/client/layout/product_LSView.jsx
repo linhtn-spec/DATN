@@ -65,10 +65,37 @@ function Product_LSView(props) {
                     <img src={product?.image} loading="lazy" />
                 </Link>
                 <Typography.Title className="title" level={4} ellipsis={true} style={{ maxWidth: "70%" }}>{product.name}</Typography.Title>
-                <p>
-                    {product?.pricePromotion !== 0 && <>{product?.price * (1 - parseFloat(product?.pricePromotion) / 100)}$</>}
-                    {product.pricePromotion !== 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "20px", textDecoration: "none", paddingLeft: 0 } : {})}>{`$${product.price}`}</span>}
-                </p>
+                <Typography.Text className="price_promo">
+                    {Number(product?.pricePromotion) > 0 ? (
+                        <>
+                            <Typography.Text className="promotion">
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                })}
+                            </Typography.Text>
+                            <Typography.Text className="price">
+                                {product.price?.toLocaleString('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                })}
+                            </Typography.Text>
+                        </>
+                    ) : (
+                        <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
+                            {product.price?.toLocaleString('en-US', {
+                                style: 'currency',
+                                currency: 'USD',
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })}
+                        </Typography.Text>
+                    )}
+                </Typography.Text>
             </Flex>
             <Flex className="button_group" justify="space-evenly">
                 <Button shape="circle" onClick={addToCart} disabled={!product?.quantity}><ShoppingCartOutlined /></Button>

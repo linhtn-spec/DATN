@@ -36,23 +36,35 @@ function Product_List(props) {
         <Typography.Title level={5} className="country">{product?.origin}</Typography.Title>
         <Typography.Title level={4} className="title">{product?.name}</Typography.Title >
         <Typography.Text className="price_promo">
-          {product?.pricePromotion !== 0 && <Typography.Text className="promotion">
-            {parseFloat(product?.price * (1 - parseFloat(product?.pricePromotion) / 100)).toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD', // Adjust currency code as needed
-              minimumFractionDigits: 0, // Set minimum decimal places to 0
-              maximumFractionDigits: 0,  // Adjust currency code as needed
-            })}
-          </Typography.Text>}
-
-          <Typography.Text className="price" style={(!product?.pricePromotion ? { textDecoration: "none", fontSize: "16px", fontWeight: 500, color: "red" } : {})}>
-            {product?.price.toLocaleString('en-US', {
-              style: 'currency',
-              currency: 'USD', // Adjust currency code as needed
-              minimumFractionDigits: 0, // Set minimum decimal places to 0
-              maximumFractionDigits: 0,  // Adjust currency code as needed
-            })}
-          </Typography.Text>
+          {Number(product?.pricePromotion) > 0 ? (
+            <>
+              <Typography.Text className="promotion">
+                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </Typography.Text>
+              <Typography.Text className="price">
+                {product.price?.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}
+              </Typography.Text>
+            </>
+          ) : (
+            <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
+              {product.price?.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
+            </Typography.Text>
+          )}
         </Typography.Text>
       </Flex>
       {(!product?.status || !product?.quantity) ? <Button onClick={() => navigate(`/client/product/${product?.id}`)}>view detail</Button>

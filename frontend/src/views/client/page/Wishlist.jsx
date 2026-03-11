@@ -24,7 +24,7 @@ export const Wishlist = () => {
                     <NavLink to={`/user/wishlist`}>WISHLIST</NavLink>
                 </Breadcrumb.Item>
             </Breadcrumb>
-            <Flex className="wishlist_item" wrap="wrap" gap="50px" style={{ marginBottom: "100px" }}>
+            <div className="wishlist_item">
                 {state?.favourite && state?.favourite.length !== 0 ? (
                     state?.favourite.map((item, index) => (
                         <ProductGrid type={'wishlist'} products={{ ...item, id: item?._id, image: item.images ? item?.images[0] : item.image }} key={index} />
@@ -35,7 +35,7 @@ export const Wishlist = () => {
                     </Flex>
 
                 )}
-            </Flex>
+            </div>
         </Flex>
     )
 }

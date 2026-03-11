@@ -218,3 +218,16 @@
     font-weight: 600 !important;
     color: black !important;
 }
+
+.checkout_page .promotion {
+    color: #ff2c26;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.checkout_page .price {
+    font-weight: 400;
+    text-decoration: line-through;
+    color: #999;
+    font-size: 14px;
+}

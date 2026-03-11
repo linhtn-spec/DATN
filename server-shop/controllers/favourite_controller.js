@@ -49,12 +49,44 @@ export const getFavourite = async (req, res) => {
     try {
         const favourite = await favourite_model.findOne({ userId: user_id }).populate({
             path: "products",
-            model: "Product"
+            model: "Product",
+            populate: {
+                path: "saleId",
+                model: "Sale"
+            }
         })
         if (!favourite)
             return res.status(404).json({ message: "No favourite" });
         else {
-            return res.status(200).json(favourite);
+            const now = new Date();
+            const productsWithPromotion = favourite.products.map(product => {
+                let pricePromotion = 0;
+                if (product.saleId && product.saleId.length > 0) {
+                    const activeSale = product.saleId.find(sale =>
+                        sale.isActive &&
+                        new Date(sale.applyDate) <= now &&
+                        (!sale.dueDate || new Date(sale.dueDate) >= now)
+                    );
+
+                    if (activeSale) {
+                        const saleProduct = activeSale.products.find(sp =>
+                            sp.productId.toString() === product._id.toString()
+                        );
+                        if (saleProduct) {
+                            pricePromotion = saleProduct.pricePromotion;
+                        }
+                    }
+                }
+                return {
+                    ...product.toObject(),
+                    pricePromotion
+                };
+            });
+
+            return res.status(200).json({
+                ...favourite.toObject(),
+                products: productsWithPromotion
+            });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
