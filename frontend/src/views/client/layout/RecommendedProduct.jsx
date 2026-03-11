@@ -15,7 +15,7 @@ export default function RecommendedProduct() {
         if (!isSuccess) return
         setProducts(data?.data?.data?.map(item => ({
             id: item?._id,
-            image: item?.images[0]
+            image: item?.images?.[0]
         })))
         setIsLoading(false)
         return () => {

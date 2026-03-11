@@ -88,9 +88,6 @@ export const paginate_comment = async (req, res) => {
                 select: "firstName lastName"
             }
         });
-        if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No feedback" });
-        }
         return res.status(200).json({ ...dataAll });
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -100,10 +97,7 @@ export const paginate_comment = async (req, res) => {
 export const all_comment = async (req, res) => {
     try {
         const data = await comment_model.find({});
-        if (data.length === 0) {
-            return res.status(404).json({ message: "No feedback" });
-        }
-        else return res.status(200).json({ data });
+        return res.status(200).json({ data });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -117,10 +111,7 @@ export const comment_of_product = async (req, res) => {
             model: 'User',
             select: 'firstName lastName _id image'
         });
-        if (data.length === 0) {
-            return res.status(404).json({ message: "No feedback" });
-        }
-        else return res.status(200).json({ data });
+        return res.status(200).json({ data });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -173,10 +164,7 @@ export const comment_product_paginate = async (req, res) => {
             ]
 
         })
-        if (data.docs === 0) {
-            return res.status(404).json({ message: "No rating" });
-        }
-        else return res.status(200).json(data);
+        return res.status(200).json(data);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

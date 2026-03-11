@@ -93,7 +93,7 @@ function ProductDetail() {
                     (rawData?.saleId[rawData?.saleId.length - 1]?.products || []).find(product => product.productId === rawData?._id)?.pricePromotion || 0
                 : 0
         })
-        setMainImage(rawData?.images[0])
+        setMainImage(rawData?.images?.[0])
         return () => {
             setProduct({})
         }
@@ -102,16 +102,17 @@ function ProductDetail() {
     useEffect(() => {
         if (!productsMayLike?.isSuccess) return
         const rawData = productsMayLike?.data?.data
-        setProducts(Object.values(rawData)?.map(item => ({
+        const dataToMap = Array.isArray(rawData) ? rawData : Object.values(rawData || {})
+        setProducts(dataToMap?.map(item => ({
             name: item?.name,
             price: item?.price,
-            image: item?.images[0],
+            image: item?.images?.[0],
             id: item?._id,
             origin: item?.origin,
-            pricePromotion: item?.saleId.length !== 0 ?
-                new Date(dayjs(item?.saleId[item?.saleId.length - 1]?.dueDate)).getTime() < new Date().getTime() ?
+            pricePromotion: (item?.saleId && item.saleId.length !== 0) ?
+                (new Date(dayjs(item?.saleId[item?.saleId.length - 1]?.dueDate || new Date())).getTime() < new Date().getTime() ?
                     0 :
-                    (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
+                    (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0)
                 : 0,
             quantity: item?.quantity
 
@@ -126,7 +127,7 @@ function ProductDetail() {
         if (!getRecommendProduct?.isSuccess) return
         const rawData = getRecommendProduct?.data?.data
         setRecommendProducts(rawData?.map(item => ({
-            mainImage: item?.images[0],
+            mainImage: item?.images?.[0],
             name: item?.name,
             id: item?._id
         })))
