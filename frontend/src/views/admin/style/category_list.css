@@ -79,3 +79,17 @@
     margin-bottom: 20px;
     margin-top: 40px;
 }
+
+.category_list .ant-table-wrapper {
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 20px;
+    border: 1px solid #f0f0f0;
+}
+
+.category_list .ant-table-thead > tr > th {
+    background-color: #fafafa !important;
+    font-weight: 600;
+}
