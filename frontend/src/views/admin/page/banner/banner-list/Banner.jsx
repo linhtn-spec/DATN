@@ -43,7 +43,7 @@ export const BannerList = () => {
       queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
     },
     onError: (error) => {
-      Notification({ message: `${error.response.data.message}`, type: "error" })
+      Notification({ message: error?.response?.data, type: "error" })
     }
   })
 

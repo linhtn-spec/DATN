@@ -17,7 +17,13 @@ import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { ROLE } from '../../../constants/roles';
 import { UserContext } from '../../../store/user';
+import { notification } from 'antd';
+import io from 'socket.io-client';
 import "./../style/navbar.css";
+
+const socket = io(import.meta.env.VITE_SOCKET_ENDPOINT || 'http://localhost:5000', {
+    withCredentials: true
+});
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -36,6 +42,23 @@ function Navbar() {
     const [collapsed, setCollapsed] = useState(false);
     const location = useLocation()
     const [current, setCurrent] = useState('overview');
+
+    useEffect(() => {
+        if (userRole === ROLE.STAFF || userRole === ROLE.MANAGER || userRole === ROLE.ADMIN) {
+            socket.on('new_order', (data) => {
+                notification.info({
+                    message: 'New Order Received!',
+                    description: `Order from ${data.customer} for ${data.total.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}`,
+                    placement: 'topRight',
+                    duration: 5,
+                });
+            });
+        }
+        return () => {
+            socket.off('new_order');
+        };
+    }, [userRole]);
+
     useEffect(() => {
 
         setCurrent(location.pathname.split('/')[2]);

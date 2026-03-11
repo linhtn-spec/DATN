@@ -27,7 +27,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -38,7 +38,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -49,7 +49,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -60,7 +60,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -71,7 +71,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['products_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -82,7 +82,7 @@ function DeleteModal(props) {
             queryClient.invalidateQueries({ queryKey: ['products_admin'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 

@@ -55,8 +55,8 @@ export function DetailConsignment() {
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
             navigate(`/admin/consignment`, { replace: true })
         },
-        onError: () => {
-            Notification({ message: condition ? `Update consignment successfully!` : "Create consignment successfully!", type: "error" })
+        onError: (error) => {
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 

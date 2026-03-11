@@ -35,8 +35,7 @@ function ProductGrid(props) {
             Notification({ message: "Add to wishlist successfully!", type: "success" })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "info" })
-
+            Notification({ message: error?.response?.data, type: "info" })
         }
     })
     const addToFavourite = () => {
@@ -122,7 +121,7 @@ function ProductGrid(props) {
                     <Button className="buy" onClick={() => navigate(`/client/product/${product?.id}`)}>view detail</Button> :
                     <Button icon={<ShoppingOutlined />} className="buy" onClick={addToCart}>add to cart</Button>
                 ) : (
-                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" onClick={addToCart}>Move to cart</Button>
+                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={product?.quantity === 0} onClick={addToCart}>Move to cart</Button>
                 )
             }
 

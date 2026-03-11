@@ -175,16 +175,19 @@ function Cart() {
     }, [])
     return (
         <Flex className='container cart_page' vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/shop'}>SHOP</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/shop'}>SHOP</NavLink>,
+                    },
+                ]}
+            />
             <Table
                 bordered
+                rowKey="id"
                 columns={columns}
                 dataSource={products}
                 scroll={{ x: 'max-content' }}

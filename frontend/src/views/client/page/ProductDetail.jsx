@@ -23,6 +23,7 @@ import Notification from "../../../utils/configToastify";
 import Banner_Big from "../layout/banner_big";
 import LastView from "../layout/last_view";
 import Product_LSView from "../layout/product_LSView";
+import { Helmet } from "react-helmet-async";
 import "./../style/product_detail.css";
 
 function ProductDetail() {
@@ -65,8 +66,7 @@ function ProductDetail() {
             Notification({ message: "Add to wishlist successfully!", type: "success" })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "info" })
-
+            Notification({ message: error?.response?.data, type: "info" })
         }
     })
 
@@ -201,7 +201,7 @@ function ProductDetail() {
             Notification({ message: "Rate product successfully", type: "success" }),
                 queryClient.invalidateQueries({ queryKey: ['detail_product_client'] })
         },
-        onError: (error) => Notification({ message: `${error.response.data.message}`, type: "info" })
+        onError: (error) => Notification({ message: error?.response?.data, type: "info" })
     })
 
     const feedback = useMutation({
@@ -210,7 +210,7 @@ function ProductDetail() {
             Notification({ message: "Leave feedback successfully", type: "success" }),
                 queryClient.invalidateQueries({ queryKey: ['detail_product_client'] })
         },
-        onError: (error) => Notification({ message: `${error.response.data.message}`, type: "info" })
+        onError: (error) => Notification({ message: error?.response?.data, type: "info" })
     })
     const handleSubmit = (e) => {
         feedback.mutate({ productId: product?.id, ...e })
@@ -263,21 +263,29 @@ function ProductDetail() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [id]);
 
-    useEffect(() => {
-        if (product.name) document.title = product.name
-    }, [product])
     return (
         <Flex vertical>
+            <Helmet>
+                <title>{product?.name || "Product Detail"} | My Shop</title>
+                <meta name="description" content={product?.description || "Product details and pricing."} />
+                <meta property="og:title" content={product?.name} />
+                <meta property="og:description" content={product?.description} />
+                <meta property="og:image" content={product?.images?.[0]} />
+                <meta property="og:type" content="product" />
+                <meta name="twitter:card" content="summary_large_image" />
+            </Helmet>
             <Banner_Big info={product?.name} />
             <Flex className="product_detail-client container" vertical align="center">
-                <Breadcrumb>
-                    <Breadcrumb.Item>
-                        <NavLink to={'/'}>HOME</NavLink>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item active>
-                        <NavLink to={`/client/product/${product?.id}`}>{String(product?.name).toUpperCase()}</NavLink>
-                    </Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/'}>HOME</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={`/client/product/${product?.id}`}>{String(product?.name).toUpperCase()}</NavLink>,
+                        },
+                    ]}
+                />
                 <Flex className="detail d-flex" justify="space-between">
                     <Flex className="view" vertical gap={40}>
                         <div className="img-group last_view d-flex flex-column">

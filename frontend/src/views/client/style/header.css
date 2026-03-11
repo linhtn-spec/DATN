@@ -11,17 +11,20 @@ header {
 
 
 
-header a {
+header a,
+header .categories {
     text-decoration: none;
     text-transform: uppercase;
     color: #ba36b3;
     letter-spacing: 0.1rem;
     margin: 0px 15px;
     font-size: 16px;
-
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 header a:hover,
+header .main_menu:hover .categories,
 .header-icon span:hover {
     color: #82267e;
 }
@@ -124,14 +127,14 @@ header .main_menu .sub_menu a:hover {
 header .main_menu .sub_menu {
     display: none;
     flex-direction: column;
-    height: 70vh;
+    height: 50vh;
 
     overflow-y: scroll;
     position: absolute;
     z-index: 1111;
     background-color: white;
     top: 100%;
-    left: -40px;
+    left: -5px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22);
 
 }
@@ -141,7 +144,8 @@ header .main_menu:hover .sub_menu {
     display: flex;
 }
 
-.header-link a {
+.header-link a,
+.header-link .categories {
     padding: 0 10px;
 }
 
@@ -194,17 +198,21 @@ header .main_menu:hover .user {
     header {
         padding: 0 10px;
     }
+
     .header-logo {
         width: 30%;
     }
+
     .header-icon {
         width: 30%;
     }
+
     .header-link a {
         padding: 0 5px;
         font-size: 11px;
         margin: 0px 3px;
     }
+
     .header-icon .qty {
         right: 25px;
     }

@@ -1,6 +1,6 @@
 import { CloseOutlined, ShoppingOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Checkbox, Empty, Flex, Pagination, Radio, Rate, Select, Space, Tag, Typography } from "antd";
+import { Breadcrumb, Button, Checkbox, Empty, Flex, Pagination, Radio, Rate, Select, Skeleton, Space, Tag, Typography } from "antd";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -131,22 +131,28 @@ function Shop() {
             return
         }
         const rawData = productShop?.data?.data?.products
-        setProducts(rawData?.docs?.map(item => ({
-            id: item?._id,
-            name: item?.name,
-            image: item?.images[0],
-            price: item?.price,
-            quantity: item?.quantity?.inTrade,
-            stars: item?.ratingId?.reduce((acc, curr) => acc + curr.stars, 0) / item?.ratingId?.length,
-            pricePromotion: item?.saleId.length !== 0 ?
-                new Date(dayjs(item?.saleId[item?.saleId.length - 1]?.dueDate)).getTime() < new Date().getTime() ?
-                    0 :
-                    (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
-                : 0,
-            status: item?.isActive
-        })))
-        setTotal(rawData?.totalDocs)
-        setIsEmpty(false)
+        if (rawData?.docs?.length > 0) {
+            setProducts(rawData?.docs?.map(item => ({
+                id: item?._id,
+                name: item?.name,
+                image: item?.images[0],
+                price: item?.price,
+                quantity: item?.quantity?.inTrade,
+                stars: item?.ratingId?.reduce((acc, curr) => acc + curr.stars, 0) / item?.ratingId?.length,
+                pricePromotion: item?.saleId.length !== 0 ?
+                    new Date(dayjs(item?.saleId[item?.saleId.length - 1]?.dueDate)).getTime() < new Date().getTime() ?
+                        0 :
+                        (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
+                    : 0,
+                status: item?.isActive
+            })))
+            setTotal(rawData?.totalDocs)
+            setIsEmpty(false)
+        } else {
+            setProducts([])
+            setTotal(0)
+            setIsEmpty(true)
+        }
         return () => {
             setProducts([])
             setIsEmpty(false)
@@ -157,14 +163,16 @@ function Shop() {
     }, [])
     return (
         <Flex className="shop" vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/shop'}>SHOP</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/shop'}>SHOP</NavLink>,
+                    },
+                ]}
+            />
             <Flex className='products_filter' justify="space-evenly" wrap="wrap">
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
@@ -252,9 +260,22 @@ function Shop() {
                         />
                     </Flex>
                     <Flex className="products_result d-flex row text-center" gap="16px" vertical>
-                        {isEmpty ? <Empty /> :
+                        {productShop.isFetching ? (
+                            <Flex gap={"16px"} wrap="wrap">
+                                {[...Array(6)].map((_, index) => (
+                                    <Flex className="shop_item col-4" vertical align="center" key={index} style={{ padding: '20px' }}>
+                                        <Skeleton.Image active style={{ width: 150, height: 150, marginBottom: 10 }} />
+                                        <Skeleton active paragraph={{ rows: 2 }} />
+                                    </Flex>
+                                ))}
+                            </Flex>
+                        ) : isEmpty ? (
+                            <Empty />
+                        ) : (
                             <>
-                                <Flex className='result'><h3>Showing <span>1 - {total > 6 ? 6 : total}</span> of {total} results</h3></Flex>
+                                <Flex className='result'>
+                                    <h3>Showing <span>1 - {total > 6 ? 6 : total}</span> of {total} results</h3>
+                                </Flex>
                                 <Flex gap={"16px"} wrap="wrap">
                                     {products.map(item => (
                                         <Flex className="shop_item col-4" vertical align="center" key={item?.id}>
@@ -292,21 +313,28 @@ function Shop() {
                                                 )}
                                             </Typography.Text>
                                             <Rate allowHalf disabled defaultValue={item?.stars} />
-                                            {!item?.status ? <Button
-                                                onClick={() => navigate(`/client/product/${item?.id}`)}
-                                            >view detail</Button> :
-
+                                            {!item?.status ? (
+                                                <Button onClick={() => navigate(`/client/product/${item?.id}`)}>view detail</Button>
+                                            ) : (
                                                 <Button icon={<ShoppingOutlined />} disabled={item?.quantity === 0} onClick={() => addToCart(item)}>add to cart</Button>
-
-                                            }
+                                            )}
                                         </Flex>
                                     ))}
                                 </Flex>
                             </>
-                        }
-                        <Pagination style={{ textAlign: "center", padding: "70px 0" }} defaultCurrent={1} total={total} pageSize={6} hideOnSinglePage showSizeChanger={false} onChange={setPage}
+                        )}
+                        <Pagination
+                            style={{ textAlign: "center", padding: "70px 0" }}
+                            defaultCurrent={1}
+                            total={total}
+                            pageSize={6}
+                            hideOnSinglePage
+                            showSizeChanger={false}
+                            onChange={(p) => {
+                                setPage(p);
+                                window.scrollTo(0, 0);
+                            }}
                         />
-
                     </Flex>
                 </Flex>
             </Flex>

@@ -39,7 +39,7 @@ export const ListOfCustomer = () => {
             queryClient.invalidateQueries({ queryKey: ['customers_admin_list'] })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 

@@ -4,6 +4,24 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { useQuery } from "@tanstack/react-query";
 import { optionBanner } from "../../../services/banner_service";
 import { useEffect, useState } from "react";
+const SlickArrowLeft = (props) => {
+    const { currentSlide, slideCount, ...restProps } = props;
+    return (
+        <div {...restProps}>
+            <LeftOutlined />
+        </div>
+    );
+};
+
+const SlickArrowRight = (props) => {
+    const { currentSlide, slideCount, ...restProps } = props;
+    return (
+        <div {...restProps}>
+            <RightOutlined />
+        </div>
+    );
+};
+
 function Banner() {
     const [banners, setBanners] = useState([])
     const { isSuccess, data } = useQuery({
@@ -18,13 +36,14 @@ function Banner() {
 
         }
     }, [isSuccess, data])
+
     return (
         <Carousel
             autoplay
             autoplaySpeed={2000}
             arrows
-            prevArrow={<LeftOutlined />}
-            nextArrow={<RightOutlined />}
+            prevArrow={<SlickArrowLeft />}
+            nextArrow={<SlickArrowRight />}
             effect="fade"
         >
             {

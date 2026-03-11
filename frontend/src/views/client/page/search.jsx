@@ -58,14 +58,16 @@ function Search() {
         <Flex className="search" vertical align='center'>
             <Banner_Big info={keyword} />
             <div className="container search_page">
-                <Breadcrumb>
-                    <Breadcrumb.Item>
-                        <NavLink to={'/'}>HOME</NavLink>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item active>
-                        <NavLink to={'/search'}>SEARCH</NavLink>
-                    </Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/'}>HOME</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={'/search'}>SEARCH</NavLink>,
+                        },
+                    ]}
+                />
                 {product.length === 0 ? <Empty description={"No product found"} /> :
                     <Flex vertical gap={"20px"}>
                         <Flex className="results_pagination" style={{ width: "100%" }} justify="center">

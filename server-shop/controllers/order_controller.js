@@ -2,63 +2,97 @@ import { order_form, order_subject, order_text } from "../form_mail/order_form.j
 import order_model from "../models/order_model.js"
 import { sendEmail } from "../nodemailer/nodemailer_config.js";
 import product_model from "../models/product_model.js";
+import { asyncHandler } from "../helper/async_handler.js";
+import mongoose from "mongoose";
+
 const from = process.env.NODEMAILER_EMAIL
 
-export const add_order = async (req, res) => {
+export const add_order = asyncHandler(async (req, res) => {
     const data = req.body;
     const { tax, products, shippingMethod } = data
     const update = {}
     if (shippingMethod === 'free') update.shippingCost = 0
     if (shippingMethod === 'express') update.shippingCost = 100
     if (shippingMethod === 'standard') update.shippingCost = 10
+
+    const subPriceSumForEachProduct = products.map(product => product.subPrice);
+    const totalSubPrice = subPriceSumForEachProduct.reduce((acc, curr) => acc + curr, 0) + update.shippingCost;
+    const total = totalSubPrice + parseFloat(tax);
+
+    const session = await mongoose.startSession();
+    let order;
+
     try {
-        const subPriceSumForEachProduct = products.map(product => product.subPrice);
-        const totalSubPrice = subPriceSumForEachProduct.reduce((acc, curr) => acc + curr, 0) + update.shippingCost;
-        const total = totalSubPrice + parseFloat(tax);
-        const order = await order_model.create({ ...data, total: total, ...update })
-        if (order) {
-            const orderCreated = await order_model.findOne({ _id: order._id }).populate({
-                path: "products.productId",
-                model: "Product",
-                select: 'name price images'
-            })
-            const modifiedData = {
-                ...orderCreated._doc,
-                products: orderCreated.products.map(product => ({
-                    ...product._doc,
-                    productId: {
-                        ...product.productId._doc,
-                        images: product.productId._doc.images[0]
-                    }
-                }))
-            };
+        await session.withTransaction(async () => {
+            // 1. Create Order
+            const [newOrder] = await order_model.create([{ ...data, total: total, ...update }], { session });
+            order = newOrder;
 
+            // 2. Update Product Quantities
             for (const product of products) {
-                const updatedProduct = await product_model.findByIdAndUpdate(product.productId, {
-                    $inc: {
-                        'quantity.inTrade': -product.quantity,
-                        'quantity.sold': product.quantity
+                const updatedProduct = await product_model.findByIdAndUpdate(
+                    product.productId,
+                    {
+                        $inc: {
+                            'quantity.inTrade': -product.quantity,
+                            'quantity.sold': product.quantity
+                        }
+                    },
+                    { session, new: true }
+                );
 
-                    }
-                }, { new: true }); // Lấy giá trị sau khi cập nhật
-                const newInTradeQuantity = updatedProduct.quantity.inTrade < 0 ? 0 : updatedProduct.quantity.inTrade;
-                // Cập nhật lại số lượng inTrade để không bao giờ nhỏ hơn 0
-                await product_model.findByIdAndUpdate(product.productId, {
-                    $set: {
-                        'quantity.inTrade': newInTradeQuantity
-                    }
-                });
+                if (!updatedProduct) {
+                    throw new Error(`Product not found: ${product.productId}`);
+                }
+
+                // Ensure inTrade doesn't go below 0
+                if (updatedProduct.quantity.inTrade < 0) {
+                    await product_model.findByIdAndUpdate(
+                        product.productId,
+                        { $set: { 'quantity.inTrade': 0 } },
+                        { session }
+                    );
+                }
             }
-            await sendEmail(from, modifiedData.emailReceiver, order_subject, order_text, order_form(modifiedData))
-            return res.status(201).json({ order });
-        }
-        else return res.status(400).json({ message: "Create order not successfully!" })
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
-    }
-}
+        });
 
-export const edit_order = async (req, res) => {
+        // After transaction succeeds, perform post-processing (Populate, Email)
+        const orderCreated = await order_model.findOne({ _id: order._id }).populate({
+            path: "products.productId",
+            model: "Product",
+            select: 'name price images'
+        });
+
+        const modifiedData = {
+            ...orderCreated._doc,
+            products: orderCreated.products.map(product => ({
+                ...product._doc,
+                productId: {
+                    ...product.productId._doc,
+                    images: product.productId._doc.images[0]
+                }
+            }))
+        };
+
+        await sendEmail(from, modifiedData.emailReceiver, order_subject, order_text, order_form(modifiedData));
+        
+        const io = req.app.get('socketio');
+        if (io) {
+            io.emit('new_order', { 
+                id: order._id, 
+                customer: `${order.firstNameReceiver} ${order.lastNameReceiver}`,
+                total: order.total
+            });
+        }
+
+        return res.status(201).json({ order });
+
+    } finally {
+        session.endSession();
+    }
+});
+
+export const edit_order = asyncHandler(async (req, res) => {
     const order_id = req.params.id;
     const { paymentStatus, shippingStatus, orderStatus, shippingCost, tax } = req.body;
     const data = {};
@@ -69,73 +103,63 @@ export const edit_order = async (req, res) => {
     if (shippingCost) data.shippingCost = shippingCost
     if (tax) data.tax = tax
 
-    try {
-        const order = await order_model.findOne({ _id: order_id });
-        if (!order) {
-            return res.status(404).json({ message: "Order does not exist" });
-        }
-        if (order.orderStatus === 'canceled' || order.orderStatus === 'done')
-            return res.status(404).json({ message: "You cant edit this order" });
+    const order = await order_model.findOne({ _id: order_id });
+    if (!order) {
+        return res.status(404).json({ message: "Order does not exist" });
+    }
+    if (order.orderStatus === 'canceled' || order.orderStatus === 'done')
+        return res.status(404).json({ message: "You cant edit this order" });
 
-        if (orderStatus === "canceled") {
-            const products = order.products;
-            for (const product of products) {
-                const originalProduct = await product_model.findById(product.productId);
-                if (originalProduct) {
-                    const newInTrade = originalProduct.quantity.inTrade + product.quantity;
-                    await product_model.findByIdAndUpdate(product.productId, {
-                        $set: { 'quantity.inTrade': newInTrade }
-                    });
-                }
+    if (orderStatus === "canceled") {
+        const products = order.products;
+        for (const product of products) {
+            const originalProduct = await product_model.findById(product.productId);
+            if (originalProduct) {
+                const newInTrade = originalProduct.quantity.inTrade + product.quantity;
+                await product_model.findByIdAndUpdate(product.productId, {
+                    $set: { 'quantity.inTrade': newInTrade }
+                });
             }
         }
-        const updated_order = await order_model.findOneAndUpdate(
-            { _id: order._id },
-            data,
-            { new: true }
-        );
-        if (updated_order)
-            return res.status(200).json({ ...updated_order._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
     }
-}
+    const updated_order = await order_model.findOneAndUpdate(
+        { _id: order._id },
+        data,
+        { new: true }
+    );
+    if (updated_order)
+        return res.status(200).json({ ...updated_order._doc });
+    return res.status(400).json({ message: "Update unsuccessfully " })
+});
 
-export const detail_order = async (req, res) => {
+export const detail_order = asyncHandler(async (req, res) => {
     const order_id = req.params.id;
-    try {
-        const data = await order_model.findOne({ _id: order_id }).populate({
-            path: "products.productId",
-            model: "Product",
-            select: 'name price images'
-        })
-        if (!data) {
-            return res.status(404).json({ message: "Order no exists" });
-        }
-        else {
-            console.log(data);
-
-            const modifiedData = {
-                ...data._doc,
-                products: data.products.map(product => ({
-                    ...product._doc,
-                    productId: {
-                        ...product.productId._doc,
-                        images: product.productId._doc.images[0]
-                    }
-                }))
-            };
-            return res.status(200).json(modifiedData);
-
-        }
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    const data = await order_model.findOne({ _id: order_id }).populate({
+        path: "products.productId",
+        model: "Product",
+        select: 'name price images'
+    })
+    if (!data) {
+        return res.status(404).json({ message: "Order no exists" });
     }
-}
+    else {
+        const modifiedData = {
+            ...data._doc,
+            products: data.products.map(product => ({
+                ...product._doc,
+                productId: {
+                    ...product.productId._doc,
+                    images: product.productId._doc.images[0]
+                }
+            }))
+        };
+        return res.status(200).json(modifiedData);
+
+    }
+});
 
 
-export const paginate_order = async (req, res) => {
+export const paginate_order = asyncHandler(async (req, res) => {
     const { name, orderStatus, paymentStatus, shippingStatus, sortCreated, page } = req.query
     const limit = 6;
     const skip = page ? (page - 1) * limit : 0;
@@ -165,66 +189,55 @@ export const paginate_order = async (req, res) => {
         }
     }
 
-    try {
-
-        const aggregationStages = [
-            {
-                $addFields: {
-                    fullName: { $concat: ["$firstNameReceiver", " ", "$lastNameReceiver"] }
-                }
-            },
-            {
-                $match: finalQuery
-            },
-            ...(Object.keys(sortKind).length !== 0 ? [{ $sort: sortKind }] : []),  // Add sort stage conditionally
-
-            {
-                $facet: {
-                    paginatedResults: [
-                        { $skip: skip },
-                        { $limit: limit }
-                    ],
-                    totalCount: [
-                        { $count: "count" }
-                    ]
-                }
+    const aggregationStages = [
+        {
+            $addFields: {
+                fullName: { $concat: ["$firstNameReceiver", " ", "$lastNameReceiver"] }
             }
-        ];
+        },
+        {
+            $match: finalQuery
+        },
+        ...(Object.keys(sortKind).length !== 0 ? [{ $sort: sortKind }] : []),  // Add sort stage conditionally
 
-        const [{ paginatedResults, totalCount }] = await order_model.aggregate(aggregationStages);
-
-        if (totalCount[0]?.count === 0 || paginatedResults?.length === 0) {
-            return res.status(404).json({ message: "No order " });
+        {
+            $facet: {
+                paginatedResults: [
+                    { $skip: skip },
+                    { $limit: limit }
+                ],
+                totalCount: [
+                    { $count: "count" }
+                ]
+            }
         }
+    ];
 
-        return res.status(200).json({ paginatedResults, total: totalCount[0].count, page, per_page: limit, skip, page: page ? page : 1 });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    const [{ paginatedResults, totalCount }] = await order_model.aggregate(aggregationStages);
+
+    if (totalCount[0]?.count === 0 || paginatedResults?.length === 0) {
+        return res.status(404).json({ message: "No order " });
     }
 
-}
+    return res.status(200).json({ paginatedResults, total: totalCount[0].count, page, per_page: limit, skip, page: page ? page : 1 });
+});
 
 
-export const all_order = async (req, res) => {
-
-    try {
-        const data = await order_model.find({}).populate({
-            path: "products.productId",
-            model: "Product",
-            select: 'name price images'
-        });
-        if (data.length === 0) {
-            return res.status(404).json({ message: "No order" });
-        }
-        else {
-            return res.status(200).json(data);
-        }
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+export const all_order = asyncHandler(async (req, res) => {
+    const data = await order_model.find({}).populate({
+        path: "products.productId",
+        model: "Product",
+        select: 'name price images'
+    });
+    if (data.length === 0) {
+        return res.status(404).json({ message: "No order" });
     }
-}
+    else {
+        return res.status(200).json(data);
+    }
+});
 
-export const order_by_user = async (req, res) => {
+export const order_by_user = asyncHandler(async (req, res) => {
     const userId = req.params.userId
     const { page, sortCreated } = req.query
     const limit = 6;
@@ -239,27 +252,22 @@ export const order_by_user = async (req, res) => {
             sortKind.createdAt = -1;
         }
     }
-    try {
-        const dataAll = await order_model.paginate(query, {
-            offset: skip, page: page, limit: limit, sort: sortKind,
-            populate: {
-                path: "products.productId",
-                model: "Product",
-                select: 'name price images'
-            }
-        });
-        if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No order" });
+    const dataAll = await order_model.paginate(query, {
+        offset: skip, page: page, limit: limit, sort: sortKind,
+        populate: {
+            path: "products.productId",
+            model: "Product",
+            select: 'name price images'
         }
-        return res.status(200).json({ ...dataAll });
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    });
+    if (dataAll.totalDocs === 0) {
+        return res.status(404).json({ message: "No order" });
     }
+    return res.status(200).json({ ...dataAll });
+});
 
-}
 
-
-export const paginate_order_user = async (req, res) => {
+export const paginate_order_user = asyncHandler(async (req, res) => {
     const { orderStatus, paymentStatus, shippingStatus, sortCreated, page } = req.query
     const limit = 6;
     const skip = page ? (page - 1) * limit : 0;
@@ -268,7 +276,6 @@ export const paginate_order_user = async (req, res) => {
     if (paymentStatus) query.paymentStatus = paymentStatus;
     if (shippingStatus) query.shippingStatus = shippingStatus;
     query.userId = user_id
-    console.log(query);
     if (orderStatus) query.orderStatus = orderStatus;
     let sortKind = {};
     if (sortCreated) {
@@ -279,22 +286,17 @@ export const paginate_order_user = async (req, res) => {
         }
     }
 
-    try {
-        const dataAll = await order_model.paginate(query, {
-            offset: skip, page: page, limit: limit, sort: sortKind,
-            populate: {
-                path: "products.productId",
-                model: "Product",
-                select: 'name price images'
-            }
-        });
-        if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No order " });
+    const dataAll = await order_model.paginate(query, {
+        offset: skip, page: page, limit: limit, sort: sortKind,
+        populate: {
+            path: "products.productId",
+            model: "Product",
+            select: 'name price images'
         }
-
-        return res.status(200).json(dataAll);
-    } catch (error) {
-        return res.status(500).json({ message: error.message });
+    });
+    if (dataAll.totalDocs === 0) {
+        return res.status(404).json({ message: "No order " });
     }
 
-}
+    return res.status(200).json(dataAll);
+});

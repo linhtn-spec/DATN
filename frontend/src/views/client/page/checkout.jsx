@@ -61,6 +61,7 @@ function Checkout() {
     const navigate = useNavigate();
     useEffect(() => {
         setProducts(cart?.state?.currentCart?.map(item => ({
+            id: item?.id,
             name: item?.name,
             originalPrice: item?.price,
             pricePromotion: item?.pricePromotion,
@@ -196,14 +197,16 @@ function Checkout() {
     }, [])
     return (
         <Flex className="checkout_page container" vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/checkout'}>CHECKOUT</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/checkout'}>CHECKOUT</NavLink>,
+                    },
+                ]}
+            />
             <Flex>
                 <Form
                     form={form}
@@ -369,6 +372,7 @@ function Checkout() {
                         </Flex>
                         <Space direction="vertical" style={{ flex: '1 1 300px', width: "100%" }}>
                             <Table
+                                rowKey="id"
                                 columns={cartColumns}
                                 dataSource={products}
                                 scroll={{ x: 'max-content' }}

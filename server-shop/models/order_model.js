@@ -177,4 +177,9 @@ order_schema.pre('findOneAndUpdate', async function (next) {
 
 
 order_schema.plugin(moongosePaginate)
+
+order_schema.index({ userId: 1 });
+order_schema.index({ orderStatus: 1 });
+order_schema.index({ createdAt: -1 });
+
 export default mongoose.model("Order", order_schema);

@@ -24,6 +24,8 @@ import router_sale from './router/sale_router.js';
 import router_statitics from './router/statitics_router.js';
 import router_upload from "./router/upload_router.js";
 import router_auth from "./router/user_router.js";
+import router_audit from "./router/audit_router.js";
+import { errorHandler } from "./middleware/error_handler.js";
 import { router as order_router } from './vnpay/vnpay.js';
 const app = Express();
 
@@ -153,11 +155,14 @@ app.use("/api/", router_comment)
 app.use("/api/", router_sale)
 app.use("/api/", router_consignment)
 app.use("/api/", router_statitics)
+app.use("/api/", router_audit)
 
 // Health check endpoint for Docker
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is healthy" });
 });
+
+app.use(errorHandler);
 
 connectToGoogle()
 

@@ -99,6 +99,7 @@ function CheckoutConfirm() {
 
     useEffect(() => {
         setProducts(cart?.state?.currentCart?.map(item => ({
+            id: item?.id,
             name: item?.name,
             originalPrice: item?.price,
             pricePromotion: item?.pricePromotion,
@@ -240,14 +241,16 @@ function CheckoutConfirm() {
     }, [])
     return (
         <Flex className="checkout_confirm_page container" vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/checkout/confirm'}>CHECKOUT CONFIRM</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/checkout/confirm'}>CHECKOUT CONFIRM</NavLink>,
+                    },
+                ]}
+            />
             <Flex>
                 <Form
                     form={form}
@@ -397,6 +400,7 @@ function CheckoutConfirm() {
                         </Flex>
                         <Space direction="vertical" style={{ width: "50%" }}>
                             <Table
+                                rowKey="id"
                                 columns={cartColumns}
                                 dataSource={products}
                                 pagination={{

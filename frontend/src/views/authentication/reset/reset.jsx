@@ -16,7 +16,7 @@ function Reset() {
             Notification({ message: "Reset password successfully!", type: "success" })
             navigate('/')
         },
-        onError: (error) => Notification({ message: `${error.response.data.message}`, type: "error" })
+        onError: (error) => Notification({ message: error?.response?.data, type: "error" })
 
     })
 

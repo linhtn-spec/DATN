@@ -76,4 +76,10 @@ const product_schema = new mongoose.Schema({
     })
 
 product_schema.plugin(moongosePaginate)
+
+product_schema.index({ price: 1 });
+product_schema.index({ categoryId: 1 });
+product_schema.index({ origin: 1 });
+product_schema.index({ isActive: 1 });
+
 export default mongoose.model("Product", product_schema);

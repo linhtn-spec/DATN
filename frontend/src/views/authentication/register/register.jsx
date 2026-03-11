@@ -15,7 +15,7 @@ function Register() {
             Notification({ message: "Register successfully!", type: "success" })
             navigate('/')
         },
-        onError: (error) => Notification({ message: `${error.response.data.message}`, type: "error" })
+        onError: (error) => Notification({ message: error?.response?.data, type: "error" })
     })
 
     useEffect(() => { document.title = "Sign up" }, [])

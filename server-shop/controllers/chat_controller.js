@@ -18,7 +18,7 @@ const getChatroomDetail = async (req, res) => {
                 }
             )
         if (!chatroom)
-            return res.status(404).json({ message: "Chat room not found" });
+            return res.status(200).json({ roomId: roomId, message: [] });
 
         const sortedMessages = chatroom.message.sort((a, b) => b.day - a.day);
 

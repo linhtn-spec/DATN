@@ -67,14 +67,16 @@ function Category() {
         <>
             <Banner_Big info={categoryName?.toUpperCase()} />
             <Flex className="category_page" vertical>
-                <Breadcrumb>
-                    <Breadcrumb.Item>
-                        <NavLink to={'/client'}>HOME</NavLink>
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item active>
-                        <NavLink to={`/client/category/${category_id}`}>{categoryName?.toUpperCase()}</NavLink>
-                    </Breadcrumb.Item>
-                </Breadcrumb>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/client'}>HOME</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={`/client/category/${category_id}`}>{categoryName?.toUpperCase()}</NavLink>,
+                        },
+                    ]}
+                />
                 <Flex className="category_pagination" justify="center"><p className=" text-left">Showing <b>{total !== 0 ? 1 : 0}</b> - <b>{total < 6 ? total : 6}</b> results of <b>{total}</b> results</p></Flex>
                 <Flex className="category_items" wrap="wrap" gap="50px">
                     {products.length !== 0 ? (

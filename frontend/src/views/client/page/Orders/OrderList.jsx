@@ -140,14 +140,16 @@ export const OrderList = () => {
 
     return (
         <Flex className="order_list" vertical align="center">
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={`/client/user/orders`}>ORDERS</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={`/client/user/orders`}>ORDERS</NavLink>,
+                    },
+                ]}
+            />
             <Table
                 bordered
                 columns={columns}

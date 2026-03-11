@@ -16,14 +16,16 @@ export const Wishlist = () => {
     }, [])
     return (
         <Flex className='wishlist' vertical justify='center'>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={`/user/wishlist`}>WISHLIST</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={`/user/wishlist`}>WISHLIST</NavLink>,
+                    },
+                ]}
+            />
             <div className="wishlist_item">
                 {state?.favourite && state?.favourite.length !== 0 ? (
                     state?.favourite.map((item, index) => (

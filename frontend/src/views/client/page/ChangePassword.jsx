@@ -27,14 +27,16 @@ export const ChangePassword = () => {
     }, [])
     return (
         <Flex vertical className='security' align='center'>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/user/change-password'}>CHANGE PASSWORD</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/user/change-password'}>CHANGE PASSWORD</NavLink>,
+                    },
+                ]}
+            />
             <Flex className='form_wrap'>
                 <Form
                     form={form}

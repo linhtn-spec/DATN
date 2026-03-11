@@ -99,22 +99,35 @@ function Home() {
             {expires && <Countdown expires={expires} />}
             <Flex className="product_hot container text-center" vertical style={{ padding: "40px 0", marginTop: "20px" }}>
                 <Flex gap='large' wrap='wrap' justify='center'>
-
-                    {!productHot ? <Empty description={"No products available"} /> : productHot.slice(0, 4).map((item, index) => {
-                        return <Skeleton key={index} loading={isLoadingSale} active>
+                    {querySale.isLoading ? (
+                        [...Array(4)].map((_, index) => (
+                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
+                        ))
+                    ) : productHot.length === 0 ? (
+                        <Empty description={"No products available"} />
+                    ) : (
+                        productHot.slice(0, 4).map((item) => (
                             <Product_Hot products={item} key={item.id} />
-                        </Skeleton>
-                    })}
+                        ))
+                    )}
                 </Flex>
             </Flex>
             <Flex className="product_list container" vertical style={{ padding: "40px 0", marginBottom: "40px" }}>
                 <Typography.Title level={2} style={{ textTransform: "uppercase", textAlign: "center", marginBottom: "30px", fontSize: "32px", fontWeight: "700" }}>New Products</Typography.Title>
                 <Flex className="products" gap='large' wrap='wrap' justify='center'>
-                    {!productNew ? <Empty description={"No products available"} /> : productNew.slice(1, 5).map((item, index) => {
-                        return <Skeleton loading={isLoadingNew} active key={index}>
-                            <Product_List products={item} key={item.id} />
-                        </Skeleton>
-                    })}
+                    {data ? (
+                        productNew.length === 0 ? (
+                            <Empty description={"No products available"} />
+                        ) : (
+                            productNew.slice(1, 5).map((item) => (
+                                <Product_List products={item} key={item.id} />
+                            ))
+                        )
+                    ) : (
+                        [...Array(4)].map((_, index) => (
+                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
+                        ))
+                    )}
                 </Flex>
             </Flex>
         </Flex>

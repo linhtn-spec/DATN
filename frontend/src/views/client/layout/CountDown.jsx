@@ -49,25 +49,24 @@ export const Countdown = (props) => {
                 <Typography.Title level={1} style={{ margin: 0, textTransform: 'uppercase', fontSize: '24px' }}>flash sale</Typography.Title>
                 <div className="countdown">
                     <article>
-                        <p>{days}
+                        <div>{days}
                             <h3>Days</h3>
-                        </p>
+                        </div>
                     </article>
                     <article>
-                        <p>{hours}
+                        <div>{hours}
                             <h3>Hours</h3>
-                        </p>
+                        </div>
                     </article>
                     <article>
-                        <p>{minutes}
+                        <div>{minutes}
                             <h3>Minutes</h3>
-                        </p>
+                        </div>
                     </article>
                     <article>
-                        <p>{seconds}
+                        <div>{seconds}
                             <h3>Seconds</h3>
-                        </p>
-
+                        </div>
                     </article>
                 </div>
             </Flex>

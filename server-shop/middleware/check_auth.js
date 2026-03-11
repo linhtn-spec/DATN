@@ -50,10 +50,10 @@ export const checkAuth = async (req, res, next) => {
 };
 
 
-export const authRole = (roleAllowed) => {
+export const authRole = (minRole) => {
     return (req, res, next) => {
         const { role } = req.user
-        if (roleAllowed.includes(role)) next()
-        else return res.status(401).json({ message: "You have no permission" })
+        if (role >= minRole) next()
+        else return res.status(403).json({ message: "You have no permission" })
     }
 }

@@ -20,14 +20,16 @@ function OrderSuccess() {
 
     return (
         <Flex className="order_success container" vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/checkout/success'}>ORDER SUCCESS</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/checkout/success'}>ORDER SUCCESS</NavLink>,
+                    },
+                ]}
+            />
             <Typography.Title level={1}>ORDER SUCCESS</Typography.Title >
             <Typography.Title level={2}>THANK YOU FOR YOUR PURCHASE!
             </Typography.Title >

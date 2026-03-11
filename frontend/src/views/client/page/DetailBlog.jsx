@@ -7,14 +7,16 @@ import '../style/DetailBlog.css'
 export const DetailBlog = () => {
     return (
         <Flex className="detail_blog" vertical align="center">
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/user'}>INFORMATION</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/user'}>INFORMATION</NavLink>,
+                    },
+                ]}
+            />
             <Flex className="content" vertical>
                 <Typography.Title>OVERVIEW OF THE WELCOME EVENT FROM THE WASHINGTON STATE DEPARTMENT OF AGRICULTURE</Typography.Title>
                 <Typography.Text>10, March, 2026</Typography.Text>

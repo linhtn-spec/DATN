@@ -4,19 +4,19 @@ import { Flex } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { optionCategory } from "../../../services/category_service";
+import { getFavourite } from "../../../services/favourite_service";
 import { logout, logoutGoogle } from "../../../services/user_service";
+import { ACTION_CART, CartContext } from "../../../store/cart";
+import { ACTION_FAVOURITE, FavouriteContext } from "../../../store/favourite";
+import { ACTION_ORDER } from "../../../store/order";
+import { OrderContext } from "../../../store/order/provider";
+import { ACTION_LOG } from "../../../store/typeLog";
+import { LogContext } from "../../../store/typeLog/provider";
 import { ACTION_USER, UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
+import { truncate } from "../../../utils/ellipse";
 import "./../style/header.css";
 import Modal_Search from "./modal_search";
-import { ACTION_CART, CartContext } from "../../../store/cart";
-import { LogContext } from "../../../store/typeLog/provider";
-import { ACTION_LOG } from "../../../store/typeLog";
-import { getFavourite } from "../../../services/favourite_service";
-import { ACTION_FAVOURITE, FavouriteContext } from "../../../store/favourite";
-import { OrderContext } from "../../../store/order/provider";
-import { ACTION_ORDER } from "../../../store/order";
-import { truncate } from "../../../utils/ellipse";
 
 function Headers() {
     const [searchView, setSearchView] = useState(false);
@@ -69,7 +69,7 @@ function Headers() {
             user?.dispatch({ type: ACTION_USER.LOGOUT })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 
@@ -82,7 +82,7 @@ function Headers() {
             logGoogle.dispatch({ type: ACTION_LOG.OUT })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
     const handleLogout = () => {
@@ -130,15 +130,15 @@ function Headers() {
                         </Flex>
                         <Flex className="header-link" justify="space-between">
                             <Link to={"home"}>home</Link>
-                            <Link className="main_menu" to={"#"}>
-                                <div>categories</div>
+                            <div className="main_menu">
+                                <div className="categories">categories</div>
                                 <div className="sub_menu">
                                     {category?.filter(item => item?.status)?.sort((a, b) => a.order - b.order)?.map((item) => (
                                         <NavLink key={item.id} to={`/client/category/${item.id}`}>{item.name}</NavLink>
                                     ))}
 
                                 </div>
-                            </Link>
+                            </div>
                             <Link to={"shop"}>shop</Link>
                         </Flex>
                         <div className="header-icon">
@@ -147,7 +147,7 @@ function Headers() {
                             </div>
 
                             <div>
-                                <button className="cart" onClick={handleCart}><NavLink><ShoppingCartOutlined style={{ fontSize: '18px' }} /></NavLink></button>
+                                <button className="cart" onClick={handleCart}><ShoppingCartOutlined style={{ fontSize: '18px' }} /></button>
                                 <div className="qty">{cart?.state?.currentCart?.length ?? 0}</div>
                             </div>
                             <>

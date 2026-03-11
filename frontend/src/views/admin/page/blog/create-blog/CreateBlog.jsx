@@ -35,7 +35,7 @@ function CreateBlog() {
             navigate('/admin/banner', { replace: true })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 

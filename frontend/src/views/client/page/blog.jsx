@@ -5,14 +5,16 @@ function Blog_Page() {
 
     return (
         <Flex className="blog_page container" vertical>
-            <Breadcrumb>
-                <Breadcrumb.Item>
-                    <NavLink to={'/client'}>HOME</NavLink>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item active>
-                    <NavLink to={'/client/blog'}>BLOG</NavLink>
-                </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/blog'}>BLOG</NavLink>,
+                    },
+                ]}
+            />
             <Flex className="wrap_blog" vertical>
                 <Flex className="item " >
                     <Flex className="img_hover_zoom">

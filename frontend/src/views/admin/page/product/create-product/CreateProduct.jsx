@@ -87,7 +87,7 @@ function CreateProduct() {
             navigate('/admin/product', { replace: true })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "error" })
+            Notification({ message: error?.response?.data, type: "error" })
         }
     })
 

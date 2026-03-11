@@ -32,8 +32,7 @@ function Product_LSView(props) {
             Notification({ message: "Add to wishlist successfully!", type: "success" })
         },
         onError: (error) => {
-            Notification({ message: `${error.response.data.message}`, type: "info" })
-
+            Notification({ message: error?.response?.data, type: "info" })
         }
     })
     const addToFavourite = () => {

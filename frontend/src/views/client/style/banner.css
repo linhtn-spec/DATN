@@ -8,18 +8,38 @@
     top: 50%;
     z-index: 20;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     background-color: #922a8d;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    transform: translateY(-50%);
-    display: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-51%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.ant-carousel .slick-prev::before,
+.ant-carousel .slick-next::before {
+    content: "" !important;
+    display: none !important;
+}
+
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-next:hover {
+    background-color: #b336ae !important;
+    transform: translateY(-51%) scale(1.1) !important;
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.4);
 }
 
 .ant-carousel:hover .slick-prev,
 .ant-carousel:hover .slick-next {
-    display: block;
+    opacity: 1;
+    visibility: visible;
 }
 
 @keyframes slideInFromLeft {
@@ -71,19 +91,19 @@
 }
 
 .ant-carousel:hover .slick-prev {
-    animation: slideInFromLeft 0.5s ease-in-out forwards;
+    animation: slideInFromLeft 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .ant-carousel:hover .slick-next {
-    animation: slideInFromRight 0.5s ease-in-out forwards;
+    animation: slideInFromRight 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .ant-carousel:not(:hover) .slick-prev {
-    animation: slideOutToLeft 0.5s ease-in-out forwards;
+    animation: slideOutToLeft 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .ant-carousel:not(:hover) .slick-next {
-    animation: slideOutToRight 0.5s ease-in-out forwards;
+    animation: slideOutToRight 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .slick-slider span {
