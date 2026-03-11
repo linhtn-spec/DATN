@@ -26,6 +26,9 @@
 
 .detail_order .ant-table-wrapper {
     margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .detail_order .sumary {

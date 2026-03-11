@@ -1,18 +1,18 @@
 import { CreditCardOutlined, DisconnectOutlined, MoneyCollectOutlined, SendOutlined, TruckOutlined } from "@ant-design/icons";
-import { Breadcrumb, Button, Descriptions, Flex, Form, Input, InputNumber, Radio, Select, Space, Table, Typography } from "antd";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import { Breadcrumb, Button, Descriptions, Flex, Form, Input, Radio, Select, Space, Table, Typography } from "antd";
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createBill } from "../../../services/payment_service";
-import "../style/checkout_confirm.css";
 import { ACTION_CART, CartContext } from "../../../store/cart";
-import { OrderContext } from "../../../store/order/provider";
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ACTION_ORDER } from "../../../store/order";
-import Notification from '../../../utils/configToastify'
+import { OrderContext } from "../../../store/order/provider";
+import Notification from '../../../utils/configToastify';
+import "../style/checkout_confirm.css";
 
-import { UserContext } from "../../../store/user";
 import { addOrder } from "../../../services/order_service";
+import { UserContext } from "../../../store/user";
 function CheckoutConfirm() {
     document.title = "Check out";
     const [form] = Form.useForm()
@@ -138,7 +138,7 @@ function CheckoutConfirm() {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => <p>{text}$</p>
+            render: (text) => <p>${Number(text).toFixed(2)}</p>
 
         },
         {
@@ -150,7 +150,7 @@ function CheckoutConfirm() {
             title: 'Subtotal',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            render: (text, row) => <p>${Number(row.price * row.quantity).toLocaleString('en-US')}</p>
+            render: (text, row) => <p>${Number(row.price * row.quantity).toFixed(2)}</p>
         },
 
     ];
@@ -159,7 +159,7 @@ function CheckoutConfirm() {
         {
             key: '1',
             label: 'Subtotal',
-            children: <Typography.Text>{subTotal}$</Typography.Text>,
+            children: <Typography.Text>${Number(subTotal).toFixed(2)}</Typography.Text>,
             span: 3
         },
         {

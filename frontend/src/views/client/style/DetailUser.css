@@ -3,7 +3,12 @@
 }
 
 .customer .form_wrap {
-    width: 500px;
+    width: 600px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
 }
 
 .customer .ant-upload-list {
@@ -17,11 +22,13 @@
 
 .customer input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .customer input::-webkit-outer-spin-button,
 .customer input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
 }
 
@@ -44,7 +51,14 @@
 }
 
 .customer .button_group .ant-btn {
-    width: 150px;
-    height: 43px;
-    font-weight: 500;
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.customer .button_group .ant-btn:hover {
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    transform: translateY(-2px);
 }

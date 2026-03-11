@@ -14,17 +14,20 @@
 }
 
 .cont-404 button {
-    padding: 12px 15px;
-    background-color: #9253ff;
-    border: none;
-    border-radius: 12px;
+    padding: 12px 24px;
+    background-color: #922a8d;
+    border: 2px solid #922a8d;
+    border-radius: 8px;
     cursor: pointer;
     color: #fff;
-    transition: 0.3s;
-    font-size: medium;
-    font-weight: bold
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .cont-404 button:hover {
-    background-color: #7E5702;
+    background-color: white;
+    color: #922a8d;
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    transform: translateY(-2px);
 }

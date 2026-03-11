@@ -11,9 +11,9 @@
 }
 
 .chatbox_header {
-    height: 2.5rem;
+    height: 3rem;
     width: 100%;
-    background-color: rgb(99, 164, 220);
+    background-color: #922a8d;
     padding-right: 10px;
 }
 
@@ -22,7 +22,8 @@
     margin: 0 !important;
     color: white !important;
     padding: 1rem !important;
-    font-size: 1.5rem !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
 }
 
 .chatbox_header--btn {
@@ -40,7 +41,8 @@
 
 .chatbox_footer {
     height: 3.5rem;
-    background-color: #53bcd3;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
 }
 
 .ant-float-btn-group-wrap {
