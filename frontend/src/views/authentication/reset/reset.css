@@ -1,5 +1,5 @@
 .reset_wrap {
-    background: url("/data/banner/big_banner.png") no-repeat;
+    background: url("/data/banner/big_banner.jpg") no-repeat;
     background-size: cover;
     width: 100vw;
     height: 100vh;
@@ -7,9 +7,13 @@
 
 .reset_panel {
     width: 30vw;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding-top: 0;
-    border-radius: 13px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .reset_panel .ant-form-item-label {
@@ -59,8 +63,22 @@
 }
 
 .reset_panel .button_group .reset {
-    width: 344px !important;
-    height: 40px;
-    font-weight: 500;
+    width: 100% !important;
+    height: 48px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #922a8d;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
     margin-bottom: 20px;
+}
+
+.reset_panel .button_group .reset:hover {
+    background-color: white !important;
+    color: #922a8d !important;
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    transform: translateY(-2px);
+    border: 2px solid #922a8d;
 }

@@ -1,16 +1,21 @@
 .register_wrap {
-    background: url("/data/banner/big_banner.png") no-repeat;
+    background: url("/data/banner/big_banner.jpg") no-repeat;
     background-size: cover;
     width: 100vw;
     height: 100vh;
 }
 
 .register_panel {
-    width: 30vw;
-    background-color: rgba(255, 255, 255, 0.6);
+    width: 35vw;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding-top: 0;
-    border-radius: 13px;
-    height: 100vh;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    height: auto;
+    max-height: 90vh;
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-y: auto;
@@ -68,9 +73,23 @@
 }
 
 .register_panel .button_group .register {
-    width: 344px !important;
-    height: 40px;
-    font-weight: 500;
+    width: 100% !important;
+    height: 48px;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #922a8d;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.register_panel .button_group .register:hover {
+    background-color: white !important;
+    color: #922a8d !important;
+    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    transform: translateY(-2px);
+    border: 2px solid #922a8d;
 }
 
 .register_panel .ant-input-number-handler-wrap {
@@ -85,6 +104,7 @@
 
 .register_panel input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .register_panel .login {
@@ -94,5 +114,6 @@
 .register_panel input::-webkit-outer-spin-button,
 .register_panel input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
 }
