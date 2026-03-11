@@ -14,6 +14,14 @@
 .category_items .item img {
     height: 340px;
     width: 100%;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    transition: transform 0.4s ease;
+}
+
+.category_items .item:hover img {
+    transform: scale(1.03);
 }
 
 
@@ -22,9 +30,17 @@
     height: 450px;
     min-width: 340px;
     width: calc(90%/3);
-    border-radius: 15px;
+    border-radius: 12px;
     margin-bottom: 20px;
     position: relative;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+}
+
+.category_items .item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
 }
 
 

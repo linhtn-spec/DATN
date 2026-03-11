@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Descriptions, Flex, Form, Input, InputNumber, Radio, Select, Space, Table, Typography } from "antd";
+import { Breadcrumb, Button, Descriptions, Flex, Form, Input, Radio, Select, Space, Table, Typography } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../style/checkout.css";
@@ -93,7 +93,7 @@ function Checkout() {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => <p>${text}</p>
+            render: (text) => <p>${Number(text).toFixed(2)}</p>
 
         },
         {
@@ -182,8 +182,8 @@ function Checkout() {
                     }}
                     onFinish={onFinish}
                 >
-                    <Flex gap='large'>
-                        <Flex vertical style={{ width: "50%" }}>
+                    <Flex gap='large' wrap='wrap'>
+                        <Flex vertical style={{ flex: '1 1 300px', width: "100%" }}>
                             <Form.Item
                                 label="First name"
                                 name="firstNameReceiver"
@@ -336,10 +336,11 @@ function Checkout() {
                                 </Radio.Group>
                             </Form.Item>
                         </Flex>
-                        <Space direction="vertical" style={{ width: "50%" }}>
+                        <Space direction="vertical" style={{ flex: '1 1 300px', width: "100%" }}>
                             <Table
                                 columns={cartColumns}
                                 dataSource={products}
+                                scroll={{ x: 'max-content' }}
                                 pagination={{
                                     hideOnSinglePage: true, pageSize: 3, total: cart?.state?.currentCart?.length, defaultCurrent: 1, showSizeChanger: false
                                 }}

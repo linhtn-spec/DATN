@@ -14,3 +14,27 @@
   font-family: "Roboto", sans-serif;
   scroll-behavior: smooth;
 }
+
+/* Global Ant Design Overrides */
+.ant-pagination-item {
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ant-pagination-item-active {
+  background-color: #922a8d !important;
+  border-color: #922a8d !important;
+}
+
+.ant-pagination-item-active a {
+  color: white !important;
+}
+
+.ant-pagination-item:hover:not(.ant-pagination-item-active) {
+  border-color: #922a8d !important;
+}
+
+.ant-pagination-item:hover:not(.ant-pagination-item-active) a {
+  color: #922a8d !important;
+}

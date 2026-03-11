@@ -1,11 +1,11 @@
-import { Badge, Button, Flex, Typography } from "antd";
-import "./../style/product_hot.css";
-import { Link, useNavigate } from "react-router-dom";
 import { ShoppingOutlined } from "@ant-design/icons";
-import { ACTION_CART, CartContext } from "../../../store/cart";
+import { Badge, Button, Flex, Typography } from "antd";
 import { useContext } from "react";
-import Notification from "../../../utils/configToastify";
+import { Link, useNavigate } from "react-router-dom";
+import { ACTION_CART, CartContext } from "../../../store/cart";
 import { UserContext } from "../../../store/user";
+import Notification from "../../../utils/configToastify";
+import "./../style/product_hot.css";
 
 function Product_Hot(props) {
     const product = props.products;
@@ -37,20 +37,10 @@ function Product_Hot(props) {
                 <Typography.Title level={4} className="title">{product?.name}</Typography.Title >
                 <Typography.Text className="price_promo">
                     <Typography.Text className="promotion">
-                        {parseFloat(product?.price * (1 - parseFloat(product?.sale) / 100)).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD', // Adjust currency code as needed
-                            minimumFractionDigits: 0, // Set minimum decimal places to 0
-                            maximumFractionDigits: 0,  // Adjust currency code as needed
-                        })}
+                        ${parseFloat(product?.price * (1 - parseFloat(product?.sale) / 100)).toFixed(2)}
                     </Typography.Text>
                     <Typography.Text className="price">
-                        {product?.price.toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD', // Adjust currency code as needed
-                            minimumFractionDigits: 0, // Set minimum decimal places to 0
-                            maximumFractionDigits: 0,  // Adjust currency code as needed
-                        })}
+                        ${product?.price}
                     </Typography.Text>
                 </Typography.Text>
             </Flex>

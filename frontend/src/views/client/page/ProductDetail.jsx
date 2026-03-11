@@ -243,14 +243,14 @@ function ProductDetail() {
             key: '2',
             label: 'Comments',
             children:
-                <Flex gap={25} vertical className="comments">
+                <Flex gap={24} vertical className="comments">
                     {comments.length !== 0
                         ? (comments.map(item => (
-                            <Flex align='center' gap={50} key={item?.id}>
+                            <Flex align='flex-start' gap={32} key={item?.id} className="comment-item">
                                 <Avatar size={50} src={item?.image} icon={<UserOutlined />} />
                                 <Flex vertical>
-                                    <Typography.Title level={5} style={{ marginBottom: 0, fontSize: "19px" }} >{item?.firstName + " " + item?.lastName}</Typography.Title>
-                                    <Typography.Text style={{ fontSize: "16px" }}>{item?.content}</Typography.Text>
+                                    <Typography.Title level={5} style={{ marginBottom: 8, fontSize: "16px", fontWeight: "600" }} >{item?.firstName + " " + item?.lastName}</Typography.Title>
+                                    <Typography.Text style={{ fontSize: "15px", color: "#555", lineHeight: "1.5" }}>{item?.content}</Typography.Text>
                                 </Flex>
                             </Flex>
                         ))
@@ -327,7 +327,7 @@ function ProductDetail() {
                                             <Typography.Title level={1} className="title">{product?.name}</Typography.Title>
                                             <Flex gap={30}>
                                                 <Typography.Title level={3}>
-                                                    {product?.pricePromotion !== 0 && <>{product?.price * (1 - parseFloat(product?.pricePromotion) / 100)}$</>}
+                                                    {product?.pricePromotion !== 0 && <>${Number(product?.price * (1 - parseFloat(product?.pricePromotion) / 100)).toFixed(2)}</>}
                                                     {product?.price === 0 ? "" : <span className="discount" style={(!product?.pricePromotion ? { color: "red", fontWeight: 600, fontSize: "24px", textDecoration: "none" } : {})}>{`$${product?.price}`}</span>}
                                                 </Typography.Title>
                                                 <Button shape="circle" className="fav" onClick={() => addToFavourite()}><HeartOutlined /></Button>
@@ -357,7 +357,7 @@ function ProductDetail() {
                                                     </Flex>
                                                 </Flex>
                                                 <Flex style={{ height: "50%" }}>
-                                                    <Button variant="warning" className="cart" onClick={addToCart}>Add to cart</Button>
+                                                    <Button variant="warning" className="cart" disabled={product?.quantity === 0} onClick={addToCart}>Add to cart</Button>
                                                 </Flex>
                                             </Flex>
                                         }

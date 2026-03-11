@@ -1,3 +1,4 @@
+import { router } from "../../routes/route";
 import { updateLocalStorage } from "../../utils/updateLocalStorage";
 import { ACTION_USER } from "./action";
 
@@ -15,6 +16,7 @@ export const userReducer = (state = initialUserState, action) => {
         case ACTION_USER.LOGOUT: {
             const newState = { ...state, currentUser: null };
             updateLocalStorage(newState, "user");
+            router.navigate("/")
             return newState;
         }
         default:

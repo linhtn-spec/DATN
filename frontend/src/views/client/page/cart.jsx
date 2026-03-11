@@ -1,10 +1,10 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Flex, Table, Typography } from 'antd';
-import { NavLink, useNavigate } from 'react-router-dom';
-import "./../style/cart.css";
 import { useContext, useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
 import Notification from '../../../utils/configToastify';
+import "./../style/cart.css";
 
 function Cart() {
     document.title = "Cart";
@@ -97,7 +97,7 @@ function Cart() {
             dataIndex: 'price',
             key: 'adpricedress',
             width: "150px",
-            render: (text) => <Typography.Text>${text}</Typography.Text>
+            render: (text) => <Typography.Text>${Number(text).toFixed(2)}</Typography.Text>
 
         },
         {
@@ -156,6 +156,7 @@ function Cart() {
                 bordered
                 columns={columns}
                 dataSource={products}
+                scroll={{ x: 'max-content' }}
                 pagination={{ hideOnSinglePage: true, pageSize: 3, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
 
             />

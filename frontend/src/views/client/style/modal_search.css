@@ -182,3 +182,16 @@
     top: 16px;
     right: 13px;
 }
+
+@media (max-width: 768px) {
+    .modal_search .wrap_query input {
+        width: 90%;
+        font-size: 18px;
+    }
+    .modal_search .suggestions_list {
+        width: 90%;
+    }
+    .modal_search .wrap_close {
+        padding-right: 20px;
+    }
+}

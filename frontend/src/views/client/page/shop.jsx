@@ -165,7 +165,7 @@ function Shop() {
                     <NavLink to={'/client/shop'}>SHOP</NavLink>
                 </Breadcrumb.Item>
             </Breadcrumb>
-            <Flex className='products_filter' justify="space-evenly">
+            <Flex className='products_filter' justify="space-evenly" wrap="wrap">
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
                         <Typography.Title level={5}>Categories</Typography.Title>

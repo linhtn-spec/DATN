@@ -1,12 +1,13 @@
 .banner_big {
     background-image: url("../../../assets/big_banner.png");
+    background-size: cover;
     height: 60vh;
     width: 100%;
 
 }
 
 .banner_big h1 {
-    font-size:50px;
+    font-size: 50px;
     color: rgb(255, 255, 255);
     text-shadow: 3px -1px 8px rgb(29 27 27);
     text-align: center;
@@ -14,4 +15,3 @@
     line-height: 60vh;
     text-transform: uppercase;
 }
-

@@ -19,3 +19,16 @@
 .ant-layout-footer {
     padding: 0;
 }
+
+@media (max-width: 768px) {
+    .wrap-footer {
+        height: auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .footer {
+        flex-direction: column;
+        gap: 30px;
+        padding: 0 20px;
+    }
+}

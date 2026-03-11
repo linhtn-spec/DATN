@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { Empty, Flex, Skeleton, Typography } from "antd";
+import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { listProduct } from "../../../services/product_service";
+import { latestSale } from "../../../services/sale_service";
 import { loginByGoogle } from "../../../services/user_service";
+import { LogContext } from "../../../store/typeLog/provider";
+import { ACTION_USER, UserContext } from "../../../store/user";
 import Banner from "../layout/banner";
 import { Countdown } from "../layout/CountDown";
 import Product_Hot from "../layout/product_hot";
 import Product_List from "../layout/product_list";
 import RecommendedProduct from "../layout/RecommendedProduct";
-import { ACTION_USER, UserContext } from "../../../store/user";
-import Notification from "../../../utils/configToastify";
-import { LogContext } from "../../../store/typeLog/provider";
-import { latestSale, listSale } from "../../../services/sale_service";
-import dayjs from "dayjs";
 
 function Home() {
     document.title = "Home";
@@ -97,9 +96,9 @@ function Home() {
         <Flex vertical>
             <Banner />
             <RecommendedProduct />
-            <Countdown expires={expires} />
-            <Flex className="product_hot container text-center" vertical >
-                <Flex gap='large'>
+            {expires && <Countdown expires={expires} />}
+            <Flex className="product_hot container text-center" vertical style={{ padding: "40px 0", marginTop: "20px" }}>
+                <Flex gap='large' wrap='wrap' justify='center'>
 
                     {!productHot ? <Empty description={"No products available"} /> : productHot.slice(0, 4).map((item, index) => {
                         return <Skeleton key={index} loading={isLoadingSale} active>
@@ -108,9 +107,9 @@ function Home() {
                     })}
                 </Flex>
             </Flex>
-            <Flex className="product_list container" vertical>
-                <Typography.Title level={1}>new products</Typography.Title>
-                <Flex className="products" gap='large'>
+            <Flex className="product_list container" vertical style={{ padding: "40px 0", marginBottom: "40px" }}>
+                <Typography.Title level={2} style={{ textTransform: "uppercase", textAlign: "center", marginBottom: "30px", fontSize: "32px", fontWeight: "700" }}>New Products</Typography.Title>
+                <Flex className="products" gap='large' wrap='wrap' justify='center'>
                     {!productNew ? <Empty description={"No products available"} /> : productNew.slice(1, 5).map((item, index) => {
                         return <Skeleton loading={isLoadingNew} active key={index}>
                             <Product_List products={item} key={item.id} />
