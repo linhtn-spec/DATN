@@ -75,6 +75,12 @@ const product_schema = new mongoose.Schema({
         timestamps: true
     })
 
+product_schema.post('init', function (doc) {
+    if (typeof doc.quantity === 'number') {
+        doc.quantity = { inTrade: doc.quantity, sold: 0, unSold: 0 };
+    }
+});
+
 product_schema.plugin(moongosePaginate)
 
 product_schema.index({ price: 1 });

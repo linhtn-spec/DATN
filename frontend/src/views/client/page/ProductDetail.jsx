@@ -153,10 +153,11 @@ function ProductDetail() {
 
 
     const plus = () => {
-        if (Number(quantity) < Number(product.quantity)) {
+        const availableQty = typeof product.quantity === 'object' ? product.quantity.inTrade : product.quantity;
+        if (Number(quantity) < Number(availableQty)) {
             setQuantity(prevQuantity => Number(prevQuantity) + 1);
         } else {
-            setQuantity(Number(product.quantity));
+            setQuantity(Number(availableQty));
         }
     }
 
@@ -368,7 +369,7 @@ function ProductDetail() {
                                                 <Button shape="circle" className="fav" onClick={() => addToFavourite()}><HeartOutlined /></Button>
                                             </Flex>
                                             <hr />
-                                            <p>Stock status: <span className="stock_status">{product?.quantity === 0 ? `Out of stock` : `In stock`}</span></p>
+                                            <p>Stock status: <span className="stock_status">{(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0 ? `Out of stock` : `In stock`}</span></p>
                                             <p>Category: <span className="category">{product?.category}</span></p>
                                             <p>Unit: <span className="category">{product?.unit}</span></p>
                                             <Rate allowHalf value={product?.stars} onChange={(e) => rateProduct.mutate({ stars: e, productId: product?.id })} />
@@ -378,25 +379,26 @@ function ProductDetail() {
 
                                             <Flex vertical gap={8} style={{ height: "30vh" }}>
                                                 <Flex className='form-group' gap={7}>
-                                                    <Input disabled={product?.quantity === 0} value={quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
+                                                    <Input disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} value={quantity} className="form-control quantity" style={{ textAlign: "center", width: "100%" }} onChange={(e) => {
                                                         const val = parseInt(e.target.value);
+                                                        const availableQty = typeof product.quantity === 'object' ? product.quantity.inTrade : product.quantity;
                                                         if (!isNaN(val) && val > 0) {
-                                                            setQuantity(Math.min(val, product.quantity));
+                                                            setQuantity(Math.min(val, availableQty));
                                                         } else if (e.target.value === '') {
                                                             setQuantity(1);
                                                         }
                                                     }} />
                                                     <Flex vertical justify="space-between">
-                                                        <Button variant="light" onClick={plus} style={{ height: "45%" }} disabled={product?.quantity === 0}>
+                                                        <Button variant="light" onClick={plus} style={{ height: "45%" }} disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0}>
                                                             <PlusOutlined />
                                                         </Button>
-                                                        <Button variant="light" onClick={minus} style={{ height: "45%" }} disabled={product?.quantity === 0}>
+                                                        <Button variant="light" onClick={minus} style={{ height: "45%" }} disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0}>
                                                             <MinusOutlined />
                                                         </Button >
                                                     </Flex>
                                                 </Flex>
                                                 <Flex style={{ height: "50%" }}>
-                                                    <Button variant="warning" className="cart" disabled={product?.quantity === 0} onClick={addToCart}>Add to cart</Button>
+                                                    <Button variant="warning" className="cart" disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} onClick={addToCart}>Add to cart</Button>
                                                 </Flex>
                                             </Flex>
                                         }

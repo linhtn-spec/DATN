@@ -117,11 +117,11 @@ function ProductGrid(props) {
                 </Typography.Text>
             </Flex>
             {(type !== 'wishlist') ?
-                ((!product?.status || !product?.quantity) ?
+                ((!product?.status || (typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0) ?
                     <Button className="buy" onClick={() => navigate(`/client/product/${product?.id}`)}>view detail</Button> :
                     <Button icon={<ShoppingOutlined />} className="buy" onClick={addToCart}>add to cart</Button>
                 ) : (
-                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={product?.quantity === 0} onClick={addToCart}>Move to cart</Button>
+                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} onClick={addToCart}>Move to cart</Button>
                 )
             }
 

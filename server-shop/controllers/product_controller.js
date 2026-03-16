@@ -6,11 +6,6 @@ export const add_product = async (req, res) => {
     try {
         const data = req.body;
         
-        // Optimize quantity input: convert number to object
-        if (typeof data.quantity === 'number') {
-            data.quantity = { inTrade: data.quantity, sold: 0, unSold: 0 };
-        }
-
         const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'i') } });
         if (checkExistName) {
             return res.status(400).json({ message: "Product name is existed" });
@@ -49,6 +44,11 @@ export const edit_product = async (req, res) => {
 
         // Optimize quantity update
         if (quantity !== undefined) {
+            // Ensure product.quantity is an object if we're doing partial updates
+            if (typeof product.quantity === 'number') {
+                product.quantity = { inTrade: product.quantity, sold: 0, unSold: 0 };
+            }
+
             if (typeof quantity === 'number') {
                 data.quantity = {
                     ...product.quantity,
@@ -97,8 +97,11 @@ export const detail_product = async (req, res) => {
             return res.status(404).json({ message: "Product no exists" });
         }
         else {
-
-            return res.status(200).json({ ...product._doc });
+            const productDoc = { ...product._doc };
+            if (typeof productDoc.quantity === 'number') {
+                productDoc.quantity = { inTrade: productDoc.quantity, sold: 0, unSold: 0 };
+            }
+            return res.status(200).json(productDoc);
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });

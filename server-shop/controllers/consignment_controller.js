@@ -14,11 +14,18 @@ export const add_consignment = async (req, res) => {
             return res.status(404).json({ message: "One or more products not existed." });
         }
         const createdResult = await consignment_model.create({ products, importDate: new Date(importDate), money, userId })
-        products.forEach(async item => {
+        for (const item of products) {
+            const product = await product_model.findById(item.productId);
+            if (product && typeof product.quantity === 'number') {
+                // Migrate to object format on-the-fly
+                await product_model.findByIdAndUpdate(item.productId, {
+                    $set: { quantity: { inTrade: product.quantity, sold: 0, unSold: 0 } }
+                });
+            }
             await product_model.findByIdAndUpdate(item.productId, {
                 $inc: { 'quantity.inTrade': item.quantity }
             });
-        });
+        }
         return res.status(201).json(createdResult)
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -48,11 +55,23 @@ export const update_consignment = async (req, res) => {
 
 
             await Promise.all(products.map(async item => {
+                const product = await product_model.findById(item.productId);
+                if (product && typeof product.quantity === 'number') {
+                    await product_model.findByIdAndUpdate(item.productId, {
+                        $set: { quantity: { inTrade: product.quantity, sold: 0, unSold: 0 } }
+                    });
+                }
                 await product_model.findByIdAndUpdate(item.productId, { $inc: { 'quantity.inTrade': item.quantity } });
             }));
 
             await Promise.all(productsToDelete.map(async productId => {
-                const productToDelete = findConsignment.products.find(item => item.productId === productId);
+                const productToDelete = findConsignment.products.find(item => item.productId.toString() === productId.toString());
+                const product = await product_model.findById(productId);
+                if (product && typeof product.quantity === 'number') {
+                    await product_model.findByIdAndUpdate(productId, {
+                        $set: { quantity: { inTrade: product.quantity, sold: 0, unSold: 0 } }
+                    });
+                }
                 await product_model.findByIdAndUpdate(productId, { $inc: { 'quantity.inTrade': -productToDelete.quantity } });
             }));
 

@@ -141,12 +141,6 @@ export const ProductList = () => {
       align: 'center',
     },
     {
-      title: 'Qty',
-      dataIndex: 'quantity',
-      width: 80,
-      align: 'center',
-    },
-    {
       title: 'Origin',
       dataIndex: 'origin',
       width: 100,
