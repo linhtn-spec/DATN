@@ -3,6 +3,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from "../models/user_model.js";
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 dotenv.config();
 
 
@@ -37,28 +38,14 @@ export const connectToGoogle = () => {
                     const newUser = {
                         googleID: profile?.id,
                         email: profile?.emails[0]?.value,
-                        firstName: profile?.name?.familyName,
-                        lastName: profile?.name?.givenName,
+                        firstName: profile?.name?.familyName || profile?.displayName || "Google",
+                        lastName: profile?.name?.givenName || "User",
                         image: profile?.photos[0]?.value,
-                        username: profile?.name?.familyName,
+                        username: profile?.emails[0]?.value.split('@')[0] || profile?.id,
                         role: 0
                     }
                     const user = await User.create(newUser)
-                    delete user.password
-                    const dataForAccessToken = {
-                        username: user.username,
-                        role: user.role,
-                        user_id: user._id
-                    };
-
-                    const accessToken = jwt.sign(dataForAccessToken, accessTokenSecret, { expiresIn: accessTokenLife });
-
-                    const dataForRefreshToken = {
-                        username: user.username,
-                        user_id: user._id
-                    };
-                    const refreshToken = jwt.sign(dataForRefreshToken, refreshTokenSecret, { expiresIn: refreshTokenLife });
-                    return done(null, { ...user, accessToken: accessToken, refreshToken: refreshToken });
+                    return done(null, user);
                 }
             }
         })

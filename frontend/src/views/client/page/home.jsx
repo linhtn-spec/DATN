@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { listProduct } from "../../../services/product_service";
 import { latestSale } from "../../../services/sale_service";
 import { loginByGoogle } from "../../../services/user_service";
+import { ACTION_LOG } from "../../../store/typeLog/action";
 import { LogContext } from "../../../store/typeLog/provider";
 import { ACTION_USER, UserContext } from "../../../store/user";
 import Banner from "../layout/banner";
@@ -89,9 +90,10 @@ function Home() {
             if (!getUser?.isSuccess) return
             else {
                 dispatch({ type: ACTION_USER.LOGIN, payload: getUser?.data?.data })
+                logGoogle.dispatch({ type: ACTION_LOG.OUT })
             }
         }
-    }, [getUser?.isSuccess, getUser?.data, getUser?.error, dispatch, logGoogle?.state])
+    }, [getUser?.isSuccess, getUser?.data, getUser?.error, dispatch, logGoogle])
     return (
         <Flex vertical>
             <Banner />

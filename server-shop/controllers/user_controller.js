@@ -55,8 +55,9 @@ export const login = async (req, res) => {
         else {
             refreshToken = user.refreshToken;
         }
-        res.cookie("refresh_token", refreshToken, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
-        res.cookie("access_token", accessToken, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
+        const isProduction = process.env.NODE_ENV === 'production';
+        res.cookie("refresh_token", refreshToken, { httpOnly: true, secure: isProduction, sameSite: isProduction ? "strict" : "lax", maxAge: 60 * 60 * 1000 * 24 });
+        res.cookie("access_token", accessToken, { httpOnly: true, secure: isProduction, sameSite: isProduction ? "strict" : "lax", maxAge: 60 * 60 * 1000 * 24 });
         return res.status(200).json({
             user_id: user._id,
             firstName: user.firstName,
@@ -159,8 +160,9 @@ export const loginByGoogle = async (req, res) => {
     else {
         refreshToken = user.refreshToken;
     }
-    res.cookie("refresh_token", refreshToken, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
-    res.cookie("access_token", accessToken, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
+    const isProduction = process.env.NODE_ENV === 'production';
+    res.cookie("refresh_token", refreshToken, { httpOnly: true, secure: isProduction, sameSite: isProduction ? "strict" : "lax", maxAge: 60 * 60 * 1000 * 24 });
+    res.cookie("access_token", accessToken, { httpOnly: true, secure: isProduction, sameSite: isProduction ? "strict" : "lax", maxAge: 60 * 60 * 1000 * 24 });
     return res.status(200).json({
         user_id: user._id,
         firstName: user.firstName,

@@ -25,14 +25,17 @@ const user_schema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function () {
+            // Only required if googleID is not present
+            return !this.googleID;
+        },
         min: 6,
         max: 50,
         trim: true
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
         enum: ["female", "male", "other"],
         default: "other",
         trim: true
