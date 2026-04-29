@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
     AUTH_REQUIRED_PATHS,
     PUBLIC_PATHS,
-    ROLE_BLOCKED_PATHS,
     ROLE_HOME_PATH,
 } from "../config/roleConfig.jsx";
 import { UserContext } from "../store/user";
@@ -39,16 +38,9 @@ export const ProtectRoute = ({ children }) => {
 
         // ── Logged in: redirect to correct home if on wrong base path ────
         const homePath = ROLE_HOME_PATH[role];
-        if (homePath && !pathname.startsWith(homePath)) {
+        if (homePath && pathname === '/') {
             navigate(homePath, { replace: true });
             return;
-        }
-
-        // ── Check role-specific blocked paths ────────────────────────────
-        const blocked = ROLE_BLOCKED_PATHS[role] ?? [];
-        const isBlocked = blocked.some((p) => pathname.startsWith(p));
-        if (isBlocked) {
-            navigate("/admin", { replace: true });
         }
     }, [user, navigate, pathname, role]);
 

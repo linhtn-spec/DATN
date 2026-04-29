@@ -9,6 +9,8 @@ import { ModalProvider } from "../store/modal/provider";
 import { OrderProvider } from "../store/order/provider";
 import { LastViewProductProvider } from "../store/productLastView";
 import { LogProvider } from "../store/typeLog/provider";
+import { ROLE } from "../constants/roles";
+import { RoleRoute } from "../components/RoleRoute";
 
 // Admin pages
 import PageNotFound from "../views/admin/page/404notfound";
@@ -129,140 +131,149 @@ const adminRoutes = [
       </ProtectRoute>
     ),
     children: [
-      { path: "overview", element: <Overview /> },
-
+      // ── STAFF (1) and above ──────────────────────────────────────────────
       {
-        path: "category",
-        element: <Outlet />,
+        element: <RoleRoute minRole={ROLE.STAFF} />,
         children: [
-          { index: true, element: <CategoryList /> },
-          { path: "create", element: <CreateCategory /> },
-          { path: ":category_id", element: <UpdateCategory /> },
-        ],
-      },
-
-      {
-        path: "banner",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <BannerList /> },
-          { path: "create", element: <CreateBanner /> },
-          { path: ":banner_id", element: <UpdateBanner /> },
-        ],
-      },
-
-      {
-        path: "product",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ProductList /> },
-          { path: "create", element: <CreateProduct /> },
           {
-            path: ":product_id",
-            element: <DetailProduct />,
+            path: "orders",
+            element: <Outlet />,
             children: [
-              { index: true, element: <UpdateProduct /> },
+              { index: true, element: <ListOfOrder /> },
+              { path: ":order_id", element: <DetailOrder /> },
+            ],
+          },
+          {
+            path: "customers",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfCustomer /> },
               {
-                path: "comments",
-                element: <Outlet />,
+                path: ":user_id",
+                element: <Infomation />,
                 children: [
-                  { index: true, element: <ListOfComment /> },
-                  { path: ":comment_id", element: <DetailComment /> },
-                ],
-              },
-              {
-                path: "ratings",
-                element: <Outlet />,
-                children: [
-                  { index: true, element: <ListOfRating /> },
-                  { path: ":rating_id", element: <DetailRating /> },
+                  { index: true, element: <DetailCustomer /> },
+                  {
+                    path: "orders",
+                    element: <Outlet />,
+                    children: [
+                      { index: true, element: <ListOfOrderCustomer /> },
+                      { path: ":order_id", element: <DetailOrderCustomer /> },
+                    ],
+                  },
                 ],
               },
             ],
           },
-        ],
-      },
-
-      {
-        path: "users",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ListOfUser /> },
-          { path: "create", element: <CrudUser /> },
-          { path: ":user_id", element: <CrudUser /> },
-        ],
-      },
-
-      {
-        path: "customers",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ListOfCustomer /> },
           {
-            path: ":user_id",
-            element: <Infomation />,
+            path: "customer-support",
+            element: <Outlet />,
             children: [
-              { index: true, element: <DetailCustomer /> },
+              { index: true, element: <ManageChat /> },
+              { path: ":chat_id", element: <SupportChat /> },
+            ],
+          },
+          {
+            path: "comments",
+            element: <ListOfCommentGlobal />,
+          },
+        ]
+      },
+
+      // ── MANAGER (2) and above ────────────────────────────────────────────
+      {
+        element: <RoleRoute minRole={ROLE.MANAGER} />,
+        children: [
+          {
+            path: "category",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <CategoryList /> },
+              { path: "create", element: <CreateCategory /> },
+              { path: ":category_id", element: <UpdateCategory /> },
+            ],
+          },
+          {
+            path: "banner",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <BannerList /> },
+              { path: "create", element: <CreateBanner /> },
+              { path: ":banner_id", element: <UpdateBanner /> },
+            ],
+          },
+          {
+            path: "product",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ProductList /> },
+              { path: "create", element: <CreateProduct /> },
               {
-                path: "orders",
-                element: <Outlet />,
+                path: ":product_id",
+                element: <DetailProduct />,
                 children: [
-                  { index: true, element: <ListOfOrderCustomer /> },
-                  { path: ":order_id", element: <DetailOrderCustomer /> },
+                  { index: true, element: <UpdateProduct /> },
+                  {
+                    path: "comments",
+                    element: <Outlet />,
+                    children: [
+                      { index: true, element: <ListOfComment /> },
+                      { path: ":comment_id", element: <DetailComment /> },
+                    ],
+                  },
+                  {
+                    path: "ratings",
+                    element: <Outlet />,
+                    children: [
+                      { index: true, element: <ListOfRating /> },
+                      { path: ":rating_id", element: <DetailRating /> },
+                    ],
+                  },
                 ],
               },
             ],
           },
-        ],
+          {
+            path: "sales",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfSale /> },
+              { path: "create", element: <DetailSale /> },
+              { path: ":sale_id", element: <DetailSale /> },
+            ],
+          },
+          {
+            path: "consignment",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfConsignment /> },
+              { path: "create", element: <DetailConsignment /> },
+              { path: ":consignment_id", element: <DetailConsignment /> },
+            ],
+          },
+          {
+            path: "users",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfUser /> },
+              { path: "create", element: <CrudUser /> },
+              { path: ":user_id", element: <CrudUser /> },
+            ],
+          },
+          {
+            path: "ratings",
+            element: <ListOfRatingGlobal />,
+          },
+        ]
       },
 
+      // ── ADMIN (3) only ───────────────────────────────────────────────────
       {
-        path: "orders",
-        element: <Outlet />,
+        element: <RoleRoute minRole={ROLE.ADMIN} />,
         children: [
-          { index: true, element: <ListOfOrder /> },
-          { path: ":order_id", element: <DetailOrder /> },
-        ],
-      },
-
-      {
-        path: "sales",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ListOfSale /> },
-          { path: "create", element: <DetailSale /> },
-          { path: ":sale_id", element: <DetailSale /> },
-        ],
-      },
-
-      {
-        path: "consignment",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ListOfConsignment /> },
-          { path: "create", element: <DetailConsignment /> },
-          { path: ":consignment_id", element: <DetailConsignment /> },
-        ],
-      },
-
-      {
-        path: "customer-support",
-        element: <Outlet />,
-        children: [
-          { index: true, element: <ManageChat /> },
-          { path: ":chat_id", element: <SupportChat /> },
-        ],
-      },
-
-      {
-        path: "comments",
-        element: <ListOfCommentGlobal />,
-      },
-
-      {
-        path: "ratings",
-        element: <ListOfRatingGlobal />,
-      },
+          { path: "overview", element: <Overview /> },
+        ]
+      }
     ],
   },
 ];

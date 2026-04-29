@@ -56,32 +56,7 @@ export const PUBLIC_PATHS = [
     '/',
 ];
 
-/**
- * Admin sub-paths blocked per role.
- *
- * Logic: role >= minRole (inherited), so we only need to block paths
- * that the role CANNOT access despite being in /admin.
- *
- * STAFF   (1): Can only access: orders, customers, customer-support, comments
- * MANAGER (2): Can access everything EXCEPT overview (statistics)
- * ADMIN   (3): Can access everything — no blocked paths
- */
-export const ROLE_BLOCKED_PATHS = {
-    [ROLE.STAFF]: [
-        '/admin/product',
-        '/admin/consignment',
-        '/admin/users',
-        '/admin/sales',
-        '/admin/category',
-        '/admin/banner',
-        '/admin/overview',
-        '/admin/ratings',
-    ],
-    [ROLE.MANAGER]: [
-        '/admin/overview',
-    ],
-    [ROLE.ADMIN]: [],
-};
+// Blocked paths configuration removed — protection is now handled declaratively by RoleRoute in route.jsx
 
 /**
  * Returns the sidebar navigation items for a given role.
