@@ -10,10 +10,10 @@ const router = Router();
 
 router.post('/comment', checkAuth, authRole(Role.CUSTOMER), create_validator, add_comment)
 
-router.put('/comment/:id', checkAuth, authRole(Role.MANAGER), auditLogger("EDIT_COMMENT", "Comment"), edit_validator, update_comment)
+router.put('/comment/:id', checkAuth, authRole(Role.STAFF), auditLogger("EDIT_COMMENT", "Comment"), edit_validator, update_comment)
 
-router.get('/comment', checkAuth, authRole(Role.MANAGER), paginate_comment)
-router.get('/comment/:id', checkAuth, authRole(Role.MANAGER), detail_comment)
+router.get('/comment', checkAuth, authRole(Role.STAFF), paginate_comment)
+router.get('/comment/:id', checkAuth, authRole(Role.STAFF), detail_comment)
 router.get('/comment/options/all', all_comment)
 router.get('/comment/product/all', comment_of_product)
 router.get('/comment/product/paginate/:product_id', comment_product_paginate)

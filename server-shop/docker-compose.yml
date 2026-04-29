@@ -190,7 +190,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       URL_DB: mongodb://mongo-primary:27017,mongo-secondary1:27017,mongo-secondary2:27017/shop?replicaSet=rs0
       ELASTICSEARCH_HOST: http://es-container:9200
       ELASTICSEARCH_USERNAME: elastic
@@ -214,7 +214,7 @@ services:
       VNPAY_TMNCODE: ${VNP_TMNCODE}
       VNPAY_HASHSECRET: ${VNP_HASH_SECRET}
       WHITE_URL_1: ${WHITE_URL_1:-http://localhost}
-      WHITE_URL_2: ${WHITE_URL_2:-http://localhost:5173}
+      WHITE_URL_2: ${WHITE_URL_2:-http://localhost}
     networks:
       - shop-server
     depends_on:

@@ -6,19 +6,19 @@ import { Role } from "../helper/enum.js";
 const router = Router()
 
 
-router.get("/count_product_category", checkAuth, authRole(Role.MANAGER), count_product_category)
+router.get("/count_product_category", checkAuth, authRole(Role.ADMIN), count_product_category)
 
-router.get("/count_order", checkAuth, authRole(Role.MANAGER), count_order)
+router.get("/count_order", checkAuth, authRole(Role.ADMIN), count_order)
 
-router.get("/count_statitics", checkAuth, authRole(Role.MANAGER), count_statitics)
+router.get("/count_statitics", checkAuth, authRole(Role.ADMIN), count_statitics)
 
 
-router.get("/order_per_month", checkAuth, authRole(Role.MANAGER), countMonthlyOrders)
+router.get("/order_per_month", checkAuth, authRole(Role.ADMIN), countMonthlyOrders)
 
-router.get("/order_per_day", checkAuth, authRole(Role.MANAGER), countDailyOrders)
+router.get("/order_per_day", checkAuth, authRole(Role.ADMIN), countDailyOrders)
 
-router.get("/unsold", checkAuth, authRole(Role.MANAGER), unsold)
+router.get("/unsold", checkAuth, authRole(Role.ADMIN), unsold)
 
-router.get("/statitics_perday", checkAuth, authRole(Role.MANAGER), countAddedPerDay)
+router.get("/statitics_perday", checkAuth, authRole(Role.ADMIN), countAddedPerDay)
 
 export default router

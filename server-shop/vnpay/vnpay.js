@@ -103,7 +103,7 @@ router.get('/vnpay_return', async function (req, res, next) {
                 }))
             };
             await sendEmail(from, modifiedData.emailReceiver, order_subject, order_text, order_form(modifiedData))
-            res.render('success', { code: vnp_Params['vnp_ResponseCode'] })
+            res.render('success', { code: vnp_Params['vnp_ResponseCode'], frontendUrl: process.env.FRONTEND_URL || 'http://localhost' })
         }
         // return res.status(200).json({ message: 'success', url: 'checkout/success', code: vnp_Params['vnp_ResponseCode'] })
     } else {

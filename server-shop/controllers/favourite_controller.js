@@ -47,7 +47,7 @@ export const getFavourite = asyncHandler(async (req, res) => {
         }
     })
     if (!favourite)
-        return res.status(404).json({ message: "No favourite" });
+        return res.status(200).json({ products: [] });
     else {
         const now = new Date();
         const productsWithPromotion = favourite.products.map(product => {

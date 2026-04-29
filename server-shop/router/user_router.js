@@ -48,7 +48,7 @@ router.post('/logout/google', function (req, res, next) {
 router.get('/users/options/all', getAll)
 router.get('/users/:user_id', detailUser)
 router.get('/user', checkAuth, authRole(Role.CUSTOMER), getCurrentUser)
-router.get('/users', checkAuth, authRole(Role.ADMIN), paginate_user)
+router.get('/users', checkAuth, authRole(Role.MANAGER), paginate_user)
 router.get('/customers', checkAuth, authRole(Role.STAFF), paginate_customer)
 router.get('/users/available/all', checkAuth, authRole(Role.MANAGER), get_all_user_available)
 
@@ -56,13 +56,13 @@ router.put('/users/:user_id', checkAuth, authRole(Role.CUSTOMER), auditLogger("U
 router.put('/reset-password', forgot_password_validator, resetPassword)
 router.put('/reset-password-current', checkAuth, authRole(Role.CUSTOMER), auditLogger("RESET_PASSWORD", "User"), reset_password_validator, resetPasswordCurrentUser)
 
-router.delete('/users/delete/:user_id', checkAuth, authRole(Role.ADMIN), auditLogger("DELETE_USER", "User"), deleteUser)
+router.delete('/users/delete/:user_id', checkAuth, authRole(Role.MANAGER), auditLogger("DELETE_USER", "User"), deleteUser)
 
 router.post('/register', authLimiter, register_validator, register);
 router.post('/login', authLimiter, login_validator, login);
 router.post('/logout', checkAuth, authRole(Role.CUSTOMER), logout);
 router.post('/forget-password', authLimiter, send_email_validator, forgetPassword)
-router.post('/users', checkAuth, authRole(Role.ADMIN), auditLogger("CREATE_USER", "User"), create_validator, create_user)
+router.post('/users', checkAuth, authRole(Role.MANAGER), auditLogger("CREATE_USER", "User"), create_validator, create_user)
 
 router.post('/refresh_token', refresh_token)
 
