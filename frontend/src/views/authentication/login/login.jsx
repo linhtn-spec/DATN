@@ -22,7 +22,8 @@ function Login() {
             dispatch({ type: ACTION_USER.LOGIN, payload: response.data })
             if (response.data.role === 0)
                 navigate('/client')
-            navigate('/admin')
+            else
+                navigate('/admin')
         },
         onError: (error) => {
             Notification({ message: error?.response?.data, type: "error" })

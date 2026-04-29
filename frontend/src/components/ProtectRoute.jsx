@@ -33,24 +33,12 @@ const ROLE_BLOCKED_PATHS = {
         "/admin/category",
         "/admin/banner",
         "/admin/overview",
-    ],
-    [ROLE.ADMIN]: [
-        "/admin/product",
-        "/admin/consignment",
-        "/admin/sales",
-        "/admin/category",
-        "/admin/banner",
-        "/admin/overview",
-        "/admin/orders",
-        "/admin/customer-support",
-        "/admin/customers",
+        "/admin/ratings",
     ],
     [ROLE.MANAGER]: [
-        "/admin/customer-support",
-        "/admin/users",
-        "/admin/orders",
-        "/admin/customers",
+        "/admin/overview",
     ],
+    [ROLE.ADMIN]: [],
 };
 
 export const ProtectRoute = ({ children }) => {

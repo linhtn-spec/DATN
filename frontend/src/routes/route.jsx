@@ -42,6 +42,8 @@ import { DetailSale } from "../views/admin/page/sale/DetailSale";
 import { ListOfSale } from "../views/admin/page/sale/ListOfSale";
 import { CrudUser } from "../views/admin/page/user/CrudUser";
 import { ListOfUser } from "../views/admin/page/user/ListOfUser";
+import { ListOfCommentGlobal } from "../views/admin/page/comment/ListOfCommentGlobal";
+import { ListOfRatingGlobal } from "../views/admin/page/rating/ListOfRatingGlobal";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -250,6 +252,16 @@ const adminRoutes = [
           { index: true, element: <ManageChat /> },
           { path: ":chat_id", element: <SupportChat /> },
         ],
+      },
+
+      {
+        path: "comments",
+        element: <ListOfCommentGlobal />,
+      },
+
+      {
+        path: "ratings",
+        element: <ListOfRatingGlobal />,
       },
     ],
   },

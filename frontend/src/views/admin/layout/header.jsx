@@ -51,7 +51,7 @@ function HeaderClient() {
     }
     const content = (
         <Flex vertical gap={5} style={{ textDecoration: 'none' }}>
-            {userRole === ROLE.ADMIN && < NavLink style={{ color: "#000" }} to={`/admin/users/${state?.currentUser?.user_id}`}>Infomation</NavLink>}
+            {userRole >= ROLE.STAFF && < NavLink style={{ color: "#000" }} to={`/admin/users/${state?.currentUser?.user_id}`}>Infomation</NavLink>}
             <NavLink style={{ color: "#000" }} onClick={handleLogout}>Logout</NavLink>
         </Flex >
     );

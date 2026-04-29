@@ -1,5 +1,6 @@
 import {
     AccountBookOutlined,
+    CommentOutlined,
     FileZipOutlined,
     FolderOpenOutlined,
     FolderOutlined,
@@ -9,6 +10,7 @@ import {
     PictureOutlined,
     PieChartOutlined,
     ProjectOutlined,
+    StarOutlined,
     UserOutlined,
     UsergroupDeleteOutlined
 } from '@ant-design/icons';
@@ -69,22 +71,24 @@ function Navbar() {
     console.log(location.pathname.startsWith('/admin/category'));
 
     const items = [
-        userRole === ROLE.MANAGER && getItem(<NavLink to={"overview"}>Overview</NavLink>, 'overview', <PieChartOutlined />),
-        userRole === ROLE.MANAGER && getItem('Product & Category', '2', <FolderOpenOutlined />, [
+        userRole >= ROLE.ADMIN && getItem(<NavLink to={"overview"}>Overview</NavLink>, 'overview', <PieChartOutlined />),
+        userRole >= ROLE.MANAGER && getItem('Product & Category', '2', <FolderOpenOutlined />, [
             getItem(<NavLink to={"category"}>Category</NavLink>, 'category', <FolderOutlined />),
             getItem(<NavLink to={"product"}>Product</NavLink>, 'product', <FileZipOutlined />)
         ]),
-        userRole === ROLE.STAFF && getItem('Order & Customer', '5', <UsergroupDeleteOutlined />, [
+        userRole >= ROLE.STAFF && getItem('Order & Customer', '5', <UsergroupDeleteOutlined />, [
             getItem(<NavLink to={"orders"}>Order</NavLink>, 'orders', < AccountBookOutlined />),
             getItem(<NavLink to={"customers"}>Customer</NavLink>, 'customers', <UserOutlined />),
         ]),
-        userRole === ROLE.MANAGER && getItem(<NavLink to={"banner"}>Banner</NavLink>, 'banner', <PictureOutlined />),
-        userRole === ROLE.ADMIN && getItem(<NavLink to={"users"}>User</NavLink>, 'users', <ProjectOutlined />),
-        userRole === ROLE.STAFF && getItem(<NavLink to={"customer-support"}>Customer support</NavLink>, 'customer-support', <MessageOutlined />),
-        userRole === ROLE.MANAGER && getItem(<NavLink to={"consignment"}>Consignment</NavLink>, 'consignment', <HomeOutlined />),
-        userRole === ROLE.MANAGER && getItem(<NavLink to={"sales"}>Sales</NavLink>, 'sales', <PercentageOutlined />),
+        userRole >= ROLE.MANAGER && getItem(<NavLink to={"banner"}>Banner</NavLink>, 'banner', <PictureOutlined />),
+        userRole >= ROLE.MANAGER && getItem(<NavLink to={"users"}>User</NavLink>, 'users', <ProjectOutlined />),
+        userRole >= ROLE.STAFF && getItem(<NavLink to={"customer-support"}>Customer support</NavLink>, 'customer-support', <MessageOutlined />),
+        userRole >= ROLE.STAFF && getItem(<NavLink to={"comments"}>Phản hồi</NavLink>, 'comments', <CommentOutlined />),
+        userRole >= ROLE.MANAGER && getItem(<NavLink to={"ratings"}>Đánh giá</NavLink>, 'ratings', <StarOutlined />),
+        userRole >= ROLE.MANAGER && getItem(<NavLink to={"consignment"}>Consignment</NavLink>, 'consignment', <HomeOutlined />),
+        userRole >= ROLE.MANAGER && getItem(<NavLink to={"sales"}>Sales</NavLink>, 'sales', <PercentageOutlined />),
 
-    ];
+    ].filter(Boolean);
 
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)} className="side_bar" style={{
