@@ -1,46 +1,19 @@
 import { useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ROLE } from "../constants/roles";
+import {
+    AUTH_REQUIRED_PATHS,
+    PUBLIC_PATHS,
+    ROLE_BLOCKED_PATHS,
+    ROLE_HOME_PATH,
+} from "../config/roleConfig.jsx";
 import { UserContext } from "../store/user";
 
-// Maps each role to its allowed base path
-const ROLE_HOME_PATH = {
-    [ROLE.CUSTOMER]: "/client",
-    [ROLE.STAFF]: "/admin",
-    [ROLE.MANAGER]: "/admin",
-    [ROLE.ADMIN]: "/admin",
-};
-
-// Paths that require authentication (logged-in user)
-const AUTH_REQUIRED_PATHS = [
-    "/client/cart",
-    "/client/checkout",
-    "/client/checkout/confirm",
-    "/client/checkout/success",
-    "/client/user",
-];
-
-// Paths accessible without login
-const PUBLIC_PATHS = ["/client", "/register", "/forget-password", "/change-password", "/"];
-
-// Paths blocked per role (roles can access /admin base but not these sub-paths)
-const ROLE_BLOCKED_PATHS = {
-    [ROLE.STAFF]: [
-        "/admin/product",
-        "/admin/consignment",
-        "/admin/users",
-        "/admin/sales",
-        "/admin/category",
-        "/admin/banner",
-        "/admin/overview",
-        "/admin/ratings",
-    ],
-    [ROLE.MANAGER]: [
-        "/admin/overview",
-    ],
-    [ROLE.ADMIN]: [],
-};
-
+/**
+ * ProtectRoute — Role-based route guard.
+ *
+ * All permission logic (home paths, blocked paths, public paths) is
+ * defined in `src/config/roleConfig.js`. Edit that file to change permissions.
+ */
 export const ProtectRoute = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -50,7 +23,7 @@ export const ProtectRoute = ({ children }) => {
     const role = user?.role;
 
     useEffect(() => {
-        // Not logged in
+        // ── Not logged in ────────────────────────────────────────────────
         if (!user) {
             const needsAuth = AUTH_REQUIRED_PATHS.some((p) => pathname.includes(p));
             if (needsAuth) {
@@ -64,14 +37,14 @@ export const ProtectRoute = ({ children }) => {
             return;
         }
 
-        // Logged in — ensure user is on their allowed base path
+        // ── Logged in: redirect to correct home if on wrong base path ────
         const homePath = ROLE_HOME_PATH[role];
         if (homePath && !pathname.startsWith(homePath)) {
             navigate(homePath, { replace: true });
             return;
         }
 
-        // Check role-specific blocked paths
+        // ── Check role-specific blocked paths ────────────────────────────
         const blocked = ROLE_BLOCKED_PATHS[role] ?? [];
         const isBlocked = blocked.some((p) => pathname.startsWith(p));
         if (isBlocked) {
