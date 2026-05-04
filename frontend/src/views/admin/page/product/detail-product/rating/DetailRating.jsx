@@ -54,7 +54,12 @@ export function DetailRating() {
         onSuccess: () => {
             Notification({ message: "Update status of rating successfully!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
-            navigate(`/admin/product/${product_id}/ratings`, { replace: true })
+            queryClient.invalidateQueries({ queryKey: ['ratings_global_list'] })
+            if (product_id) {
+                navigate(`/admin/product/${product_id}/ratings`, { replace: true })
+            } else {
+                navigate(`/admin/ratings`, { replace: true })
+            }
         },
         onError: () => {
             Notification({ message: "Update status of rating unsuccessfully!", type: "error" })

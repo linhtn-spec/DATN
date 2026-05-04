@@ -265,7 +265,11 @@ const adminRoutes = [
           },
           {
             path: "ratings",
-            element: <ListOfRatingGlobal />,
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfRatingGlobal /> },
+              { path: ":rating_id", element: <DetailRating /> },
+            ],
           },
           {
             path: "blog",
