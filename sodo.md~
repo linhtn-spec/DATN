@@ -859,17 +859,18 @@
 		    (object UseCaseDiagram "tongquat"
 			quid       	"66447CA303AD"
 			title      	"tongquat"
-			zoom       	57
+			zoom       	58
 			max_height 	28350
 			max_width  	21600
-			origin_x   	33
-			origin_y   	0
+			origin_x   	0
+			origin_y   	534
 			items      	(list diagram_item_list
 			    (object UseCaseView "Use Case View::DangKy" @1
-				location   	(1002, 2745)
+				location   	(1009, 2738)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -878,7 +879,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@1
-				    location   	(1002, 2887)
+				    location   	(1009, 2876)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -887,14 +888,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447D4B020D"
-				width      	230
-				height     	126)
+				quidu      	"66447D4B020D")
 			    (object UseCaseView "Use Case View::QuanLyDonHangNhanVien" @2
-				location   	(4382, 1843)
+				location   	(4389, 1836)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -903,7 +903,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@2
-				    location   	(4382, 1985)
+				    location   	(4389, 1974)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -912,14 +912,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DC60119"
-				width      	230
-				height     	126)
+				quidu      	"66447DC60119")
 			    (object UseCaseView "Use Case View::QuanLyKhachHang" @3
-				location   	(4419, 1437)
+				location   	(4426, 1430)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -928,7 +927,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@3
-				    location   	(4419, 1579)
+				    location   	(4426, 1568)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -937,14 +936,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DBD02C9"
-				width      	230
-				height     	126)
+				quidu      	"66447DBD02C9")
 			    (object UseCaseView "Use Case View::ChamSocKhachHang" @4
-				location   	(4279, 1089)
+				location   	(4286, 1082)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -953,7 +951,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@4
-				    location   	(4279, 1231)
+				    location   	(4286, 1220)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -962,17 +960,16 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447D500352"
-				width      	230
-				height     	126)
+				quidu      	"66447D500352")
 			    (object ClassView "Class" "Use Case View::KhachHangVangLai" @5
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(1659, 2707)
+				location   	(1771, 2656)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -981,7 +978,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@5
-				    location   	(1659, 2867)
+				    location   	(1771, 2816)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	325
@@ -994,10 +991,11 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$6" @6
-				location   	(1356, 2722)
+				location   	(1414, 2690)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1010,33 +1008,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$7" @7
 					Parent_View 	@6
-					location   	(1053, 2616)
+					location   	(1111, 2584)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F1300F7"
 					client     	@6
 					supplier   	@1
 					vertices   	(list Points
-					    (1356, 2722)
-					    (1114, 2736))
+					    (1414, 2690)
+					    (1117, 2721))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$8" @8
 					Parent_View 	@6
-					location   	(1053, 2616)
+					location   	(1111, 2584)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F1300F9"
 					client     	@6
 					supplier   	@5
 					vertices   	(list Points
-					    (1356, 2722)
-					    (1598, 2709))
+					    (1414, 2690)
+					    (1711, 2660))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::TimKiemSanPham" @9
-				location   	(2340, 3017)
+				location   	(2500, 3072)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1045,7 +1044,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@9
-				    location   	(2340, 3159)
+				    location   	(2500, 3210)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1054,14 +1053,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DF20061"
-				width      	230
-				height     	126)
+				quidu      	"66447DF20061")
 			    (object AssociationViewNew "$UNNAMED$15" @10
-				location   	(1970, 2846)
+				location   	(2166, 2880)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1074,33 +1072,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$16" @11
 					Parent_View 	@10
-					location   	(1667, 2740)
+					location   	(1863, 2774)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F530340"
 					client     	@10
 					supplier   	@9
 					vertices   	(list Points
-					    (1970, 2846)
-					    (2224, 2961))
+					    (2166, 2880)
+					    (2400, 3013))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$17" @12
 					Parent_View 	@10
-					location   	(1667, 2740)
+					location   	(1863, 2774)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F530343"
 					client     	@10
 					supplier   	@5
 					vertices   	(list Points
-					    (1970, 2846)
-					    (1716, 2731))
+					    (2166, 2880)
+					    (1932, 2747))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::XemDanhSachSanPham" @13
-				location   	(2362, 2583)
+				location   	(2538, 2612)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1109,7 +1108,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@13
-				    location   	(2362, 2725)
+				    location   	(2538, 2750)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1118,14 +1117,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E6B0100"
-				width      	230
-				height     	126)
+				quidu      	"66447E6B0100")
 			    (object AssociationViewNew "$UNNAMED$12" @14
-				location   	(1981, 2646)
+				location   	(2127, 2632)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1138,33 +1136,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$13" @15
 					Parent_View 	@14
-					location   	(1678, 2540)
+					location   	(1824, 2526)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F40022B"
 					client     	@14
 					supplier   	@13
 					vertices   	(list Points
-					    (1981, 2646)
-					    (2247, 2599))
+					    (2127, 2632)
+					    (2427, 2615))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$14" @16
 					Parent_View 	@14
-					location   	(1678, 2540)
+					location   	(1824, 2526)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F40022D"
 					client     	@14
 					supplier   	@5
 					vertices   	(list Points
-					    (1981, 2646)
-					    (1716, 2693))
+					    (2127, 2632)
+					    (1828, 2649))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::XemChiTietSanPham" @17
-				location   	(2264, 3565)
+				location   	(2459, 3618)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1173,7 +1172,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@17
-				    location   	(2264, 3707)
+				    location   	(2459, 3756)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1182,14 +1181,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E630331"
-				width      	230
-				height     	126)
+				quidu      	"66447E630331")
 			    (object AssociationViewNew "$UNNAMED$9" @18
-				location   	(2042, 3253)
+				location   	(2170, 3215)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1202,33 +1200,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$10" @19
 					Parent_View 	@18
-					location   	(1739, 3147)
+					location   	(1867, 3109)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F3F00FA"
 					client     	@18
 					supplier   	@17
 					vertices   	(list Points
-					    (2042, 3253)
-					    (2220, 3503))
+					    (2170, 3215)
+					    (2416, 3560))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$11" @20
 					Parent_View 	@18
-					location   	(1739, 3147)
+					location   	(1867, 3109)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F3F00FD"
 					client     	@18
 					supplier   	@5
 					vertices   	(list Points
-					    (2042, 3253)
-					    (1865, 3003))
+					    (2170, 3215)
+					    (1924, 2871))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::MuaHang" @21
-				location   	(3405, 3365)
+				location   	(3605, 3395)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1237,7 +1236,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@21
-				    location   	(3405, 3507)
+				    location   	(3605, 3533)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1246,14 +1245,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447FEF009A"
-				width      	230
-				height     	126)
+				quidu      	"66447FEF009A")
 			    (object UseCaseView "Use Case View::QuanLyDonHangKhachHang" @22
-				location   	(4392, 2256)
+				location   	(4539, 2495)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1262,7 +1260,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@22
-				    location   	(4392, 2398)
+				    location   	(4539, 2633)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1271,14 +1269,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E1B01E2"
-				width      	230
-				height     	126)
+				quidu      	"66447E1B01E2")
 			    (object UseCaseView "Use Case View::LienHeCuaHang" @23
-				location   	(4178, 3386)
+				location   	(4304, 3377)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1287,7 +1284,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@23
-				    location   	(4178, 3528)
+				    location   	(4304, 3515)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1296,14 +1293,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447D5B0103"
-				width      	230
-				height     	126)
+				quidu      	"66447D5B0103")
 			    (object UseCaseView "Use Case View::QuenMatKhau" @24
-				location   	(3766, 3387)
+				location   	(3932, 3395)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1312,7 +1308,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@24
-				    location   	(3766, 3529)
+				    location   	(3932, 3533)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1321,14 +1317,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E400260"
-				width      	230
-				height     	126)
+				quidu      	"66447E400260")
 			    (object UseCaseView "Use Case View::QuanLyTaiKhoanKhachHang" @25
-				location   	(4445, 2668)
+				location   	(4541, 2774)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1337,7 +1332,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@25
-				    location   	(4445, 2810)
+				    location   	(4541, 2912)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1346,14 +1341,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E2E00D9"
-				width      	230
-				height     	126)
+				quidu      	"66447E2E00D9")
 			    (object UseCaseView "Use Case View::QuanLyDanhSachYeuThich" @26
-				location   	(4462, 3107)
+				location   	(4566, 3112)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1362,7 +1356,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@26
-				    location   	(4462, 3249)
+				    location   	(4566, 3250)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1371,14 +1365,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E390043"
-				width      	230
-				height     	126)
+				quidu      	"66447E390043")
 			    (object UseCaseView "Use Case View::QuanLyNhapKho" @27
-				location   	(2522, 780)
+				location   	(2555, 595)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1387,7 +1380,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@27
-				    location   	(2522, 922)
+				    location   	(2555, 733)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1396,14 +1389,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DB00075"
-				width      	230
-				height     	126)
+				quidu      	"66447DB00075")
 			    (object UseCaseView "Use Case View::QuanLyTaiKhoanAdmin" @28
-				location   	(1282, 1780)
+				location   	(1176, 1623)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1412,7 +1404,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@28
-				    location   	(1282, 1922)
+				    location   	(1176, 1761)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1421,14 +1413,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E2302B9"
-				width      	230
-				height     	126)
+				quidu      	"66447E2302B9")
 			    (object UseCaseView "Use Case View::QuanLyDanhMuc" @29
-				location   	(2078, 678)
+				location   	(2085, 671)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1437,7 +1428,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@29
-				    location   	(2078, 820)
+				    location   	(2085, 809)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1446,14 +1437,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447D900295"
-				width      	230
-				height     	126)
+				quidu      	"66447D900295")
 			    (object UseCaseView "Use Case View::QuanLySanPham" @30
-				location   	(1797, 1495)
+				location   	(1804, 1488)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1462,7 +1452,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@30
-				    location   	(1797, 1637)
+				    location   	(1804, 1626)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1471,14 +1461,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DA30335"
-				width      	230
-				height     	126)
+				quidu      	"66447DA30335")
 			    (object UseCaseView "Use Case View::QuanLyBanner" @31
-				location   	(1589, 1146)
+				location   	(1596, 1139)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1487,7 +1476,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@31
-				    location   	(1589, 1288)
+				    location   	(1596, 1277)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1496,14 +1485,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DA90198"
-				width      	230
-				height     	126)
+				quidu      	"66447DA90198")
 			    (object UseCaseView "Use Case View::QuanLyKhuyenMai" @32
-				location   	(1710, 829)
+				location   	(1717, 822)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1512,7 +1500,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@32
-				    location   	(1710, 971)
+				    location   	(1717, 960)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1521,14 +1509,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447E890274"
-				width      	230
-				height     	126)
+				quidu      	"66447E890274")
 			    (object UseCaseView "Use Case View::QuanLyPhanHoi" @33
-				location   	(3793, 1028)
+				location   	(3800, 1021)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1537,7 +1524,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@33
-				    location   	(3793, 1170)
+				    location   	(3800, 1159)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1546,17 +1533,16 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DE7037B"
-				width      	230
-				height     	126)
+				quidu      	"66447DE7037B")
 			    (object ClassView "Class" "Use Case View::NhanVien" @34
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(3391, 1869)
+				location   	(3668, 1899)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1565,7 +1551,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@34
-				    location   	(3391, 2029)
+				    location   	(3668, 2059)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	325
@@ -1578,10 +1564,11 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$27" @35
-				location   	(3857, 1854)
+				location   	(4002, 1866)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1594,33 +1581,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$28" @36
 					Parent_View 	@35
-					location   	(3565, -218)
+					location   	(3710, -206)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FC003C4"
 					client     	@35
 					supplier   	@2
 					vertices   	(list Points
-					    (3857, 1854)
-					    (4266, 1843))
+					    (4002, 1866)
+					    (4279, 1841))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$29" @37
 					Parent_View 	@35
-					location   	(3565, -218)
+					location   	(3710, -206)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FC003C8"
 					client     	@35
 					supplier   	@34
 					vertices   	(list Points
-					    (3857, 1854)
-					    (3448, 1865))
+					    (4002, 1866)
+					    (3725, 1891))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$30" @38
-				location   	(3828, 1681)
+				location   	(3986, 1699)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1633,33 +1621,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$31" @39
 					Parent_View 	@38
-					location   	(3536, -391)
+					location   	(3694, -373)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FCC01D0"
 					client     	@38
 					supplier   	@3
 					vertices   	(list Points
-					    (3828, 1681)
-					    (4208, 1523))
+					    (3986, 1699)
+					    (4248, 1538))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$32" @40
 					Parent_View 	@38
-					location   	(3536, -391)
+					location   	(3694, -373)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FCC01D2"
 					client     	@38
 					supplier   	@34
 					vertices   	(list Points
-					    (3828, 1681)
-					    (3448, 1840))
+					    (3986, 1699)
+					    (3725, 1860))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$33" @41
-				location   	(3763, 1539)
+				location   	(3928, 1551)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1672,33 +1661,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$34" @42
 					Parent_View 	@41
-					location   	(3471, -533)
+					location   	(3636, -521)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FD90118"
 					client     	@41
 					supplier   	@4
 					vertices   	(list Points
-					    (3763, 1539)
-					    (4079, 1264))
+					    (3928, 1551)
+					    (4133, 1283))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$35" @43
 					Parent_View 	@41
-					location   	(3471, -533)
+					location   	(3636, -521)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FD9011A"
 					client     	@41
 					supplier   	@34
 					vertices   	(list Points
-					    (3763, 1539)
-					    (3448, 1815))
+					    (3928, 1551)
+					    (3724, 1819))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$99" @44
-				location   	(3558, 1513)
+				location   	(3722, 1519)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1711,33 +1701,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$100" @45
 					Parent_View 	@44
-					location   	(891, -226)
+					location   	(1055, -220)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330E102BD"
 					client     	@44
 					supplier   	@33
 					vertices   	(list Points
-					    (3558, 1513)
-					    (3690, 1239))
+					    (3722, 1519)
+					    (3767, 1222))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$101" @46
 					Parent_View 	@44
-					location   	(891, -226)
+					location   	(1055, -220)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330E102BF"
 					client     	@44
 					supplier   	@34
 					vertices   	(list Points
-					    (3558, 1513)
-					    (3426, 1787))
+					    (3722, 1519)
+					    (3677, 1817))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyDanhGia" @47
-				location   	(3309, 1218)
+				location   	(3316, 1211)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1746,7 +1737,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@47
-				    location   	(3309, 1360)
+				    location   	(3316, 1349)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -1755,14 +1746,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DE200A3"
-				width      	230
-				height     	126)
+				quidu      	"66447DE200A3")
 			    (object AssociationViewNew "$UNNAMED$96" @48
-				location   	(3355, 1609)
+				location   	(3521, 1614)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1775,36 +1765,37 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$97" @49
 					Parent_View 	@48
-					location   	(688, -130)
+					location   	(854, -125)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330DD004C"
 					client     	@48
 					supplier   	@47
 					vertices   	(list Points
-					    (3355, 1609)
-					    (3333, 1429))
+					    (3521, 1614)
+					    (3418, 1412))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$98" @50
 					Parent_View 	@48
-					location   	(688, -130)
+					location   	(854, -125)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330DD004E"
 					client     	@48
 					supplier   	@34
 					vertices   	(list Points
-					    (3355, 1609)
-					    (3378, 1789))
+					    (3521, 1614)
+					    (3625, 1817))
 					line_style 	0)))
 			    (object ClassView "Class" "Use Case View::KhachHang" @51
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(3516, 2388)
+				location   	(3726, 2458)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1813,7 +1804,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@51
-				    location   	(3516, 2548)
+				    location   	(3726, 2618)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	325
@@ -1826,10 +1817,11 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$18" @52
-				location   	(2951, 2685)
+				location   	(3136, 2749)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1842,33 +1834,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$19" @53
 					Parent_View 	@52
-					location   	(2685, 2154)
+					location   	(2870, 2218)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F590398"
 					client     	@52
 					supplier   	@9
 					vertices   	(list Points
-					    (2951, 2685)
-					    (2448, 2954))
+					    (3136, 2749)
+					    (2606, 3013))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$20" @54
 					Parent_View 	@52
-					location   	(2685, 2154)
+					location   	(2870, 2218)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F59039C"
 					client     	@52
 					supplier   	@51
 					vertices   	(list Points
-					    (2951, 2685)
-					    (3455, 2417))
+					    (3136, 2749)
+					    (3667, 2485))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$21" @55
-				location   	(2964, 2478)
+				location   	(3156, 2528)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1881,33 +1874,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$22" @56
 					Parent_View 	@55
-					location   	(2698, 1947)
+					location   	(2890, 1997)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F5B00C1"
 					client     	@55
 					supplier   	@13
 					vertices   	(list Points
-					    (2964, 2478)
-					    (2474, 2561))
+					    (3156, 2528)
+					    (2646, 2595))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$23" @57
 					Parent_View 	@55
-					location   	(2698, 1947)
+					location   	(2890, 1997)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F5B00C4"
 					client     	@55
 					supplier   	@51
 					vertices   	(list Points
-					    (2964, 2478)
-					    (3455, 2395))
+					    (3156, 2528)
+					    (3667, 2462))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$24" @58
-				location   	(2800, 3057)
+				location   	(3066, 3059)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1920,33 +1914,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$25" @59
 					Parent_View 	@58
-					location   	(2534, 2526)
+					location   	(2800, 2528)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F5C0173"
 					client     	@58
 					supplier   	@17
 					vertices   	(list Points
-					    (2800, 3057)
-					    (2325, 3502))
+					    (3066, 3059)
+					    (2517, 3559))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$26" @60
 					Parent_View 	@58
-					location   	(2534, 2526)
+					location   	(2800, 2528)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F5C0177"
 					client     	@58
 					supplier   	@51
 					vertices   	(list Points
-					    (2800, 3057)
-					    (3276, 2613))
+					    (3066, 3059)
+					    (3616, 2559))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$39" @61
-				location   	(3445, 2977)
+				location   	(3652, 3009)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1959,33 +1954,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$40" @62
 					Parent_View 	@61
-					location   	(815, 2852)
+					location   	(1022, 2884)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FF70072"
 					client     	@61
 					supplier   	@21
 					vertices   	(list Points
-					    (3445, 2977)
-					    (3409, 3303))
+					    (3652, 3009)
+					    (3611, 3337))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$41" @63
 					Parent_View 	@61
-					location   	(815, 2852)
+					location   	(1022, 2884)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FF70074"
 					client     	@61
 					supplier   	@51
 					vertices   	(list Points
-					    (3445, 2977)
-					    (3482, 2651))
+					    (3652, 3009)
+					    (3694, 2681))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$42" @64
-				location   	(3925, 2323)
+				location   	(4105, 2472)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -1998,33 +1994,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$43" @65
 					Parent_View 	@64
-					location   	(1295, 2198)
+					location   	(1475, 2347)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FFD02CA"
 					client     	@64
 					supplier   	@22
 					vertices   	(list Points
-					    (3925, 2323)
-					    (4278, 2271))
+					    (4105, 2472)
+					    (4428, 2486))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$44" @66
 					Parent_View 	@64
-					location   	(1295, 2198)
+					location   	(1475, 2347)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FFD02CC"
 					client     	@64
 					supplier   	@51
 					vertices   	(list Points
-					    (3925, 2323)
-					    (3573, 2376))
+					    (4105, 2472)
+					    (3783, 2458))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$45" @67
-				location   	(3911, 2987)
+				location   	(4065, 3000)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2037,33 +2034,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$46" @68
 					Parent_View 	@67
-					location   	(1281, 2862)
+					location   	(1435, 2875)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FFF0019"
 					client     	@67
 					supplier   	@23
 					vertices   	(list Points
-					    (3911, 2987)
-					    (4135, 3324))
+					    (4065, 3000)
+					    (4266, 3319))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$47" @69
 					Parent_View 	@67
-					location   	(1281, 2862)
+					location   	(1435, 2875)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447FFF001B"
 					client     	@67
 					supplier   	@51
 					vertices   	(list Points
-					    (3911, 2987)
-					    (3688, 2651))
+					    (4065, 3000)
+					    (3864, 2681))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$48" @70
-				location   	(3662, 2988)
+				location   	(3845, 3009)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2076,33 +2074,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$49" @71
 					Parent_View 	@70
-					location   	(1032, 2863)
+					location   	(1215, 2884)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66448006020C"
 					client     	@70
 					supplier   	@24
 					vertices   	(list Points
-					    (3662, 2988)
-					    (3747, 3325))
+					    (3845, 3009)
+					    (3916, 3337))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$50" @72
 					Parent_View 	@70
-					location   	(1032, 2863)
+					location   	(1215, 2884)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66448006020F"
 					client     	@70
 					supplier   	@51
 					vertices   	(list Points
-					    (3662, 2988)
-					    (3578, 2651))
+					    (3845, 3009)
+					    (3774, 2681))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$51" @73
-				location   	(3952, 2516)
+				location   	(4106, 2602)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2115,33 +2114,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$52" @74
 					Parent_View 	@73
-					location   	(1322, 2391)
+					location   	(1476, 2477)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"664480170081"
 					client     	@73
 					supplier   	@25
 					vertices   	(list Points
-					    (3952, 2516)
-					    (4331, 2631))
+					    (4106, 2602)
+					    (4430, 2728))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$53" @75
 					Parent_View 	@73
-					location   	(1322, 2391)
+					location   	(1476, 2477)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"664480170083"
 					client     	@73
 					supplier   	@51
 					vertices   	(list Points
-					    (3952, 2516)
-					    (3573, 2402))
+					    (4106, 2602)
+					    (3783, 2477))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$75" @76
-				location   	(4013, 2764)
+				location   	(4136, 2777)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2154,33 +2154,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$76" @77
 					Parent_View 	@76
-					location   	(1599, 2625)
+					location   	(1722, 2638)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"6644817700EB"
 					client     	@76
 					supplier   	@26
 					vertices   	(list Points
-					    (4013, 2764)
-					    (4382, 3045))
+					    (4136, 2777)
+					    (4490, 3053))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$77" @78
 					Parent_View 	@76
-					location   	(1599, 2625)
+					location   	(1722, 2638)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"6644817700ED"
 					client     	@76
 					supplier   	@51
 					vertices   	(list Points
-					    (4013, 2764)
-					    (3644, 2484))
+					    (4136, 2777)
+					    (3783, 2502))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyGioHang" @79
-				location   	(2969, 3337)
+				location   	(3212, 3336)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2189,7 +2190,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@79
-				    location   	(2969, 3479)
+				    location   	(3212, 3474)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -2198,14 +2199,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"69D331E902C7"
-				width      	230
-				height     	126)
+				quidu      	"69D331E902C7")
 			    (object AssociationViewNew "$UNNAMED$105" @80
-				location   	(3183, 2962)
+				location   	(3420, 2979)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2218,33 +2218,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$106" @81
 					Parent_View 	@80
-					location   	(223, 462)
+					location   	(460, 479)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3320903E0"
 					client     	@80
 					supplier   	@79
 					vertices   	(list Points
-					    (3183, 2962)
-					    (3001, 3274))
+					    (3420, 2979)
+					    (3243, 3277))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$107" @82
 					Parent_View 	@80
-					location   	(223, 462)
+					location   	(460, 479)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3320A0009"
 					client     	@80
 					supplier   	@51
 					vertices   	(list Points
-					    (3183, 2962)
-					    (3366, 2651))
+					    (3420, 2979)
+					    (3597, 2681))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::DangNhap" @83
-				location   	(2560, 2105)
+				location   	(2791, 2003)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2253,7 +2254,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@83
-				    location   	(2560, 2247)
+				    location   	(2791, 2141)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -2262,14 +2263,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447D4403E2"
-				width      	230
-				height     	126)
+				quidu      	"66447D4403E2")
 			    (object AssociationViewNew "$UNNAMED$3" @84
-				location   	(3002, 1976)
+				location   	(3253, 1945)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2282,33 +2282,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$4" @85
 					Parent_View 	@84
-					location   	(2739, 757)
+					location   	(2990, 726)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F070371"
 					client     	@84
 					supplier   	@83
 					vertices   	(list Points
-					    (3002, 1976)
-					    (2672, 2070))
+					    (3253, 1945)
+					    (2899, 1987))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$5" @86
 					Parent_View 	@84
-					location   	(2739, 757)
+					location   	(2990, 726)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F070376"
 					client     	@84
 					supplier   	@34
 					vertices   	(list Points
-					    (3002, 1976)
-					    (3332, 1882))
+					    (3253, 1945)
+					    (3607, 1903))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$0" @87
-				location   	(3064, 2251)
+				location   	(3283, 2241)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2321,36 +2322,37 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$1" @88
 					Parent_View 	@87
-					location   	(2798, 1720)
+					location   	(3017, 1710)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F0500CF"
 					client     	@87
 					supplier   	@83
 					vertices   	(list Points
-					    (3064, 2251)
-					    (2672, 2135))
+					    (3283, 2241)
+					    (2899, 2054))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$2" @89
 					Parent_View 	@87
-					location   	(2798, 1720)
+					location   	(3017, 1710)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"66447F0500D2"
 					client     	@87
 					supplier   	@51
 					vertices   	(list Points
-					    (3064, 2251)
-					    (3457, 2368))
+					    (3283, 2241)
+					    (3667, 2428))
 					line_style 	0)))
 			    (object ClassView "Class" "Use Case View::QuanTriVien" @90
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(2568, 1659)
+				location   	(2345, 1350)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2359,7 +2361,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@90
-				    location   	(2568, 1819)
+				    location   	(2345, 1510)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	328
@@ -2372,10 +2374,11 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$78" @91
-				location   	(2546, 1284)
+				location   	(2429, 1033)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2388,33 +2391,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$79" @92
 					Parent_View 	@91
-					location   	(434, 60)
+					location   	(317, -191)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3301A012B"
 					client     	@91
 					supplier   	@27
 					vertices   	(list Points
-					    (2546, 1284)
-					    (2531, 991))
+					    (2429, 1033)
+					    (2495, 796))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$80" @93
 					Parent_View 	@91
-					location   	(434, 60)
+					location   	(317, -191)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3301A012D"
 					client     	@91
 					supplier   	@90
 					vertices   	(list Points
-					    (2546, 1284)
-					    (2561, 1577))
+					    (2429, 1033)
+					    (2364, 1270))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$84" @94
-				location   	(2354, 1234)
+				location   	(2236, 1071)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2427,33 +2431,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$85" @95
 					Parent_View 	@94
-					location   	(242, 10)
+					location   	(124, -153)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3305201F0"
 					client     	@94
 					supplier   	@29
 					vertices   	(list Points
-					    (2354, 1234)
-					    (2183, 889))
+					    (2236, 1071)
+					    (2160, 872))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$86" @96
 					Parent_View 	@94
-					location   	(242, 10)
+					location   	(124, -153)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3305201F2"
 					client     	@94
 					supplier   	@90
 					vertices   	(list Points
-					    (2354, 1234)
-					    (2526, 1579))
+					    (2236, 1071)
+					    (2313, 1270))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$87" @97
-				location   	(2208, 1579)
+				location   	(2099, 1409)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2466,33 +2471,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$88" @98
 					Parent_View 	@97
-					location   	(541, 403)
+					location   	(432, 233)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330CF0117"
 					client     	@97
 					supplier   	@30
 					vertices   	(list Points
-					    (2208, 1579)
-					    (1909, 1516))
+					    (2099, 1409)
+					    (1912, 1456))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$89" @99
 					Parent_View 	@97
-					location   	(541, 403)
+					location   	(432, 233)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330CF0119"
 					client     	@97
 					supplier   	@90
 					vertices   	(list Points
-					    (2208, 1579)
-					    (2507, 1642))
+					    (2099, 1409)
+					    (2286, 1362))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$90" @100
-				location   	(2131, 1428)
+				location   	(1995, 1248)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2505,33 +2511,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$91" @101
 					Parent_View 	@100
-					location   	(464, 252)
+					location   	(328, 72)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330D402CD"
 					client     	@100
 					supplier   	@31
 					vertices   	(list Points
-					    (2131, 1428)
-					    (1753, 1229))
+					    (1995, 1248)
+					    (1704, 1166))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$92" @102
 					Parent_View 	@100
-					location   	(464, 252)
+					location   	(328, 72)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330D402CF"
 					client     	@100
 					supplier   	@90
 					vertices   	(list Points
-					    (2131, 1428)
-					    (2509, 1627))
+					    (1995, 1248)
+					    (2286, 1330))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$93" @103
-				location   	(2199, 1302)
+				location   	(2089, 1133)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2544,46 +2551,37 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$94" @104
 					Parent_View 	@103
-					location   	(532, 126)
+					location   	(422, -43)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330D803B7"
 					client     	@103
 					supplier   	@32
 					vertices   	(list Points
-					    (2199, 1302)
-					    (1892, 1004))
+					    (2089, 1133)
+					    (1892, 966))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$95" @105
 					Parent_View 	@103
-					location   	(532, 126)
+					location   	(422, -43)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D330D803B9"
 					client     	@103
 					supplier   	@90
 					vertices   	(list Points
-					    (2199, 1302)
-					    (2507, 1600))
+					    (2089, 1133)
+					    (2286, 1300))
 					line_style 	0)))
 			    (object AssociationViewNew "" @106
-				location   	(2560, 1982)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2623, 1758)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"69D333F302F5"
 				roleview_list 	(list RoleViews
 				    (object RoleView "" @107
 					Parent_View 	@106
-					location   	(893, 806)
+					location   	(956, 582)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -2596,7 +2594,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @108
 					    Parent_View 	@107
-					    location   	(2519, 2030)
+					    location   	(2690, 1931)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -2623,12 +2621,12 @@
 					client     	@106
 					supplier   	@83
 					vertices   	(list Points
-					    (2560, 1982)
-					    (2560, 2042))
+					    (2623, 1758)
+					    (2749, 1944))
 					line_style 	0)
 				    (object RoleView "" @109
 					Parent_View 	@106
-					location   	(893, 806)
+					location   	(956, 582)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -2641,7 +2639,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @110
 					    Parent_View 	@109
-					    location   	(2520, 1934)
+					    location   	(2489, 1635)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -2668,14 +2666,15 @@
 					client     	@106
 					supplier   	@90
 					vertices   	(list Points
-					    (2560, 1982)
-					    (2561, 1922))
+					    (2623, 1758)
+					    (2497, 1573))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyNguoiDung" @111
-				location   	(2958, 954)
+				location   	(2933, 840)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2684,7 +2683,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@111
-				    location   	(2958, 1096)
+				    location   	(2933, 978)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -2693,14 +2692,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DB603E6"
-				width      	230
-				height     	126)
+				quidu      	"66447DB603E6")
 			    (object AssociationViewNew "$UNNAMED$108" @112
-				location   	(2724, 1371)
+				location   	(2581, 1144)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2713,36 +2711,37 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$109" @113
 					Parent_View 	@112
-					location   	(848, 121)
+					location   	(705, -106)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D33C28010C"
 					client     	@112
 					supplier   	@111
 					vertices   	(list Points
-					    (2724, 1371)
-					    (2840, 1165))
+					    (2581, 1144)
+					    (2760, 989))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$110" @114
 					Parent_View 	@112
-					location   	(848, 121)
+					location   	(705, -106)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D33C28010E"
 					client     	@112
 					supplier   	@90
 					vertices   	(list Points
-					    (2724, 1371)
-					    (2609, 1577))
+					    (2581, 1144)
+					    (2402, 1299))
 					line_style 	0)))
 			    (object ClassView "Class" "Use Case View::ChuCuaHang" @115
 				ShowCompartmentStereotypes 	TRUE
 				IncludeAttribute 	TRUE
 				IncludeOperation 	TRUE
-				location   	(1821, 2169)
+				location   	(1828, 2162)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2751,7 +2750,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@115
-				    location   	(1821, 2329)
+				    location   	(1828, 2322)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	347
@@ -2764,10 +2763,11 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$81" @116
-				location   	(1643, 2039)
+				location   	(1571, 1949)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2780,46 +2780,37 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$82" @117
 					Parent_View 	@116
-					location   	(218, 389)
+					location   	(146, 299)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3302B02C2"
 					client     	@116
 					supplier   	@28
 					vertices   	(list Points
-					    (1643, 2039)
-					    (1524, 1955))
+					    (1571, 1949)
+					    (1376, 1788))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$83" @118
 					Parent_View 	@116
-					location   	(218, 389)
+					location   	(146, 299)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3302B02C4"
 					client     	@116
 					supplier   	@115
 					vertices   	(list Points
-					    (1643, 2039)
-					    (1762, 2124))
+					    (1571, 1949)
+					    (1767, 2111))
 					line_style 	0)))
 			    (object AssociationViewNew "" @119
-				location   	(2161, 2136)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2283, 2082)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"69D333C20098"
 				roleview_list 	(list RoleViews
 				    (object RoleView "" @120
 					Parent_View 	@119
-					location   	(1549, 688)
+					location   	(1671, 634)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -2832,7 +2823,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @121
 					    Parent_View 	@120
-					    location   	(2385, 2075)
+					    location   	(2594, 1989)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -2859,12 +2850,12 @@
 					client     	@119
 					supplier   	@83
 					vertices   	(list Points
-					    (2161, 2136)
-					    (2445, 2111))
+					    (2283, 2082)
+					    (2681, 2016))
 					line_style 	0)
 				    (object RoleView "" @122
 					Parent_View 	@119
-					location   	(1549, 688)
+					location   	(1671, 634)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -2877,7 +2868,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @123
 					    Parent_View 	@122
-					    location   	(1932, 2115)
+					    location   	(1959, 2095)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -2904,14 +2895,15 @@
 					client     	@119
 					supplier   	@115
 					vertices   	(list Points
-					    (2161, 2136)
-					    (1878, 2161))
+					    (2283, 2082)
+					    (1885, 2149))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::ThongKeBaoCao" @124
-				location   	(1123, 2279)
+				location   	(997, 2111)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2920,7 +2912,7 @@
 				    default_color 	TRUE)
 				label      	(object ItemLabel
 				    Parent_View 	@124
-				    location   	(1123, 2421)
+				    location   	(997, 2249)
 				    anchor_loc 	1
 				    nlines     	2
 				    max_width  	630
@@ -2929,14 +2921,13 @@
 				icon_style 	"Icon"
 				line_color 	3342489
 				fill_color 	13434879
-				quidu      	"66447DCE00CF"
-				width      	230
-				height     	126)
+				quidu      	"66447DCE00CF")
 			    (object AssociationViewNew "$UNNAMED$111" @125
-				location   	(1498, 2216)
+				location   	(1437, 2135)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -2949,27 +2940,27 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$112" @126
 					Parent_View 	@125
-					location   	(886, 768)
+					location   	(825, 687)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D33C320274"
 					client     	@125
 					supplier   	@124
 					vertices   	(list Points
-					    (1498, 2216)
-					    (1235, 2258))
+					    (1437, 2135)
+					    (1105, 2115))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$113" @127
 					Parent_View 	@125
-					location   	(886, 768)
+					location   	(825, 687)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D33C320276"
 					client     	@125
 					supplier   	@115
 					vertices   	(list Points
-					    (1498, 2216)
-					    (1762, 2175))
+					    (1437, 2135)
+					    (1769, 2156))
 					line_style 	0)))))))
 	    (object Class_Category "PhanRa"
 		quid       	"6644895000CB"
@@ -3142,17 +3133,18 @@
 		    (object UseCaseDiagram "Chinh"
 			quid       	"6644895C034A"
 			title      	"Chinh"
-			zoom       	56
+			zoom       	85
 			max_height 	28350
 			max_width  	21600
 			origin_x   	0
-			origin_y   	6
+			origin_y   	1545
 			items      	(list diagram_item_list
 			    (object UseCaseView "Use Case View::DangKy" @128
 				location   	(2930, 1396)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3177,8 +3169,9 @@
 				IncludeOperation 	TRUE
 				location   	(2874, 1962)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3200,23 +3193,14 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$6" @130
-				location   	(2893, 1740)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2893, 1745)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F1201CA"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$8" @131
 					Parent_View 	@130
-					location   	(1405, 749)
+					location   	(1405, 754)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3256,12 +3240,12 @@
 					client     	@130
 					supplier   	@129
 					vertices   	(list Points
-					    (2893, 1740)
+					    (2893, 1745)
 					    (2880, 1882))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$7" @133
 					Parent_View 	@130
-					location   	(1405, 749)
+					location   	(1405, 754)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3274,7 +3258,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @134
 					    Parent_View 	@133
-					    location   	(2946, 1631)
+					    location   	(2945, 1640)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -3301,14 +3285,15 @@
 					client     	@130
 					supplier   	@128
 					vertices   	(list Points
-					    (2893, 1740)
-					    (2907, 1599))
+					    (2893, 1745)
+					    (2906, 1609))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::DangNhap" @135
 				location   	(2266, 1495)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3330,8 +3315,9 @@
 			    (object UseCaseView "Use Case View::QuenMatKhau" @136
 				location   	(2842, 787)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3353,8 +3339,9 @@
 			    (object UseCaseView "Use Case View::XemChiTietSanPham" @137
 				location   	(2115, 3217)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3374,23 +3361,14 @@
 				fill_color 	13434879
 				quidu      	"66447E630331")
 			    (object AssociationViewNew "$UNNAMED$9" @138
-				location   	(2421, 2708)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2431, 2692)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F3E022D"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$11" @139
 					Parent_View 	@138
-					location   	(842, 1649)
+					location   	(852, 1633)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3403,7 +3381,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @140
 					    Parent_View 	@139
-					    location   	(2605, 2327)
+					    location   	(2624, 2298)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -3430,12 +3408,12 @@
 					client     	@138
 					supplier   	@129
 					vertices   	(list Points
-					    (2421, 2708)
-					    (2695, 2258))
+					    (2431, 2692)
+					    (2716, 2225))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$10" @141
 					Parent_View 	@138
-					location   	(842, 1649)
+					location   	(852, 1633)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3448,7 +3426,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @142
 					    Parent_View 	@141
-					    location   	(2167, 3048)
+					    location   	(2169, 3044)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -3475,14 +3453,15 @@
 					client     	@138
 					supplier   	@137
 					vertices   	(list Points
-					    (2421, 2708)
+					    (2431, 2692)
 					    (2147, 3159))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::XemDanhSachSanPham" @143
 				location   	(2127, 2530)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3502,23 +3481,14 @@
 				fill_color 	13434879
 				quidu      	"66447E6B0100")
 			    (object AssociationViewNew "$UNNAMED$12" @144
-				location   	(2457, 2276)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2445, 2285)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F40007C"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$14" @145
 					Parent_View 	@144
-					location   	(803, 788)
+					location   	(791, 797)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3531,7 +3501,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @146
 					    Parent_View 	@145
-					    location   	(2639, 2089)
+					    location   	(2617, 2104)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -3558,12 +3528,12 @@
 					client     	@144
 					supplier   	@129
 					vertices   	(list Points
-					    (2457, 2276)
-					    (2714, 2083))
+					    (2445, 2285)
+					    (2690, 2100))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$13" @147
 					Parent_View 	@144
-					location   	(803, 788)
+					location   	(791, 797)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -3576,7 +3546,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @148
 					    Parent_View 	@147
-					    location   	(2228, 2398)
+					    location   	(2225, 2400)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -3603,14 +3573,15 @@
 					client     	@144
 					supplier   	@143
 					vertices   	(list Points
-					    (2457, 2276)
+					    (2445, 2285)
 					    (2200, 2470))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::TimKiemSanPham" @149
 				location   	(2111, 2011)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3631,15 +3602,6 @@
 				quidu      	"66447DF20061")
 			    (object AssociationViewNew "$UNNAMED$15" @150
 				location   	(2516, 1982)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F52035A"
@@ -3737,8 +3699,9 @@
 			    (object UseCaseView "Use Case View::QuanLyDanhSachYeuThich" @155
 				location   	(1442, 415)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3760,8 +3723,9 @@
 			    (object UseCaseView "Use Case View::QuanLyDonHangKhachHang" @156
 				location   	(2511, 445)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3783,8 +3747,9 @@
 			    (object UseCaseView "Use Case View::QuanLyTaiKhoanKhachHang" @157
 				location   	(883, 614)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3806,8 +3771,9 @@
 			    (object UseCaseView "Use Case View::MuaHang" @158
 				location   	(2020, 389)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3829,8 +3795,9 @@
 			    (object UseCaseView "Use Case View::LienHeCuaHang" @159
 				location   	(614, 1125)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3851,8 +3818,9 @@
 				quidu      	"66447D5B0103")
 			    (object DependencyView "" @160
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3863,8 +3831,9 @@
 				    Parent_View 	@160
 				    location   	(2106, 874)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -3890,8 +3859,9 @@
 				line_style 	0)
 			    (object DependencyView "" @162
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3902,8 +3872,9 @@
 				    Parent_View 	@162
 				    location   	(1698, 727)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -3929,8 +3900,9 @@
 				line_style 	0)
 			    (object DependencyView "" @164
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3941,8 +3913,9 @@
 				    Parent_View 	@164
 				    location   	(1224, 874)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -3968,8 +3941,9 @@
 				line_style 	0)
 			    (object DependencyView "" @166
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -3980,8 +3954,9 @@
 				    Parent_View 	@166
 				    location   	(966, 1263)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4007,8 +3982,9 @@
 				line_style 	0)
 			    (object DependencyView "" @168
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4019,8 +3995,9 @@
 				    Parent_View 	@168
 				    location   	(2657, 1455)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4046,8 +4023,9 @@
 				line_style 	0)
 			    (object DependencyView "" @170
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4058,8 +4036,9 @@
 				    Parent_View 	@170
 				    location   	(2775, 1134)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4085,8 +4064,9 @@
 				line_style 	0)
 			    (object DependencyView "" @172
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4097,8 +4077,9 @@
 				    Parent_View 	@172
 				    location   	(2519, 734)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4125,8 +4106,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Doi mat khau" @174
 				location   	(395, 294)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4148,8 +4130,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua thong tin" @175
 				location   	(1233, 176)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4170,8 +4153,9 @@
 				quidu      	"66448FBB03CF")
 			    (object DependencyView "" @176
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4182,8 +4166,9 @@
 				    Parent_View 	@176
 				    location   	(961, 404)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4209,8 +4194,9 @@
 				line_style 	0)
 			    (object DependencyView "" @178
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4221,8 +4207,9 @@
 				    Parent_View 	@178
 				    location   	(599, 513)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4249,8 +4236,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Xoa san pham khoi danh sach yeu thich" @180
 				location   	(2048, 69)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4271,8 +4259,9 @@
 				quidu      	"66448FAF0063")
 			    (object DependencyView "" @181
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4283,8 +4272,9 @@
 				    Parent_View 	@181
 				    location   	(1685, 329)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4311,8 +4301,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Them san pham vao danh sach yeu thich" @183
 				location   	(1267, 2828)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4334,8 +4325,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua don hang" @184
 				location   	(2914, 210)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4356,8 +4348,9 @@
 				quidu      	"66448F49028D")
 			    (object DependencyView "" @185
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4368,8 +4361,9 @@
 				    Parent_View 	@185
 				    location   	(2630, 236)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -4396,8 +4390,9 @@
 			    (object UseCaseView "Use Case View::QuanLyGioHang" @187
 				location   	(570, 1883)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4422,8 +4417,9 @@
 				IncludeOperation 	TRUE
 				location   	(1254, 1592)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -4446,15 +4442,6 @@
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$0" @189
 				location   	(1733, 1542)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F0401E2"
@@ -4550,23 +4537,14 @@
 					    (2156, 1503))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$48" @194
-				location   	(1994, 1214)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2003, 1209)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"664480050183"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$50" @195
 					Parent_View 	@194
-					location   	(1619, 873)
+					location   	(1628, 868)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4579,7 +4557,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @196
 					    Parent_View 	@195
-					    location   	(1430, 1455)
+					    location   	(1431, 1454)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4606,12 +4584,12 @@
 					client     	@194
 					supplier   	@188
 					vertices   	(list Points
-					    (1994, 1214)
+					    (2003, 1209)
 					    (1311, 1560))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$49" @197
 					Parent_View 	@194
-					location   	(1619, 873)
+					location   	(1628, 868)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4624,7 +4602,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @198
 					    Parent_View 	@197
-					    location   	(2522, 902)
+					    location   	(2539, 893)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4651,27 +4629,18 @@
 					client     	@194
 					supplier   	@136
 					vertices   	(list Points
-					    (1994, 1214)
-					    (2677, 869))
+					    (2003, 1209)
+					    (2696, 859))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$24" @199
-				location   	(1737, 2507)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1730, 2493)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F5B030A"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$26" @200
 					Parent_View 	@199
-					location   	(158, 1448)
+					location   	(151, 1434)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4684,7 +4653,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @201
 					    Parent_View 	@200
-					    location   	(1499, 1967)
+					    location   	(1485, 1941)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4711,12 +4680,12 @@
 					client     	@199
 					supplier   	@188
 					vertices   	(list Points
-					    (1737, 2507)
-					    (1392, 1855))
+					    (1730, 2493)
+					    (1377, 1827))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$25" @202
 					Parent_View 	@199
-					location   	(158, 1448)
+					location   	(151, 1434)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4729,7 +4698,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @203
 					    Parent_View 	@202
-					    location   	(2050, 3008)
+					    location   	(2049, 3007)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4756,27 +4725,18 @@
 					client     	@199
 					supplier   	@137
 					vertices   	(list Points
-					    (1737, 2507)
+					    (1730, 2493)
 					    (2083, 3159))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$21" @204
-				location   	(1784, 2161)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1691, 2062)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F5A0271"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$23" @205
 					Parent_View 	@204
-					location   	(130, 673)
+					location   	(37, 574)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4789,7 +4749,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @206
 					    Parent_View 	@205
-					    location   	(1585, 1885)
+					    location   	(1419, 1707)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4816,12 +4776,12 @@
 					client     	@204
 					supplier   	@188
 					vertices   	(list Points
-					    (1784, 2161)
-					    (1496, 1851))
+					    (1691, 2062)
+					    (1311, 1652))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$22" @207
 					Parent_View 	@204
-					location   	(130, 673)
+					location   	(37, 574)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4834,7 +4794,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @208
 					    Parent_View 	@207
-					    location   	(1984, 2438)
+					    location   	(1966, 2419)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -4861,20 +4821,11 @@
 					client     	@204
 					supplier   	@143
 					vertices   	(list Points
-					    (1784, 2161)
+					    (1691, 2062)
 					    (2072, 2472))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$18" @209
 				location   	(1655, 1787)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F5402D7"
@@ -4970,23 +4921,14 @@
 					    (2000, 1955))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$75" @214
-				location   	(1335, 1064)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1334, 1069)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644817601CD"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$77" @215
 					Parent_View 	@214
-					location   	(647, 942)
+					location   	(646, 947)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -4999,7 +4941,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @216
 					    Parent_View 	@215
-					    location   	(1238, 1415)
+					    location   	(1238, 1417)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5026,12 +4968,12 @@
 					client     	@214
 					supplier   	@188
 					vertices   	(list Points
-					    (1335, 1064)
+					    (1334, 1069)
 					    (1264, 1510))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$76" @217
 					Parent_View 	@214
-					location   	(647, 942)
+					location   	(646, 947)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5044,7 +4986,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @218
 					    Parent_View 	@217
-					    location   	(1353, 701)
+					    location   	(1350, 709)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5071,27 +5013,18 @@
 					client     	@214
 					supplier   	@155
 					vertices   	(list Points
-					    (1335, 1064)
-					    (1407, 618))
+					    (1334, 1069)
+					    (1404, 628))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$42" @219
-				location   	(1799, 1093)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1821, 1073)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FFD0021"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$44" @220
 					Parent_View 	@219
-					location   	(1618, 396)
+					location   	(1640, 376)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5104,7 +5037,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @221
 					    Parent_View 	@220
-					    location   	(1438, 1478)
+					    location   	(1441, 1474)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5131,12 +5064,12 @@
 					client     	@219
 					supplier   	@188
 					vertices   	(list Points
-					    (1799, 1093)
+					    (1821, 1073)
 					    (1311, 1536))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$43" @222
 					Parent_View 	@219
-					location   	(1618, 396)
+					location   	(1640, 376)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5149,7 +5082,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @223
 					    Parent_View 	@222
-					    location   	(2216, 770)
+					    location   	(2257, 734)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5176,27 +5109,18 @@
 					client     	@219
 					supplier   	@156
 					vertices   	(list Points
-					    (1799, 1093)
-					    (2287, 650))
+					    (1821, 1073)
+					    (2331, 610))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$51" @224
-				location   	(1091, 1165)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1092, 1169)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644801600D9"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$53" @225
 					Parent_View 	@224
-					location   	(913, 65)
+					location   	(914, 69)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5209,7 +5133,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @226
 					    Parent_View 	@225
-					    location   	(1235, 1428)
+					    location   	(1236, 1430)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5236,12 +5160,12 @@
 					client     	@224
 					supplier   	@188
 					vertices   	(list Points
-					    (1091, 1165)
+					    (1092, 1169)
 					    (1223, 1512))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$52" @227
 					Parent_View 	@224
-					location   	(913, 65)
+					location   	(914, 69)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5254,7 +5178,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @228
 					    Parent_View 	@227
-					    location   	(1024, 874)
+					    location   	(1027, 881)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5281,27 +5205,18 @@
 					client     	@224
 					supplier   	@157
 					vertices   	(list Points
-					    (1091, 1165)
-					    (959, 819))
+					    (1092, 1169)
+					    (962, 827))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$39" @229
-				location   	(1595, 1052)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1592, 1057)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FF60294"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$41" @230
 					Parent_View 	@229
-					location   	(445, 877)
+					location   	(442, 882)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5314,7 +5229,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @231
 					    Parent_View 	@230
-					    location   	(1325, 1397)
+					    location   	(1324, 1398)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5341,12 +5256,12 @@
 					client     	@229
 					supplier   	@188
 					vertices   	(list Points
-					    (1595, 1052)
+					    (1592, 1057)
 					    (1299, 1512))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$40" @232
 					Parent_View 	@229
-					location   	(445, 877)
+					location   	(442, 882)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5359,7 +5274,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @233
 					    Parent_View 	@232
-					    location   	(1797, 663)
+					    location   	(1794, 670)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5386,27 +5301,18 @@
 					client     	@229
 					supplier   	@158
 					vertices   	(list Points
-					    (1595, 1052)
-					    (1891, 592))
+					    (1592, 1057)
+					    (1886, 602))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$45" @234
-				location   	(997, 1403)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(989, 1397)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FFE01AD"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$47" @235
 					Parent_View 	@234
-					location   	(613, -144)
+					location   	(605, -150)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5419,7 +5325,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @236
 					    Parent_View 	@235
-					    location   	(1179, 1484)
+					    location   	(1177, 1483)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5446,12 +5352,12 @@
 					client     	@234
 					supplier   	@188
 					vertices   	(list Points
-					    (997, 1403)
+					    (989, 1397)
 					    (1194, 1546))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$46" @237
 					Parent_View 	@234
-					location   	(613, -144)
+					location   	(605, -150)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -5464,7 +5370,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @238
 					    Parent_View 	@237
-					    location   	(865, 1256)
+					    location   	(851, 1245)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -5491,20 +5397,11 @@
 					client     	@234
 					supplier   	@159
 					vertices   	(list Points
-					    (997, 1403)
-					    (800, 1260))
+					    (989, 1397)
+					    (785, 1248))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$105" @239
 				location   	(936, 1724)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"69D332080298"
@@ -5602,8 +5499,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Kiem tra ton kho" @244
 				location   	(397, 2677)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5624,8 +5522,9 @@
 				quidu      	"69D339A4030D")
 			    (object DependencyView "" @245
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5636,8 +5535,9 @@
 				    Parent_View 	@245
 				    location   	(1727, 3100)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -5663,8 +5563,9 @@
 				line_style 	0)
 			    (object DependencyView "" @247
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5675,8 +5576,9 @@
 				    Parent_View 	@247
 				    location   	(2206, 1419)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -5703,8 +5605,9 @@
 				line_style 	0)
 			    (object DependencyView "" @249
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5715,8 +5618,9 @@
 				    Parent_View 	@249
 				    location   	(1133, 1971)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -5753,17 +5657,18 @@
 		    (object UseCaseDiagram "ThuCap"
 			quid       	"664489680316"
 			title      	"ThuCap"
-			zoom       	59
+			zoom       	80
 			max_height 	28350
 			max_width  	21600
-			origin_x   	0
-			origin_y   	69
+			origin_x   	617
+			origin_y   	797
 			items      	(list diagram_item_list
 			    (object UseCaseView "Use Case View::QuanLyTaiKhoanAdmin" @251
 				location   	(3548, 1468)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5785,8 +5690,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua thong tin" @252
 				location   	(3549, 1041)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5807,8 +5713,9 @@
 				quidu      	"66448FBB03CF")
 			    (object DependencyView "" @253
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5819,8 +5726,9 @@
 				    Parent_View 	@253
 				    location   	(3530, 1316)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -5847,8 +5755,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua nguoi dung" @255
 				location   	(1759, 3082)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5870,8 +5779,9 @@
 			    (object UseCaseView "Use Case View::QuanLyDonHangNhanVien" @256
 				location   	(760, 652)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5893,8 +5803,9 @@
 			    (object UseCaseView "Use Case View::QuanLyKhachHang" @257
 				location   	(611, 328)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5916,8 +5827,9 @@
 			    (object UseCaseView "Use Case View::ChamSocKhachHang" @258
 				location   	(939, 136)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5939,8 +5851,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Tao tin nhan" @259
 				location   	(1475, 152)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5961,8 +5874,9 @@
 				quidu      	"6644913C00F1")
 			    (object DependencyView "" @260
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -5973,8 +5887,9 @@
 				    Parent_View 	@260
 				    location   	(1197, 107)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6001,8 +5916,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua khach hang" @262
 				location   	(209, 207)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6023,8 +5939,9 @@
 				quidu      	"66448F3C010F")
 			    (object DependencyView "" @263
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6035,8 +5952,9 @@
 				    Parent_View 	@263
 				    location   	(461, 209)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6063,8 +5981,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua don hang" @265
 				location   	(220, 660)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6086,8 +6005,9 @@
 			    (object UseCaseView "Use Case View::DangNhap" @266
 				location   	(2148, 853)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6108,8 +6028,9 @@
 				quidu      	"66447D4403E2")
 			    (object DependencyView "" @267
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6120,8 +6041,9 @@
 				    Parent_View 	@267
 				    location   	(2815, 1205)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6148,8 +6070,9 @@
 			    (object UseCaseView "Use Case View::QuanLyKhuyenMai" @269
 				location   	(2763, 2528)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6171,8 +6094,9 @@
 			    (object UseCaseView "Use Case View::QuanLyNhapKho" @270
 				location   	(2884, 2094)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6194,8 +6118,9 @@
 			    (object UseCaseView "Use Case View::QuanLySanPham" @271
 				location   	(733, 1962)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6217,8 +6142,9 @@
 			    (object UseCaseView "Use Case View::QuanLyDanhMuc" @272
 				location   	(916, 2410)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6240,8 +6166,9 @@
 			    (object UseCaseView "Use Case View::QuanLyBanner" @273
 				location   	(1240, 1449)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6263,8 +6190,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua danh gia" @274
 				location   	(3217, 433)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6287,8 +6215,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Them banner" @275
 				location   	(404, 1062)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6310,8 +6239,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua banner" @276
 				location   	(351, 1330)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6333,8 +6263,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Xoa banner" @277
 				location   	(982, 1007)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6355,8 +6286,9 @@
 				quidu      	"664489BA00CE")
 			    (object DependencyView "" @278
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6367,8 +6299,9 @@
 				    Parent_View 	@278
 				    location   	(1185, 1263)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6394,8 +6327,9 @@
 				line_style 	0)
 			    (object DependencyView "" @280
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6406,8 +6340,9 @@
 				    Parent_View 	@280
 				    location   	(719, 1248)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6433,8 +6368,9 @@
 				line_style 	0)
 			    (object DependencyView "" @282
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6445,8 +6381,9 @@
 				    Parent_View 	@282
 				    location   	(763, 1415)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6472,8 +6409,9 @@
 				line_style 	0)
 			    (object DependencyView "" @284
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6484,8 +6422,9 @@
 				    Parent_View 	@284
 				    location   	(1636, 1102)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -6512,8 +6451,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Them khuyen mai" @286
 				location   	(2873, 3098)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6535,8 +6475,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua khuyen mai" @287
 				location   	(3279, 3043)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6558,8 +6499,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Xoa khuyen mai" @288
 				location   	(2334, 3005)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6581,8 +6523,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Them lo hang" @289
 				location   	(3384, 2092)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6604,8 +6547,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua lo hang" @290
 				location   	(3373, 2535)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6627,8 +6571,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua san pham" @291
 				location   	(297, 1572)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6650,8 +6595,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua danh muc" @292
 				location   	(1107, 2975)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6673,8 +6619,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Them san pham" @293
 				location   	(158, 1823)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6696,8 +6643,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Then danh muc" @294
 				location   	(490, 2922)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6719,8 +6667,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Xoa danh muc" @295
 				location   	(232, 2657)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6742,8 +6691,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Xoa san pham" @296
 				location   	(154, 2213)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6768,8 +6718,9 @@
 				IncludeOperation 	TRUE
 				location   	(2873, 1485)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -6791,23 +6742,14 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$114" @298
-				location   	(2539, 1192)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(2531, 1185)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"69D333C20098"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$115" @299
 					Parent_View 	@298
-					location   	(1098, 508)
+					location   	(1090, 501)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -6820,7 +6762,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @300
 					    Parent_View 	@299
-					    location   	(2787, 1353)
+					    location   	(2786, 1352)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -6847,12 +6789,12 @@
 					client     	@298
 					supplier   	@297
 					vertices   	(list Points
-					    (2539, 1192)
+					    (2531, 1185)
 					    (2814, 1432))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$116" @301
 					Parent_View 	@298
-					location   	(1098, 508)
+					location   	(1090, 501)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -6865,7 +6807,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @302
 					    Parent_View 	@301
-					    location   	(2347, 969)
+					    location   	(2333, 957)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -6892,20 +6834,11 @@
 					client     	@298
 					supplier   	@266
 					vertices   	(list Points
-					    (2539, 1192)
-					    (2264, 952))
+					    (2531, 1185)
+					    (2248, 939))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$36" @303
 				location   	(3184, 1474)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FE80136"
@@ -7003,8 +6936,9 @@
 			    (object UseCaseView "Use Case View::ThongKeBaoCao" @308
 				location   	(3127, 843)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7025,8 +6959,9 @@
 				quidu      	"66447DCE00CF")
 			    (object DependencyView "" @309
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7037,8 +6972,9 @@
 				    Parent_View 	@309
 				    location   	(2752, 822)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -7063,10 +6999,11 @@
 				    (2256, 849))
 				line_style 	0)
 			    (object AssociationViewNew "$UNNAMED$126" @311
-				location   	(2973, 1224)
+				location   	(2971, 1226)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7079,26 +7016,26 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$127" @312
 					Parent_View 	@311
-					location   	(20, 380)
+					location   	(18, 382)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3343C018D"
 					client     	@311
 					supplier   	@308
 					vertices   	(list Points
-					    (2973, 1224)
-					    (3046, 1043))
+					    (2971, 1226)
+					    (3043, 1048))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$128" @313
 					Parent_View 	@311
-					location   	(20, 380)
+					location   	(18, 382)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D3343C018F"
 					client     	@311
 					supplier   	@297
 					vertices   	(list Points
-					    (2973, 1224)
+					    (2971, 1226)
 					    (2900, 1405))
 					line_style 	0)))
 			    (object ClassView "Class" "Use Case View::QuanTriVien" @314
@@ -7107,8 +7044,9 @@
 				IncludeOperation 	TRUE
 				location   	(1646, 2366)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7130,23 +7068,14 @@
 				annotation 	8
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$120" @315
-				location   	(1872, 1669)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1872, 1672)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"69D333F302F5"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$121" @316
 					Parent_View 	@315
-					location   	(431, 985)
+					location   	(431, 988)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7186,12 +7115,12 @@
 					client     	@315
 					supplier   	@314
 					vertices   	(list Points
-					    (1872, 1669)
+					    (1872, 1672)
 					    (1668, 2286))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$122" @318
 					Parent_View 	@315
-					location   	(431, 985)
+					location   	(431, 988)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7204,7 +7133,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @319
 					    Parent_View 	@318
-					    location   	(2076, 1190)
+					    location   	(2076, 1195)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -7231,20 +7160,11 @@
 					client     	@315
 					supplier   	@266
 					vertices   	(list Points
-					    (1872, 1669)
-					    (2077, 1053))
+					    (1872, 1672)
+					    (2077, 1058))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$57" @320
 				location   	(2178, 2441)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644801C022B"
@@ -7341,15 +7261,6 @@
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$60" @325
 				location   	(2238, 2233)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644801E018D"
@@ -7445,23 +7356,14 @@
 					    (2774, 2116))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$63" @330
-				location   	(1252, 2189)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1243, 2185)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644801F0390"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$65" @331
 					Parent_View 	@330
-					location   	(-470, 425)
+					location   	(-479, 421)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7474,7 +7376,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @332
 					    Parent_View 	@331
-					    location   	(1504, 2345)
+					    location   	(1502, 2345)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -7501,12 +7403,12 @@
 					client     	@330
 					supplier   	@314
 					vertices   	(list Points
-					    (1252, 2189)
+					    (1243, 2185)
 					    (1587, 2337))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$64" @333
 					Parent_View 	@330
-					location   	(-470, 425)
+					location   	(-479, 421)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7519,7 +7421,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @334
 					    Parent_View 	@333
-					    location   	(969, 2109)
+					    location   	(953, 2101)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -7546,20 +7448,11 @@
 					client     	@330
 					supplier   	@271
 					vertices   	(list Points
-					    (1252, 2189)
-					    (918, 2041))
+					    (1243, 2185)
+					    (900, 2033))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$69" @335
 				location   	(1305, 2383)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"664480230357"
@@ -7655,23 +7548,14 @@
 					    (1024, 2399))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$54" @340
-				location   	(1468, 1967)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1469, 1969)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"6644801A0340"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$56" @341
 					Parent_View 	@340
-					location   	(-582, -221)
+					location   	(-581, -219)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7684,7 +7568,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @342
 					    Parent_View 	@341
-					    location   	(1543, 2238)
+					    location   	(1543, 2239)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -7711,12 +7595,12 @@
 					client     	@340
 					supplier   	@314
 					vertices   	(list Points
-					    (1468, 1967)
+					    (1469, 1969)
 					    (1608, 2285))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$55" @343
 					Parent_View 	@340
-					location   	(-582, -221)
+					location   	(-581, -219)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -7729,7 +7613,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @344
 					    Parent_View 	@343
-					    location   	(1319, 1730)
+					    location   	(1321, 1734)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -7756,14 +7640,15 @@
 					client     	@340
 					supplier   	@273
 					vertices   	(list Points
-					    (1468, 1967)
-					    (1328, 1649))
+					    (1469, 1969)
+					    (1330, 1654))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyNguoiDung" @345
 				location   	(1966, 2660)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7784,8 +7669,9 @@
 				quidu      	"66447DB603E6")
 			    (object DependencyView "" @346
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7796,8 +7682,9 @@
 				    Parent_View 	@346
 				    location   	(2044, 1847)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -7823,8 +7710,9 @@
 				line_style 	0)
 			    (object DependencyView "" @348
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7835,8 +7723,9 @@
 				    Parent_View 	@348
 				    location   	(1728, 2920)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -7861,10 +7750,11 @@
 				    (1784, 3022))
 				line_style 	0)
 			    (object AssociationViewNew "$UNNAMED$129" @350
-				location   	(1844, 2548)
+				location   	(1835, 2539)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7877,33 +7767,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$130" @351
 					Parent_View 	@350
-					location   	(423, 85)
+					location   	(414, 76)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D334C4010D"
 					client     	@350
 					supplier   	@345
 					vertices   	(list Points
-					    (1844, 2548)
+					    (1835, 2539)
 					    (1902, 2602))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$131" @352
 					Parent_View 	@350
-					location   	(423, 85)
+					location   	(414, 76)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D334C4010F"
 					client     	@350
 					supplier   	@314
 					vertices   	(list Points
-					    (1844, 2548)
-					    (1786, 2495))
+					    (1835, 2539)
+					    (1768, 2477))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyPhanHoi" @353
 				location   	(1940, 152)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7924,8 +7815,9 @@
 				quidu      	"66447DE7037B")
 			    (object DependencyView "" @354
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7936,8 +7828,9 @@
 				    Parent_View 	@354
 				    location   	(2120, 612)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -7967,8 +7860,9 @@
 				IncludeOperation 	TRUE
 				location   	(1724, 555)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -7991,15 +7885,6 @@
 				autoResize 	TRUE)
 			    (object AssociationViewNew "$UNNAMED$3" @357
 				location   	(1924, 694)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447F070109"
@@ -8096,15 +7981,6 @@
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$27" @362
 				location   	(1266, 598)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FC002E4"
@@ -8201,15 +8077,6 @@
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$30" @367
 				location   	(1192, 443)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FCB03B8"
@@ -8305,23 +8172,14 @@
 					    (719, 347))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$33" @372
-				location   	(1414, 387)
-				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
-				    bold       	FALSE
-				    italics    	FALSE
-				    underline  	FALSE
-				    strike     	FALSE
-				    color      	0
-				    default_color 	TRUE)
+				location   	(1400, 379)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"66447FD80302"
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$35" @373
 					Parent_View 	@372
-					location   	(1270, 134)
+					location   	(1256, 126)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -8334,7 +8192,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @374
 					    Parent_View 	@373
-					    location   	(1594, 529)
+					    location   	(1590, 527)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -8361,12 +8219,12 @@
 					client     	@372
 					supplier   	@356
 					vertices   	(list Points
-					    (1414, 387)
+					    (1400, 379)
 					    (1663, 519))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$34" @375
 					Parent_View 	@372
-					location   	(1270, 134)
+					location   	(1256, 126)
 					font       	(object Font
 					    size       	10
 					    face       	"Arial"
@@ -8379,7 +8237,7 @@
 					    default_color 	TRUE)
 					label      	(object SegLabel @376
 					    Parent_View 	@375
-					    location   	(1197, 319)
+					    location   	(1172, 305)
 					    font       	(object Font
 						size       	10
 						face       	"Arial"
@@ -8406,14 +8264,15 @@
 					client     	@372
 					supplier   	@258
 					vertices   	(list Points
-					    (1414, 387)
-					    (1166, 256))
+					    (1400, 379)
+					    (1137, 239))
 					line_style 	0)))
 			    (object AssociationViewNew "$UNNAMED$132" @377
-				location   	(1796, 413)
+				location   	(1796, 415)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8426,33 +8285,34 @@
 				roleview_list 	(list RoleViews
 				    (object RoleView "$UNNAMED$133" @378
 					Parent_View 	@377
-					location   	(72, -142)
+					location   	(72, -140)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D335610011"
 					client     	@377
 					supplier   	@353
 					vertices   	(list Points
-					    (1796, 413)
-					    (1828, 352))
+					    (1796, 415)
+					    (1828, 357))
 					line_style 	0)
 				    (object RoleView "$UNNAMED$134" @379
 					Parent_View 	@377
-					location   	(72, -142)
+					location   	(72, -140)
 					stereotype 	TRUE
 					line_color 	3342489
 					quidu      	"69D335610013"
 					client     	@377
 					supplier   	@356
 					vertices   	(list Points
-					    (1796, 413)
+					    (1796, 415)
 					    (1764, 474))
 					line_style 	0)))
 			    (object UseCaseView "Use Case View::QuanLyDanhGia" @380
 				location   	(2533, 453)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8473,8 +8333,9 @@
 				quidu      	"66447DE200A3")
 			    (object DependencyView "" @381
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8485,8 +8346,9 @@
 				    Parent_View 	@381
 				    location   	(2844, 412)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8512,8 +8374,9 @@
 				line_style 	0)
 			    (object DependencyView "" @383
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8532,8 +8395,9 @@
 				    Parent_View 	@383
 				    location   	(2307, 709)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8560,8 +8424,9 @@
 			    (object AssociationViewNew "$UNNAMED$135" @385
 				location   	(2101, 504)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8599,8 +8464,9 @@
 			    (object UseCaseView "Use Case View::PhanRa::Sua phan hoi" @388
 				location   	(2557, 140)
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8622,8 +8488,9 @@
 				height     	118)
 			    (object DependencyView "" @389
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8634,8 +8501,9 @@
 				    Parent_View 	@389
 				    location   	(2229, 94)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8661,8 +8529,9 @@
 				line_style 	0)
 			    (object DependencyView "" @391
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8673,8 +8542,9 @@
 				    Parent_View 	@391
 				    location   	(3125, 2017)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8700,8 +8570,9 @@
 				line_style 	0)
 			    (object DependencyView "" @393
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8712,8 +8583,9 @@
 				    Parent_View 	@393
 				    location   	(3250, 2287)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8739,8 +8611,9 @@
 				line_style 	0)
 			    (object DependencyView "" @395
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8751,8 +8624,9 @@
 				    Parent_View 	@395
 				    location   	(2576, 1740)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8779,8 +8653,9 @@
 				line_style 	0)
 			    (object DependencyView "" @397
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8791,8 +8666,9 @@
 				    Parent_View 	@397
 				    location   	(2947, 2864)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8818,8 +8694,9 @@
 				line_style 	0)
 			    (object DependencyView "" @399
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8830,8 +8707,9 @@
 				    Parent_View 	@399
 				    location   	(3204, 2845)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8857,8 +8735,9 @@
 				line_style 	0)
 			    (object DependencyView "" @401
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8869,8 +8748,9 @@
 				    Parent_View 	@401
 				    location   	(2426, 2838)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8896,8 +8776,9 @@
 				line_style 	0)
 			    (object DependencyView "" @403
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8908,8 +8789,9 @@
 				    Parent_View 	@403
 				    location   	(2385, 2048)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8936,8 +8818,9 @@
 				line_style 	0)
 			    (object DependencyView "" @405
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8948,8 +8831,9 @@
 				    Parent_View 	@405
 				    location   	(1682, 1906)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -8976,8 +8860,9 @@
 				line_style 	0)
 			    (object DependencyView "" @407
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -8988,8 +8873,9 @@
 				    Parent_View 	@407
 				    location   	(506, 2476)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9015,8 +8901,9 @@
 				line_style 	0)
 			    (object DependencyView "" @409
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9027,8 +8914,9 @@
 				    Parent_View 	@409
 				    location   	(738, 2754)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9054,8 +8942,9 @@
 				line_style 	0)
 			    (object DependencyView "" @411
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9066,8 +8955,9 @@
 				    Parent_View 	@411
 				    location   	(1148, 2728)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9093,8 +8983,9 @@
 				line_style 	0)
 			    (object DependencyView "" @413
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9105,8 +8996,9 @@
 				    Parent_View 	@413
 				    location   	(1597, 1587)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9133,8 +9025,9 @@
 				line_style 	0)
 			    (object DependencyView "" @415
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9145,8 +9038,9 @@
 				    Parent_View 	@415
 				    location   	(679, 1772)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9172,8 +9066,9 @@
 				line_style 	0)
 			    (object DependencyView "" @417
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9184,8 +9079,9 @@
 				    Parent_View 	@417
 				    location   	(465, 1936)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9211,8 +9107,9 @@
 				line_style 	0)
 			    (object DependencyView "" @419
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9223,8 +9120,9 @@
 				    Parent_View 	@419
 				    location   	(445, 2203)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9250,8 +9148,9 @@
 				line_style 	0)
 			    (object DependencyView "" @421
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9262,8 +9161,9 @@
 				    Parent_View 	@421
 				    location   	(528, 616)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
@@ -9289,8 +9189,9 @@
 				line_style 	0)
 			    (object DependencyView "" @423
 				font       	(object Font
-				    size       	14
-				    face       	"Times New Roman"
+				    size       	10
+				    face       	"Arial"
+				    charSet    	254
 				    bold       	FALSE
 				    italics    	FALSE
 				    underline  	FALSE
@@ -9301,8 +9202,9 @@
 				    Parent_View 	@423
 				    location   	(1402, 934)
 				    font       	(object Font
-					size       	14
-					face       	"Times New Roman"
+					size       	10
+					face       	"Arial"
+					charSet    	254
 					bold       	FALSE
 					italics    	FALSE
 					underline  	FALSE
