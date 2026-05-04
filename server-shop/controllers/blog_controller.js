@@ -146,8 +146,8 @@ export const paginate_blog = async (req, res) => {
         const dataAll = await blog_model.paginate(query, {
             offset: skip, page: page, limit: limit, sort: sortKind
         });
-        if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No blog" });
+        if (!dataAll || dataAll.totalDocs === 0) {
+            return res.status(200).json({ docs: [], totalDocs: 0, limit, totalPages: 0, page });
         }
         return res.status(200).json({ ...dataAll });
     } catch (error) {
@@ -158,10 +158,10 @@ export const paginate_blog = async (req, res) => {
 export const all_blog = async (req, res) => {
     try {
         const data = await blog_model.paginate({}, options);
-        if (data.totalDocs === 0) {
-            return res.status(404).json({ message: "No blog" });
+        if (!data || data.totalDocs === 0) {
+            return res.status(200).json({ docs: [], totalDocs: 0 });
         }
-        else return res.status(200).json({ ...data });
+        return res.status(200).json({ ...data });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

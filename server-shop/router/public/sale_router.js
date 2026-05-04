@@ -10,6 +10,8 @@ import { create_validator, edit_validator } from "../../validator/sale_validator
 const router = Router();
 
 router.get('/sale/options/all', all_sale)
+router.get('/sale', paginate_sale)
+router.get('/sale/:id', detail_sale)
 router.get('/sale/lastest/products', lastest_sale)
 
 export default router;

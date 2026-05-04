@@ -53,7 +53,7 @@ export const ROLE_CONFIG = {
             'manage_consignment',        // CRUD /consignment
             'manage_users',              // GET /users, POST /users, DELETE /users/:id
             'manage_ratings',            // PUT/GET /rating (QuanLyDanhGia)
-            'view_blogs',                // GET /blog
+            'manage_blogs',              // CRUD /blog
         ],
     },
     ADMIN: {
@@ -104,6 +104,7 @@ export const ROUTE_PERMISSION_MAP = {
     MANAGE_CONSIGNMENT: 2,
     MANAGE_USERS: 2,
     UPDATE_RATING: 2,
+    MANAGE_BLOGS: 2,
 
     // Admin routes
     VIEW_STATISTICS: 3,

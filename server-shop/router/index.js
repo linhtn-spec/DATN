@@ -57,7 +57,7 @@ customerRouter.use('/', customer_user);
 // ==========================================
 // 3. STAFF ROUTES (Level 1)
 // ==========================================
-import staff_chat from './customer/chat_router.js';
+import staff_chat from './staff/chat_router.js';
 import staff_comment from './staff/comment_router.js';
 import staff_order from './staff/order_router.js';
 import staff_rating from './staff/rating_router.js';

@@ -17,6 +17,8 @@ import { create_validator, edit_validator } from "../../validator/category_valid
 const router = Router();
 
 router.get("/category/options", all_category);
+router.get("/category", paginate_category);
+router.get("/category/:id", detail_category);
 router.get("/category/detail/:id", product_by_category);
 
 export default router;
