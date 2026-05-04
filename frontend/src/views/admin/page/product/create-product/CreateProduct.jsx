@@ -83,7 +83,7 @@ function CreateProduct() {
         mutationFn: (data) => addProduct(data),
         onSuccess: () => {
             Notification({ message: "Add product successfully!", type: "success" })
-            queryClient.invalidateQueries({ queryKey: ['product_admin'] })
+            queryClient.invalidateQueries({ queryKey: ['products_admin'] })
             navigate('/admin/product', { replace: true })
         },
         onError: (error) => {

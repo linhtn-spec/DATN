@@ -2,6 +2,7 @@ import {
     CameraOutlined,
     PlusOutlined,
 } from "@ant-design/icons";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
     Button,
     Flex,
@@ -15,12 +16,11 @@ import {
 import Card from "antd/es/card/Card";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { uploadImage } from "../../../../../services/upload_service";
-import './UpdateCategory.css';
-import { detailCategory, updateCategory } from "../../../../../services/category_service";
-import Notification from "../../../../../utils/configToastify";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../../../../../main";
+import { detailCategory, updateCategory } from "../../../../../services/category_service";
+import { uploadImage } from "../../../../../services/upload_service";
+import Notification from "../../../../../utils/configToastify";
+import './UpdateCategory.css';
 
 function UpdateCategory() {
     const navigate = useNavigate();
@@ -167,8 +167,8 @@ function UpdateCategory() {
 
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 3,
+                                            message: "Minimum 3 character"
                                         },
                                         {
                                             max: 50,

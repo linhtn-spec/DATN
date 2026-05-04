@@ -68,25 +68,23 @@ const seedUser = async (data) => {
 
 
 
-// const seedCategory = async (data) => {
-//     try {
-//         const checkName = await category_model.findOne({ name: { $regex: new RegExp(data.name, 'i') } });
-//         if (checkName) {
-//             if (checkName.order === process.env.CATEGORY_ORDER_DEFAULT) return
-//             await category_model.findByIdAndUpdate(checkName._id, { order: process.env.CATEGORY_ORDER_DEFAULT });
-//         }
-//         await category_model.create(data);
-//     } catch (error) {
-
-//         console.log("Error creating category:", error);
-//         throw error;
-//     }
-// }
+const seedCategory = async (data) => {
+    try {
+        const checkName = await category_model.findOne({ name: { $regex: new RegExp(`^${data.name}$`, 'i') } });
+        if (checkName) {
+            return;
+        }
+        await category_model.create(data);
+    } catch (error) {
+        console.log("Error creating category:", error);
+        throw error;
+    }
+}
 
 const dbSeed = async () => {
     try {
         await seedUser(defaultAdmin);
-        // await seedCategory(defaultCategory);
+        await seedCategory(defaultCategory);
         console.log("Default data seeding completed!");
     } catch (error) {
         throw error;

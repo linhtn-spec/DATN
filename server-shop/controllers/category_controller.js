@@ -83,13 +83,27 @@ export const detail_category = async (req, res) => {
 export const delete_category_one = async (req, res) => {
     try {
         const id = req.params.id;
-        const checkDefault = await category_model.findOne({ _id: id })
-        if (checkDefault.name.toLowerCase() === 'default')
+        const checkDefault = await category_model.findOne({ _id: id });
+        if (!checkDefault) return res.status(404).json({ message: "Category not found" });
+        
+        const defaultName = process.env.CATEGORY_NAME_DEFAULT || 'Default';
+        if (checkDefault.name.toLowerCase() === defaultName.toLowerCase())
             return res.status(400).json({ message: "Can't delete default category" });
-        const defaultCategory = await category_model.findOne({ name: 'Default' });
+        let defaultCategory = await category_model.findOne({ 
+            name: { $regex: new RegExp(`^${defaultName}$`, 'i') } 
+        });
+
+        // Auto-create default category if missing
         if (!defaultCategory) {
-            return res.status(400).json({ message: "Default category not found" });
+            defaultCategory = await category_model.create({
+                name: defaultName,
+                image: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
+                description: 'Default category for items without one',
+                isActive: true,
+                order: 0
+            });
         }
+
         await product_model.updateMany({ categoryId: id }, { categoryId: defaultCategory._id });
         const data = await category_model.findOneAndDelete({ _id: id });
 
@@ -111,14 +125,27 @@ export const delete_category_list = async (req, res) => {
             return res.status(400).json({ message: "Please provide list of category_id" });
         }
         const existingCategories = await category_model.find({ _id: { $in: category_id } });
-        const hasDefaultCategory = existingCategories.some(category => category.name.toLowerCase() === 'default');
+        const defaultName = process.env.CATEGORY_NAME_DEFAULT || 'Default';
+        const hasDefaultCategory = existingCategories.some(category => 
+            category.name.toLowerCase() === defaultName.toLowerCase()
+        );
         if (hasDefaultCategory) return res.status(400).json({ message: "Can't delete default category" });
         if (existingCategories.length !== category_id.length) {
             return res.status(404).json({ message: "One or more categories not found" });
         }
-        const defaultCategory = await category_model.findOne({ name: 'Default' });
+        let defaultCategory = await category_model.findOne({ 
+            name: { $regex: new RegExp(`^${defaultName}$`, 'i') } 
+        });
+
+        // Auto-create default category if missing
         if (!defaultCategory) {
-            return res.status(400).json({ message: "Default category not found" });
+            defaultCategory = await category_model.create({
+                name: defaultName,
+                image: 'https://res.cloudinary.com/demo/image/upload/v1/sample.jpg',
+                description: 'Default category for items without one',
+                isActive: true,
+                order: 0
+            });
         }
 
         await product_model.updateMany({ categoryId: { $in: category_id } }, { categoryId: defaultCategory._id });

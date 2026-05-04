@@ -88,7 +88,7 @@ function UpdateProduct() {
         mutationFn: (data) => updateProduct(data),
         onSuccess: () => {
             Notification({ message: "Update product successfully!", type: "success" })
-            queryClient.invalidateQueries({ queryKey: ['product_admin'] })
+            queryClient.invalidateQueries({ queryKey: ['products_admin'] })
             navigate('/admin/product', { replace: true })
         },
         onError: (error) => {

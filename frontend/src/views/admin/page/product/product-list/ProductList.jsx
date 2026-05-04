@@ -46,7 +46,7 @@ export const ProductList = () => {
     mutationFn: (data) => updateProduct(data),
     onSuccess: () => {
       Notification({ message: "Update status of product sucessfully", type: 'success' });
-      queryClient.invalidateQueries({ queryKey: ['product_admin'] })
+      queryClient.invalidateQueries({ queryKey: ['products_admin'] })
     },
     onError: (error) => {
       Notification({ message: error?.response?.data, type: "error" })
