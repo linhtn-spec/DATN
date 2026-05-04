@@ -190,7 +190,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       URL_DB: mongodb://mongo-primary:27017,mongo-secondary1:27017,mongo-secondary2:27017/shop?replicaSet=rs0
       ELASTICSEARCH_HOST: http://es-container:9200
       ELASTICSEARCH_USERNAME: elastic
@@ -213,8 +213,9 @@ services:
       PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
       VNPAY_TMNCODE: ${VNP_TMNCODE}
       VNPAY_HASHSECRET: ${VNP_HASH_SECRET}
+      # CORS whitelist — must match the origin the browser sends (Nginx port 80)
       WHITE_URL_1: ${WHITE_URL_1:-http://localhost}
-      WHITE_URL_2: ${WHITE_URL_2:-http://localhost}
+      WHITE_URL_2: ${WHITE_URL_2:-http://localhost:80}
     networks:
       - shop-server
     depends_on:

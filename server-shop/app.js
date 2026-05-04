@@ -32,6 +32,9 @@ app.use(upload.array('images', 100))
 
 app.use(cors({
     origin: function (origin, callback) {
+        // Cho phép request không có origin (ví dụ: mobile apps, postman)
+        if (!origin) return callback(null, true);
+        
         const whiteList = [
             "http://localhost",
             "http://localhost:80",
@@ -39,12 +42,24 @@ app.use(cors({
             "http://localhost:5173",
             "http://127.0.0.1",
             "http://127.0.0.1:80",
-            process.env.WHITE_URL_1 || "http://localhost",
-            process.env.WHITE_URL_2 || "http://localhost:5173"
-        ];
-        if (!origin || whiteList.some(url => origin.includes(url.split("://")[1] || url))) {
+            process.env.WHITE_URL_1,
+            process.env.WHITE_URL_2
+        ].filter(Boolean); // Bỏ các giá trị undefined
+
+        // Kiểm tra xem origin có nằm trong whitelist không (kiểm tra rễ, bỏ qua port nếu cần)
+        const isAllowed = whiteList.some(url => {
+            if (url === origin) return true;
+            // Cho phép localhost khác port nếu trong giai đoạn dev, 
+            // nhưng ở prod docker-compose, frontend luôn là http://localhost (port 80 proxy)
+            // hoặc tên domain cấu hình trong env
+            return origin.startsWith(url) && url !== "http://localhost"; 
+        });
+
+        if (isAllowed || whiteList.includes(origin)) {
             return callback(null, true);
         }
+        
+        console.warn(`[CORS Blocked] Origin: ${origin}`);
         return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
