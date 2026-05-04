@@ -16,10 +16,9 @@ import { create_validator, edit_validator } from "../../validator/category_valid
 
 const router = Router();
 
+// NOTE: GET /category and GET /category/:id are served by the public router
 router.post("/category", auditLogger("ADD_CATEGORY", "Category"), create_validator, add_category);
 router.put("/category/:id", auditLogger("EDIT_CATEGORY", "Category"), edit_validator, update_category);
-router.get("/category", paginate_category);
-router.get("/category/:id", detail_category);
 router.delete("/category/:id", auditLogger("DELETE_CATEGORY", "Category"), delete_category_one);
 router.delete("/category", auditLogger("DELETE_CATEGORIES", "Category"), delete_category_list);
 

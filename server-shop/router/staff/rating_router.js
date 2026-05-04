@@ -9,7 +9,7 @@ import { create_validator, edit_validator } from "../../validator/rating_validat
 
 const router = Router();
 
-router.put('/rating/:id', edit_validator, update_rating)
+// NOTE: PUT /rating/:id is handled by manager_router (MANAGER ≥ 2 only)
 router.get('/rating', paginate_rating)
 router.get('/rating/:id', detail_rating)
 

@@ -37,9 +37,8 @@ export const ROLE_CONFIG = {
             'view_paginated_customers',    // GET /customers
             'edit_comment',               // PUT /comment/:id
             'view_comments',              // GET /comment
-            'edit_rating',               // PUT /rating/:id  (Note: removed in UseCase - rating is MANAGER only)
-            'view_ratings',              // GET /rating
-            'access_customer_support',   // GET/POST /chat (via staff portal)
+            'view_ratings',              // GET /rating, GET /rating/:id
+            'access_customer_support',   // GET/POST /chat (via staff portal) — moved from CUSTOMER
         ],
     },
     MANAGER: {
@@ -76,9 +75,9 @@ export const ROLE_CONFIG = {
  * Route → Required Role mapping:
  * -----------------------------------------
  * PUBLIC         → No auth required
- * CUSTOMER (0)   → /order (POST), /order/:id (GET), /rating (POST), /comment (POST), /cart, /favourite, /chat
- * STAFF    (1)   → /order (GET list), /customers (GET), /comment (GET/PUT), /rating (GET)
- * MANAGER  (2)   → /product, /category, /banner, /sale, /consignment, /users, /rating (PUT)
+ * CUSTOMER (0)   → /order (POST), /order/:id (GET), /rating (POST), /comment (POST), /cart, /favourite
+ * STAFF    (1)   → /order (GET list), /customers (GET), /comment (GET/PUT), /rating (GET), /chat
+ * MANAGER  (2)   → /product, /category, /banner, /sale, /consignment (CRUD+DELETE), /users, /rating (PUT)
  * ADMIN    (3)   → /count_*, /order_per_*, /unsold, /statitics_perday, /audit-logs
  * -----------------------------------------
  */

@@ -169,3 +169,24 @@ export const detail_consignment = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+
+export const delete_consignment = async (req, res) => {
+    const consignmentId = req.params.id;
+    try {
+        const consignment = await consignment_model.findById(consignmentId);
+        if (!consignment) return res.status(404).json({ message: "Consignment not found." });
+
+        // Rollback product quantities before deleting
+        await Promise.all(consignment.products.map(async (item) => {
+            await product_model.findByIdAndUpdate(item.productId, {
+                $inc: { 'quantity.inTrade': -item.quantity }
+            });
+        }));
+
+        await consignment_model.findByIdAndDelete(consignmentId);
+        return res.status(200).json({ message: "Consignment deleted successfully." });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}

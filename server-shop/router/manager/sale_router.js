@@ -9,10 +9,9 @@ import { create_validator, edit_validator } from "../../validator/sale_validator
 
 const router = Router();
 
+// NOTE: GET /sale and GET /sale/:id are served by the public router
 router.post('/sale', auditLogger("ADD_SALE", "Sale"), create_validator, add_sale)
 router.put('/sale/:id', auditLogger("EDIT_SALE", "Sale"), edit_validator, updateSale)
-router.get('/sale', paginate_sale)
-router.get('/sale/:id', detail_sale)
 router.delete('/sale/:id', auditLogger("DELETE_SALE", "Sale"), delete_sale)
 
 export default router;

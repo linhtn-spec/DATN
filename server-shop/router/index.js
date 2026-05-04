@@ -39,7 +39,6 @@ publicRouter.use('/', public_user);
 // ==========================================
 // 2. CUSTOMER ROUTES (Level 0)
 // ==========================================
-import customer_chat from './customer/chat_router.js';
 import customer_comment from './customer/comment_router.js';
 import customer_favourite from './customer/favourite_router.js';
 import customer_order from './customer/order_router.js';
@@ -47,7 +46,6 @@ import customer_rating from './customer/rating_router.js';
 import customer_upload from './customer/upload_router.js';
 import customer_user from './customer/user_router.js';
 
-customerRouter.use('/', customer_chat);
 customerRouter.use('/', customer_comment);
 customerRouter.use('/', customer_favourite);
 customerRouter.use('/', customer_order);
@@ -59,11 +57,13 @@ customerRouter.use('/', customer_user);
 // ==========================================
 // 3. STAFF ROUTES (Level 1)
 // ==========================================
+import staff_chat from './customer/chat_router.js';
 import staff_comment from './staff/comment_router.js';
 import staff_order from './staff/order_router.js';
 import staff_rating from './staff/rating_router.js';
 import staff_user from './staff/user_router.js';
 
+staffRouter.use('/', staff_chat);     // Chat requires STAFF minimum
 staffRouter.use('/', staff_comment);
 staffRouter.use('/', staff_order);
 staffRouter.use('/', staff_rating);
