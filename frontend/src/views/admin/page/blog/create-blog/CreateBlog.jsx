@@ -32,7 +32,7 @@ function CreateBlog() {
         onSuccess: () => {
             Notification({ message: "Add blog successfully!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
-            navigate('/admin/banner', { replace: true })
+            navigate('/admin/blog', { replace: true })
         },
         onError: (error) => {
             Notification({ message: error?.response?.data, type: "error" })

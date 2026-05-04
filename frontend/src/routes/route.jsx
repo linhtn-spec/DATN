@@ -46,6 +46,9 @@ import { CrudUser } from "../views/admin/page/user/CrudUser";
 import { ListOfUser } from "../views/admin/page/user/ListOfUser";
 import { ListOfCommentGlobal } from "../views/admin/page/comment/ListOfCommentGlobal";
 import { ListOfRatingGlobal } from "../views/admin/page/rating/ListOfRatingGlobal";
+import { BlogList } from "../views/admin/page/blog/blog-list/Blog";
+import CreateBlog from "../views/admin/page/blog/create-blog/CreateBlog";
+import UpdateBlog from "../views/admin/page/blog/update-blog/UpdateBlog";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -263,6 +266,15 @@ const adminRoutes = [
           {
             path: "ratings",
             element: <ListOfRatingGlobal />,
+          },
+          {
+            path: "blog",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <BlogList /> },
+              { path: "create", element: <CreateBlog /> },
+              { path: ":blog_id", element: <UpdateBlog /> },
+            ],
           },
         ]
       },

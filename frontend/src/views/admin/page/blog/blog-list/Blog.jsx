@@ -1,8 +1,9 @@
-import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Flex, Form, Input, Select, Switch, Table } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { TypeDeleteAdmin } from '../../../../../constants/deleteTypes';
 import { queryClient } from '../../../../../main';
 import { listBlog, updateBlog } from '../../../../../services/blog_service';
 import { ACTION_MODAL } from '../../../../../store/modal';
@@ -10,203 +11,143 @@ import { ModalContext } from '../../../../../store/modal/provider';
 import Notification from '../../../../../utils/configToastify';
 import useDebounce from '../../../../../utils/useDebounce';
 import DeleteModal from '../../../layout/modal_del';
-import './BlogList.css';
 
 export const BlogList = () => {
-  const { dispatch } = useContext(ModalContext)
+  const { dispatch } = useContext(ModalContext);
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
 
-  const [form] = Form.useForm()
-  const [delID, setDelID] = useState("");
   const [page, setPage] = useState(1);
-  const [typeDelete, setTypeDelete] = useState('')
+  const [total, setTotal] = useState(0);
+  const [items, setItems] = useState([]);
+  const [delID, setDelID] = useState('');
+  const [typeDelete, setTypeDelete] = useState('');
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const [sortTitle, setSortTitle] = useState('')
-  const [sortOrder, setSortOrder] = useState('')
-  const [type, setType] = useState("");
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
+  const [isActive, setIsActive] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+  const [sortTitle, setSortTitle] = useState('');
 
-  const searchType = useDebounce(type, 500)
-  const searchTitle = useDebounce(title, 500)
-  const searchSortTitle = useDebounce(sortTitle, 500)
-  const searchSortOrder = useDebounce(sortOrder, 500)
+  const dTitle = useDebounce(title, 500);
+  const dIsActive = useDebounce(isActive, 500);
+  const dSortOrder = useDebounce(sortOrder, 500);
+  const dSortTitle = useDebounce(sortTitle, 500);
 
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [items, setItems] = useState([])
-
-
-  const { mutate } = useMutation({
+  const { mutate: toggleActive } = useMutation({
     mutationFn: (data) => updateBlog(data),
     onSuccess: () => {
-      Notification({ message: "Update status of blog sucessfully", type: 'success' });
-      queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
+      Notification({ message: 'Updated blog status successfully', type: 'success' });
+      queryClient.invalidateQueries({ queryKey: ['blog_admin'] });
     },
-    onError: (error) => {
-      Notification({ message: error?.response?.data, type: "error" })
-    }
-  })
+    onError: (error) => Notification({ message: error?.response?.data?.message ?? 'Error', type: 'error' }),
+  });
 
   const { data, isSuccess } = useQuery({
-    queryKey: ['blog_admin', page, searchTitle, searchSortTitle, searchSortOrder, searchType],
-    queryFn: () => listBlog(page,
-      searchTitle !== undefined ? searchTitle : '',
-      searchType !== undefined ? searchType : '',
-      searchSortOrder, searchSortTitle),
-    enabled: !!searchTitle || !!page || !!searchSortTitle || !!searchSortOrder || !!searchType
-  })
-  useEffect(() => {
-    setPage(1)
-
-    return () => {
-      setPage(1)
-    }
-  }, [])
+    queryKey: ['blog_admin', page, dTitle, dIsActive, dSortOrder, dSortTitle],
+    queryFn: () => listBlog(page, dTitle, dIsActive, dSortOrder, dSortTitle),
+  });
 
   useEffect(() => {
-    setPage(1)
-
-    return () => {
-      setPage(1)
-    }
-  }, [searchTitle, searchSortTitle, searchSortOrder, searchType])
-
-
-  useEffect(() => {
-
-    if (!isSuccess) return
+    if (!isSuccess) return;
     setItems(
       data?.data?.docs?.map((item) => ({
-        key: item?._id,
-        title: item?.title,
-        isActive: item?.isActive,
-        order: item?.order
+        key: item._id,
+        title: item.title,
+        content: item.content,
+        order: item.order,
+        isActive: item.isActive,
+        author: item.user ? `${item.user.firstName} ${item.user.lastName}` : '—',
       }))
     );
-
-    setTotalProducts(data?.data?.totalDocs)
-
-    return () => {
-      setItems([])
-    }
-
+    setTotal(data?.data?.totalDocs ?? 0);
+    return () => setItems([]);
   }, [data, isSuccess]);
 
+  useEffect(() => { setPage(1); }, [dTitle, dIsActive]);
 
+  useEffect(() => { document.title = 'Blog Management'; }, []);
 
   const columns = [
+    { title: 'Title', dataIndex: 'title', sorter: true, ellipsis: true, width: 220 },
+    { title: 'Content', dataIndex: 'content', ellipsis: true },
+    { title: 'Author', dataIndex: 'author', width: 160 },
+    { title: 'Order', dataIndex: 'order', width: 80, sorter: true, align: 'center' },
     {
-      title: 'Title',
-      dataIndex: 'title',
-      width: 400,
-      sorter: true,
-      ellipsis: true,
+      title: 'Active', dataIndex: 'isActive', width: 90,
+      render: (value, row) => (
+        <Switch value={value} onChange={(e) => toggleActive({ id: row.key, isActive: e })} />
+      ),
     },
     {
-      title: 'Active',
-      dataIndex: 'isActive',
-      width: 90,
-      render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
-    },
-    {
-      title: 'Order',
-      dataIndex: 'order',
-      width: 100,
-      sorter: true,
-      align: 'center',
-
-    },
-    {
-      title: 'Action',
-      width: 100,
-      key: 'x',
-      render: (text, row) => <Flex justify='center' className='delete' gap={5}>
-        <Button danger type='primary' icon={<DeleteOutlined />} onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }); setDelID(row.key), setTypeDelete('blogOne') }} />
-        <Button icon={<EyeOutlined />} onClick={() => onEdit(row.key)} />
-      </Flex>,
+      title: 'Action', width: 100, key: 'action',
+      render: (_, row) => (
+        <Flex justify="center" gap={5}>
+          <Button
+            danger type="primary" icon={<DeleteOutlined />}
+            onClick={() => {
+              dispatch({ type: ACTION_MODAL.OPEN_MODAL });
+              setDelID(row.key);
+              setTypeDelete(TypeDeleteAdmin.BLOG_ONE);
+            }}
+          />
+          <Button icon={<EditOutlined />} onClick={() => navigate(`/admin/blog/${row.key}`)} />
+        </Flex>
+      ),
     },
   ];
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const navigate = useNavigate()
-
-  const onAdd = () => {
-    navigate('/admin/blog/create')
-  }
-  const onEdit = (id) => {
-    navigate(`/admin/blog/${id}`)
-  }
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys)
-    setDelID(newSelectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
+  const onSelectChange = (keys) => { setSelectedRowKeys(keys); setDelID(keys); };
 
   const onFieldsChange = (_, fields) => {
-    const mappedFields = fields.reduce((acc, item) => {
-      acc[item.name[0]] = item.value;
-      return acc;
-    }, {});
-    setTitle(mappedFields['title'])
-    setType(mappedFields['type'])
+    const mapped = fields.reduce((acc, f) => { acc[f.name[0]] = f.value; return acc; }, {});
+    if (mapped.title !== undefined) setTitle(mapped.title ?? '');
+    if (mapped.isActive !== undefined) setIsActive(mapped.isActive ?? '');
   };
 
-  const onChange = (_pagination, _filters, sorter, _extra) => {
+  const onChange = (_pag, _filters, sorter) => {
     const { field, order } = sorter;
-    let newSortTitle = '';
-    let newSortOrder = '';
-    console.log(sorter);
-    if (order !== undefined) {
-      if (field === 'title') {
-        newSortTitle = order;
-      } else if (field === 'order') {
-        newSortOrder = order;
-      }
-    }
-    setSortTitle(newSortTitle);
-    setSortOrder(newSortOrder);
+    setSortTitle(field === 'title' && order ? order : '');
+    setSortOrder(field === 'order' && order ? order : '');
   };
+
   return (
-    <Flex vertical gap={"middle"} className='blog_list_admin'>
+    <Flex vertical gap="middle">
       <Flex>
-        <Form form={form} onFieldsChange={onFieldsChange} style={{ width: "100%" }}>
-          <Flex gap={'middle'} width="100%" justify='space-between'>
-            <Form.Item
-              name="title"
-              style={{ width: "33%" }}
-            >
-              <Input type="text" placeholder="Title" size="large" />
+        <Form form={form} onFieldsChange={onFieldsChange} style={{ width: '100%' }}>
+          <Flex gap="middle">
+            <Form.Item name="title" style={{ flex: 1 }}>
+              <Input placeholder="Search by title" />
             </Form.Item>
-            <Form.Item
-              name="type"
-              style={{ width: "15%" }}
-            >
-              <Select placeholder="Type" size="large" allowClear>
-                <Select.Option value={0} >Deactivate</Select.Option>
-                <Select.Option value={1}>Activate</Select.Option>
+            <Form.Item name="isActive" style={{ width: 160 }}>
+              <Select placeholder="Status" allowClear>
+                <Select.Option value="false">Inactive</Select.Option>
+                <Select.Option value="true">Active</Select.Option>
               </Select>
             </Form.Item>
           </Flex>
-
         </Form>
       </Flex>
-      <Flex justify='space-between'>
-        <Button danger type='primary' disabled={selectedRowKeys.length === 0} icon={<DeleteOutlined />} onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }), setTypeDelete("blogList") }} />
-        <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Add new blog</Button>
+      <Flex justify="space-between">
+        <Button
+          danger type="primary" icon={<DeleteOutlined />}
+          disabled={selectedRowKeys.length === 0}
+          onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }); setTypeDelete(TypeDeleteAdmin.BLOG_LIST); }}
+        />
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => navigate('/admin/blog/create')}>
+          Add new blog
+        </Button>
       </Flex>
       <Table
         bordered
         columns={columns}
         dataSource={items}
         rowHoverable
-        rowSelection={rowSelection}
-        pagination={{ hideOnSinglePage: true, pageSize: 6, total: totalProducts, defaultCurrent: 1, showSizeChanger: false, onChange: setPage }}
+        rowSelection={{ selectedRowKeys, onChange: onSelectChange }}
+        pagination={{ hideOnSinglePage: true, pageSize: 6, total, current: page, showSizeChanger: false, onChange: setPage }}
         onChange={onChange}
       />
       <DeleteModal type_del={typeDelete} id_del={delID} />
     </Flex>
-  )
-}
+  );
+};

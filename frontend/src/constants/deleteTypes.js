@@ -10,4 +10,6 @@ export const TypeDeleteAdmin = Object.freeze({
     PRODUCT_ONE: "productOne",
     PRODUCT_LIST: "productList",
     SALE: "sale",
+    BLOG_ONE: "blogOne",
+    BLOG_LIST: "blogList",
 });

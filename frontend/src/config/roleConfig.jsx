@@ -1,6 +1,7 @@
 import {
     AccountBookOutlined,
     CommentOutlined,
+    FileTextOutlined,
     FileZipOutlined,
     FolderOpenOutlined,
     FolderOutlined,
@@ -108,6 +109,11 @@ export const getNavbarItems = (userRole, getItem) => [
         <NavLink to="ratings">Ratings</NavLink>,
         'ratings',
         <StarOutlined />
+    ),
+    userRole >= ROLE.MANAGER && getItem(
+        <NavLink to="blog">Blog</NavLink>,
+        'blog',
+        <FileTextOutlined />
     ),
 
     // ── Staff (STAFF = 1) and above ──────────────────────────────────

@@ -18,7 +18,6 @@ import Editor from "../../../../../components/RichTextEditor/Editor";
 import { queryClient } from "../../../../../main";
 import { detailBlog, updateBlog } from "../../../../../services/blog_service";
 import Notification from "../../../../../utils/configToastify";
-import './UpdateBlog.css';
 
 function UpdateBlog() {
     const navigate = useNavigate();
@@ -33,14 +32,12 @@ function UpdateBlog() {
 
 
     useEffect(() => {
-        console.log(data);
         if (!isSuccess) return
         form.setFieldValue("title", data?.data?.title);
         form.setFieldValue("content", data?.data?.content);
         form.setFieldValue("order", data?.data?.order);
         form.setFieldValue("isActive", data?.data?.isActive);
         setBlog(data?.data?.content)
-
     }, [data, form, isSuccess]);
 
     const { mutate } = useMutation({
@@ -57,7 +54,6 @@ function UpdateBlog() {
         mutate({ ...e, id: blog_id });
         navigate('/admin/blog')
     }
-    console.log(form.getFieldValue('content'));
     return (
         <Flex className="update_blog_panel container" vertical>
             <h2 className='caption'><PlusOutlined />Update a blog</h2>
@@ -145,7 +141,7 @@ function UpdateBlog() {
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
                                     <Button type="primary" htmlType="submit">
-                                        Add new
+                                        Update
                                     </Button>
                                     <Button htmlType="reset">Reset</Button>
                                 </Flex>

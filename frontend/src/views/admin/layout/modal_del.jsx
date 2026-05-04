@@ -5,6 +5,7 @@ import { TypeDeleteAdmin } from '../../../constants/deleteTypes';
 import { queryClient } from '../../../main';
 import { deleteBannerList, deleteBannerOne } from '../../../services/banner_service';
 import { deleteCategoryList, deleteCategoryOne } from '../../../services/category_service';
+import { deleteBlogList, deleteBlogOne } from '../../../services/blog_service';
 import { deleteProductList, deleteProductOne } from '../../../services/product_service';
 import { deleteSale } from '../../../services/sale_service';
 import { ACTION_MODAL } from '../../../store/modal';
@@ -97,6 +98,28 @@ function DeleteModal(props) {
         }
     })
 
+    const deleteOneBlog = useMutation({
+        mutationFn: (id) => deleteBlogOne(id),
+        onSuccess: () => {
+            Notification({ message: "Delete blog successfully!", type: "success" })
+            queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
+        },
+        onError: (error) => {
+            Notification({ message: error?.response?.data?.message ?? 'Delete failed', type: "error" })
+        }
+    })
+
+    const deleteListBlog = useMutation({
+        mutationFn: (id) => deleteBlogList(id),
+        onSuccess: () => {
+            Notification({ message: "Delete blogs successfully!", type: "success" })
+            queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
+        },
+        onError: (error) => {
+            Notification({ message: error?.response?.data?.message ?? 'Delete failed', type: "error" })
+        }
+    })
+
     const handleDelete = () => {
         switch (type) {
             case TypeDeleteAdmin.CATEGORY_ONE:
@@ -119,6 +142,12 @@ function DeleteModal(props) {
                 break;
             case TypeDeleteAdmin.SALE:
                 deleteSaleOne.mutate(id)
+                break;
+            case TypeDeleteAdmin.BLOG_ONE:
+                deleteOneBlog.mutate(id)
+                break;
+            case TypeDeleteAdmin.BLOG_LIST:
+                deleteListBlog.mutate(id)
                 break;
             default:
                 break
