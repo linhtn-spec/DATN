@@ -22,9 +22,10 @@ mongoose.connect(process.env.URL_DB)
 
 
 const defaultCategory = {
-    "name": process.env.CATEGORY_NAME_DEFAULT,
-    "description": process.env.CATEGORY_DESCRIPTION_DEFAULT,
-    "order": process.env.CATEGORY_ORDER_DEFAULT,
+    "name": process.env.CATEGORY_NAME_DEFAULT || "All Products",
+    "description": process.env.CATEGORY_DESCRIPTION_DEFAULT || "Default category for all products",
+    "order": process.env.CATEGORY_ORDER_DEFAULT || 1,
+    "image": process.env.CATEGORY_IMAGE_DEFAULT || "https://res.cloudinary.com/thanh-nam/image/upload/v1714885565/DATN/default_category.png"
 }
 
 
