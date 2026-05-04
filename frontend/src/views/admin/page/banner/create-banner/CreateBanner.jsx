@@ -140,7 +140,7 @@ function CreateBanner() {
 
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 character"
                                         },
                                         {
@@ -164,7 +164,7 @@ function CreateBanner() {
                                             message: "Description must be not empty"
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Minimum 5 character"
                                         },
                                         {

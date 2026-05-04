@@ -175,7 +175,7 @@ function CreateProduct() {
 
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 characters"
                                         },
                                         {
@@ -218,7 +218,7 @@ function CreateProduct() {
 
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Origin has at least 5 character"
                                         },
                                         {
@@ -249,7 +249,7 @@ function CreateProduct() {
                                             message: "Description must be not empty"
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Minimum 5 character"
                                         },
                                         {

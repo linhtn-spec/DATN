@@ -167,7 +167,7 @@ function UpdateCategory() {
 
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 character"
                                         },
                                         {
@@ -190,7 +190,7 @@ function UpdateCategory() {
                                             message: "Description must be not empty"
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 character"
                                         },
                                         {

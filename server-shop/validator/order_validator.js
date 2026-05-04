@@ -3,26 +3,26 @@ import { body, validationResult } from "express-validator";
 export const add_order_validator = [
     body("firstNameReceiver")
         .notEmpty().withMessage("First name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("First name has at least 3 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("First name has at least 1 character and maximum 50 characters"),
     body("lastNameReceiver")
         .notEmpty().withMessage("Last name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Last name has at least 3 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Last name has at least 1 character and maximum 50 characters"),
     body("phoneReceiver")
         .notEmpty().withMessage("Phone is required")
         .isLength({ min: 10, max: 13 }).withMessage("Phone name has at least 3 characters and maximum 13 characters"),
     body("emailReceiver")
         .notEmpty().withMessage("Email is required")
         .isEmail().withMessage("Not an email")
-        .isLength({ min: 5, max: 50 }).withMessage("Email name has at least 5 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Email name has at least 1 character and maximum 50 characters"),
     body("addressReceiver")
         .notEmpty().withMessage("Address id is required")
-        .isLength({ min: 5, max: 50 }).withMessage("Address id must be at least 5 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Address id must be at least 1 character and maximum 50 characters"),
     body("countryReceiver")
         .notEmpty().withMessage("Country is required")
-        .isLength({ min: 5, max: 50 }).withMessage("Country has at least 5 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Country has at least 1 character and maximum 50 characters"),
     body("note")
         .optional()
-        .isLength({ min: 3, max: 300 }).withMessage("Note has at least 3 characters and maximum 300 characters"),
+        .isLength({ min: 1, max: 300 }).withMessage("Note has at least 1 character and maximum 300 characters"),
     body("paymentMethod")
         .notEmpty().withMessage("Payment method is required")
         .isIn(['vnpay', 'cod']).withMessage("Payment method must be in regulation"),

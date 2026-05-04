@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 export const add_product_validator = [
     body("name")
         .notEmpty().withMessage("Name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Name has at least 3 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Name has at least 1 character and maximum 50 characters"),
     body("price")
         .notEmpty().withMessage("Price is required")
         .isFloat({ min: 1 }).withMessage("Price  has value min 1"),
@@ -17,10 +17,10 @@ export const add_product_validator = [
         .notEmpty().withMessage("isActive is required"),
     body("description")
         .notEmpty().withMessage("Description is required")
-        .isLength({ min: 5, max: 300 }).withMessage("Description has at least 5 characters and maximum 300 characters"),
+        .isLength({ min: 1, max: 300 }).withMessage("Description has at least 1 character and maximum 300 characters"),
     body("origin")
         .notEmpty().withMessage("Origin is required")
-        .isLength({ min: 5, max: 300 }).withMessage("Origin has at least 5 characters and maximum 300 characters"),
+        .isLength({ min: 1, max: 300 }).withMessage("Origin has at least 1 character and maximum 300 characters"),
     body("unit")
         .notEmpty().withMessage("Unit is required")
         .isLength({ min: 1, max: 20 }).withMessage("Unit has at least 1 character and maximum 20 characters"),
@@ -53,7 +53,7 @@ export const add_product_validator = [
 export const edit_product_validator = [
     body("name")
         .optional()
-        .isLength({ min: 3, max: 50 }).withMessage("Name has at least 3 characters and maximum 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Name has at least 1 character and maximum 50 characters"),
     body("price")
         .optional()
         .isFloat({ min: 1 }).withMessage("Price  has value min 1"),
@@ -67,10 +67,10 @@ export const edit_product_validator = [
         .optional(),
     body("description")
         .optional()
-        .isLength({ min: 5, max: 300 }).withMessage("Description has at least 5 characters and maximum 300 characters"),
+        .isLength({ min: 1, max: 300 }).withMessage("Description has at least 1 character and maximum 300 characters"),
     body("origin")
         .optional()
-        .isLength({ min: 5, max: 300 }).withMessage("Origin has at least 5 characters and maximum 300 characters"),
+        .isLength({ min: 1, max: 300 }).withMessage("Origin has at least 1 character and maximum 300 characters"),
     body("unit")
         .optional()
         .isLength({ min: 1, max: 20 }).withMessage("Unit has at least 1 character and maximum 20 characters"),

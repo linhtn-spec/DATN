@@ -229,7 +229,7 @@ export function CrudUser() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 6 characters"
                                         },
                                         {
@@ -253,7 +253,7 @@ export function CrudUser() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {
@@ -277,7 +277,7 @@ export function CrudUser() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {
@@ -338,7 +338,7 @@ export function CrudUser() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {

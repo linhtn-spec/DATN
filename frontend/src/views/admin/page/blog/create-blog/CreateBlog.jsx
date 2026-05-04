@@ -72,7 +72,7 @@ function CreateBlog() {
 
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 character"
                                         },
                                         {
@@ -97,7 +97,7 @@ function CreateBlog() {
                                             message: "Content must be not empty"
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Minimum 5 character"
                                         },
                                         {

@@ -191,7 +191,7 @@ export function DetailCustomer() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 6 characters"
                                         },
                                         {
@@ -215,7 +215,7 @@ export function DetailCustomer() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {
@@ -239,7 +239,7 @@ export function DetailCustomer() {
                                             message: 'Please input!',
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {
@@ -292,7 +292,7 @@ export function DetailCustomer() {
                                     hasFeedback
                                     rules={[
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "At least 3 characters"
                                         },
                                         {

@@ -101,6 +101,12 @@ export const paginate_rating = async (req, res) => {
         const users = name ? await user_model.find(userQuery) : [];
 
         const userIds = users.map(user => user._id);
+
+        // Nếu tìm kiếm theo tên nhưng không có user nào khớp → trả rỗng ngay
+        if (name && userIds.length === 0) {
+            return res.status(404).json({ message: "No rating" });
+        }
+
         let ratingQuery = {}
         if (userIds.length)
             ratingQuery.userId = { $in: userIds }

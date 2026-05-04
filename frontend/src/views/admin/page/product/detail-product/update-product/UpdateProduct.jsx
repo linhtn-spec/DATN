@@ -206,7 +206,7 @@ function UpdateProduct() {
 
                                         },
                                         {
-                                            min: 3,
+                                            min: 1,
                                             message: "Minimum 3 characters"
                                         },
                                         {
@@ -254,7 +254,7 @@ function UpdateProduct() {
 
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Origin has at least 5 character"
                                         },
                                         {
@@ -286,7 +286,7 @@ function UpdateProduct() {
                                             message: "Description must be not empty"
                                         },
                                         {
-                                            min: 5,
+                                            min: 1,
                                             message: "Minimum 5 character"
                                         },
                                         {

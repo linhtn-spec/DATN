@@ -202,8 +202,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 5,
-                                                message: "Minimum 5 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 50,
@@ -222,8 +222,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 3,
-                                                message: "Minimum 3 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 50,
@@ -242,8 +242,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 5,
-                                                message: "Minimum 5 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 15,
@@ -262,8 +262,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 15,
-                                                message: "Minimum 5 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 30,
@@ -282,8 +282,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 3,
-                                                message: "Minimum 3 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 50,
@@ -302,8 +302,8 @@ export function DetailOrder() {
                                         rules={[
 
                                             {
-                                                min: 5,
-                                                message: "Minimum 5 character"
+                                                min: 1,
+                                                message: "Minimum 1 character"
                                             },
                                             {
                                                 max: 50,
@@ -448,8 +448,8 @@ export function DetailOrder() {
                                             validateDebounce={1500}
                                             rules={[
                                                 {
-                                                    min: 3,
-                                                    message: "Minimum 3 characters"
+                                                    min: 1,
+                                                    message: "Minimum 1 characters"
                                                 },
                                                 {
                                                     max: 300,

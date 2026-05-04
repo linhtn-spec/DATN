@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 export const register_validator = [
     body("username")
         .notEmpty().withMessage("Username is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Username must be at least 3 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Username must be at least 1 character and max 50 characters"),
     body("password")
         .notEmpty().withMessage("Password is required")
         .isLength({ min: 6, max: 50 }).withMessage("Password has at least 6 characters and max 50 characters"),
@@ -22,10 +22,10 @@ export const register_validator = [
         }),
     body("firstName")
         .notEmpty().withMessage("First name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("First name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("First name has at least 1 character and max 50 characters"),
     body("lastName")
         .notEmpty().withMessage("Last name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Last name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Last name has at least 1 character and max 50 characters"),
     body("phone")
         .notEmpty().withMessage("Phone is required")
         .isLength({ min: 10, max: 13 }).withMessage("Phone has at least 10 characters and max 13 characters"),
@@ -149,7 +149,7 @@ export const login_validator = [
 export const create_validator = [
     body("username")
         .notEmpty().withMessage("Username is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Username must be at least 3 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Username must be at least 1 character and max 50 characters"),
     body("password")
         .notEmpty().withMessage("Password is required")
         .isLength({ min: 6, max: 50 }).withMessage("Password has at least 6 characters and max 50 characters"),
@@ -160,10 +160,10 @@ export const create_validator = [
 
     body("firstName")
         .notEmpty().withMessage("First name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("First name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("First name has at least 1 character and max 50 characters"),
     body("lastName")
         .notEmpty().withMessage("Last name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Last name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Last name has at least 1 character and max 50 characters"),
     body("phone")
         .notEmpty().withMessage("Phone is required")
         .isLength({ min: 10, max: 13 }).withMessage("Phone has at least 10 characters and max 13 characters"),
@@ -178,7 +178,7 @@ export const create_validator = [
         .notEmpty().withMessage("Role is required"),
     body("address")
         .notEmpty().withMessage("Address is required")
-        .isLength({ min: 3, max: 150 }).withMessage("Address has at least 3 characters and max 150 characters"),
+        .isLength({ min: 1, max: 150 }).withMessage("Address has at least 1 character and max 150 characters"),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -198,7 +198,7 @@ export const create_validator = [
 export const edit_validator = [
     body("username")
         .optional({ values: "falsy" })
-        .isLength({ min: 3, max: 50 }).withMessage("Username must be at least 3 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Username must be at least 1 character and max 50 characters"),
     body("email")
         .optional({ values: "falsy" })
         .isEmail().withMessage("Not email")
@@ -206,11 +206,11 @@ export const edit_validator = [
     body("firstName")
         .optional()
         .notEmpty().withMessage("First name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("First name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("First name has at least 1 character and max 50 characters"),
     body("lastName")
         .optional()
         .notEmpty().withMessage("Last name is required")
-        .isLength({ min: 3, max: 50 }).withMessage("Last name has at least 5 characters and max 50 characters"),
+        .isLength({ min: 1, max: 50 }).withMessage("Last name has at least 1 character and max 50 characters"),
     body("phone")
         .optional()
         .notEmpty().withMessage("Phone is required")
@@ -228,7 +228,7 @@ export const edit_validator = [
     body("address")
         .optional()
         .notEmpty().withMessage("Address is required")
-        .isLength({ min: 3, max: 150 }).withMessage("Address has at least 3 characters and max 150 characters"),
+        .isLength({ min: 1, max: 150 }).withMessage("Address has at least 1 character and max 150 characters"),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

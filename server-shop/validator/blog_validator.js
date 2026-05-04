@@ -3,10 +3,10 @@ import { body, validationResult } from "express-validator";
 export const add_blog_validator = [
     body("title")
         .notEmpty().withMessage("Title is required")
-        .isLength({ min: 3, max: 200 }).withMessage("Title must be at least 3 characters and max 200 characters"),
+        .isLength({ min: 1, max: 200 }).withMessage("Title must be at least 1 character and max 200 characters"),
     body("content")
         .notEmpty().withMessage("Content is required")
-        .isLength({ min: 5, max: 20000 }).withMessage("Content must be at least 5 characters and max 20000 characters"),
+        .isLength({ min: 1, max: 20000 }).withMessage("Content must be at least 1 character and max 20000 characters"),
     body("order")
         .escape()
         .notEmpty().withMessage("Order is required"),
@@ -28,10 +28,10 @@ export const add_blog_validator = [
 export const edit_blog_validator = [
     body("title")
         .optional()
-        .isLength({ min: 3, max: 200 }).withMessage("Title must be at least 3 characters and max 200 characters"),
+        .isLength({ min: 1, max: 200 }).withMessage("Title must be at least 1 character and max 200 characters"),
     body("content")
         .optional()
-        .isLength({ min: 5, max: 20000 }).withMessage("Content must be at least 5 characters and max 20000 characters"),
+        .isLength({ min: 1, max: 20000 }).withMessage("Content must be at least 1 character and max 20000 characters"),
     body("order")
         .optional()
         .escape()

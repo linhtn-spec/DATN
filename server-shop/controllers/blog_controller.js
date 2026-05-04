@@ -47,8 +47,8 @@ export const update_blog = async (req, res) => {
         if (!blog) {
             return res.status(404).json({ message: "Blog not exist" });
         }
-        if (order && order !== blog.order) {
-            const checkExistOrder = await blog_model.findOne({ order: order });
+        if (order && Number(order) !== blog.order) {
+            const checkExistOrder = await blog_model.findOne({ order: Number(order) });
             if (checkExistOrder) {
                 return res.status(400).json({ message: "Blog order already taken" });
             }
