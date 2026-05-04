@@ -9,7 +9,7 @@
     z-index: 20;
     color: white;
     font-size: 18px;
-    background-color: #922a8d;
+    background-color: var(--primary-color);
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -33,7 +33,7 @@
 .ant-carousel .slick-next:hover {
     background-color: #b336ae !important;
     transform: translateY(-51%) scale(1.1) !important;
-    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.4);
+    box-shadow: 0 4px 15px rgba(21, 128, 61, 0.4);
 }
 
 .ant-carousel:hover .slick-prev,

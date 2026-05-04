@@ -3,7 +3,7 @@
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 30px;
-    color: #922a8d;
+    color: var(--primary-color);
     font-size: 30px;
 }
 

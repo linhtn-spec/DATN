@@ -234,6 +234,7 @@ export const ListOfOrder = () => {
                 bordered
                 columns={columns}
                 dataSource={items}
+                loading={!isSuccess}
                 rowHoverable
                 onChange={onChange}
                 pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, current: page, showSizeChanger: false, onChange: setPage }}

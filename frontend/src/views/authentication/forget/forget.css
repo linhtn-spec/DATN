@@ -68,7 +68,7 @@
     font-weight: 600;
     font-size: 16px;
     border-radius: 8px;
-    background-color: #922a8d;
+    background-color: var(--primary-color);
     border: none;
     color: white;
     transition: all 0.3s ease;
@@ -76,8 +76,8 @@
 
 .forget_panel .button_group .complete:hover {
     background-color: white !important;
-    color: #922a8d !important;
-    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    color: var(--primary-color) !important;
+    box-shadow: 0 4px 15px rgba(21, 128, 61, 0.2);
     transform: translateY(-2px);
-    border: 2px solid #922a8d;
+    border: 2px solid var(--primary-color);
 }

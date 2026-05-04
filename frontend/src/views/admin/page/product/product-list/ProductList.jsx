@@ -275,6 +275,7 @@ export const ProductList = () => {
         bordered
         columns={columns}
         dataSource={items}
+        loading={!isSuccess}
         rowHoverable
         rowSelection={rowSelection}
         pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, current: page, howSizeChanger: false, onChange: setPage }}

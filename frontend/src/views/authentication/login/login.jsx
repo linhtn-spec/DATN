@@ -13,7 +13,7 @@ function Login() {
     const { dispatch } = useContext(UserContext)
     const logGoogle = useContext(LogContext)
     const navigate = useNavigate()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ['login'],
         mutationFn: (data) => login(data),
         onSuccess: (response) => {
@@ -94,7 +94,7 @@ function Login() {
                     <Flex vertical align="center" justify="center" className="button_group">
                         <Link to={'/forget-password'}>Forget password?</Link>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login">Login</Button>
+                            <Button type="primary" htmlType="submit" className="login" loading={isPending}>Login</Button>
                         </Form.Item>
                         <Typography.Text>Don&apos;t have an account? <Link to={'/register'}>Sign up</Link></Typography.Text>
                     </Flex>

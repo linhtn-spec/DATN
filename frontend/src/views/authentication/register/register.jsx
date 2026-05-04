@@ -8,7 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 function Register() {
     const { Option } = Select;
     const navigate = useNavigate()
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ['register_account'],
         mutationFn: (data) => register(data),
         onSuccess: () => {
@@ -188,7 +188,7 @@ function Register() {
                         </Form.Item>
                         <Flex vertical align="center" justify="center" className="button_group">
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="register">Sign up</Button>
+                                <Button type="primary" htmlType="submit" className="register" loading={isPending}>Sign up</Button>
                             </Form.Item>
                             <Typography.Text className="login">Have an account? <Link to={'/'}>Login</Link></Typography.Text>
                         </Flex>

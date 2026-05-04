@@ -13,7 +13,7 @@
 .chatbox_header {
     height: 3rem;
     width: 100%;
-    background-color: #922a8d;
+    background-color: var(--primary-color);
     padding-right: 10px;
 }
 

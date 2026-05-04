@@ -73,11 +73,11 @@
 .product_detail-client .ant-tabs-tab-btn {
     font-size: 18px;
     text-transform: uppercase;
-    color: rgb(146, 42, 141) !important;
+    color: rgb(21, 128, 61) !important;
 }
 
 .product_detail-client .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
-    background-color: rgb(146, 42, 141) !important;
+    background-color: rgb(21, 128, 61) !important;
 
 }
 
@@ -127,8 +127,8 @@
     text-transform: uppercase;
     font-size: 18px;
     background-color: transparent;
-    border: 2px solid #922a8d !important;
-    color: #922a8d !important;
+    border: 2px solid var(--primary-color) !important;
+    color: var(--primary-color) !important;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -137,8 +137,8 @@
 
 .product_detail-client .cart:hover:not([disabled]) {
     color: white !important;
-    background-color: #922a8d !important;
-    box-shadow: 0 8px 20px rgba(146, 42, 141, 0.2) !important;
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 8px 20px rgba(21, 128, 61, 0.2) !important;
 }
 
 .product_detail-client .cart[disabled] {
@@ -205,7 +205,7 @@
 }
 
 .product_detail-client .image_active {
-    border: 2px solid #922a8d !important;
+    border: 2px solid var(--primary-color) !important;
     opacity: 0.8;
 }
 

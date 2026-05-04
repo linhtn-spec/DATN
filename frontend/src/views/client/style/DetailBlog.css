@@ -50,5 +50,5 @@
 }
 
 .detail_blog .nav button:hover span {
-    color: #922a8d !important;
+    color: var(--primary-color) !important;
 }

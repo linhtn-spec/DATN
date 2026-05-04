@@ -8,12 +8,12 @@
 .login_panel {
     width: 30vw;
     background-color: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
     padding-top: 0;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 .login_panel .ant-form-item-label {
@@ -73,17 +73,17 @@
 }
 
 .login_panel .button_group .login {
-    background-color: #922a8d;
+    background-color: var(--primary-color);
     border: none;
     color: white;
 }
 
 .login_panel .button_group .login:hover {
     background-color: white !important;
-    color: #922a8d !important;
-    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
-    transform: translateY(-2px);
-    border: 2px solid #922a8d;
+    color: var(--primary-color) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    border: 2px solid var(--primary-color);
 }
 
 .login_panel .button_group .google {

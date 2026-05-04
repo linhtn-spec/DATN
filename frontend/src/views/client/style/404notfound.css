@@ -15,8 +15,8 @@
 
 .cont-404 button {
     padding: 12px 24px;
-    background-color: #922a8d;
-    border: 2px solid #922a8d;
+    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
     border-radius: 8px;
     cursor: pointer;
     color: #fff;
@@ -27,7 +27,7 @@
 
 .cont-404 button:hover {
     background-color: white;
-    color: #922a8d;
-    box-shadow: 0 4px 15px rgba(146, 42, 141, 0.2);
+    color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(21, 128, 61, 0.2);
     transform: translateY(-2px);
 }

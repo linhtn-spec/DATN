@@ -15,8 +15,9 @@ header a,
 header .categories {
     text-decoration: none;
     text-transform: uppercase;
-    color: #ba36b3;
-    letter-spacing: 0.1rem;
+    color: var(--text-color);
+    font-weight: 600;
+    letter-spacing: 0.05rem;
     margin: 0px 15px;
     font-size: 16px;
     cursor: pointer;
@@ -26,7 +27,8 @@ header .categories {
 header a:hover,
 header .main_menu:hover .categories,
 .header-icon span:hover {
-    color: #82267e;
+    color: var(--primary-color);
+    transform: translateY(-1px);
 }
 
 header .icon {
@@ -70,18 +72,19 @@ header .icon {
 }
 
 .header-icon .qty {
-    border: 0.1px solid #ba36b3;
+    background-color: var(--accent-color);
     border-radius: 50%;
-    font-size: 11px;
-    font-weight: 400;
-    color: #ba36b3;
-    width: 20px;
-    height: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    width: 18px;
+    height: 18px;
     position: absolute;
     text-align: center;
-    line-height: 19px;
+    line-height: 18px;
     right: 100px;
     top: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 
@@ -98,7 +101,7 @@ header .main_menu {
 
 header .main_menu .sub_menu a {
     width: 150px;
-    color: #ba36b3;
+    color: var(--text-color);
     font-weight: 400;
     text-align: center;
     white-space: nowrap;
@@ -109,7 +112,7 @@ header .main_menu .sub_menu a {
 }
 
 header .main_menu .sub_menu a:hover {
-    color: #82267e;
+    color: var(--primary-color);
 }
 
 .header-icon .cart {
@@ -121,7 +124,7 @@ header .main_menu .sub_menu a:hover {
 }
 
 .header-icon span {
-    color: #ba36b3;
+    color: var(--text-color);
 }
 
 header .main_menu .sub_menu {
@@ -151,7 +154,7 @@ header .main_menu:hover .sub_menu {
 
 header .main_menu .user a {
     width: 150px;
-    color: #ba36b3;
+    color: var(--secondary-color);
     font-weight: 400;
     text-align: left;
     white-space: nowrap;
@@ -163,7 +166,7 @@ header .main_menu .user a {
 }
 
 header .main_menu .user a:hover {
-    color: #82267e;
+    color: var(--primary-color);
 }
 
 header .main_menu .user {

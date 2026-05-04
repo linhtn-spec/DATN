@@ -64,7 +64,7 @@
 }
 
 .category_items button {
-    color: #922a8d;
+    color: var(--primary-color);
     font-weight: 600;
     text-transform: uppercase;
     font-size: 13px;
@@ -82,7 +82,7 @@
 .category_items button:hover {
     border-color: white !important;
     color: white !important;
-    background-color: #922a8d !important;
+    background-color: var(--primary-color) !important;
 
 }
 
