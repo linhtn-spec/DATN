@@ -185,6 +185,10 @@ export const paginate_category = async (req, res) => {
         }
     }
 
+    if (Object.keys(sortKind).length === 0) {
+        sortKind.createdAt = -1;
+    }
+
     try {
         const dataAll = await category_model.paginate(query, {
             offset: skip, page: page, limit: limit, sort: sortKind

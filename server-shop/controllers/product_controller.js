@@ -176,6 +176,10 @@ export const paginate_product = async (req, res) => {
     if (sortDate) {
         sortKind.createdAt = sortDate === 'ascend' ? 1 : -1;
     }
+
+    if (Object.keys(sortKind).length === 0) {
+        sortKind.createdAt = -1;
+    }
     let finalQuery = { ...query };
     if (start_price || end_price) {
         finalQuery.price = {}; // Initialize price field

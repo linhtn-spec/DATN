@@ -388,12 +388,12 @@ export const paginate_user = async (req, res) => {
 
     if (role) {
         if (user_role !== 3)
-            query.role = { $nin: ['0', '3'] };
+            query.role = { $nin: [0, 3] };
         query.role = { $in: role };
     } else if (!role) {
         if (user_role !== 3)
-            query.role = { $nin: ['0', '3'] };
-        query.role = { $ne: '0' };
+            query.role = { $nin: [0, 3] };
+        query.role = { $ne: 0 };
     }
     const nameQuery = name ? {
         $or: [
@@ -405,7 +405,7 @@ export const paginate_user = async (req, res) => {
     const skip = page ? (page - 1) * limit : 0;
     try {
         const results = await user_model.paginate({ ...query, ...nameQuery, _id: { $ne: user_id } }, {
-            offset: skip, page: page, limit: limit, select: '-password -refreshToken'
+            offset: skip, page: page, limit: limit, select: '-password -refreshToken', sort: { createdAt: -1 }
         })
         return res.status(200).json(results)
     } catch (error) {
@@ -432,7 +432,7 @@ export const paginate_customer = async (req, res) => {
     const skip = page ? (page - 1) * limit : 0;
     try {
         const results = await user_model.paginate({ ...query, ...nameQuery }, {
-            offset: skip, page: page, limit: limit, select: '-password -refreshToken'
+            offset: skip, page: page, limit: limit, select: '-password -refreshToken', sort: { createdAt: -1 }
         })
         return res.status(200).json(results)
     } catch (error) {
@@ -445,7 +445,7 @@ export const get_all_user_available = async (req, res) => {
     const role = req.user.role
     const query = {}
     query.isActive = true
-    if (role) query.role = query.role = { $nin: ['0', '3'] };
+    if (role) query.role = { $nin: [0, 3] };
     try {
         const results = await user_model.find(query).select('-password -refreshToken');
         return res.status(200).json(results)

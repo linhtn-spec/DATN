@@ -104,6 +104,10 @@ export const paginate_sale = async (req, res) => {
     if (sortDate) {
         sortKind.createdAt = sortDate === 'ascend' ? 1 : -1;
     }
+
+    if (Object.keys(sortKind).length === 0) {
+        sortKind.createdAt = -1;
+    }
     let finalQuery = { ...query };
 
     if (applyDate) {

@@ -39,12 +39,11 @@ export function CrudUser() {
     const roles =
         isAdmin ?
             [{ value: 1, label: "Staff" },
-            { value: 2, label: "Owner" },
-            { value: 3, label: "Admin" },
+            { value: 2, label: "Manager" },
+            { value: 3, label: "Owner" },
             ]
             : [
                 { value: 1, label: "Staff" },
-                { value: 2, label: "Owner" }
             ]
 
     const handleChange = async (e) => {

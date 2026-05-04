@@ -142,6 +142,10 @@ export const paginate_blog = async (req, res) => {
         }
     }
 
+    if (Object.keys(sortKind).length === 0) {
+        sortKind.createdAt = -1;
+    }
+
     try {
         const dataAll = await blog_model.paginate(query, {
             offset: skip, page: page, limit: limit, sort: sortKind

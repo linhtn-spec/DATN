@@ -30,12 +30,12 @@ export const ListOfUser = () => {
     const roles =
         isAdmin ?
             [{ value: 1, label: "Staff" },
-            { value: 2, label: "Owner" },
-            { value: 3, label: "Admin" },
+            { value: 2, label: "Manager" },
+            { value: 3, label: "Owner" },
             ]
             : [
                 { value: 1, label: "Staff" },
-                { value: 2, label: "Owner" }
+                { value: 2, label: "Manager" }
             ]
 
     const [form] = Form.useForm()
