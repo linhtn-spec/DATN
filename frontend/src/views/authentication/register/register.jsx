@@ -12,20 +12,20 @@ function Register() {
         mutationKey: ['register_account'],
         mutationFn: (data) => register(data),
         onSuccess: () => {
-            Notification({ message: "Register successfully!", type: "success" })
+            Notification({ message: "Đăng ký thành công!", type: "success" })
             navigate('/')
         },
         onError: (error) => Notification({ message: error?.response?.data, type: "error" })
     })
 
-    useEffect(() => { document.title = "Sign up" }, [])
+    useEffect(() => { document.title = "Đăng ký" }, [])
 
     return (
 
         <Flex className="register_wrap" justify="center" align="center">
             <Flex className="register_panel" vertical align="center">
                 <Flex className="wrap_logo d-flex justify-content-center align-items-center" align="center" justify="center"><img src="/images/icon/scart-mid.png" alt="logo" /></Flex>
-                <Typography.Title level={2}>Sign up</Typography.Title>
+                <Typography.Title level={2}>Đăng ký tài khoản</Typography.Title>
                 <Form
                     style={{ width: "100%", padding: "0 20px" }}
                     labelCol={{ span: 7 }}
@@ -39,19 +39,19 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập họ!',
                                 },
                                 {
-                                    min: 3,
-                                    message: "At least 3 characters"
+                                    min: 2,
+                                    message: "Tối thiểu 2 ký tự"
                                 },
                                 {
                                     max: 50,
-                                    message: "At max 50 characters"
+                                    message: "Tối đa 50 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="First name" size="large" />
+                            <Input type="text" placeholder="Họ" size="large" />
                         </Form.Item>
                         <Form.Item
                             name="lastName"
@@ -59,19 +59,19 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập tên!',
                                 },
                                 {
-                                    min: 3,
-                                    message: "At least 3 characters"
+                                    min: 2,
+                                    message: "Tối thiểu 2 ký tự"
                                 },
                                 {
                                     max: 50,
-                                    message: "At max 50 characters"
+                                    message: "Tối đa 50 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="Last name" size="large" />
+                            <Input type="text" placeholder="Tên" size="large" />
                         </Form.Item>
                         <Form.Item
                             name="phone"
@@ -79,30 +79,30 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập số điện thoại!',
                                 },
                                 {
                                     min: 10,
-                                    message: 'At least 10 digits long.',
+                                    message: 'Tối thiểu 10 chữ số.',
                                 },
                                 {
                                     max: 13,
-                                    message: 'Maximum 13 digits long.',
+                                    message: 'Tối đa 13 chữ số.',
                                 },
                             ]}
                         >
-                            <Input type="number" style={{ width: '100%' }} placeholder="Phone" size="large" />
+                            <Input type="number" style={{ width: '100%' }} placeholder="Số điện thoại" size="large" />
                         </Form.Item>
 
                         <Form.Item
                             name="gender"
-                            rules={[{ required: true, message: 'Please select!' }]}
+                            rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
                             hasFeedback
                         >
-                            <Select placeholder="Gender" size="large">
-                                <Option value="male" >Male</Option>
-                                <Option value="female">Female</Option>
-                                <Option value="other">Other</Option>
+                            <Select placeholder="Giới tính" size="large">
+                                <Option value="male" >Nam</Option>
+                                <Option value="female">Nữ</Option>
+                                <Option value="other">Khác</Option>
                             </Select>
                         </Form.Item>
 
@@ -112,14 +112,14 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập email!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 },
                                 {
                                     type: 'email',
-                                    message: 'Please input an email address'
+                                    message: 'Vui lòng nhập đúng định dạng email'
                                 }
                             ]}
                         >
@@ -132,19 +132,19 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập tên đăng nhập!',
                                 },
                                 {
-                                    min: 3,
-                                    message: "At least 6 characters"
+                                    min: 6,
+                                    message: "Tối thiểu 6 ký tự"
                                 },
                                 {
                                     max: 50,
-                                    message: "At max 50 characters"
+                                    message: "Tối đa 50 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="Username" size="large" />
+                            <Input type="text" placeholder="Tên đăng nhập" size="large" />
                         </Form.Item>
                         <Form.Item
                             name="password"
@@ -152,14 +152,14 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập mật khẩu!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 }
                             ]}
                         >
-                            <Input.Password visibilityToggle placeholder="Password" size="large" />
+                            <Input.Password visibilityToggle placeholder="Mật khẩu" size="large" />
                         </Form.Item>
 
                         <Form.Item
@@ -169,28 +169,28 @@ function Register() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng xác nhận mật khẩu!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 },
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
                                         if (!value || getFieldValue('password') === value) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('The new password that you entered do not match!'));
+                                        return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
                                     },
                                 }),
                             ]}
                         >
-                            <Input.Password visibilityToggle placeholder="Confirm password" size="large" />
+                            <Input.Password visibilityToggle placeholder="Xác nhận mật khẩu" size="large" />
                         </Form.Item>
                         <Flex vertical align="center" justify="center" className="button_group">
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="register" loading={isPending}>Sign up</Button>
+                                <Button type="primary" htmlType="submit" className="register" loading={isPending}>Đăng ký</Button>
                             </Form.Item>
-                            <Typography.Text className="login">Have an account? <Link to={'/'}>Login</Link></Typography.Text>
+                            <Typography.Text className="login">Đã có tài khoản? <Link to={'/'}>Đăng nhập</Link></Typography.Text>
                         </Flex>
                     </Flex>
                 </Form>

@@ -57,12 +57,12 @@ export function DetailSale() {
     const createSaleRequest = useMutation({
         mutationFn: (data) => condition ? updateSale(data) : addSale(data),
         onSuccess: () => {
-            Notification({ message: `${condition ? "Update" : "Create"} sale  successfully!`, type: "success" })
+            Notification({ message: `${condition ? "Cập nhật" : "Tạo"} khuyến mãi thành công!`, type: "success" })
             queryClient.invalidateQueries({ queryKey: ['sales_admin_list'] })
             navigate(`/admin/sales`, { replace: true })
         },
         onError: () => {
-            Notification({ message: `${condition ? "Update" : "Create"} sale  unsuccessfully!`, type: "error" })
+            Notification({ message: `${condition ? "Cập nhật" : "Tạo"} khuyến mãi thất bại!`, type: "error" })
         }
     })
 
@@ -112,9 +112,9 @@ export function DetailSale() {
 
     return (
         <Flex className="crud_user  container" vertical>
-            <h2 className='caption'><PlusOutlined />{condition ? "Update sale" : "Create sale"}</h2>
+            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}</h2>
             <Card
-                title={condition ? "Update sale" : "Create sale"}
+                title={condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}
                 bordered={false}
                 className="form"
             >
@@ -127,27 +127,27 @@ export function DetailSale() {
                             <Flex gap={"80px"}>
                                 <ConfigProvider locale={locale} width={"70%"}>
                                     <Form.Item
-                                        label={"Apply date"}
+                                        label={"Ngày áp dụng"}
                                         name="applyDate"
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please input apply date"
+                                                message: "Vui lòng nhập ngày áp dụng"
                                             }
                                         ]}
                                         style={{ width: "100%" }} required
                                     >
-                                        <DatePicker placeholder='Apply date'
+                                        <DatePicker placeholder='Ngày áp dụng'
                                             style={{ width: "100%" }}
                                             maxDate={dueDateValue ? dayjs(dueDateValue).subtract(1, 'day') : ''} />
                                     </Form.Item>
                                     <Form.Item
-                                        label={"Due date"}
+                                        label={"Ngày kết thúc"}
                                         name="dueDate"
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please input due date"
+                                                message: "Vui lòng nhập ngày kết thúc"
                                             }
                                         ]}
                                         style={{ width: "100%" }} required
@@ -155,14 +155,14 @@ export function DetailSale() {
                                         <DatePicker
                                             style={{ width: "100%" }}
 
-                                            placeholder='Due date' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
+                                            placeholder='Ngày kết thúc' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
                                     </Form.Item>
                                 </ConfigProvider>
                             </Flex>
 
                             <Flex gap={10}>
-                                <Form.Item name='isActive' label="Status" required>
-                                    <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                <Form.Item name='isActive' label="Trạng thái" required>
+                                    <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
                                 </Form.Item>
                             </Flex>
                         </Flex>
@@ -170,22 +170,22 @@ export function DetailSale() {
                             <Form.List name="products" rules={[
                                 {
                                     required: true,
-                                    message: "Please input at least one product"
+                                    message: "Vui lòng chọn ít nhất một sản phẩm"
                                 }
                             ]}>
                                 {(fields, { add, remove }) =>
                                 (<Flex vertical gap={'20px'} style={{ width: "100%" }}>
                                     {fields.map((field, index) => (
                                         <Flex key={field.key} align="center" gap={'20px'}>
-                                            <Typography.Title style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Product ${index + 1}`}</Typography.Title>
+                                            <Typography.Title style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Sản phẩm ${index + 1}`}</Typography.Title>
                                             <Form.Item
                                                 name={[field.name, "productId"]}
                                                 fieldId={[field.key, "productId"]}
-                                                label="Product name"
+                                                label="Tên sản phẩm"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please input product name"
+                                                        message: "Vui lòng chọn sản phẩm"
                                                     }
                                                 ]}
                                                 style={{ marginBottom: 0, width: "40%" }}
@@ -200,23 +200,23 @@ export function DetailSale() {
                                                     filterSort={(optionA, optionB) =>
                                                         (optionA?.text ?? '').toLowerCase().localeCompare((optionB?.text ?? '').toLowerCase())
                                                     }
-                                                    placeholder={'Product name'}
+                                                    placeholder={'Tên sản phẩm'}
                                                 />
                                             </Form.Item>
                                             <Form.Item
                                                 name={[field.name, "pricePromotion"]}
                                                 fieldId={[field.key, "pricePromotion"]}
-                                                label="Price promotion"
+                                                label="Giảm giá (%)"
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: "Please input price promotion (0-100)"
+                                                        message: "Vui lòng nhập phần trăm giảm giá (0-100)"
                                                     },
                                                 ]}
                                                 style={{ marginBottom: 0, width: "20%" }}
 
                                             >
-                                                <InputNumber min={0} max={100} placeholder="Price promotion (0-100)" step={1} />
+                                                <InputNumber min={0} max={100} placeholder="Giảm giá (0-100)" step={1} />
                                             </Form.Item>
                                             <Flex style={{ width: "10%", marginLeft: "70px" }}>
                                                 <MinusCircleOutlined style={{ color: 'red' }} onClick={() => remove(field.name)} />
@@ -225,7 +225,7 @@ export function DetailSale() {
                                     ))}
                                     <Flex>
                                         <Form.Item>
-                                            <Button onClick={() => add()}>Add new product </Button>
+                                            <Button onClick={() => add()}>Thêm sản phẩm </Button>
                                         </Form.Item>
                                     </Flex>
                                 </Flex>)
@@ -235,7 +235,7 @@ export function DetailSale() {
                         <Form.Item>
                             <Flex justify="center" gap={20} className="group_btn">
                                 <Button type="primary" htmlType="submit" >
-                                    {condition ? "Update" : "Add new"}
+                                    {condition ? "Cập nhật" : "Thêm mới"}
                                 </Button>
                             </Flex>
                         </Form.Item>

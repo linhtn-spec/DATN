@@ -12,20 +12,20 @@ function Forget() {
         mutationKey: ['forget_password'],
         mutationFn: (data) => forgetPassword(data),
         onSuccess: () => {
-            Notification({ message: "Send email successfully!", type: "success" })
+            Notification({ message: "Gửi email thành công! Vui lòng kiểm tra hộp thư của bạn.", type: "success" })
             navigate('/')
         },
-        onError: (error) => Notification({ message: error?.response?.data, type: "error" })
+        onError: (error) => Notification({ message: error?.response?.data || "Cung cấp email thất bại!", type: "error" })
     })
 
-    useEffect(() => { document.title = "Forget password" }, [])
+    useEffect(() => { document.title = "Quên mật khẩu" }, [])
 
     return (
 
         <Flex className="forget_wrap" justify="center" align="center">
             <Flex className="forget_panel" vertical align="center">
                 <Flex className="wrap_logo d-flex justify-content-center align-items-center" align="center" justify="center"><img src="/images/icon/scart-mid.png" alt="logo" /></Flex>
-                <Typography.Title level={2}>Forget password?</Typography.Title>
+                <Typography.Title level={2}>Quên mật khẩu?</Typography.Title>
                 <Form
                     style={{ width: "100%", padding: "0 20px" }}
                     labelCol={{ span: 7 }}
@@ -39,28 +39,28 @@ function Forget() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input!',
+                                message: 'Vui lòng nhập email!',
                             }, {
                                 min: 6,
-                                message: "At least 6 characters"
+                                message: "Tối thiểu 6 ký tự"
                             },
                             {
                                 type: 'email',
-                                message: 'Please input an email address'
+                                message: 'Định dạng email không hợp lệ!'
                             }
                         ]}
                     >
-                        <Input type="email" placeholder="Email" size="large" />
+                        <Input type="email" placeholder="Email của bạn" size="large" />
                     </Form.Item>
 
                     <Flex vertical align="center" justify="center" className="button_group">
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="complete">Complete</Button>
+                            <Button type="primary" htmlType="submit" className="complete">Hoàn tất</Button>
                         </Form.Item>
                     </Flex>
 
                 </Form>
-                <Link to={'/'} style={{ textAlign: "right", width: "100%", paddingRight: "20px", marginBottom: "20px", fontWeight: "400" }} >Back to login</Link>
+                <Link to={'/'} style={{ textAlign: "right", width: "100%", paddingRight: "20px", marginBottom: "20px", fontWeight: "400" }} >Quay lại đăng nhập</Link>
 
 
             </Flex>

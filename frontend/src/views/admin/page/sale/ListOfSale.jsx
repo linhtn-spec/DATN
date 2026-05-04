@@ -49,10 +49,10 @@ export const ListOfSale = () => {
         mutationFn: (data) => updateSale(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['sales_admin_list'] })
-            Notification({ message: "Update status of sale sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái khuyến mãi thành công", type: 'success' });
         },
         onError: () => {
-            Notification({ message: "Update status of sale unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái khuyến mãi thất bại", type: "error" })
         }
     })
 
@@ -106,33 +106,33 @@ export const ListOfSale = () => {
 
     const columns = [
         {
-            title: "Apply date",
+            title: "Ngày áp dụng",
             dataIndex: 'applyDate',
             width: 180,
             render: (value) => <Typography.Text >{convertToDate(value).split(',')[0]}</Typography.Text>
 
         },
         {
-            title: "Due date",
+            title: "Ngày kết thúc",
             dataIndex: 'dueDate',
             width: 200,
             render: (value) => <Typography.Text >{convertToDate(value).split(',')[0]}</Typography.Text>
 
         },
         {
-            title: "Products",
+            title: "Sản phẩm áp dụng",
             dataIndex: "products",
             width: 400,
             render: (value) => <Flex vertical>{value.map((item, index) => <Typography.Text key={index} >{item}</Typography.Text>)}</Flex>
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'isActive',
             width: 150,
             render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
         },
         {
-            title: "Created at",
+            title: "Ngày tạo",
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -140,7 +140,7 @@ export const ListOfSale = () => {
             render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -189,7 +189,7 @@ export const ListOfSale = () => {
     };
 
     useEffect(() => {
-        document.title = "Sale"
+        document.title = "Khuyến mãi"
 
     }, [])
     return (
@@ -202,7 +202,7 @@ export const ListOfSale = () => {
                                 name="applyDate"
                                 style={{ width: "100%" }}
                             >
-                                <DatePicker placeholder='Apply date'
+                                <DatePicker placeholder='Ngày áp dụng'
                                     style={{ width: "100%" }}
                                     maxDate={dueDateValue ? dayjs(dueDateValue).subtract(1, 'day') : ''} />
                             </Form.Item>
@@ -213,16 +213,16 @@ export const ListOfSale = () => {
                                 <DatePicker
                                     style={{ width: "100%" }}
 
-                                    placeholder='Due date' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
+                                    placeholder='Ngày kết thúc' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
                             </Form.Item>
                         </ConfigProvider>
                         <Form.Item
                             name="isActive"
                             style={{ width: "30%" }}
                         >
-                            <Select placeholder="Status" size="middle" style={{ height: "31.33px" }} allowClear>
-                                <Select.Option value={false} >Deactivate</Select.Option>
-                                <Select.Option value={true}>Activate</Select.Option>
+                            <Select placeholder="Trạng thái" size="middle" style={{ height: "31.33px" }} allowClear>
+                                <Select.Option value={false} >Ngừng hoạt động</Select.Option>
+                                <Select.Option value={true}>Kích hoạt</Select.Option>
                             </Select>
                         </Form.Item>
                     </Flex>
@@ -230,7 +230,7 @@ export const ListOfSale = () => {
                 </Form>
             </Flex>
             <Flex style={{ width: "100%" }} justify='flex-end'>
-                <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Add new sale</Button>
+                <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Thêm khuyến mãi mới</Button>
             </Flex>
             <Table
                 bordered

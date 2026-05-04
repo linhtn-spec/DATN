@@ -24,10 +24,10 @@ export const DetailUser = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => updateUser(data),
         onSuccess: () => {
-            Notification({ message: "Update user successfully", type: "success" })
+            Notification({ message: "Cập nhật thông tin thành công!", type: "success" })
             navigate('/client')
         },
-        onError: () => Notification({ message: "Update user unsuccessfully", type: "error" })
+        onError: () => Notification({ message: "Cập nhật thất bại, vui lòng kiểm tra lại!", type: "error" })
 
     })
 
@@ -64,7 +64,7 @@ export const DetailUser = () => {
     }, [info?.firstName, info?.lastName, info?.address, info?.gender, info?.image, form, info?.phone])
 
     useEffect(() => {
-        document.title = "Detail user"
+        document.title = "Thông tin cá nhân"
     }, [])
 
 
@@ -73,10 +73,10 @@ export const DetailUser = () => {
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/user'}>INFORMATION</NavLink>,
+                        title: <NavLink to={'/client/user'}>THÔNG TIN</NavLink>,
                     },
                 ]}
             />
@@ -117,108 +117,108 @@ export const DetailUser = () => {
                             </Upload>
 
                         </Form.Item>
-                        <Typography.Title level={3}>First name</Typography.Title>
+                        <Typography.Title level={3}>Họ</Typography.Title>
                         <Form.Item
                             name="firstName"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập họ!',
                                 },
                                 {
                                     min: 3,
-                                    message: "At least 3 characters"
+                                    message: "Tối thiểu 3 ký tự"
                                 },
                                 {
                                     max: 50,
-                                    message: "At max 50 characters"
+                                    message: "Tối đa 50 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="First name" size="large" />
+                            <Input type="text" placeholder="Họ" size="large" />
                         </Form.Item>
-                        <Typography.Title level={3}>Last name</Typography.Title>
+                        <Typography.Title level={3}>Tên</Typography.Title>
                         <Form.Item
                             name="lastName"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập tên!',
                                 },
                                 {
                                     min: 3,
-                                    message: "At least 3 characters"
+                                    message: "Tối thiểu 3 ký tự"
                                 },
                                 {
                                     max: 50,
-                                    message: "At max 50 characters"
+                                    message: "Tối đa 50 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="Last name" size="large" />
+                            <Input type="text" placeholder="Tên" size="large" />
                         </Form.Item>
-                        <Typography.Title level={3}>Phone</Typography.Title>
+                        <Typography.Title level={3}>Số điện thoại</Typography.Title>
                         <Form.Item
                             name="phone"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập số điện thoại!',
                                 },
                                 {
                                     min: 10,
-                                    message: 'At least 10 digits long.',
+                                    message: 'Tối thiểu 10 số.',
                                 },
                                 {
                                     max: 13,
-                                    message: 'Maximum 13 digits long.',
+                                    message: 'Tối đa 13 số.',
                                 },
                             ]}
                         >
-                            <Input type="number" style={{ width: '100%' }} placeholder="Phone" size="large" />
+                            <Input type="number" style={{ width: '100%' }} placeholder="Số điện thoại" size="large" />
                         </Form.Item>
 
-                        <Typography.Title level={3}>Gender</Typography.Title>
+                        <Typography.Title level={3}>Giới tính</Typography.Title>
                         <Form.Item
                             name="gender"
-                            rules={[{ required: true, message: 'Please select!' }]}
+                            rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
                             hasFeedback
                         >
-                            <Select placeholder="Gender" size="large">
-                                <Option value="male" >Male</Option>
-                                <Option value="female">Female</Option>
-                                <Option value="other">Other</Option>
+                            <Select placeholder="Giới tính" size="large">
+                                <Option value="male" >Nam</Option>
+                                <Option value="female">Nữ</Option>
+                                <Option value="other">Khác</Option>
                             </Select>
                         </Form.Item>
 
-                        <Typography.Title level={3}>Address</Typography.Title>
+                        <Typography.Title level={3}>Địa chỉ</Typography.Title>
                         <Form.Item
                             name="address"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập địa chỉ!',
                                 },
                                 {
                                     min: 3,
-                                    message: "At least 3 characters"
+                                    message: "Tối thiểu 3 ký tự"
                                 },
                                 {
                                     max: 150,
-                                    message: "At max 150 characters"
+                                    message: "Tối đa 150 ký tự"
                                 }
                             ]}
                         >
-                            <Input type="text" placeholder="Address" size="large" />
+                            <Input type="text" placeholder="Địa chỉ" size="large" />
                         </Form.Item>
 
                         <Flex vertical align="center" justify="center" className="button_group">
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="update">Update</Button>
+                                <Button type="primary" htmlType="submit" className="update">Cập nhật</Button>
                             </Form.Item>
                         </Flex>
                     </Flex>

@@ -46,10 +46,10 @@ export const ListOfConsignment = () => {
         mutationFn: (data) => updateSale(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['sales_admin_list'] })
-            Notification({ message: "Update status of sale sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái khuyến mãi thành công!", type: 'success' });
         },
         onError: () => {
-            Notification({ message: "Update status of sale unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái khuyến mãi thất bại!", type: "error" })
         }
     })
 
@@ -103,13 +103,13 @@ export const ListOfConsignment = () => {
 
     const columns = [
         {
-            title: "User",
+            title: "Người dùng",
             dataIndex: "user",
             width: 250
 
         },
         {
-            title: "Products",
+            title: "Sản phẩm",
             dataIndex: "products",
             width: 400,
             render: (value) => <Flex vertical>{value.map((item, index) =>
@@ -121,15 +121,15 @@ export const ListOfConsignment = () => {
             )}</Flex>
         },
         {
-            title: 'Import money',
+            title: 'Tiền ký gửi',
             dataIndex: 'importMoney',
             width: 200,
             sorter: true,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
         },
         {
-            title: 'Import date',
+            title: 'Ngày ký gửi',
             dataIndex: 'importDate',
             width: 200,
             sorter: true,
@@ -137,7 +137,7 @@ export const ListOfConsignment = () => {
             render: (value) => <Typography.Text >{convertToDate(value).split(',')[0]}</Typography.Text>
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -189,7 +189,7 @@ export const ListOfConsignment = () => {
     };
 
     useEffect(() => {
-        document.title = "Consignment"
+        document.title = "Ký gửi"
 
     }, [])
     return (
@@ -202,7 +202,7 @@ export const ListOfConsignment = () => {
                                 name="applyDate"
                                 style={{ width: "100%" }}
                             >
-                                <DatePicker placeholder='Apply date'
+                                <DatePicker placeholder='Từ ngày'
                                     style={{ width: "100%" }}
                                     maxDate={dueDateValue ? dayjs(dueDateValue).subtract(1, 'day') : ''} />
                             </Form.Item>
@@ -213,11 +213,11 @@ export const ListOfConsignment = () => {
                                 <DatePicker
                                     style={{ width: "100%" }}
 
-                                    placeholder='Due date' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
+                                    placeholder='Đến ngày' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
                             </Form.Item>
                         </ConfigProvider>
                         <Flex>
-                            <Button type='primary' onClick={() => navigate('/admin/consignment/create')}>Add a consignment</Button>
+                            <Button type='primary' onClick={() => navigate('/admin/consignment/create')}>Thêm ký gửi</Button>
                         </Flex>
                     </Flex>
 

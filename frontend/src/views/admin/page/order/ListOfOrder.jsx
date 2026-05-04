@@ -37,11 +37,11 @@ export const ListOfOrder = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Update order status sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái đơn hàng thành công", type: 'success' });
             queryClient.invalidateQueries({ queryKey: ['orders_admin_list'] })
         },
         onError: () => {
-            Notification({ message: "Update order status unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái đơn hàng thất bại", type: "error" })
         }
     })
 
@@ -98,69 +98,69 @@ export const ListOfOrder = () => {
 
     const columns = [
         {
-            title: " Full name",
+            title: "Họ tên",
             dataIndex: 'name',
         },
         {
-            title: < Tooltip title={"Subtotal"} > < TagOutlined /></Tooltip >,
+            title: < Tooltip title={"Tạm tính"} > < TagOutlined /></Tooltip >,
             dataIndex: 'subTotal',
             ellipsis: true,
-            width: 90,
+            width: 120,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Tax"}> <ShoppingCartOutlined /></Tooltip>,
+            title: <Tooltip title={"Thuế"}> <ShoppingCartOutlined /></Tooltip>,
             dataIndex: 'tax',
             ellipsis: true,
-            width: 75,
+            width: 100,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Shipping cost"}> <TruckOutlined /></Tooltip>,
+            title: <Tooltip title={"Phí vận chuyển"}> <TruckOutlined /></Tooltip>,
             dataIndex: 'shippingCost',
-            width: 75,
+            width: 120,
             align: "center",
             ellipsis: true,
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Total"}><MoneyCollectOutlined /></Tooltip>,
+            title: <Tooltip title={"Tổng cộng"}><MoneyCollectOutlined /></Tooltip>,
             dataIndex: 'total',
             ellipsis: true,
-            width: 90,
+            width: 120,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
 
         },
         {
-            title: <Tooltip title={'Payment method'}>< CreditCardOutlined /></Tooltip>,
+            title: <Tooltip title={'Phương thức thanh toán'}>< CreditCardOutlined /></Tooltip>,
             dataIndex: 'paymentMethod',
             ellipsis: true,
-            width: 75,
+            width: 100,
             align: "center",
             render: (value) => <Typography.Text>{String(value).toUpperCase()}</Typography.Text>
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'orderStatus',
             width: 150,
-            render: (text, row) => <Select placeholder="Order status" size='middle' style={{ width: "100%" }} options={orderStatusOptions}
+            render: (text, row) => <Select placeholder="Trạng thái đơn hàng" size='middle' style={{ width: "100%" }} options={orderStatusOptions}
                 value={text} onChange={(e) => mutate({ id: row.key, orderStatus: e })} />
 
         },
         {
-            title: 'Created at',
+            title: 'Ngày tạo',
             dataIndex: 'createdAt',
             sorter: true,
             render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -206,25 +206,25 @@ export const ListOfOrder = () => {
                             name="name"
                             style={{ width: "33%" }}
                         >
-                            <Input type="text" placeholder="Name" />
+                            <Input type="text" placeholder="Họ tên" />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="orderStatus"
                         >
-                            <Select placeholder="Order status" options={orderStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái đơn hàng" options={orderStatusOptions} allowClear />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="paymentStatus"
                         >
-                            <Select placeholder="Payment status" options={paymentStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái thanh toán" options={paymentStatusOptions} allowClear />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="shippingStatus"
                         >
-                            <Select placeholder="Shipping status" options={shippingStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái giao hàng" options={shippingStatusOptions} allowClear />
                         </Form.Item>
                     </Flex>
 

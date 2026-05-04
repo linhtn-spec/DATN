@@ -29,7 +29,7 @@ export const DetailProduct = () => {
                         to={''}
                         className='information'
                     >
-                        Information
+                        Thông tin
                     </NavLink>
                 </Flex>
                 <Flex justify='center' align='center' className={clsx('link', activeLink === 'comments' && 'active_link')} onClick={() => setActive('comments')} >
@@ -37,7 +37,7 @@ export const DetailProduct = () => {
                         to={'comments'}
                         className='variant'
                     >
-                        Comments
+                        Bình luận
                     </NavLink>
                 </Flex>
                 <Flex justify='center' align='center' className={clsx('link', activeLink === 'ratings' && 'active_link')} onClick={() => setActive('ratings')} >
@@ -45,7 +45,7 @@ export const DetailProduct = () => {
                         to={'ratings'}
                         className='variant'
                     >
-                        Ratings
+                        Đánh giá
                     </NavLink>
                 </Flex>
             </Flex >

@@ -16,11 +16,10 @@ function Product_Hot(props) {
         if (info) {
 
             cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: 1 } })
-            Notification({ message: "Add to cart successully!", type: "success" })
+            Notification({ message: "Đã thêm vào giỏ hàng!", type: "success" })
         }
         else {
-            Notification({ message: "You have to login first!", type: "error" })
-
+            Notification({ message: "Bạn cần đăng nhập trước!", type: "error" })
         }
     };
 
@@ -39,36 +38,33 @@ function Product_Hot(props) {
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
                             <Typography.Text className="promotion">
-                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('en-US', {
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN', {
                                     style: 'currency',
-                                    currency: 'USD',
+                                    currency: 'VND',
                                     minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
                                 })}
                             </Typography.Text>
                             <Typography.Text className="price">
-                                {product.price?.toLocaleString('en-US', {
+                                {product.price?.toLocaleString('vi-VN', {
                                     style: 'currency',
-                                    currency: 'USD',
+                                    currency: 'VND',
                                     minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
                                 })}
                             </Typography.Text>
                         </>
                     ) : (
                         <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
-                            {product.price?.toLocaleString('en-US', {
+                            {product.price?.toLocaleString('vi-VN', {
                                 style: 'currency',
-                                currency: 'USD',
+                                currency: 'VND',
                                 minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
                             })}
                         </Typography.Text>
                     )}
                 </Typography.Text>
             </Flex>
-            {(!product?.status || !product?.quantity) ? <Button onClick={() => navigate(`/client/product/${product?.id}`)}>view detail</Button> :
-                <Button icon={<ShoppingOutlined />} onClick={addToCart}>add to cart</Button>
+            {(!product?.status || !product?.quantity) ? <Button onClick={() => navigate(`/client/product/${product?.id}`)}>Chi tiết</Button> :
+                <Button icon={<ShoppingOutlined />} onClick={addToCart}>Thêm vào giỏ</Button>
             }
         </Flex>
 

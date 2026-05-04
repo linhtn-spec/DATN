@@ -52,7 +52,7 @@ export function DetailRating() {
     const { mutate } = useMutation({
         mutationFn: (data) => updateRating(data),
         onSuccess: () => {
-            Notification({ message: "Update status of rating successfully!", type: "success" })
+            Notification({ message: "Cập nhật trạng thái đánh giá thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
             queryClient.invalidateQueries({ queryKey: ['ratings_global_list'] })
             if (product_id) {
@@ -62,7 +62,7 @@ export function DetailRating() {
             }
         },
         onError: () => {
-            Notification({ message: "Update status of rating unsuccessfully!", type: "error" })
+            Notification({ message: "Cập nhật trạng thái đánh giá thất bại!", type: "error" })
         }
     })
 
@@ -83,9 +83,9 @@ export function DetailRating() {
 
     return (
         <Flex className="crud_user detail_rating container" vertical>
-            <h2 className='caption'><PlusOutlined />{"Detail rating"}</h2>
+            <h2 className='caption'><PlusOutlined />{"Chi tiết đánh giá"}</h2>
             <Card
-                title={"Detail rating"}
+                title={"Chi tiết đánh giá"}
                 bordered={false}
                 className="form"
             >
@@ -98,21 +98,21 @@ export function DetailRating() {
                                 <Flex gap={"80px"}>
 
                                     <Flex vertical>
-                                        <Form.Item label="Customer name"
+                                        <Form.Item label="Tên khách hàng"
                                             hasFeedback
                                             required
                                             name="name"
                                         >
                                             <Typography.Text >{nameValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Stars"
+                                        <Form.Item label="Số sao"
                                             hasFeedback
                                             required
                                             name="stars"
                                         >
                                             <Rate disabled defaultValue={starsValue} />
                                         </Form.Item>
-                                        <Form.Item label="Created at"
+                                        <Form.Item label="Ngày tạo"
                                             hasFeedback
                                             required
                                             name="createdAt"
@@ -121,21 +121,21 @@ export function DetailRating() {
                                         </Form.Item>
                                     </Flex>
                                     <Flex vertical>
-                                        <Form.Item label="Product ID"
+                                        <Form.Item label="ID sản phẩm"
                                             hasFeedback
                                             required
                                             name="productId"
                                         >
                                             <Typography.Text >{productIdValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Product name"
+                                        <Form.Item label="Tên sản phẩm"
                                             hasFeedback
                                             required
                                             name="productName"
                                         >
                                             <Typography.Text >{productNameValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Product image"
+                                        <Form.Item label="Hình ảnh sản phẩm"
                                             hasFeedback
                                             required
                                             name="image"
@@ -145,8 +145,8 @@ export function DetailRating() {
                                     </Flex>
                                 </Flex>
                                 <Flex gap={10}>
-                                    <Form.Item name='isActive' label="Status" required>
-                                        <Switch checkedChildren='Active' unCheckedChildren="Deactive"
+                                    <Form.Item name='isActive' label="Trạng thái" required>
+                                        <Switch checkedChildren='Hoạt động' unCheckedChildren="Ngưng hoạt động"
                                             onChange={(e) => mutate({ id: rating_id, isActive: e })}
                                         />
                                     </Form.Item>

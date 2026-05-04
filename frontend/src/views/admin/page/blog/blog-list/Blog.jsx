@@ -37,10 +37,10 @@ export const BlogList = () => {
   const { mutate: toggleActive } = useMutation({
     mutationFn: (data) => updateBlog(data),
     onSuccess: () => {
-      Notification({ message: 'Updated blog status successfully', type: 'success' });
+      Notification({ message: 'Cập nhật trạng thái bài viết thành công!', type: 'success' });
       queryClient.invalidateQueries({ queryKey: ['blog_admin'] });
     },
-    onError: (error) => Notification({ message: error?.response?.data?.message ?? 'Error', type: 'error' }),
+    onError: (error) => Notification({ message: error?.response?.data?.message ?? 'Có lỗi xảy ra!', type: 'error' }),
   });
 
   const { data, isSuccess } = useQuery({
@@ -66,21 +66,21 @@ export const BlogList = () => {
 
   useEffect(() => { setPage(1); }, [dTitle, dIsActive]);
 
-  useEffect(() => { document.title = 'Blog Management'; }, []);
+  useEffect(() => { document.title = 'Quản lý bài viết'; }, []);
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', sorter: true, ellipsis: true, width: 220 },
-    { title: 'Content', dataIndex: 'content', ellipsis: true },
-    { title: 'Author', dataIndex: 'author', width: 160 },
-    { title: 'Order', dataIndex: 'order', width: 80, sorter: true, align: 'center' },
+    { title: 'Tiêu đề', dataIndex: 'title', sorter: true, ellipsis: true, width: 220 },
+    { title: 'Nội dung', dataIndex: 'content', ellipsis: true },
+    { title: 'Tác giả', dataIndex: 'author', width: 160 },
+    { title: 'Thứ tự', dataIndex: 'order', width: 80, sorter: true, align: 'center' },
     {
-      title: 'Active', dataIndex: 'isActive', width: 90,
+      title: 'Kích hoạt', dataIndex: 'isActive', width: 90,
       render: (value, row) => (
         <Switch value={value} onChange={(e) => toggleActive({ id: row.key, isActive: e })} />
       ),
     },
     {
-      title: 'Action', width: 100, key: 'action',
+      title: 'Hành động', width: 100, key: 'action',
       render: (_, row) => (
         <Flex justify="center" gap={5}>
           <Button
@@ -117,12 +117,12 @@ export const BlogList = () => {
         <Form form={form} onFieldsChange={onFieldsChange} style={{ width: '100%' }}>
           <Flex gap="middle">
             <Form.Item name="title" style={{ flex: 1 }}>
-              <Input placeholder="Search by title" />
+              <Input placeholder="Tìm theo tiêu đề" />
             </Form.Item>
             <Form.Item name="isActive" style={{ width: 160 }}>
-              <Select placeholder="Status" allowClear>
-                <Select.Option value="false">Inactive</Select.Option>
-                <Select.Option value="true">Active</Select.Option>
+              <Select placeholder="Trạng thái" allowClear>
+                <Select.Option value="false">Ẩn</Select.Option>
+                <Select.Option value="true">Hiện</Select.Option>
               </Select>
             </Form.Item>
           </Flex>
@@ -135,7 +135,7 @@ export const BlogList = () => {
           onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }); setTypeDelete(TypeDeleteAdmin.BLOG_LIST); }}
         />
         <Button type="primary" icon={<PlusOutlined />} onClick={() => navigate('/admin/blog/create')}>
-          Add new blog
+          Thêm bài viết
         </Button>
       </Flex>
       <Table

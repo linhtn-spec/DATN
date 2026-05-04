@@ -69,12 +69,12 @@ export function DetailCustomer() {
     const { mutate } = useMutation({
         mutationFn: (data) => updateUser(data),
         onSuccess: () => {
-            Notification({ message: "Update user successfully!", type: "success" })
+            Notification({ message: "Cập nhật người dùng thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['customers_admin_list'] })
             navigate('/admin/customers', { replace: true })
         },
         onError: () => {
-            Notification({ message: "Update user unsuccessfully!", type: "error" })
+            Notification({ message: "Cập nhật người dùng thất bại!", type: "error" })
         }
     })
 
@@ -118,9 +118,9 @@ export function DetailCustomer() {
 
     return (
         <Flex className="crud_user container" vertical>
-            <h2 className='caption'><PlusOutlined />{'Update customer'}</h2>
+            <h2 className='caption'><PlusOutlined />{'Cập nhật khách hàng'}</h2>
             <Card
-                title={'Update customer'}
+                title={'Cập nhật khách hàng'}
                 bordered={false}
                 className="form"
             >
@@ -165,14 +165,14 @@ export function DetailCustomer() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please input!',
+                                            message: 'Vui lòng nhập!',
                                         }, {
                                             min: 6,
-                                            message: "At least 6 characters"
+                                            message: "Tối thiểu 6 ký tự"
                                         },
                                         {
                                             type: 'email',
-                                            message: 'Please input an email address'
+                                            message: 'Vui lòng nhập đúng định dạng email'
                                         }
                                     ]}
 
@@ -181,127 +181,127 @@ export function DetailCustomer() {
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Username</Typography.Title>
+                                <Typography.Title level={5}>Tên đăng nhập</Typography.Title>
                                 <Form.Item
                                     name="username"
                                     hasFeedback
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please input!',
+                                            message: 'Vui lòng nhập!',
                                         },
                                         {
                                             min: 1,
-                                            message: "At least 6 characters"
+                                            message: "Tối thiểu 6 ký tự"
                                         },
                                         {
                                             max: 50,
-                                            message: "At max 50 characters"
+                                            message: "Tối đa 50 ký tự"
                                         }
                                     ]}
                                 >
-                                    <Input type="text" placeholder="Username" size="large" disabled />
+                                    <Input type="text" placeholder="Tên đăng nhập" size="large" disabled />
                                 </Form.Item>
                             </Flex>
-
+ 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>First name</Typography.Title>
+                                <Typography.Title level={5}>Họ</Typography.Title>
                                 <Form.Item
                                     name="firstName"
                                     hasFeedback
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please input!',
+                                            message: 'Vui lòng nhập!',
                                         },
                                         {
                                             min: 1,
-                                            message: "At least 3 characters"
+                                            message: "Tối thiểu 1 ký tự"
                                         },
                                         {
                                             max: 50,
-                                            message: "At max 50 characters"
+                                            message: "Tối đa 50 ký tự"
                                         }
                                     ]}
                                 >
-                                    <Input type="text" placeholder="First name" size="large" />
+                                    <Input type="text" placeholder="Họ" size="large" />
                                 </Form.Item>
                             </Flex>
-
+ 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Last name</Typography.Title>
+                                <Typography.Title level={5}>Tên</Typography.Title>
                                 <Form.Item
                                     name="lastName"
                                     hasFeedback
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please input!',
+                                            message: 'Vui lòng nhập!',
                                         },
                                         {
                                             min: 1,
-                                            message: "At least 3 characters"
+                                            message: "Tối thiểu 1 ký tự"
                                         },
                                         {
                                             max: 50,
-                                            message: "At max 50 characters"
+                                            message: "Tối đa 50 ký tự"
                                         }
                                     ]}
                                 >
-                                    <Input type="text" placeholder="Last name" size="large" />
+                                    <Input type="text" placeholder="Tên" size="large" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Phone</Typography.Title>
+                                <Typography.Title level={5}>Số điện thoại</Typography.Title>
                                 <Form.Item
                                     name="phone"
                                     hasFeedback
                                     rules={[
                                         {
                                             min: 10,
-                                            message: 'At least 10 digits long.',
+                                            message: 'Tối thiểu 10 chữ số.',
                                         },
                                         {
                                             max: 13,
-                                            message: 'Maximum 13 digits long.',
+                                            message: 'Tối đa 13 chữ số.',
                                         },
                                     ]}
                                 >
-                                    <Input type="number" style={{ width: '100%' }} placeholder="Phone" size="large" />
+                                    <Input type="number" style={{ width: '100%' }} placeholder="Số điện thoại" size="large" />
                                 </Form.Item>
                             </Flex>
 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Gender</Typography.Title>
+                                <Typography.Title level={5}>Giới tính</Typography.Title>
                                 <Form.Item
                                     name="gender"
-                                    rules={[{ required: true, message: 'Please select!' }]}
+                                    rules={[{ required: true, message: 'Vui lòng chọn!' }]}
                                     hasFeedback
                                 >
-                                    <Select placeholder="Gender" size="large">
-                                        <Select.Option value="male" >Male</Select.Option>
-                                        <Select.Option value="female">Female</Select.Option>
-                                        <Select.Option value="other">Other</Select.Option>
+                                    <Select placeholder="Giới tính" size="large">
+                                        <Select.Option value="male" >Nam</Select.Option>
+                                        <Select.Option value="female">Nữ</Select.Option>
+                                        <Select.Option value="other">Khác</Select.Option>
                                     </Select>
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Address</Typography.Title>
+                                <Typography.Title level={5}>Địa chỉ</Typography.Title>
                                 <Form.Item
                                     name="address"
                                     hasFeedback
                                     rules={[
                                         {
                                             min: 1,
-                                            message: "At least 3 characters"
+                                            message: "Tối thiểu 3 ký tự"
                                         },
                                         {
                                             max: 150,
-                                            message: "At max 150 characters"
+                                            message: "Tối đa 150 ký tự"
                                         }
                                     ]}
                                 >
-                                    <Input type="text" placeholder="Address" size="large" />
+                                    <Input type="text" placeholder="Địa chỉ" size="large" />
                                 </Form.Item>
                             </Flex>
 
@@ -309,9 +309,9 @@ export function DetailCustomer() {
                             <Flex vertical style={{ width: "100%" }}>
                                 <Flex gap={10}>
                                     <Form.Item name='isActive'>
-                                        <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                        <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
                                     </Form.Item>
-                                    <Typography.Title level={5}>Status</Typography.Title>
+                                    <Typography.Title level={5}>Trạng thái</Typography.Title>
 
                                 </Flex>
                             </Flex>
@@ -319,7 +319,7 @@ export function DetailCustomer() {
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
                                     <Button type="primary" htmlType="submit" >
-                                        Update
+                                        Cập nhật
                                     </Button>
 
                                 </Flex>

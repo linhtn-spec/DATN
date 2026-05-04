@@ -51,7 +51,7 @@ export function DetailConsignment() {
     const { mutate } = useMutation({
         mutationFn: (data) => condition ? updateConsignment(data) : addConsignment(data),
         onSuccess: () => {
-            Notification({ message: condition ? `Update consignment successfully!` : "Create consignment successfully!", type: "success" })
+            Notification({ message: condition ? `Cập nhật lô hàng thành công!` : "Tạo lô hàng thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
             navigate(`/admin/consignment`, { replace: true })
         },
@@ -119,9 +119,9 @@ export function DetailConsignment() {
 
     return (
         <Flex className="crud_user  container" vertical>
-            <h2 className='caption'><PlusOutlined />{condition ? "Update consignment" : "Create consignment"}</h2>
+            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật lô hàng" : "Tạo lô hàng"}</h2>
             <Card
-                title={condition ? "Update consignment" : "Create consignment"}
+                title={condition ? "Cập nhật lô hàng" : "Tạo lô hàng"}
                 bordered={false}
                 className="form"
             >
@@ -134,33 +134,33 @@ export function DetailConsignment() {
                             <Flex gap={"0px"} style={{ width: "100%" }}>
                                 <ConfigProvider locale={locale} width={"40%"}>
                                     <Form.Item
-                                        label={"Import date"}
+                                        label={"Ngày nhập"}
                                         name="importDate"
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Please input import date"
+                                                message: "Vui lòng nhập ngày nhập"
                                             }
                                         ]}
                                         style={{ width: "90%" }} required
                                     >
-                                        <DatePicker placeholder='Import date'
+                                        <DatePicker placeholder='Ngày nhập'
                                             style={{ width: "80%" }}
                                         />
                                     </Form.Item>
                                 </ConfigProvider>
                                 <Form.Item
-                                    label={"Import money"}
+                                    label={"Tiền nhập"}
                                     name="money"
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please input import date"
+                                            message: "Vui lòng nhập tiền nhập"
                                         }
                                     ]}
                                     style={{ width: "100%" }} required
                                 >
-                                    <InputNumber min={0} placeholder="Import money" suffix="$" style={{ width: "50%" }} />
+                                    <InputNumber min={0} placeholder="Tiền nhập" suffix="₫" style={{ width: "50%" }} />
 
                                 </Form.Item>
                             </Flex>
@@ -171,24 +171,24 @@ export function DetailConsignment() {
                             <Form.List name="products" rules={[
                                 {
                                     required: true,
-                                    message: "Please input at least one product"
+                                    message: "Vui lòng nhập ít nhất một sản phẩm"
                                 }
                             ]}>
                                 {(fields, { add, remove }) =>
                                 (<Flex vertical gap={'40px'} style={{ width: "100%" }}>
                                     {fields.map((field, index) => (
                                         <Flex key={field.key} align="center" gap={'20px'}  >
-                                            <Typography.Title level={5} style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Product ${index + 1}`}</Typography.Title>
+                                            <Typography.Title level={5} style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Sản phẩm ${index + 1}`}</Typography.Title>
                                             <Flex vertical style={{ width: "70%" }} gap={"20px"}>
                                                 <Flex style={{ width: "100%" }} gap={"16px"} vertical>
                                                     <Form.Item
                                                         name={[field.name, "productId"]}
                                                         fieldId={[field.key, "productId"]}
-                                                        label="Product name"
+                                                        label="Tên sản phẩm"
                                                         rules={[
                                                             {
                                                                 required: true,
-                                                                message: "Please input product name"
+                                                                message: "Vui lòng nhập tên sản phẩm"
                                                             }
                                                         ]}
                                                         style={{ marginBottom: 0, width: "100%" }}                                                    >
@@ -196,56 +196,56 @@ export function DetailConsignment() {
                                                             virtual={false}
 
                                                             options={products}
-                                                            placeholder={'Product name'}
+                                                            placeholder={'Tên sản phẩm'}
                                                         />
                                                     </Form.Item>
                                                     <Form.Item
                                                         name={[field.name, "quantity"]}
                                                         fieldId={[field.key, "quantity"]}
-                                                        label="Quantity"
+                                                        label="Số lượng"
                                                         rules={[
                                                             {
                                                                 required: true,
-                                                                message: "Please input Quantity"
+                                                                message: "Vui lòng nhập số lượng"
                                                             },
                                                         ]}
                                                         style={{ marginBottom: 0 }}
 
                                                     >
-                                                        <InputNumber min={0} max={100} placeholder="Quantity" step={1} style={{ marginBottom: 0, width: "100%" }} />
+                                                        <InputNumber min={0} max={100} placeholder="Số lượng" step={1} style={{ marginBottom: 0, width: "100%" }} />
                                                     </Form.Item>
 
                                                     <ConfigProvider locale={locale}>
                                                         <Form.Item
-                                                            label={"Expire date"}
+                                                            label={"Ngày hết hạn"}
                                                             name={[field.name, "expireDate"]}
                                                             fieldId={[field.key, "expireDate"]}
                                                             rules={[
                                                                 {
                                                                     required: true,
-                                                                    message: "Please input expire date"
+                                                                    message: "Vui lòng nhập ngày hết hạn"
                                                                 }
                                                             ]}
                                                             style={{ width: "100%", margin: 0 }} required
                                                         >
-                                                            <DatePicker placeholder='Expire date'
+                                                            <DatePicker placeholder='Ngày hết hạn'
                                                                 style={{ marginBottom: 0, width: "100%" }} />
                                                         </Form.Item>
                                                     </ConfigProvider>
                                                     <Form.Item
                                                         name={[field.name, "importMoney"]}
                                                         fieldId={[field.key, "importMoney"]}
-                                                        label="Import money"
+                                                        label="Tiền nhập"
                                                         rules={[
                                                             {
                                                                 required: true,
-                                                                message: "Please input import money"
+                                                                message: "Vui lòng nhập tiền nhập"
                                                             },
                                                         ]}
                                                         style={{ marginBottom: 0, width: "100%" }}
 
                                                     >
-                                                        <InputNumber min={0} placeholder="Import money" suffix="$" style={{ marginBottom: 0, width: "100%" }}
+                                                        <InputNumber min={0} placeholder="Tiền nhập" suffix="₫" style={{ marginBottom: 0, width: "100%" }}
                                                         />
                                                     </Form.Item>
 
@@ -258,7 +258,7 @@ export function DetailConsignment() {
                                     ))}
                                     <Flex>
                                         <Form.Item>
-                                            <Button onClick={() => add()}>Add new product </Button>
+                                            <Button onClick={() => add()}>Thêm sản phẩm mới </Button>
                                         </Form.Item>
                                     </Flex>
                                 </Flex>)
@@ -268,7 +268,7 @@ export function DetailConsignment() {
                         <Form.Item>
                             <Flex justify="center" gap={20} className="group_btn">
                                 <Button type="primary" htmlType="submit" >
-                                    {condition ? "Update" : "Submit"}
+                                    {condition ? "Cập nhật" : "Gửi"}
                                 </Button>
                             </Flex>
                         </Form.Item>

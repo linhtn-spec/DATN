@@ -54,22 +54,22 @@ export const Countdown = (props) => {
                 <div className="countdown-wrapper">
                     <div className="countdown-item">
                         <span className="countdown-value">{days}</span>
-                        <span className="countdown-label">Days</span>
+                        <span className="countdown-label">Ngày</span>
                     </div>
                     <span className="countdown-separator">:</span>
                     <div className="countdown-item">
                         <span className="countdown-value">{hours}</span>
-                        <span className="countdown-label">Hours</span>
+                        <span className="countdown-label">Giờ</span>
                     </div>
                     <span className="countdown-separator">:</span>
                     <div className="countdown-item">
                         <span className="countdown-value">{minutes}</span>
-                        <span className="countdown-label">Mins</span>
+                        <span className="countdown-label">Phút</span>
                     </div>
                     <span className="countdown-separator">:</span>
                     <div className="countdown-item">
                         <span className="countdown-value">{seconds}</span>
-                        <span className="countdown-label">Secs</span>
+                        <span className="countdown-label">Giây</span>
                     </div>
                 </div>
             </Flex>

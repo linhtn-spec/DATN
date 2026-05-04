@@ -7,7 +7,7 @@ import Notification from '../../../utils/configToastify';
 import "./../style/cart.css";
 
 function Cart() {
-    document.title = "Cart";
+    document.title = "Giỏ hàng";
     const navigate = useNavigate();
     const { state, dispatch } = useContext(CartContext)
 
@@ -42,7 +42,7 @@ function Cart() {
 
     const deleteItem = (id) => {
         dispatch({ type: ACTION_CART.DELETE_ITEM, payload: id })
-        Notification({ message: "Delete item successfully!", type: "success" })
+        Notification({ message: "Xóa sản phẩm thành công!", type: "success" })
     }
 
     const checkout = () => {
@@ -51,12 +51,12 @@ function Cart() {
 
     const columns = [
         {
-            title: 'No',
+            title: 'STT',
             dataIndex: 'no',
             key: 'no',
         },
         {
-            title: "Image",
+            title: "Hình ảnh",
             dataIndex: "image",
             key: 'image',
             hidden: true
@@ -68,7 +68,7 @@ function Cart() {
             hidden: true
         },
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (text, row) => <Flex gap={10}>
@@ -81,35 +81,25 @@ function Cart() {
             </Flex>
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'adpricedress',
             width: "150px",
             render: (text, row) => (
                 <Flex vertical>
                     <Typography.Text className="promotion">
-                        {Number(text).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2,
-                        })}
+                        {Number(text).toLocaleString('vi-VN')} ₫
                     </Typography.Text>
                     {row.pricePromotion > 0 && (
                         <Typography.Text className="price">
-                            {Number(row.originalPrice).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 2,
-                            })}
+                            {Number(row.originalPrice).toLocaleString('vi-VN')} ₫
                         </Typography.Text>
                     )}
                 </Flex>
             )
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantityBuy',
             key: 'quantityBuy',
             width: "200px",
@@ -125,29 +115,24 @@ function Cart() {
                 </Flex>
         },
         {
-            title: 'Max quantity',
+            title: 'Số lượng tối đa',
             dataIndex: 'maxQuantity',
             key: 'maxQuantity',
             hidden: true
         },
         {
-            title: 'Subtotal',
+            title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
             width: "250px",
             render: (text, row) => (
                 <Typography.Text style={{ fontWeight: 600 }}>
-                    {(row.price * row.quantityBuy).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                    })}
+                    {(row.price * row.quantityBuy).toLocaleString('vi-VN')} ₫
                 </Typography.Text>
             )
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             dataIndex: '',
             key: 'x',
             render: (_text, row) => <Flex justify='center' className='delete'>
@@ -157,7 +142,7 @@ function Cart() {
     ];
     useEffect(() => {
         window.scrollTo(0, 0)
-        document.title = "Cart"
+        document.title = "Giỏ hàng"
     }, [])
 
     return (
@@ -165,10 +150,10 @@ function Cart() {
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/shop'}>SHOP</NavLink>,
+                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
                     },
                 ]}
             />
@@ -183,7 +168,7 @@ function Cart() {
             />
             <Flex className='wrap_btn' justify='flex-end'>
                 <Button variant='warning' onClick={checkout} disabled={!state?.currentCart || state?.currentCart?.length < 1}>
-                    Checkout
+                    Thanh toán
                 </Button>
             </Flex>
         </Flex>

@@ -10,7 +10,7 @@ function Cart_List() {
 
     return (
         <div className="container cart_list">
-            <h2 className='caption'><MenuUnfoldOutlined style={{ fontWeight: "700" }} />Cart list</h2>
+            <h2 className='caption'><MenuUnfoldOutlined style={{ fontWeight: "700" }} />Danh sách giỏ hàng</h2>
             <Table bordered hover>
                 <thead>
                     <tr>
@@ -33,11 +33,11 @@ function Cart_List() {
                     <tr>
                         <th></th>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Product</th>
-                        <th>Status</th>
-                        <th>CreateAt</th>
-                        <th>Action</th>
+                        <th>Tên</th>
+                        <th>Sản phẩm</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@ function Cart_List() {
                         <td>1</td>
                         <td>Otto</td>
                         <td>@mdo</td>
-                        <td><div className='status_cart'>ON</div></td>
+                        <td><div className='status_cart'>BẬT</div></td>
                         <td>Mark</td>
                         <td>
                             <Button variant='danger'><i className="bi bi-trash-fill"></i></Button>

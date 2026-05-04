@@ -12,17 +12,17 @@ export const Wishlist = () => {
     const { dispatch, state } = useContext(FavouriteContext)
 
     useEffect(() => {
-        document.title = "Wishlist"
+        document.title = "Danh sách yêu thích"
     }, [])
     return (
         <Flex className='wishlist' vertical justify='center'>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/'}>HOME</NavLink>,
+                        title: <NavLink to={'/'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={`/user/wishlist`}>WISHLIST</NavLink>,
+                        title: <NavLink to={`/user/wishlist`}>DANH SÁCH YÊU THÍCH</NavLink>,
                     },
                 ]}
             />
@@ -33,7 +33,7 @@ export const Wishlist = () => {
                     ))
                 ) : (
                     <Flex justify='center' style={{ width: "100%" }}>
-                        <Empty description={"No product in wishlist"} />
+                        <Empty description={"Không có sản phẩm nào trong danh sách yêu thích"} />
                     </Flex>
 
                 )}

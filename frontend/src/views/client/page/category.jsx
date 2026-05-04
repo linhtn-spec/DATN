@@ -70,21 +70,21 @@ function Category() {
                 <Breadcrumb
                     items={[
                         {
-                            title: <NavLink to={'/client'}>HOME</NavLink>,
+                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                         },
                         {
                             title: <NavLink to={`/client/category/${category_id}`}>{categoryName?.toUpperCase()}</NavLink>,
                         },
                     ]}
                 />
-                <Flex className="category_pagination" justify="center"><p className=" text-left">Showing <b>{total !== 0 ? 1 : 0}</b> - <b>{total < 6 ? total : 6}</b> results of <b>{total}</b> results</p></Flex>
+                <Flex className="category_pagination" justify="center"><p className=" text-left">Hiển thị <b>{total !== 0 ? 1 : 0}</b> - <b>{total < 6 ? total : 6}</b> trên tổng số <b>{total}</b> kết quả</p></Flex>
                 <Flex className="category_items" wrap="wrap" gap="50px">
                     {products.length !== 0 ? (
                         products.map((item) => {
                             return <ProductGrid products={item} key={item.id} />
                         })
                     ) : (
-                        <Flex style={{ width: "100%" }} justify="center"> <Empty description={"No product available"} /></Flex>
+                        <Flex style={{ width: "100%" }} justify="center"> <Empty description={"Không có sản phẩm nào"} /></Flex>
                     )}
                 </Flex>
 

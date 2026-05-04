@@ -12,14 +12,13 @@ import {
     Typography
 } from 'antd';
 import Card from "antd/es/card/Card";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import Editor from "../../../../../components/RichTextEditor/Editor";
 import { queryClient } from "../../../../../main";
 import { addBlog } from "../../../../../services/blog_service";
 import Notification from "../../../../../utils/configToastify";
 import './CreateBlog.css';
-import { useState } from "react";
-import { markdownToHtml } from "../../../../../components/RichTextEditor/parser";
 
 
 
@@ -30,12 +29,12 @@ function CreateBlog() {
     const { mutate } = useMutation({
         mutationFn: (data) => addBlog(data),
         onSuccess: () => {
-            Notification({ message: "Add blog successfully!", type: "success" })
+            Notification({ message: "Thêm bài viết thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
             navigate('/admin/blog', { replace: true })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Thêm bài viết thất bại!", type: "error" })
         }
     })
 
@@ -48,9 +47,9 @@ function CreateBlog() {
 
     return (
         <Flex className="add_blog_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Add new blog</h2>
+            <h2 className='caption'><PlusOutlined />Thêm bài viết mới</h2>
             <Card
-                title="Create a new blog"
+                title="Tạo bài viết mới"
                 bordered={false}
                 className="form"
             >
@@ -60,7 +59,7 @@ function CreateBlog() {
                     >
                         <Flex vertical align="center" style={{ width: "100%" }}>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Title</Typography.Title>
+                                <Typography.Title level={5}>Tiêu đề</Typography.Title>
                                 <Form.Item
                                     name="title"
                                     hasFeedback
@@ -68,41 +67,41 @@ function CreateBlog() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Title must be not empty"
+                                            message: "Tiêu đề không được để trống"
 
                                         },
                                         {
                                             min: 1,
-                                            message: "Minimum 3 character"
+                                            message: "Tối thiểu 1 ký tự"
                                         },
                                         {
                                             max: 200,
-                                            message: "Maximum 200 characters"
+                                            message: "Tối đa 200 ký tự"
                                         }
 
                                     ]}
                                 >
-                                    <Input name="name" placeholder="Name" />
+                                    <Input name="name" placeholder="Nhập tiêu đề" />
                                 </Form.Item>
                             </Flex>
 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Content</Typography.Title>
+                                <Typography.Title level={5}>Nội dung</Typography.Title>
                                 <Form.Item
                                     name="content"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Content must be not empty"
+                                            message: "Nội dung không được để trống"
                                         },
                                         {
                                             min: 1,
-                                            message: "Minimum 5 character"
+                                            message: "Tối thiểu 5 ký tự"
                                         },
                                         {
                                             max: 20000,
-                                            message: "Maximum 20000 characters"
+                                            message: "Tối đa 20000 ký tự"
                                         }
                                     ]}
                                     hasFeedback >
@@ -113,7 +112,7 @@ function CreateBlog() {
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
 
-                                <Typography.Title level={5}>Order</Typography.Title>
+                                <Typography.Title level={5}>Thứ tự hiển thị</Typography.Title>
                                 <Flex style={{ width: "100%" }} gap={50}>
                                     <Form.Item
                                         hasFeedback
@@ -122,19 +121,19 @@ function CreateBlog() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Order must be not empty or negative number",
+                                                message: "Thứ tự không được để trống",
                                                 pattern: new RegExp(/^[0-9]+$/)
 
                                             }
                                         ]}
                                     >
-                                        <InputNumber placeholder="Order" />
+                                        <InputNumber placeholder="Thứ tự" />
                                     </Form.Item>
                                     <Flex gap={10}>
                                         <Form.Item name='isActive'>
-                                            <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                            <Switch checkedChildren='Bật' unCheckedChildren="Tắt" />
                                         </Form.Item>
-                                        <Typography.Title level={5}>Status</Typography.Title>
+                                        <Typography.Title level={5}>Trạng thái</Typography.Title>
 
                                     </Flex>
                                 </Flex>
@@ -142,9 +141,9 @@ function CreateBlog() {
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
                                     <Button type="primary" htmlType="submit">
-                                        Add new
+                                        Thêm mới
                                     </Button>
-                                    <Button htmlType="reset">Reset</Button>
+                                    <Button htmlType="reset">Làm mới</Button>
                                 </Flex>
                             </Form.Item>
                         </Flex>

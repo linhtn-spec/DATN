@@ -39,11 +39,11 @@ export const ListOfOrderCustomer = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Update order status sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái đơn hàng thành công!", type: 'success' });
             queryClient.invalidateQueries({ queryKey: ['orders_admin_list'] })
         },
         onError: () => {
-            Notification({ message: "Update order status unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái đơn hàng thất bại!", type: "error" })
         }
     })
 
@@ -99,47 +99,47 @@ export const ListOfOrderCustomer = () => {
 
     const columns = [
         {
-            title: " Full name",
+            title: "Họ và tên",
             dataIndex: 'name',
         },
         {
-            title: < Tooltip title={"Subtotal"} > < TagOutlined /></Tooltip >,
+            title: < Tooltip title={"Tạm tính"} > < TagOutlined /></Tooltip >,
             dataIndex: 'subTotal',
             ellipsis: true,
             width: 90,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Tax"}> <ShoppingCartOutlined /></Tooltip>,
+            title: <Tooltip title={"Thuế (9%)"}> <ShoppingCartOutlined /></Tooltip>,
             dataIndex: 'tax',
             ellipsis: true,
             width: 75,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Shipping cost"}> <TruckOutlined /></Tooltip>,
+            title: <Tooltip title={"Phí vận chuyển"}> <TruckOutlined /></Tooltip>,
             dataIndex: 'shippingCost',
             width: 75,
             align: "center",
             ellipsis: true,
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
 
         },
         {
-            title: <Tooltip title={"Total"}><MoneyCollectOutlined /></Tooltip>,
+            title: <Tooltip title={"Tổng cộng"}><MoneyCollectOutlined /></Tooltip>,
             dataIndex: 'total',
             ellipsis: true,
             width: 90,
             align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('en-US')}$</Typography.Text>
+            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
 
         },
         {
-            title: <Tooltip title={'Payment method'}>< CreditCardOutlined /></Tooltip>,
+            title: <Tooltip title={'Phương thức thanh toán'}>< CreditCardOutlined /></Tooltip>,
             dataIndex: 'paymentMethod',
             ellipsis: true,
             width: 75,
@@ -147,21 +147,21 @@ export const ListOfOrderCustomer = () => {
             render: (value) => <Typography.Text>{String(value).toUpperCase()}</Typography.Text>
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'orderStatus',
             width: 150,
-            render: (text, row) => <Select placeholder="Order status" size='middle' style={{ width: "100%" }} options={orderStatusOptions}
+            render: (text, row) => <Select placeholder="Trạng thái" size='middle' style={{ width: "100%" }} options={orderStatusOptions}
                 value={text} onChange={(e) => mutate({ id: row.key, orderStatus: e })} />
 
         },
         {
-            title: 'Created at',
+            title: 'Thời gian tạo',
             dataIndex: 'createdAt',
             sorter: true,
             render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -206,19 +206,19 @@ export const ListOfOrderCustomer = () => {
                             style={{ width: "51%" }}
                             name="orderStatus"
                         >
-                            <Select placeholder="Order status" size="large" options={orderStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái đơn hàng" size="large" options={orderStatusOptions} allowClear />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="paymentStatus"
                         >
-                            <Select placeholder="Payment status" size="large" options={paymentStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái thanh toán" size="large" options={paymentStatusOptions} allowClear />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="shippingStatus"
                         >
-                            <Select placeholder="Shipping status" size="large" options={shippingStatusOptions} allowClear />
+                            <Select placeholder="Trạng thái vận chuyển" size="large" options={shippingStatusOptions} allowClear />
                         </Form.Item>
                     </Flex>
 

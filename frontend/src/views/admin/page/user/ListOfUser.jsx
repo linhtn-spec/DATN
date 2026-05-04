@@ -18,8 +18,8 @@ import './ListOfUser.css';
 
 
 const statuses = [
-    { value: true, label: "Active" },
-    { value: false, label: "Inactive" },
+    { value: true, label: "Hoạt động" },
+    { value: false, label: "Ngừng hoạt động" },
 ]
 
 export const ListOfUser = () => {
@@ -29,13 +29,13 @@ export const ListOfUser = () => {
 
     const roles =
         isAdmin ?
-            [{ value: 1, label: "Staff" },
-            { value: 2, label: "Manager" },
-            { value: 3, label: "Owner" },
+            [{ value: 1, label: "Nhân viên" },
+            { value: 2, label: "Quản lý" },
+            { value: 3, label: "Chủ sở hữu" },
             ]
             : [
-                { value: 1, label: "Staff" },
-                { value: 2, label: "Manager" }
+                { value: 1, label: "Nhân viên" },
+                { value: 2, label: "Quản lý" }
             ]
 
     const [form] = Form.useForm()
@@ -58,7 +58,7 @@ export const ListOfUser = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => updateUser(data),
         onSuccess: () => {
-            Notification({ message: "Update status of user sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái người dùng thành công", type: 'success' });
             queryClient.invalidateQueries({ queryKey: ['users_admin_list'] })
         },
         onError: (error) => {
@@ -127,7 +127,7 @@ export const ListOfUser = () => {
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Họ tên',
             dataIndex: 'name',
             width: 200,
             ellipsis: true,
@@ -139,7 +139,7 @@ export const ListOfUser = () => {
             ellipsis: true,
         },
         {
-            title: 'Role',
+            title: 'Vai trò',
             dataIndex: 'role',
             width: 100,
             align: 'center',
@@ -147,13 +147,13 @@ export const ListOfUser = () => {
         },
 
         {
-            title: 'Active',
+            title: 'Trạng thái',
             dataIndex: 'status',
             width: 90,
             render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             width: 80,
             key: 'x',
@@ -184,7 +184,7 @@ export const ListOfUser = () => {
         setRole(mappedFields['role'])
     };
     useEffect(() => {
-        document.title = "User"
+        document.title = "Người dùng"
 
     }, [])
     return (
@@ -196,7 +196,7 @@ export const ListOfUser = () => {
                             name="name"
                             style={{ width: "33%" }}
                         >
-                            <Input type="text" placeholder="Name" size="large" />
+                            <Input type="text" placeholder="Họ tên" size="large" />
                         </Form.Item>
                         <Form.Item
                             name="email"
@@ -208,20 +208,20 @@ export const ListOfUser = () => {
                             style={{ width: "51%" }}
                             name="role"
                         >
-                            <Select placeholder="Role" size="large" options={roles} allowClear />
+                            <Select placeholder="Vai trò" size="large" options={roles} allowClear />
                         </Form.Item>
                         <Form.Item
                             style={{ width: "51%" }}
                             name="status"
                         >
-                            <Select placeholder="Status" size="large" options={statuses} allowClear />
+                            <Select placeholder="Trạng thái" size="large" options={statuses} allowClear />
                         </Form.Item>
                     </Flex>
 
                 </Form>
             </Flex>
             <Flex justify='space-between'>
-                <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Add new user</Button>
+                <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Thêm người dùng mới</Button>
             </Flex>
             <Table
                 bordered

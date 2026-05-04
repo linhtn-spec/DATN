@@ -18,7 +18,7 @@ function Login() {
         mutationFn: (data) => login(data),
         onSuccess: (response) => {
             console.log(response);
-            Notification({ message: "Login successfully!", type: "success" })
+            Notification({ message: "Đăng nhập thành công!", type: "success" })
             dispatch({ type: ACTION_USER.LOGIN, payload: response.data })
             if (response.data.role === 0)
                 navigate('/client')
@@ -41,7 +41,7 @@ function Login() {
         mutate(e)
     }
 
-    useEffect(() => { document.title = "Login" }, [])
+    useEffect(() => { document.title = "Đăng nhập" }, [])
 
 
 
@@ -50,7 +50,7 @@ function Login() {
         <Flex className="login_wrap" justify="center" align="center">
             <Flex className="login_panel" vertical align="center">
                 <Flex className="wrap_logo d-flex justify-content-center align-items-center" align="center" justify="center"><img src="/images/icon/scart-mid.png" alt="logo" /></Flex>
-                <Typography.Title level={2}>Login</Typography.Title>
+                <Typography.Title level={2}>Đăng nhập</Typography.Title>
                 <Form
                     style={{ width: "100%", padding: "0 20px" }}
                     labelCol={{ span: 7 }}
@@ -63,14 +63,14 @@ function Login() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input!',
+                                message: 'Vui lòng nhập email!',
                             }, {
                                 min: 6,
-                                message: "At least 6 characters"
+                                message: "Tối thiểu 6 ký tự"
                             },
                             {
                                 type: 'email',
-                                message: 'Please input an email address'
+                                message: 'Vui lòng nhập đúng định dạng email'
                             }
                         ]}
                     >
@@ -82,30 +82,30 @@ function Login() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input!',
+                                message: 'Vui lòng nhập mật khẩu!',
                             }, {
                                 min: 6,
-                                message: "At least 6 characters"
+                                message: "Tối thiểu 6 ký tự"
                             }
                         ]}
                     >
-                        <Input.Password visibilityToggle placeholder="Password" size="large" />
+                        <Input.Password visibilityToggle placeholder="Mật khẩu" size="large" />
                     </Form.Item>
                     <Flex vertical align="center" justify="center" className="button_group">
-                        <Link to={'/forget-password'}>Forget password?</Link>
+                        <Link to={'/forget-password'}>Quên mật khẩu?</Link>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login" loading={isPending}>Login</Button>
+                            <Button type="primary" htmlType="submit" className="login" loading={isPending}>Đăng nhập</Button>
                         </Form.Item>
-                        <Typography.Text>Don&apos;t have an account? <Link to={'/register'}>Sign up</Link></Typography.Text>
+                        <Typography.Text>Chưa có tài khoản? <Link to={'/register'}>Đăng ký ngay</Link></Typography.Text>
                     </Flex>
                 </Form>
-                <Divider>Or</Divider>
+                <Divider>Hoặc</Divider>
                 <Flex vertical align="center" className="button_group" gap={'10px'} style={{ paddingLeft: 20, paddingRight: 20, width: "100%", }}>
                     <Button icon={<GoogleOutlined />} className="google" style={{ backgroundColor: "#18228f", lineHeight: "30px", color: "white", width: "100%" }}
                         onClick={loginByGoogle}
-                    >Login by google</Button>
+                    >Đăng nhập bằng Google</Button>
                     <Flex style={{ width: "100%" }} justify="flex-end">
-                        <Button type="link" href="/client" style={{ marginBottom: "20px", fontWeight: 600, fontSize: "14px", paddingRight: 0 }}>Wanna see our products?</Button>
+                        <Button type="link" href="/client" style={{ marginBottom: "20px", fontWeight: 600, fontSize: "14px", paddingRight: 0 }}>Xem sản phẩm của chúng tôi?</Button>
                     </Flex>
                 </Flex>
 

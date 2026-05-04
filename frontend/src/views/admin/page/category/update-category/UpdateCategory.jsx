@@ -84,7 +84,7 @@ function UpdateCategory() {
     const { mutate } = useMutation({
         mutationFn: (data) => updateCategory(data),
         onSuccess: () => {
-            Notification({ message: "Update category sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật danh mục thành công", type: 'success' });
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
         },
         onError: (error) => {
@@ -110,9 +110,9 @@ function UpdateCategory() {
 
     return (
         <Flex className="update_category_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Update a category</h2>
+            <h2 className='caption'><PlusOutlined />Cập nhật danh mục</h2>
             <Card
-                title="Update a category"
+                title="Cập nhật danh mục"
                 bordered={false}
             >
                 <Flex justify="center">
@@ -127,7 +127,7 @@ function UpdateCategory() {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please upload an image"
+                                        message: "Vui lòng tải lên hình ảnh"
                                     }
                                 ]}
                                 style={{ width: "auto" }}
@@ -155,7 +155,7 @@ function UpdateCategory() {
                                 </Upload>
                             </Form.Item>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Name</Typography.Title>
+                                <Typography.Title level={5}>Tên danh mục</Typography.Title>
                                 <Form.Item
                                     name="name"
                                     hasFeedback
@@ -163,7 +163,7 @@ function UpdateCategory() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "name must be not empty"
+                                            message: "Tên không được để trống"
 
                                         },
                                         {
@@ -176,18 +176,18 @@ function UpdateCategory() {
                                         }
                                     ]}
                                 >
-                                    <Input name="name" placeholder="Name" />
+                                    <Input name="name" placeholder="Tên danh mục" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Description</Typography.Title>
+                                <Typography.Title level={5}>Mô tả</Typography.Title>
                                 <Form.Item
                                     name="description"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Description must be not empty"
+                                            message: "Mô tả không được để trống"
                                         },
                                         {
                                             min: 1,
@@ -199,14 +199,14 @@ function UpdateCategory() {
                                         }
                                     ]}
                                     hasFeedback >
-                                    <Input.TextArea allowClear placeholder="Description" style={{
+                                    <Input.TextArea allowClear placeholder="Mô tả" style={{
                                         height: 120,
                                     }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
 
-                                <Typography.Title level={5}>Order</Typography.Title>
+                                <Typography.Title level={5}>Thứ tự</Typography.Title>
                                 <Flex style={{ width: "100%" }} gap={50}>
                                     <Form.Item
                                         hasFeedback
@@ -215,19 +215,19 @@ function UpdateCategory() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Order must be not empty or negative number",
+                                                message: "Thứ tự không được để trống hoặc là số âm",
                                                 pattern: new RegExp(/^[0-9]+$/)
 
                                             }
                                         ]}
                                     >
-                                        <InputNumber placeholder="Order" />
+                                        <InputNumber placeholder="Thứ tự" />
                                     </Form.Item>
                                     <Flex gap={10}>
                                         <Form.Item name='isActive'>
-                                            <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                            <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
                                         </Form.Item>
-                                        <Typography.Title level={5}>Status</Typography.Title>
+                                        <Typography.Title level={5}>Trạng thái</Typography.Title>
 
                                     </Flex>
                                 </Flex>
@@ -235,7 +235,7 @@ function UpdateCategory() {
                             <Form.Item>
                                 <Flex justify="center" gap={10} className="group_btn">
                                     <Button type="primary" htmlType="submit" disabled={isLoading}>
-                                        Update
+                                        Cập nhật
                                     </Button>
                                 </Flex>
                             </Form.Item>

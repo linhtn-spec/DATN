@@ -33,10 +33,10 @@ export const ListOfComment = () => {
         mutationFn: (data) => updateComment(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['comments_admin_list'] })
-            Notification({ message: "Update status of feedback sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái phản hồi thành công", type: 'success' });
         },
         onError: () => {
-            Notification({ message: "Update status of feedback unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái phản hồi thất bại", type: "error" })
         }
     })
 
@@ -93,18 +93,18 @@ export const ListOfComment = () => {
 
     const columns = [
         {
-            title: "Full name",
+            title: "Họ và tên",
             dataIndex: 'name',
             width: 180,
         },
         {
-            title: "Content",
+            title: "Nội dung",
             dataIndex: 'content',
             width: 200,
             align: "center",
         },
         {
-            title: "Created at",
+            title: "Ngày tạo",
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -113,14 +113,14 @@ export const ListOfComment = () => {
 
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'isActive',
             width: 150,
             render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
 
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -159,7 +159,7 @@ export const ListOfComment = () => {
     };
 
     useEffect(() => {
-        document.title = "Comment"
+        document.title = "Phản hồi"
 
     }, [])
     return (
@@ -171,15 +171,15 @@ export const ListOfComment = () => {
                             name="name"
                             style={{ width: "100%" }}
                         >
-                            <Input type="text" placeholder="Name" size="large" />
+                            <Input type="text" placeholder="Tên" size="large" />
                         </Form.Item>
                         <Form.Item
                             name="isActive"
                             style={{ width: "15%" }}
                         >
-                            <Select placeholder="Status" size="large" allowClear>
-                                <Select.Option value={0} >Deactivate</Select.Option>
-                                <Select.Option value={1}>Activate</Select.Option>
+                            <Select placeholder="Trạng thái" size="large" allowClear>
+                                <Select.Option value={0} >Khóa</Select.Option>
+                                <Select.Option value={1}>Hoạt động</Select.Option>
                             </Select>
                         </Form.Item>
                     </Flex>

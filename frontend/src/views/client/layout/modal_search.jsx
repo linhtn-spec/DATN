@@ -61,7 +61,7 @@ function Modal_Search(props) {
                     }
                     }
                     autoFocus
-                    placeholder="Search for products..."
+                    placeholder="Tìm kiếm sản phẩm..."
                 />
                 <div className="suggestions_list">
                     {suggestions?.data?.map((item) => (
@@ -76,7 +76,7 @@ function Modal_Search(props) {
                             <div className="suggestion_info">
                                 <span className="suggestion_name">{item.name}</span>
                                 <span className="suggestion_meta">
-                                    ${item.price}
+                                    {item.price?.toLocaleString('vi-VN')} ₫
                                     {item.origin ? ` · ${item.origin}` : ''}
                                 </span>
                             </div>

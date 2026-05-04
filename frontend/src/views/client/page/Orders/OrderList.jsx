@@ -42,7 +42,7 @@ export const OrderList = () => {
             id: item?._id,
             receiverName: item?.firstNameReceiver + " " + item?.lastNameReceiver,
             orderStatus: item?.orderStatus,
-            date: item?.createdAt,
+            date: dayjs(item?.createdAt).format('DD/MM/YYYY HH:mm'),
             total: item?.total
         })))
         return () => {
@@ -51,112 +51,77 @@ export const OrderList = () => {
         }
     }, [isSuccess, data])
 
-
-    const options =
-        [
-            {
-                value: 'new',
-                label: 'New',
-                disabled: true,
-            },
-            {
-                value: 'processing',
-                label: 'Processing',
-                disabled: true,
-            },
-            {
-                value: 'hold',
-                label: "Hold",
-                disabled: true,
-            },
-            {
-                value: 'canceled',
-                label: 'Canceled',
-                disabled: true,
-            },
-            {
-                value: 'done',
-                label: "Done",
-            },
-        ]
-
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-            hidden: true
-        },
-        {
-            title: 'No',
+            title: 'STT',
             dataIndex: 'no',
             key: 'no',
         },
         {
-            title: 'Receiver name',
+            title: 'Tên người nhận',
             dataIndex: 'receiverName',
             key: 'receiverName',
-
         },
         {
-            title: 'Date',
+            title: 'Ngày đặt',
             dataIndex: 'date',
             key: 'date',
-            render: (text) => <Typography.Text>{Date(text)}</Typography.Text>
         },
         {
-            title: 'Total',
+            title: 'Tổng cộng',
             dataIndex: 'total',
             key: 'total',
-            width: "150px",
             align: 'right',
-            render: (text) => <Typography.Text>{text}$</Typography.Text>
-
+            render: (text) => <Typography.Text>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
         },
         {
-            title: 'Order status',
+            title: 'Trạng thái đơn hàng',
             dataIndex: 'orderStatus',
             key: 'orderStatus',
-            width: "250px",
-            render: (value, row) => <Select options={options} value={value} disabled={value === 'done'} onChange={(e) => mutate({
+            render: (value, row) => <Select options={orderOptions} value={value} disabled={value === 'done'} onChange={(e) => mutate({
                 id: row?.id,
                 orderStatus: e
             })} style={{ width: "100%" }} />
         },
         {
-            title: 'Action',
-            dataIndex: '',
-            key: 'x',
-            render: (value, row) => <Flex justify='center'>
-                <Button icon={<EyeOutlined />} onClick={() => onDetail(row.id)} />
-            </Flex>,
-            width: "80px",
+            title: 'Hành động',
+            key: 'action',
+            render: (_, record) => (
+                <Button type="link" onClick={() => navigate(`/client/user/orders/${record.id}`)}>
+                    Xem chi tiết
+                </Button>
+            ),
             align: "center"
         },
     ];
+
     useEffect(() => {
-        document.title = "List order"
+        window.scrollTo(0, 0)
     }, [])
 
     return (
-        <Flex className="order_list" vertical align="center">
+        <Flex className="container order_list_page" vertical gap={24} style={{ padding: '40px 0' }}>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={`/client/user/orders`}>ORDERS</NavLink>,
+                        title: 'LỊCH SỬ ĐƠN HÀNG',
                     },
                 ]}
             />
-            <Table
-                bordered
-                columns={columns}
-                dataSource={orders}
-                pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, onChange: setPage, showSizeChanger: false }}
-
-            />
+            <Typography.Title level={2}>Đơn hàng của bạn</Typography.Title>
+            <Card>
+                <Table
+                    bordered
+                    columns={columns}
+                    dataSource={orders}
+                    loading={isFetching}
+                    pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, onChange: setPage, showSizeChanger: false }}
+                    locale={{ emptyText: <Empty description="Bạn chưa có đơn hàng nào" /> }}
+                />
+            </Card>
         </Flex>
     )
 }

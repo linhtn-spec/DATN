@@ -53,7 +53,7 @@ export function DetailComment() {
     const { mutate } = useMutation({
         mutationFn: (data) => updateComment(data),
         onSuccess: () => {
-            Notification({ message: "Update status of feedback successfully!", type: "success" })
+            Notification({ message: "Cập nhật trạng thái phản hồi thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['comments_admin_list'] })
             queryClient.invalidateQueries({ queryKey: ['comments_global_list'] })
             if (product_id) {
@@ -63,7 +63,7 @@ export function DetailComment() {
             }
         },
         onError: () => {
-            Notification({ message: "Update status of feedback unsuccessfully!", type: "error" })
+            Notification({ message: "Cập nhật trạng thái phản hồi thất bại!", type: "error" })
         }
     })
 
@@ -84,9 +84,9 @@ export function DetailComment() {
 
     return (
         <Flex className="crud_user detail_rating container" vertical>
-            <h2 className='caption'><PlusOutlined />{"Detail feedback"}</h2>
+            <h2 className='caption'><PlusOutlined />{"Chi tiết phản hồi"}</h2>
             <Card
-                title={"Detail feedback"}
+                title={"Chi tiết phản hồi"}
                 bordered={false}
                 className="form"
             >
@@ -99,21 +99,21 @@ export function DetailComment() {
                                 <Flex gap={"80px"}>
 
                                     <Flex vertical>
-                                        <Form.Item label="Customer name"
+                                        <Form.Item label="Tên khách hàng"
                                             hasFeedback
                                             required
                                             name="name"
                                         >
                                             <Typography.Text >{nameValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Content"
+                                        <Form.Item label="Nội dung"
                                             hasFeedback
                                             required
                                             name="content"
                                         >
                                             <Typography.Paragraph>{contentValue}</Typography.Paragraph>
                                         </Form.Item>
-                                        <Form.Item label="Created at"
+                                        <Form.Item label="Ngày tạo"
                                             hasFeedback
                                             required
                                             name="createdAt"
@@ -122,21 +122,21 @@ export function DetailComment() {
                                         </Form.Item>
                                     </Flex>
                                     <Flex vertical>
-                                        <Form.Item label="Product ID"
+                                        <Form.Item label="ID sản phẩm"
                                             hasFeedback
                                             required
                                             name="productId"
                                         >
                                             <Typography.Text >{productIdValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Product name"
+                                        <Form.Item label="Tên sản phẩm"
                                             hasFeedback
                                             required
                                             name="productName"
                                         >
                                             <Typography.Text >{productNameValue}</Typography.Text>
                                         </Form.Item>
-                                        <Form.Item label="Product image"
+                                        <Form.Item label="Hình ảnh sản phẩm"
                                             hasFeedback
                                             required
                                             name="image"
@@ -146,8 +146,8 @@ export function DetailComment() {
                                     </Flex>
                                 </Flex>
                                 <Flex gap={10}>
-                                    <Form.Item name='isActive' label="Status" required>
-                                        <Switch checkedChildren='Active' unCheckedChildren="Deactive"
+                                    <Form.Item name='isActive' label="Trạng thái" required>
+                                        <Switch checkedChildren='Hoạt động' unCheckedChildren="Ngưng hoạt động"
                                             onChange={(e) => mutate({ id: comment_id, isActive: e })}
                                         />
                                     </Form.Item>

@@ -4,6 +4,21 @@ import { productMayLike } from '../../../services/product_service';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Skeleton } from 'antd';
+
+const FALLBACK = 'https://placehold.co/600x500/f3f4f6/9ca3af?text=Scart';
+
+function ProductImage({ src, alt, style }) {
+    const [imgSrc, setImgSrc] = useState(src || FALLBACK);
+    return (
+        <img
+            src={imgSrc}
+            alt={alt || 'Sản phẩm'}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', ...style }}
+            onError={() => setImgSrc(FALLBACK)}
+        />
+    );
+}
+
 export default function RecommendedProduct() {
     const [products, setProducts] = useState([])
     const { data, isSuccess } = useQuery({
@@ -32,7 +47,7 @@ export default function RecommendedProduct() {
                 ) : (
                     products[0] && (
                         <NavLink to={`/client/product/${products[0]?.id}`}>
-                            <img src={products[0]?.image} alt={products[0]?.name} />
+                            <ProductImage src={products[0]?.image} alt="Sản phẩm nổi bật 1" />
                         </NavLink>
                     )
                 )}
@@ -45,7 +60,7 @@ export default function RecommendedProduct() {
                     ) : (
                         products[1] && (
                             <NavLink to={`/client/product/${products[1]?.id}`}>
-                                <img src={products[1]?.image} alt={products[1]?.name} />
+                                <ProductImage src={products[1]?.image} alt="Sản phẩm nổi bật 2" />
                             </NavLink>
                         )
                     )}
@@ -56,7 +71,7 @@ export default function RecommendedProduct() {
                     ) : (
                         products[2] && (
                             <NavLink to={`/client/product/${products[2]?.id}`}>
-                                <img src={products[2]?.image} alt={products[2]?.name} />
+                                <ProductImage src={products[2]?.image} alt="Sản phẩm nổi bật 3" />
                             </NavLink>
                         )
                     )}
@@ -67,7 +82,7 @@ export default function RecommendedProduct() {
                     ) : (
                         products[3] && (
                             <NavLink to={`/client/product/${products[3]?.id}`}>
-                                <img src={products[3]?.image} style={{ width: "100%" }} alt={products[3]?.name} />
+                                <ProductImage src={products[3]?.image} style={{ width: "100%" }} alt="Sản phẩm nổi bật 4" />
                             </NavLink>
                         )
                     )}
@@ -80,7 +95,7 @@ export default function RecommendedProduct() {
                 ) : (
                     products[4] && (
                         <NavLink to={`/client/product/${products[4]?.id}`}>
-                            <img src={products[4]?.image} alt={products[4]?.name} />
+                            <ProductImage src={products[4]?.image} alt="Sản phẩm nổi bật 5" />
                         </NavLink>
                     )
                 )}

@@ -32,10 +32,10 @@ function Shop() {
     const addToCart = (product) => {
         if (info) {
             cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: 1 } })
-            Notification({ message: "Add to cart successully!", type: "success" })
+            Notification({ message: "Thêm vào giỏ hàng thành công!", type: "success" })
         }
         else {
-            Notification({ message: "You have to login first!", type: "error" })
+            Notification({ message: "Bạn cần đăng nhập trước!", type: "error" })
 
         }
     };
@@ -62,7 +62,7 @@ function Shop() {
     };
 
     useEffect(() => {
-        document.title = "Shop";
+        document.title = "Cửa hàng";
 
         return () => {
             document.title = "";
@@ -166,28 +166,28 @@ function Shop() {
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/shop'}>SHOP</NavLink>,
+                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
                     },
                 ]}
             />
             <Flex className='products_filter' justify="space-evenly" wrap="wrap">
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
-                        <Typography.Title level={5}>Categories</Typography.Title>
+                        <Typography.Title level={5}>Danh mục</Typography.Title>
                         <Checkbox.Group options={optionsCategory} value={categoryFilter} onChange={onChangeCategory} />
 
                     </Flex>
                     <Flex className='filterPrice'>
-                        <Typography.Title level={5}>Prices</Typography.Title>
+                        <Typography.Title level={5}>Khoảng giá</Typography.Title>
                         <Radio.Group onChange={onChangePrice} value={priceFilter}>
                             <Space direction="vertical">
-                                <Radio value={'0 - 100'}>0 - 100$</Radio>
-                                <Radio value={'100 - 300'}>100 - 300$</Radio>
-                                <Radio value={'300 - 500'}>300 - 500$</Radio>
-                                <Radio value={'500 - '}>Over 500$</Radio>
+                                <Radio value={'0 - 100000'}>0 - 100.000 ₫</Radio>
+                                <Radio value={'100000 - 300000'}>100.000 - 300.000 ₫</Radio>
+                                <Radio value={'300000 - 500000'}>300.000 - 500.000 ₫</Radio>
+                                <Radio value={'500000 - '}>Trên 500.000 ₫</Radio>
                             </Space>
                         </Radio.Group>
                     </Flex>
@@ -209,7 +209,7 @@ function Shop() {
                             )}
                             {priceFilter && (
                                 <Tag closable onClose={() => setPriceFilter('')}>
-                                    {priceFilter !== '500 - ' ? priceFilter : 'Over 500'}$
+                                    {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + ' ₫' : 'Trên 500.000 ₫'}
                                 </Tag>
                             )}
                             {(categoryFilter.length !== 0 && priceFilter != '') &&
@@ -217,44 +217,44 @@ function Shop() {
                                     setCategoryFilter([]), setPriceFilter(''), setIsEmpty(false)
 
                                 }}>
-                                    Clear all
+                                    Xóa tất cả
                                 </Typography.Link>
                                 )}
                         </Space>
                         <Select
-                            placeholder="Sort"
+                            placeholder="Sắp xếp"
                             removeIcon={<CloseOutlined />}
                             suffixIcon={<SortAscendingOutlined />}
                             labelInValue
                             allowClear
                             style={{
-                                width: 120,
+                                width: 150,
                             }}
                             onChange={handleChange}
                             options={[
                                 {
                                     value: 'sortPrice=ascend',
-                                    label: 'Price ascending',
+                                    label: 'Giá tăng dần',
                                 },
                                 {
                                     value: 'sortPrice=descend',
-                                    label: 'Price descending',
+                                    label: 'Giá giảm dần',
                                 },
                                 {
                                     value: 'sortDate=ascend',
-                                    label: 'Newer',
+                                    label: 'Mới nhất',
                                 },
                                 {
                                     value: 'sortDate=descend',
-                                    label: 'Older',
+                                    label: 'Cũ nhất',
                                 },
                                 {
                                     value: 'sortName=ascend',
-                                    label: 'Name: A-Z',
+                                    label: 'Tên: A-Z',
                                 },
                                 {
                                     value: 'sortName=descend',
-                                    label: 'Name: Z-A',
+                                    label: 'Tên: Z-A',
                                 },
                             ]}
                         />
@@ -274,7 +274,7 @@ function Shop() {
                         ) : (
                             <>
                                 <Flex className='result'>
-                                    <h3>Showing <span>1 - {total > 6 ? 6 : total}</span> of {total} results</h3>
+                                    <h3>Hiển thị <span>1 - {total > 6 ? 6 : total}</span> trong số {total} kết quả</h3>
                                 </Flex>
                                 <Flex gap={"16px"} wrap="wrap">
                                     {products.map(item => (
@@ -285,38 +285,23 @@ function Shop() {
                                                 {Number(item?.pricePromotion) > 0 ? (
                                                     <Flex gap={8} align="center" justify="center">
                                                         <span className="promotion">
-                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD',
-                                                                minimumFractionDigits: 0,
-                                                                maximumFractionDigits: 0,
-                                                            })}
+                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
                                                         </span>
                                                         <span className="price">
-                                                            {item.price?.toLocaleString('en-US', {
-                                                                style: 'currency',
-                                                                currency: 'USD',
-                                                                minimumFractionDigits: 0,
-                                                                maximumFractionDigits: 0,
-                                                            })}
+                                                            {item.price?.toLocaleString('vi-VN')} ₫
                                                         </span>
                                                     </Flex>
                                                 ) : (
                                                     <span className="promotion">
-                                                        {item.price?.toLocaleString('en-US', {
-                                                            style: 'currency',
-                                                            currency: 'USD',
-                                                            minimumFractionDigits: 0,
-                                                            maximumFractionDigits: 0,
-                                                        })}
+                                                        {item.price?.toLocaleString('vi-VN')} ₫
                                                     </span>
                                                 )}
                                             </Typography.Text>
                                             <Rate allowHalf disabled defaultValue={item?.stars} />
                                             {!item?.status ? (
-                                                <Button onClick={() => navigate(`/client/product/${item?.id}`)}>view detail</Button>
+                                                <Button onClick={() => navigate(`/client/product/${item?.id}`)}>xem chi tiết</Button>
                                             ) : (
-                                                <Button icon={<ShoppingOutlined />} disabled={item?.quantity === 0} onClick={() => addToCart(item)}>add to cart</Button>
+                                                <Button icon={<ShoppingOutlined />} disabled={item?.quantity === 0} onClick={() => addToCart(item)}>thêm vào giỏ hàng</Button>
                                             )}
                                         </Flex>
                                     ))}

@@ -14,7 +14,7 @@ import "../style/checkout_confirm.css";
 import { addOrder } from "../../../services/order_service";
 import { UserContext } from "../../../store/user";
 function CheckoutConfirm() {
-    document.title = "Check out";
+    document.title = "Xác nhận đặt hàng";
     const [form] = Form.useForm()
     const [subTotal, setSubtotal] = useState(0)
     const [products, setProducts] = useState([])
@@ -52,13 +52,13 @@ function CheckoutConfirm() {
         mutationKey: ['create_bill', orderId],
         mutationFn: (data) => createBill(data),
         onSuccess: (res) => window.location.assign(res?.data?.url),
-        onError: () => Notification({ message: `Online banking is interupted due to system error!!`, type: "error" })
+        onError: () => Notification({ message: `Thanh toán trực tuyến bị gián đoạn do lỗi hệ thống!`, type: "error" })
     })
     const notVnpay = useMutation({
         mutationKey: ['create_order'],
         mutationFn: (data) => addOrder(data),
         onSuccess: (res) => setOrderId(res?.data?.order?._id),
-        onError: () => Notification({ message: `Create order not successfully`, type: "error" })
+        onError: () => Notification({ message: `Tạo đơn hàng thất bại, vui lòng thử lại!`, type: "error" })
 
     })
 
@@ -89,7 +89,7 @@ function CheckoutConfirm() {
                 tax: (subTotal * 0.09).toFixed(2)
             }, {
                 onSuccess: () => {
-                    Notification({ message: `Create order successfully`, type: "success" })
+                    Notification({ message: `Đặt hàng thành công!`, type: "success" })
                     navigate('/client/checkout/success')
                 }
             }
@@ -131,82 +131,63 @@ function CheckoutConfirm() {
     }, [isError, data])
 
     const cartColumns = [
-
         {
-            title: 'Name',
+            title: 'Sản phẩm',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
             render: (text, row) => (
                 <Flex vertical>
                     <Typography.Text className="promotion">
-                        {Number(text).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2,
-                        })}
+                        {Number(text).toLocaleString('vi-VN')} ₫
                     </Typography.Text>
                     {row.pricePromotion > 0 && (
                         <Typography.Text className="price">
-                            {Number(row.originalPrice).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 2,
-                            })}
+                            {Number(row.originalPrice).toLocaleString('vi-VN')} ₫
                         </Typography.Text>
                     )}
                 </Flex>
             )
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
         },
         {
-            title: 'Subtotal',
+            title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
             render: (text, row) => (
                 <Typography.Text style={{ fontWeight: 600 }}>
-                    {(row.price * row.quantity).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                    })}
+                    {(row.price * row.quantity).toLocaleString('vi-VN')} ₫
                 </Typography.Text>
             )
         },
-
     ];
 
     const items = [
         {
             key: '1',
-            label: 'Subtotal',
-            children: <Typography.Text>{subTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Tạm tính',
+            children: <Typography.Text>{subTotal.toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
         },
         {
             key: '2',
-            label: 'Tax',
-            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Thuế (9%)',
+            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
-
         },
         {
             key: '3',
-            label: 'Total',
-            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Tổng cộng',
+            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
-
         }
     ];
 
@@ -237,17 +218,17 @@ function CheckoutConfirm() {
 
 
     useEffect(() => {
-        document.title = "Checkout confirm"
+        document.title = "Xác nhận đặt hàng"
     }, [])
     return (
         <Flex className="checkout_confirm_page container" vertical>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/checkout/confirm'}>CHECKOUT CONFIRM</NavLink>,
+                        title: <NavLink to={'/client/checkout/confirm'}>XÁC NHẬN ĐẶT HÀNG</NavLink>,
                     },
                 ]}
             />
@@ -263,137 +244,57 @@ function CheckoutConfirm() {
                     <Flex gap='large'>
                         <Flex vertical style={{ width: "50%" }}>
                             <Form.Item
-                                label="First name"
+                                label="Họ"
                                 name="firstNameReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    }, {
-                                        min: 3,
-                                        message: "At least 3 characters"
-                                    }
-                                ]}
+                                rules={[{ required: true, message: 'Vui lòng nhập!' }]}
                             >
                                 <Input disabled />
                             </Form.Item>
                             <Form.Item
-                                label="Last name"
+                                label="Tên"
                                 name="lastNameReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    }, {
-                                        min: 3,
-                                        message: "At least 3 characters"
-                                    }
-                                ]}
+                                rules={[{ required: true, message: 'Vui lòng nhập!' }]}
                             >
                                 <Input disabled />
                             </Form.Item>
                             <Form.Item
                                 label="Email"
                                 name="emailReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    },
-                                    {
-                                        min: 6,
-                                        message: "At least 6 characters"
-                                    },
-                                    {
-                                        type: 'email',
-                                        message: 'Please input an email address'
-                                    }
-                                ]}
+                                rules={[{ required: true, message: 'Vui lòng nhập email hợp lệ!' }]}
                             >
                                 <Input disabled />
                             </Form.Item>
                             <Form.Item
-                                label="Phone number"
+                                label="Số điện thoại"
                                 name="phoneReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    },
-                                    {
-                                        min: 10,
-                                        message: 'Please input at least 10 numbers!',
-
-                                    },
-                                    {
-                                        max: 13,
-                                        message: 'Please input no more 13 numbers!',
-
-                                    }
-                                ]}
+                                rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
                             >
-                                <Input
-                                    style={{
-                                        width: '100%',
-                                    }}
-
-                                    disabled
-                                />
+                                <Input style={{ width: '100%' }} disabled />
                             </Form.Item>
 
-                            <Form.Item
-                                label="Address"
-                                name="addressReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    }, {
-                                        min: 3,
-                                        message: "At least 3 characters"
-                                    }
-                                ]}
-                            >
+                            <Form.Item label="Địa chỉ" name="addressReceiver" rules={[{ required: true, message: 'Vui lòng nhập!' }]}>
                                 <Input disabled />
                             </Form.Item>
-                            <Form.Item
-                                label="Country"
-                                name="countryReceiver"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input!',
-                                    },
-                                ]}
-                            >
+                            <Form.Item label="Quốc gia" name="countryReceiver" rules={[{ required: true, message: 'Vui lòng chọn!' }]}>
                                 <Select options={options} disabled />
                             </Form.Item>
-                            <Form.Item
-                                label="Note"
-                                name="note"
-                            >
+                            <Form.Item label="Ghi chú" name="note">
                                 <Input.TextArea disabled />
                             </Form.Item>
-                            <Form.Item
-                                label="Payment method"
-                                name="paymentMethod"
-                            >
+                            <Form.Item label="Phương thức thanh toán" name="paymentMethod">
                                 <Radio.Group disabled>
                                     <Space direction='horizontal' wrap={true}>
-                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>COD</Typography.Text></Radio>
+                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>Tiền mặt (COD)</Typography.Text></Radio>
                                         <Radio value={'vnpay'} className="radio"><CreditCardOutlined /><Typography.Text>VNPAY</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>
                             </Form.Item>
-                            <Form.Item
-                                label="Shipping method"
-                                name="shippingMethod"
-                            >
+                            <Form.Item label="Phương thức vận chuyển" name="shippingMethod">
                                 <Radio.Group disabled>
                                     <Space direction='horizontal' wrap={true}>
-                                        <Radio value={'free'} className="radio"><DisconnectOutlined /><Typography.Text>Free</Typography.Text></Radio>
-                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text>Standard</Typography.Text></Radio>
-                                        <Radio value={'express'} className="radio"><SendOutlined /><Typography.Text>Express</Typography.Text></Radio>
+                                        <Radio value={'free'} className="radio"><DisconnectOutlined /><Typography.Text>Miễn phí</Typography.Text></Radio>
+                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text>Tiêu chuẩn</Typography.Text></Radio>
+                                        <Radio value={'express'} className="radio"><SendOutlined /><Typography.Text>Nhanh</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>
                             </Form.Item>
@@ -410,10 +311,10 @@ function CheckoutConfirm() {
                             <Descriptions bordered items={items} className="sumary" />
                             <Flex gap="large" justify="center" className="wrap_btn">
                                 <Button type="primary" htmlType="button" onClick={navigateCheckout}>
-                                    Back to checkout
+                                    Quay lại
                                 </Button>
                                 <Button type="primary" htmlType="submit" onClick={navigateEnd}>
-                                    Place order
+                                    Đặt hàng
                                 </Button>
                             </Flex>
                         </Space>

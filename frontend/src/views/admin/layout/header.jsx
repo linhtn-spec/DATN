@@ -23,22 +23,22 @@ function HeaderClient() {
         mutationFn: () => logoutGoogle(),
         retry: false,
         onSuccess: () => {
-            Notification({ message: "Logout successully!", type: "success" });
+            Notification({ message: "Đăng xuất thành công!", type: "success" });
             dispatch({ type: ACTION_USER.LOGOUT })
         },
         onError: () => {
-            Notification({ message: `Logout unsuccessfully!`, type: "error" })
+            Notification({ message: `Đăng xuất thất bại!`, type: "error" })
         }
     })
 
     const { mutate } = useMutation({
         mutationFn: () => logout(),
         onSuccess: () => {
-            Notification({ message: "Logout successully!", type: "success" });
+            Notification({ message: "Đăng xuất thành công!", type: "success" });
             dispatch({ type: ACTION_USER.LOGOUT })
         },
         onError: () => {
-            Notification({ message: `Logout unsuccessfully!`, type: "error" })
+            Notification({ message: `Đăng xuất thất bại!`, type: "error" })
         }
     })
     const handleLogout = () => {
@@ -51,8 +51,8 @@ function HeaderClient() {
     }
     const content = (
         <Flex vertical gap={5} style={{ textDecoration: 'none' }}>
-            {userRole >= ROLE.STAFF && < NavLink style={{ color: "#000" }} to={`/admin/users/${state?.currentUser?.user_id}`}>Infomation</NavLink>}
-            <NavLink style={{ color: "#000" }} onClick={handleLogout}>Logout</NavLink>
+            {userRole >= ROLE.STAFF && < NavLink style={{ color: "#000" }} to={`/admin/users/${state?.currentUser?.user_id}`}>Thông tin cá nhân</NavLink>}
+            <NavLink style={{ color: "#000" }} onClick={handleLogout}>Đăng xuất</NavLink>
         </Flex >
     );
     return (

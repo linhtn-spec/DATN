@@ -24,99 +24,99 @@ function DeleteModal(props) {
     const deleteOneCategory = useMutation({
         mutationFn: (id) => deleteCategoryOne(id),
         onSuccess: () => {
-            Notification({ message: "Delete category successfully!", type: "success" })
+            Notification({ message: "Xóa danh mục thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa danh mục thất bại!", type: "error" })
         }
     })
 
     const deleteListCategory = useMutation({
         mutationFn: (id) => deleteCategoryList(id),
         onSuccess: () => {
-            Notification({ message: "Delete categories successfully!", type: "success" })
+            Notification({ message: "Xóa các danh mục thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa các danh mục thất bại!", type: "error" })
         }
     })
 
     const deleteOneBanner = useMutation({
         mutationFn: (id) => deleteBannerOne(id),
         onSuccess: () => {
-            Notification({ message: "Delete banner successfully!", type: "success" })
+            Notification({ message: "Xóa banner thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa banner thất bại!", type: "error" })
         }
     })
 
     const deleteListBanner = useMutation({
         mutationFn: (id) => deleteBannerList(id),
         onSuccess: () => {
-            Notification({ message: "Delete banners successfully!", type: "success" })
+            Notification({ message: "Xóa các banner thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa các banner thất bại!", type: "error" })
         }
     })
 
     const deleteOneProduct = useMutation({
         mutationFn: (id) => deleteProductOne(id),
         onSuccess: () => {
-            Notification({ message: "Delete product successfully!", type: "success" })
+            Notification({ message: "Xóa sản phẩm thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['products_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa sản phẩm thất bại!", type: "error" })
         }
     })
 
     const deleteListProduct = useMutation({
         mutationFn: (id) => deleteProductList(id),
         onSuccess: () => {
-            Notification({ message: "Delete products successfully!", type: "success" })
+            Notification({ message: "Xóa các sản phẩm thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['products_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Xóa các sản phẩm thất bại!", type: "error" })
         }
     })
 
     const deleteSaleOne = useMutation({
         mutationFn: (id) => deleteSale(id),
         onSuccess: () => {
-            Notification({ message: "Delete sale successfully!", type: "success" })
+            Notification({ message: "Xóa khuyến mãi thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['sales_admin_list'] })
         },
         onError: () => {
-            Notification({ message: "Delete sale unsuccessfully!", type: "error" })
+            Notification({ message: "Xóa khuyến mãi thất bại!", type: "error" })
         }
     })
 
     const deleteOneBlog = useMutation({
         mutationFn: (id) => deleteBlogOne(id),
         onSuccess: () => {
-            Notification({ message: "Delete blog successfully!", type: "success" })
+            Notification({ message: "Xóa bài viết thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data?.message ?? 'Delete failed', type: "error" })
+            Notification({ message: error?.response?.data?.message ?? 'Xóa bài viết thất bại!', type: "error" })
         }
     })
 
     const deleteListBlog = useMutation({
         mutationFn: (id) => deleteBlogList(id),
         onSuccess: () => {
-            Notification({ message: "Delete blogs successfully!", type: "success" })
+            Notification({ message: "Xóa các bài viết thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['blog_admin'] })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data?.message ?? 'Delete failed', type: "error" })
+            Notification({ message: error?.response?.data?.message ?? 'Xóa các bài viết thất bại!', type: "error" })
         }
     })
 
@@ -157,11 +157,11 @@ function DeleteModal(props) {
     return (
         <Modal open={isOpen} closable={false} footer={null} width={500} centered={true} className='deleteModal'>
             <Flex vertical align='center' justify='center' gap={20}>
-                <p className='words'>Do you want to DELETE {typeof id !== 'string' ? 'these items' : "this item"} ?</p>
+                <p className='words'>Bạn có muốn XÓA {typeof id !== 'string' ? 'những mục này' : "mục này"} không?</p>
                 <Flex gap='large'>
                     <Button htmlType="submit" danger type='primary'
-                        onClick={() => { handleDelete(), onClose() }}>Delete</Button>
-                    <Button onClick={onClose}>Cancel</Button>
+                        onClick={() => { handleDelete(), onClose() }}>Xóa</Button>
+                    <Button onClick={onClose}>Hủy</Button>
                 </Flex>
             </Flex>
         </Modal >

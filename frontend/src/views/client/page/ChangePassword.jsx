@@ -12,10 +12,10 @@ export const ChangePassword = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => resetPasswordCurrentUser(data),
         onSuccess: () => {
-            Notification({ message: "Change password successfully", type: "success" })
+            Notification({ message: "Đổi mật khẩu thành công!", type: "success" })
             navigate("/client")
         },
-        onError: () => Notification({ message: "Change password unsuccessfully", type: "error" })
+        onError: () => Notification({ message: "Đổi mật khẩu thất bại, vui lòng kiểm tra lại!", type: "error" })
     })
     const handleSubmit = (e) => {
         mutate(e);
@@ -23,17 +23,17 @@ export const ChangePassword = () => {
 
 
     useEffect(() => {
-        document.title = "Change password"
+        document.title = "Đổi mật khẩu"
     }, [])
     return (
         <Flex vertical className='security' align='center'>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/user/change-password'}>CHANGE PASSWORD</NavLink>,
+                        title: <NavLink to={'/client/user/change-password'}>ĐỔI MẬT KHẨU</NavLink>,
                     },
                 ]}
             />
@@ -46,39 +46,39 @@ export const ChangePassword = () => {
                     layout="horizontal"
                     onFinish={handleSubmit}>
                     <Flex vertical >
-                        <Typography.Title level={3}>Current password</Typography.Title >
+                        <Typography.Title level={3}>Mật khẩu hiện tại</Typography.Title >
                         <Form.Item
                             name="current_password"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập mật khẩu!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 }
                             ]}
                         >
-                            <Input.Password visibilityToggle placeholder="Current password" size="large" />
+                            <Input.Password visibilityToggle placeholder="Mật khẩu hiện tại" size="large" />
                         </Form.Item>
-                        <Typography.Title level={3}>New password</Typography.Title>
+                        <Typography.Title level={3}>Mật khẩu mới</Typography.Title>
                         <Form.Item
                             name="new_password"
                             hasFeedback
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng nhập mật khẩu mới!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 }
                             ]}
                         >
-                            <Input.Password visibilityToggle placeholder="New password" size="large" />
+                            <Input.Password visibilityToggle placeholder="Mật khẩu mới" size="large" />
                         </Form.Item>
-                        <Typography.Title level={3}>Confirm new password</Typography.Title>
+                        <Typography.Title level={3}>Xác nhận mật khẩu mới</Typography.Title>
                         <Form.Item
                             name="confirm_new_password"
                             dependencies={['new_password']}
@@ -86,27 +86,27 @@ export const ChangePassword = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input!',
+                                    message: 'Vui lòng xác nhận mật khẩu!',
                                 }, {
                                     min: 6,
-                                    message: "At least 6 characters"
+                                    message: "Tối thiểu 6 ký tự"
                                 },
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
                                         if (!value || getFieldValue('new_password') === value) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject(new Error('The new password that you entered do not match!'));
+                                        return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
                                     },
                                 }),
                             ]}
                         >
-                            <Input.Password visibilityToggle placeholder="Confirm new password" size="large" />
+                            <Input.Password visibilityToggle placeholder="Xác nhận mật khẩu mới" size="large" />
                         </Form.Item>
 
                         <Flex vertical align="center" justify="center" className="button_group">
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="register">Change password</Button>
+                                <Button type="primary" htmlType="submit" className="register">Đổi mật khẩu</Button>
                             </Form.Item>
                         </Flex>
                     </Flex>

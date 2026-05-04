@@ -10,7 +10,7 @@ function OrderSuccess() {
         navigate('/client')
     }
     useEffect(() => {
-        document.title = "Order success";
+        document.title = "Đặt hàng thành công";
 
 
         return () => {
@@ -23,19 +23,19 @@ function OrderSuccess() {
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/checkout/success'}>ORDER SUCCESS</NavLink>,
+                        title: <NavLink to={'/client/checkout/success'}>ĐẶT HÀNG THÀNH CÔNG</NavLink>,
                     },
                 ]}
             />
-            <Typography.Title level={1}>ORDER SUCCESS</Typography.Title >
-            <Typography.Title level={2}>THANK YOU FOR YOUR PURCHASE!
+            <Typography.Title level={1}>ĐẶT HÀNG THÀNH CÔNG</Typography.Title >
+            <Typography.Title level={2}>CẢM ƠN BẠN ĐÃ MUA HÀNG!
             </Typography.Title >
             <Flex justify="center" style={{margin:"100px"}}>
                 <Button onClick={navigateHome}>
-                    Purchase more
+                    Tiếp tục mua hàng
                 </Button>
             </Flex>
         </Flex>

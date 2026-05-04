@@ -45,7 +45,7 @@ export const ProductList = () => {
   const { mutate } = useMutation({
     mutationFn: (data) => updateProduct(data),
     onSuccess: () => {
-      Notification({ message: "Update status of product sucessfully", type: 'success' });
+      Notification({ message: "Cập nhật trạng thái sản phẩm thành công", type: 'success' });
       queryClient.invalidateQueries({ queryKey: ['products_admin'] })
     },
     onError: (error) => {
@@ -115,54 +115,54 @@ export const ProductList = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên sản phẩm',
       dataIndex: 'name',
       width: 200,
       sorter: true,
       ellipsis: true,
     },
     {
-      title: 'Image',
+      title: 'Hình ảnh',
       dataIndex: 'image',
       width: 100,
       render: (text) => <Image src={text[0]} width={70} height={70} />
 
     },
     {
-      title: 'Category',
+      title: 'Danh mục',
       dataIndex: 'category',
       width: 100,
       align: 'center',
     },
     {
-      title: 'Unit',
+      title: 'Đơn vị',
       dataIndex: 'unit',
       width: 100,
       align: 'center',
     },
     {
-      title: 'Origin',
+      title: 'Xuất xứ',
       dataIndex: 'origin',
       width: 100,
       align: 'center',
     },
     {
-      title: 'Price',
+      title: 'Giá',
       dataIndex: 'price',
       width: 100,
       sorter: (a, b) => a.price - b.price,
       align: 'center',
-      render: (text) => <Typography.Text>${text}</Typography.Text>
+      render: (text) => <Typography.Text>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
     },
 
     {
-      title: 'Active',
+      title: 'Hoạt động',
       dataIndex: 'isActive',
       width: 90,
       render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       width: 100,
       key: 'x',
       render: (text, row) => <Flex justify='center' className='delete' gap={5}>
@@ -231,7 +231,7 @@ export const ProductList = () => {
     }
   }, [searchOrigin, searchTitle, searchSortTitle, searchCategory, searchSortPrice])
   useEffect(() => {
-    document.title = "Product"
+    document.title = "Sản phẩm"
 
   }, [])
   return (
@@ -243,13 +243,13 @@ export const ProductList = () => {
               name="title"
               style={{ width: "33%" }}
             >
-              <Input type="text" placeholder="Title" />
+              <Input type="text" placeholder="Tên sản phẩm" />
             </Form.Item>
             <Form.Item
               style={{ width: "51%" }}
               name="origin"
             >
-              <Select placeholder="Country" options={options} allowClear
+              <Select placeholder="Quốc gia" options={options} allowClear
                 showSearch
                 optionFilterProp="children"
                 filterOption={(input, option) => (option?.text ?? '').includes(input)}
@@ -261,7 +261,7 @@ export const ProductList = () => {
               style={{ width: "51%" }}
               name="category"
             >
-              <Select placeholder="Category" options={categories} allowClear />
+              <Select placeholder="Danh mục" options={categories} allowClear />
             </Form.Item>
           </Flex>
 
@@ -269,7 +269,7 @@ export const ProductList = () => {
       </Flex>
       <Flex justify='space-between'>
         <Button danger type='primary' disabled={selectedRowKeys.length === 0} icon={<DeleteOutlined />} onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }), setTypeDelete("productList") }} />
-        <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Add new product</Button>
+        <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Thêm sản phẩm mới</Button>
       </Flex>
       <Table
         bordered

@@ -12,8 +12,8 @@ import './ListOfCustomer.css';
 
 
 const statuses = [
-    { value: true, label: "Active" },
-    { value: false, label: "Inactive" },
+    { value: true, label: "Đang hoạt động" },
+    { value: false, label: "Ngừng hoạt động" },
 ]
 
 export const ListOfCustomer = () => {
@@ -35,7 +35,7 @@ export const ListOfCustomer = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => updateUser(data),
         onSuccess: () => {
-            Notification({ message: "Update status of customer sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái khách hàng thành công", type: 'success' });
             queryClient.invalidateQueries({ queryKey: ['customers_admin_list'] })
         },
         onError: (error) => {
@@ -96,7 +96,7 @@ export const ListOfCustomer = () => {
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Họ tên',
             dataIndex: 'name',
             width: 200,
             ellipsis: true,
@@ -108,19 +108,19 @@ export const ListOfCustomer = () => {
             ellipsis: true,
         },
         {
-            title: 'Address',
+            title: 'Địa chỉ',
             dataIndex: 'address',
             width: 100
         },
 
         {
-            title: 'Active',
+            title: 'Hoạt động',
             dataIndex: 'status',
             width: 90,
             render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             width: 80,
             key: 'x',
@@ -155,7 +155,7 @@ export const ListOfCustomer = () => {
                             name="name"
                             style={{ width: "33%" }}
                         >
-                            <Input type="text" placeholder="Name" />
+                            <Input type="text" placeholder="Họ tên" />
                         </Form.Item>
                         <Form.Item
                             name="email"
@@ -167,7 +167,7 @@ export const ListOfCustomer = () => {
                             style={{ width: "51%" }}
                             name="status"
                         >
-                            <Select placeholder="Status" options={statuses} allowClear />
+                            <Select placeholder="Trạng thái" options={statuses} allowClear />
                         </Form.Item>
                     </Flex>
 

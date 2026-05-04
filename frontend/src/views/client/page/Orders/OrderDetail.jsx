@@ -22,16 +22,15 @@ export const OrderDetail = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Thanks for using our service", type: "success" })
+            Notification({ message: "Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['order_list_user', 'detail_order_client'] })
         },
-        onError: () => Notification({ message: "Something's wrong", type: "error" })
+        onError: () => Notification({ message: "Đã có lỗi xảy ra", type: "error" })
     })
 
     useEffect(() => {
         if (!isSuccess) return
         const rawData = data?.data
-        console.log(rawData);
         setInfo({
             receiverName: rawData?.firstNameReceiver + " " + rawData?.lastNameReceiver,
             orderStatus: rawData?.orderStatus,
@@ -46,7 +45,7 @@ export const OrderDetail = () => {
 
         setProducts(rawData?.products?.map((item, index) => ({
             no: index + 1,
-            image: item?.productId?.images,
+            image: item?.productId?.images?.[0],
             name: item?.productId?.name,
             quantity: item?.quantity,
             price: item?.productId?.price,
@@ -62,170 +61,139 @@ export const OrderDetail = () => {
 
     }, [isSuccess, data, setProducts])
 
-    const options =
-        [
-            {
-                value: 'new',
-                label: 'New',
-                disabled: true,
-            },
-            {
-                value: 'processing',
-                label: 'Processing',
-                disabled: true,
-            },
-            {
-                value: 'hold',
-                label: "Hold",
-                disabled: true,
-            },
-            {
-                value: 'canceled',
-                label: 'Canceled',
-                disabled: true,
-            },
-            {
-                value: 'done',
-                label: "Done",
-            },
-        ]
+    // Order status options handled by orderOptions from OrderList or re-defined here
+    const statusOptions = [
+        { value: 'new', label: 'Mới' },
+        { value: 'processing', label: 'Đang xử lý' },
+        { value: 'hold', label: 'Tạm giữ' },
+        { value: 'canceled', label: 'Đã hủy' },
+        { value: 'done', label: 'Hoàn thành' },
+    ];
 
     const items = [
         {
             key: '1',
-            label: 'Subtotal',
-            children: <Typography.Text>{info?.total - info?.tax}$</Typography.Text>,
+            label: 'Tạm tính',
+            children: <Typography.Text>{(info?.total - info?.tax)?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>,
             span: 3
         },
         {
             key: '2',
-            label: 'Tax',
-            children: <Typography.Text>{info?.tax}$</Typography.Text>,
+            label: 'Thuế (VAT)',
+            children: <Typography.Text>{info?.tax?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>,
             span: 3
-
         },
         {
             key: '3',
-            label: 'Total',
-            children: <Typography.Text>{info?.total}$</Typography.Text>,
+            label: 'Tổng cộng',
+            children: <Typography.Text strong style={{ color: '#ff4d4f', fontSize: '18px' }}>{info?.total?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>,
             span: 3
-
         }
     ];
 
     const cartColumns = [
         {
-            title: 'No',
+            title: 'STT',
             dataIndex: 'no',
             key: 'no',
             width: "80px",
         },
         {
-            title: "Image",
-            dataIndex: 'image',
-            key: 'image',
-            hidden: true
-        },
-        {
-            title: 'Name',
+            title: 'Sản phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (text, row) => (
                 <Flex align='center' gap={20}>
-                    <Typography.Text>{text}</Typography.Text>
-                    <Image src={row.image} width={80} height={80} />
+                    <Image src={row.image} width={60} height={60} style={{ objectFit: 'cover', borderRadius: '4px' }} />
+                    <Typography.Text strong>{text}</Typography.Text>
                 </Flex>
             )
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => <p>{text}$</p>
-
+            render: (text) => <Typography.Text>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
+            align: 'center'
         },
         {
-            title: 'Subtotal',
+            title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            render: (text) => <p>{text}$</p>
+            render: (text) => <Typography.Text strong>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
         },
     ];
+
     useEffect(() => {
-        document.title = "Order detail"
+        document.title = "Chi tiết đơn hàng"
+        window.scrollTo(0, 0)
     }, [])
 
     return (
-        <Flex className="detail_order" vertical align="center">
+        <Flex className="container detail_order_page" vertical gap={24} style={{ padding: '40px 0' }}>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={`/client/user/orders/${order_id}`}>ORDER DETAIL</NavLink>,
+                        title: <NavLink to={`/client/user/orders`}>LỊCH SỬ ĐƠN HÀNG</NavLink>,
+                    },
+                    {
+                        title: 'CHI TIẾT ĐƠN HÀNG',
                     },
                 ]}
             />
-            <Card>
-                <Meta
-                    title="Order information"
-                    description={
-                        <Flex gap={20}>
-                            <Flex vertical>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Receiver name:</Typography.Title>
-                                    <Typography.Text>{info?.receiverName}</Typography.Text>
-                                </Flex>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Address:</Typography.Title>
-                                    <Typography.Text>{info?.address}</Typography.Text>
-                                </Flex>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Country:</Typography.Title>
-                                    <Typography.Text>{info?.country}</Typography.Text>
-                                </Flex>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Email:</Typography.Title>
-                                    <Typography.Text>{info?.email}</Typography.Text>
-                                </Flex>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Phone:</Typography.Title>
-                                    <Typography.Text>{info?.phone}</Typography.Text>
-                                </Flex>
-                                <Flex align='center' gap={14}>
-                                    <Typography.Title level={5}>Date:</Typography.Title>
-                                    <Typography.Text>{Date(info?.date)}</Typography.Text>
-                                </Flex>
-                            </Flex>
-                            <Flex gap={14}>
-                                <Typography.Title level={5} style={{ width: "100%" }}>Order status:</Typography.Title>
-                                <Select
-                                    disabled={info?.orderStatus === 'done'}
-                                    options={options} value={info?.orderStatus} onChange={(e) => mutate({
-                                        id: order_id,
-                                        orderStatus: e
-                                    })} style={{ width: "100%" }} />
-                            </Flex>
-                        </Flex>
-                    }
-                />
-                <Table
-                    bordered
-                    columns={cartColumns}
-                    dataSource={products}
-                    pagination={{ hideOnSinglePage: true, pageSize: 3, total: total, defaultCurrent: page, onChange: setPage, showSizeChanger: false }}
+            
+            <Card title={<Typography.Title level={3} style={{ margin: 0 }}>Chi tiết đơn hàng #{order_id?.slice(-8).toUpperCase()}</Typography.Title>}>
+                <Flex vertical gap={32}>
+                    <Descriptions title="Thông tin người nhận" bordered column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}>
+                        <Descriptions.Item label="Họ tên">{info?.receiverName}</Descriptions.Item>
+                        <Descriptions.Item label="Số điện thoại">{info?.phone}</Descriptions.Item>
+                        <Descriptions.Item label="Địa chỉ" span={2}>{info?.address}, {info?.country}</Descriptions.Item>
+                        <Descriptions.Item label="Email">{info?.email}</Descriptions.Item>
+                        <Descriptions.Item label="Ngày đặt">{dayjs(info?.date).format('DD/MM/YYYY HH:mm')}</Descriptions.Item>
+                        <Descriptions.Item label="Trạng thái">
+                            <Select
+                                disabled={info?.orderStatus === 'done'}
+                                options={statusOptions} 
+                                value={info?.orderStatus} 
+                                onChange={(e) => mutate({
+                                    id: order_id,
+                                    orderStatus: e
+                                })} 
+                                style={{ width: "100%" }} 
+                            />
+                        </Descriptions.Item>
+                    </Descriptions>
 
-                />
-                <Descriptions bordered items={items} className="sumary" labelStyle={{ fontWeight: 600, color: "black" }} />
-
+                    <Table
+                        bordered
+                        columns={cartColumns}
+                        dataSource={products}
+                        pagination={false}
+                        summary={() => (
+                            <Table.Summary fixed>
+                                <Table.Summary.Row>
+                                    <Table.Summary.Cell index={0} colSpan={4} align='right'>
+                                        <Typography.Text strong>Tổng thanh toán:</Typography.Text>
+                                    </Table.Summary.Cell>
+                                    <Table.Summary.Cell index={1}>
+                                        <Typography.Text strong type="danger">
+                                            {info?.total?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                        </Typography.Text>
+                                    </Table.Summary.Cell>
+                                </Table.Summary.Row>
+                            </Table.Summary>
+                        )}
+                    />
+                </Flex>
             </Card>
-
         </Flex>
     )
 }

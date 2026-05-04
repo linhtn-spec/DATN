@@ -39,7 +39,7 @@ export const BannerList = () => {
   const { mutate } = useMutation({
     mutationFn: (data) => updateBanner(data),
     onSuccess: () => {
-      Notification({ message: "Update status of banner sucessfully", type: 'success' });
+      Notification({ message: "Cập nhật trạng thái banner thành công", type: 'success' });
       queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
     },
     onError: (error) => {
@@ -99,31 +99,31 @@ export const BannerList = () => {
 
   const columns = [
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'title',
       width: 200,
       sorter: true,
       ellipsis: true,
     },
     {
-      title: 'Image',
+      title: 'Hình ảnh',
       dataIndex: 'image',
       width: 100,
       render: (text) => <img src={text} width={70} height={70} />
 
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description'
     },
     {
-      title: 'Active',
+      title: 'Hoạt động',
       dataIndex: 'isActive',
       width: 90,
       render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
     },
     {
-      title: 'Order',
+      title: 'Thứ tự',
       dataIndex: 'order',
       width: 100,
       sorter: true,
@@ -131,7 +131,7 @@ export const BannerList = () => {
 
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       width: 100,
       key: 'x',
       render: (text, row) => <Flex justify='center' className='delete' gap={5}>
@@ -200,21 +200,21 @@ export const BannerList = () => {
               name="title"
               style={{ width: "33%" }}
             >
-              <Input type="text" placeholder="Title" />
+              <Input type="text" placeholder="Tiêu đề" />
             </Form.Item>
             <Form.Item
               style={{ width: "51%" }}
               name="description"
             >
-              <Input type="text" placeholder="Description" />
+              <Input type="text" placeholder="Mô tả" />
             </Form.Item>
             <Form.Item
               name="type"
               style={{ width: "15%" }}
             >
-              <Select placeholder="Type" allowClear>
-                <Select.Option value={0} >Deactivate</Select.Option>
-                <Select.Option value={1}>Activate</Select.Option>
+              <Select placeholder="Trạng thái" allowClear>
+                <Select.Option value={0} >Ngừng hoạt động</Select.Option>
+                <Select.Option value={1}>Hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </Flex>
@@ -223,7 +223,7 @@ export const BannerList = () => {
       </Flex>
       <Flex justify='space-between'>
         <Button danger type='primary' disabled={selectedRowKeys.length === 0} icon={<DeleteOutlined />} onClick={() => { dispatch({ type: ACTION_MODAL.OPEN_MODAL }), setTypeDelete("bannerList") }} />
-        <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Add new banner</Button>
+        <Button type='primary' icon={<PlusOutlined />} onClick={onAdd}> Thêm banner mới</Button>
       </Flex>
       <Table
         bordered

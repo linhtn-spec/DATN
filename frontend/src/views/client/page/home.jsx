@@ -15,7 +15,7 @@ import Product_List from "../layout/product_list";
 import RecommendedProduct from "../layout/RecommendedProduct";
 
 function Home() {
-    document.title = "Home";
+    document.title = "Trang chủ";
     const { dispatch } = useContext(UserContext)
     const logGoogle = useContext(LogContext)
     const [productHot, setProductHot] = useState([]);
@@ -37,16 +37,15 @@ function Home() {
     useEffect(() => {
         if (!querySale?.isSuccess) return
         const rawData = querySale?.data?.data
-        setProductHot(rawData?.products?.map(item => ({
+        setProductHot(rawData?.products?.filter(item => item.productId).map(item => ({
             name: item?.productId?.name,
             price: item?.productId?.price,
-            image: item?.productId?.images[0],
+            image: item?.productId?.images?.[0],
             id: item?.productId?._id,
             origin: item?.productId?.origin,
             pricePromotion: item?.pricePromotion,
             status: item?.productId?.isActive,
-            quantity: item?.productId.quantity?.inTrade
-
+            quantity: item?.productId?.quantity?.inTrade
         })))
         setExpires(rawData?.dueDate)
     }, [querySale?.isSuccess, querySale?.data])
@@ -106,7 +105,7 @@ function Home() {
                             <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
                         ))
                     ) : productHot.length === 0 ? (
-                        <Empty description={"No products available"} />
+                        <Empty description={"Không có sản phẩm nào"} />
                     ) : (
                         productHot.slice(0, 4).map((item) => (
                             <Product_Hot products={item} key={item.id} />
@@ -115,11 +114,11 @@ function Home() {
                 </Flex>
             </Flex>
             <Flex className="product_list container" vertical style={{ padding: "40px 0", marginBottom: "40px" }}>
-                <Typography.Title level={2} style={{ textTransform: "uppercase", textAlign: "center", marginBottom: "30px", fontSize: "32px", fontWeight: "700" }}>New Products</Typography.Title>
+                <Typography.Title level={2} style={{ textTransform: "uppercase", textAlign: "center", marginBottom: "30px", fontSize: "32px", fontWeight: "700" }}>Sản phẩm mới</Typography.Title>
                 <Flex className="products" gap='large' wrap='wrap' justify='center'>
                     {data ? (
                         productNew.length === 0 ? (
-                            <Empty description={"No products available"} />
+                            <Empty description={"Không có sản phẩm nào"} />
                         ) : (
                             productNew.slice(1, 5).map((item) => (
                                 <Product_List products={item} key={item.id} />

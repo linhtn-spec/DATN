@@ -19,17 +19,16 @@ function Product_LSView(props) {
     const addToCart = () => {
         if (info) {
             cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: 1 } })
-            Notification({ message: "Add to cart successully!", type: "success" })
+            Notification({ message: "Đã thêm vào giỏ hàng!", type: "success" })
         }
         else {
-            Notification({ message: "You have to login first!", type: "error" })
-
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
         }
     };
     const { mutate } = useMutation({
         mutationFn: (id) => addFavourite(id),
         onSuccess: () => {
-            Notification({ message: "Add to wishlist successfully!", type: "success" })
+            Notification({ message: "Đã thêm vào yêu thích!", type: "success" })
         },
         onError: (error) => {
             Notification({ message: error?.response?.data, type: "info" })
@@ -42,7 +41,7 @@ function Product_LSView(props) {
             favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
         }
         else
-            Notification({ message: "You have to login first!", type: "error" })
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
 
     }
     // const addToCart = () => {
@@ -68,30 +67,15 @@ function Product_LSView(props) {
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
                             <Typography.Text className="promotion">
-                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD',
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                })}
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
                             </Typography.Text>
                             <Typography.Text className="price">
-                                {product.price?.toLocaleString('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD',
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                })}
+                                {product.price?.toLocaleString('vi-VN')} ₫
                             </Typography.Text>
                         </>
                     ) : (
                         <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
-                            {product.price?.toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            })}
+                            {product.price?.toLocaleString('vi-VN')} ₫
                         </Typography.Text>
                     )}
                 </Typography.Text>

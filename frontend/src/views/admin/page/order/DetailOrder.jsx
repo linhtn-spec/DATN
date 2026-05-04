@@ -24,6 +24,7 @@ import convertToDate from "../../../../functions/convertDate";
 import { queryClient } from '../../../../main';
 import { detailOrder, editOrder } from "../../../../services/order_service";
 import Notification from '../../../../utils/configToastify';
+import { getLabelByValue } from "../../../../utils/getLabelByValue";
 import './DetailOrder.css';
 
 const formItemLayout = {
@@ -67,12 +68,12 @@ export function DetailOrder() {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Update order successfully!", type: "success" })
+            Notification({ message: "Cập nhật đơn hàng thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['orders_admin_list'] })
             navigate('/admin/orders', { replace: true })
         },
         onError: () => {
-            Notification({ message: "Update order unsuccessfully!", type: "error" })
+            Notification({ message: "Cập nhật đơn hàng thất bại!", type: "error" })
         }
     })
 
@@ -84,19 +85,19 @@ export function DetailOrder() {
 
     const cartColumns = [
         {
-            title: 'No',
+            title: 'STT',
             dataIndex: 'no',
             key: 'no',
             width: "80px",
         },
         {
-            title: "Image",
+            title: "Hình ảnh",
             dataIndex: 'image',
             key: 'image',
             hidden: true
         },
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
             render: (text, row) => (
@@ -107,22 +108,22 @@ export function DetailOrder() {
             )
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => <p>{text}$</p>
+            render: (text) => <p>{text?.toLocaleString('vi-VN')} ₫</p>
 
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
         },
         {
-            title: 'Subtotal',
+            title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            render: (text) => <p>{text}$</p>
+            render: (text) => <p>{text?.toLocaleString('vi-VN')} ₫</p>
         },
     ];
 
@@ -181,9 +182,9 @@ export function DetailOrder() {
     }, [form])
     return (
         <Flex className="crud_user container" vertical>
-            <h2 className='caption'><PlusOutlined />{"Detail order"}</h2>
+            <h2 className='caption'><PlusOutlined />{"Chi tiết đơn hàng"}</h2>
             <Card
-                title={"Detail order"}
+                title={"Chi tiết đơn hàng"}
                 bordered={false}
                 className="form"
             >
@@ -195,62 +196,26 @@ export function DetailOrder() {
                             <Flex>
                                 <Flex vertical style={{ width: "50%" }}>
                                     <Form.Item
-                                        label="First name"
+                                        label="Họ"
                                         hasFeedback
                                         required
                                         name="firstNameReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 50,
-                                                message: "Maximum 50 character"
-                                            }
-                                        ]}
-
                                     >
                                         <Input disabled />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Name"
+                                        label="Tên"
                                         required
                                         hasFeedback
                                         name="lastNameReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 50,
-                                                message: "Maximum 50 character"
-                                            }
-                                        ]}
-
                                     >
                                         <Input disabled />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Phone"
+                                        label="Số điện thoại"
                                         hasFeedback
                                         required
                                         name="phoneReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 15,
-                                                message: "Maximum 15 character"
-                                            }
-                                        ]}
-
                                     >
                                         <Input disabled />
                                     </Form.Item>
@@ -259,60 +224,24 @@ export function DetailOrder() {
                                         label="Email"
                                         hasFeedback
                                         name="emailReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 30,
-                                                message: "Maximum 30 character"
-                                            }
-                                        ]}
-
                                     >
                                         <Input disabled />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Address"
+                                        label="Địa chỉ"
                                         hasFeedback
                                         required
                                         name="addressReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 50,
-                                                message: "Maximum 50 character"
-                                            }
-                                        ]}
-
                                     >
                                         <Input disabled />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Country"
+                                        label="Quốc gia"
                                         hasFeedback
                                         required
                                         name="countryReceiver"
-                                        rules={[
-
-                                            {
-                                                min: 1,
-                                                message: "Minimum 1 character"
-                                            },
-                                            {
-                                                max: 50,
-                                                message: "Maximum 50 character"
-                                            }
-                                        ]}
-
                                     >
-                                        <Select placeholder="Country" size="small" style={{ height: "31.33px" }} options={options}
+                                        <Select placeholder="Quốc gia" size="small" style={{ height: "31.33px" }} options={options}
                                             showSearch
                                             virtual={false}
                                             optionFilterProp="children"
@@ -326,40 +255,40 @@ export function DetailOrder() {
                                 </Flex>
                                 <Divider type="vertical" />
                                 <Flex vertical style={{ width: "50%" }}>
-                                    <Form.Item label="Order status"
+                                    <Form.Item label="Trạng thái đơn hàng"
                                         hasFeedback
                                         required
                                         name="orderStatus">
-                                        <Select placeholder="Order status" size="small" style={{ height: "31.33px" }} options={orderStatusOptions} />
+                                        <Select placeholder="Chọn trạng thái" size="small" style={{ height: "31.33px" }} options={orderStatusOptions} />
                                     </Form.Item>
-                                    <Form.Item label="Shipping status"
+                                    <Form.Item label="Trạng thái giao hàng"
                                         hasFeedback
                                         required
                                         name="shippingStatus">
-                                        <Select placeholder="Shipping status" size="small" style={{ height: "31.33px" }} options={shippingStatusOptions} />
+                                        <Select placeholder="Chọn trạng thái" size="small" style={{ height: "31.33px" }} options={shippingStatusOptions} />
 
                                     </Form.Item>
-                                    <Form.Item label="Payment status"
+                                    <Form.Item label="Trạng thái thanh toán"
                                         hasFeedback
                                         required
                                         name="paymentStatus">
-                                        <Select placeholder="Payment status" size="small" style={{ height: "31.33px" }} options={paymentStatusOptions} />
+                                        <Select placeholder="Chọn trạng thái" size="small" style={{ height: "31.33px" }} options={paymentStatusOptions} />
 
                                     </Form.Item>
-                                    <Form.Item label="Shipping method"
+                                    <Form.Item label="Phương thức giao hàng"
                                         hasFeedback
                                         required
                                         name="shippingMethod">
-                                        <Select placeholder="Shipping method" options={shippingMethodOptions} disabled />
+                                        <Select placeholder="Chọn phương thức" options={shippingMethodOptions} disabled />
 
                                     </Form.Item>
-                                    <Form.Item label="Payment method"
+                                    <Form.Item label="Phương thức thanh toán"
                                         hasFeedback
                                         name="paymentMethod">
-                                        <Select placeholder="Payment method" options={paymentMethodOptions} disabled />
+                                        <Select placeholder="Chọn phương thức" options={paymentMethodOptions} disabled />
 
                                     </Form.Item>
-                                    <Form.Item label="Created at"
+                                    <Form.Item label="Ngày tạo"
                                         hasFeedback
                                         required
                                         name="createdAt">
@@ -378,7 +307,7 @@ export function DetailOrder() {
                                 <Flex>
                                     <Flex vertical style={{ width: "50%" }}>
                                         <Form.Item
-                                            label="Subtotal"
+                                            label="Tạm tính"
                                             hasFeedback
                                             name="subTotal"
                                             style={{ width: "100%" }}
@@ -388,10 +317,12 @@ export function DetailOrder() {
                                                 }
                                             ]}
                                         >
-                                            <InputNumber placeholder="Subtotal" min={0} suffix="$" disabled />
+                                            <InputNumber placeholder="Tạm tính" min={0} suffix="₫" disabled 
+                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Tax"
+                                            label="Thuế"
                                             hasFeedback
                                             name="tax"
                                             style={{ width: "100%" }}
@@ -401,11 +332,13 @@ export function DetailOrder() {
                                                 }
                                             ]}
                                         >
-                                            <InputNumber placeholder="Tax" min={0} suffix="$" />
+                                            <InputNumber placeholder="Thuế" min={0} suffix="₫" 
+                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            />
                                         </Form.Item>
                                         <Form.Item
                                             style={{ width: "100%" }}
-                                            label="Shipping cost"
+                                            label="Phí vận chuyển"
                                             hasFeedback
                                             name="shippingCost"
                                             rules={[
@@ -414,11 +347,13 @@ export function DetailOrder() {
                                                 }
                                             ]}
                                         >
-                                            <InputNumber placeholder="Shipping cost" min={0} suffix="$" />
+                                            <InputNumber placeholder="Phí vận chuyển" min={0} suffix="₫" 
+                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            />
                                         </Form.Item>
                                         <Form.Item
                                             style={{ width: "100%" }}
-                                            label="Total"
+                                            label="Tổng cộng"
                                             hasFeedback
                                             name="total"
                                             rules={[
@@ -427,13 +362,15 @@ export function DetailOrder() {
                                                 }
                                             ]}
                                         >
-                                            <InputNumber placeholder="Total" min={0} suffix="$" disabled />
+                                            <InputNumber placeholder="Tổng cộng" min={0} suffix="₫" disabled 
+                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                            />
                                         </Form.Item>
-                                        <Form.Item label="After change"
+                                        <Form.Item label="Tổng sau thay đổi"
                                             hasFeedback
                                             required
                                         >
-                                            <Typography.Text>{subTotalValue + taxValue + shippingCostlValue}$</Typography.Text>
+                                            <Typography.Text>{((subTotalValue || 0) + (taxValue || 0) + (shippingCostlValue || 0))?.toLocaleString('vi-VN')} ₫</Typography.Text>
                                         </Form.Item>
 
                                     </Flex>
@@ -443,21 +380,11 @@ export function DetailOrder() {
                                     <Flex style={{ width: "50%" }}>
                                         <Form.Item
                                             style={{ width: "100%" }}
-                                            label="Note"
+                                            label="Ghi chú"
                                             name="note"
                                             validateDebounce={1500}
-                                            rules={[
-                                                {
-                                                    min: 1,
-                                                    message: "Minimum 1 characters"
-                                                },
-                                                {
-                                                    max: 300,
-                                                    message: "Maximum 300 characters"
-                                                }
-                                            ]}
                                         >
-                                            <TextArea name="note" rows={11} disabled />
+                                            <TextArea name="note" rows={11} disabled placeholder="Ghi chú đơn hàng" />
                                         </Form.Item>
 
                                     </Flex>
@@ -467,7 +394,7 @@ export function DetailOrder() {
                         <Flex justify="center" vertical align="center" gap="10px">
                             {(data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done') && (
                                 <Typography.Text type="danger">
-                                    This order is {data?.data?.orderStatus} and cannot be modified.
+                                    Đơn hàng này hiện đang ở trạng thái {getLabelByValue(data?.data?.orderStatus, orderStatusOptions)} và không thể chỉnh sửa.
                                 </Typography.Text>
                             )}
                             <Form.Item>
@@ -476,7 +403,7 @@ export function DetailOrder() {
                                     htmlType="submit"
                                     disabled={data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done'}
                                 >
-                                    Update
+                                    Cập nhật
                                 </Button>
                             </Form.Item>
                         </Flex>

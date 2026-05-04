@@ -87,7 +87,7 @@ function UpdateProduct() {
     const { mutate } = useMutation({
         mutationFn: (data) => updateProduct(data),
         onSuccess: () => {
-            Notification({ message: "Update product successfully!", type: "success" })
+            Notification({ message: "Cập nhật sản phẩm thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['products_admin'] })
             navigate('/admin/product', { replace: true })
         },
@@ -150,9 +150,9 @@ function UpdateProduct() {
 
     return (
         <Flex className="add_product_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Update product</h2>
+            <h2 className='caption'><PlusOutlined />Cập nhật sản phẩm</h2>
             <Card
-                title="Update product"
+                title="Cập nhật sản phẩm"
                 bordered={false}
                 className="form"
             >
@@ -167,7 +167,7 @@ function UpdateProduct() {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please upload an image"
+                                        message: "Vui lòng tải lên hình ảnh"
                                     }
                                 ]}
                             >
@@ -194,7 +194,7 @@ function UpdateProduct() {
                                 </Upload>
                             </Form.Item>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Name</Typography.Title>
+                                <Typography.Title level={5}>Tên sản phẩm</Typography.Title>
                                 <Form.Item
                                     name="name"
                                     hasFeedback
@@ -202,7 +202,7 @@ function UpdateProduct() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Name must be not empty"
+                                            message: "Tên không được để trống"
 
                                         },
                                         {
@@ -215,11 +215,11 @@ function UpdateProduct() {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="Name" />
+                                <Input placeholder="Tên sản phẩm" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Category</Typography.Title>
+                                <Typography.Title level={5}>Danh mục</Typography.Title>
                                 <Form.Item
                                     virtual={false}
 
@@ -229,7 +229,7 @@ function UpdateProduct() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Category must be not empty"
+                                            message: "Danh mục không được để trống"
 
                                         }
                                     ]}
@@ -237,11 +237,11 @@ function UpdateProduct() {
                                     <Select
                                         virtual={false}
 
-                                        placeholder="Category" size="small" style={{ height: "31px" }} options={categories} allowClear />
+                                        placeholder="Danh mục" size="small" style={{ height: "31px" }} options={categories} allowClear />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Origin</Typography.Title>
+                                <Typography.Title level={5}>Xuất xứ</Typography.Title>
                                 <Form.Item
 
                                     name="origin"
@@ -250,7 +250,7 @@ function UpdateProduct() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Origin must be not empty"
+                                            message: "Xuất xứ không được để trống"
 
                                         },
                                         {
@@ -263,7 +263,7 @@ function UpdateProduct() {
                                         }
                                     ]}
                                 >
-                                    <Select placeholder="Origin" size="small" style={{ height: "31px" }} options={options} allowClear
+                                <Select placeholder="Xuất xứ" size="small" style={{ height: "31px" }} options={options} allowClear
                                         showSearch
                                         virtual={false}
 
@@ -276,14 +276,14 @@ function UpdateProduct() {
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Description</Typography.Title>
+                                <Typography.Title level={5}>Mô tả</Typography.Title>
                                 <Form.Item
                                     name="description"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Description must be not empty"
+                                            message: "Mô tả không được để trống"
                                         },
                                         {
                                             min: 1,
@@ -295,20 +295,20 @@ function UpdateProduct() {
                                         }
                                     ]}
                                     hasFeedback >
-                                    <Input.TextArea allowClear placeholder="Description" style={{
+                                    <Input.TextArea allowClear placeholder="Mô tả" style={{
                                         height: 120,
                                     }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Unit</Typography.Title>
+                                <Typography.Title level={5}>Đơn vị</Typography.Title>
                                 <Form.Item
                                     name="unit"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Unit must be not empty"
+                                            message: "Đơn vị không được để trống"
                                         },
                                         {
                                             min: 1,
@@ -320,11 +320,11 @@ function UpdateProduct() {
                                         }
                                     ]}
                                     hasFeedback >
-                                    <Input placeholder="Unit" />
+                                    <Input placeholder="Đơn vị" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Price</Typography.Title>
+                                <Typography.Title level={5}>Giá</Typography.Title>
                                 <Form.Item
                                     hasFeedback
                                     validateDebounce={1500}
@@ -332,33 +332,33 @@ function UpdateProduct() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Price must be not empty or negative number",
+                                            message: "Giá không được để trống hoặc là số âm",
                                             pattern: new RegExp(/^[0-9]+$/)
 
                                         },
                                         {
                                             type: 'number',
                                             min: 1,
-                                            message: "Price must be at least 1"
+                                            message: "Giá phải ít nhất là 1"
                                         }
                                     ]}
                                 >
-                                    <InputNumber placeholder="Price" />
+                                    <InputNumber placeholder="Giá" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
                                 <Flex gap={10}>
                                     <Form.Item name='isActive'>
-                                        <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                        <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
                                     </Form.Item>
-                                    <Typography.Title level={5}>Status</Typography.Title>
+                                    <Typography.Title level={5}>Trạng thái</Typography.Title>
 
                                 </Flex>
                             </Flex>
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
                                     <Button type="primary" htmlType="submit" disabled={isLoading} >
-                                        Update
+                                        Cập nhật
                                     </Button>
                                 </Flex>
                             </Form.Item>

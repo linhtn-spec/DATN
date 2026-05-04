@@ -28,10 +28,10 @@ export const ListOfCommentGlobal = () => {
         mutationFn: (data) => updateComment(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['comments_global_list'] })
-            Notification({ message: "Update status of feedback sucessfully", type: 'success' });
+            Notification({ message: "Cập nhật trạng thái phản hồi thành công", type: 'success' });
         },
         onError: () => {
-            Notification({ message: "Update status of feedback unsucessfully", type: "error" })
+            Notification({ message: "Cập nhật trạng thái phản hồi thất bại", type: "error" })
         }
     })
 
@@ -74,18 +74,18 @@ export const ListOfCommentGlobal = () => {
 
     const columns = [
         {
-            title: "Full name",
+            title: "Họ và tên",
             dataIndex: 'name',
             width: 180,
         },
         {
-            title: "Content",
+            title: "Nội dung",
             dataIndex: 'content',
             width: 250,
             ellipsis: true,
         },
         {
-            title: "Created at",
+            title: "Ngày tạo",
             dataIndex: 'createdAt',
             width: 180,
             sorter: true,
@@ -93,13 +93,13 @@ export const ListOfCommentGlobal = () => {
             render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
         },
         {
-            title: 'Status',
+            title: 'Trạng thái',
             dataIndex: 'isActive',
             width: 130,
             render: (value, row) => <Switch value={value} onChange={(e) => mutate({ id: row.key, isActive: e })} />
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             align: "center",
             key: 'x',
             width: 75,
@@ -131,7 +131,7 @@ export const ListOfCommentGlobal = () => {
         setSortDate(newSortDate);
     };
 
-    useEffect(() => { document.title = "Manage Comments" }, [])
+    useEffect(() => { document.title = "Quản lý Bình luận" }, [])
 
     return (
         <Flex vertical gap={"middle"} style={{ padding: '0 20px' }}>
@@ -143,9 +143,9 @@ export const ListOfCommentGlobal = () => {
                             <Input type="text" placeholder="Tên khách hàng" size="large" />
                         </Form.Item>
                         <Form.Item name="isActive" style={{ width: "15%" }}>
-                            <Select placeholder="Status" size="large" allowClear>
-                                <Select.Option value={0}>Deactivate</Select.Option>
-                                <Select.Option value={1}>Activate</Select.Option>
+                            <Select placeholder="Trạng thái" size="large" allowClear>
+                                <Select.Option value={0}>Khóa</Select.Option>
+                                <Select.Option value={1}>Hoạt động</Select.Option>
                             </Select>
                         </Form.Item>
                     </Flex>

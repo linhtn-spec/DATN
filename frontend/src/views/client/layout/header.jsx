@@ -53,7 +53,7 @@ function Headers() {
 
 
     const handleCart = () => {
-        if (!user?.state?.currentUser) Notification({ message: "You have to login first!", type: "error" })
+        if (!user?.state?.currentUser) Notification({ message: "Bạn cần đăng nhập trước!", type: "error" })
         else
             navigate("/client/cart")
     }
@@ -65,7 +65,7 @@ function Headers() {
     const { mutate } = useMutation({
         mutationFn: () => logout(),
         onSuccess: () => {
-            Notification({ message: "Logout successully!", type: "success" });
+            Notification({ message: "Đăng xuất thành công!", type: "success" });
             user?.dispatch({ type: ACTION_USER.LOGOUT })
         },
         onError: (error) => {
@@ -77,7 +77,7 @@ function Headers() {
         mutationKey: ['logout_google'],
         mutationFn: () => logoutGoogle(),
         onSuccess: () => {
-            Notification({ message: "Logout successully!", type: "success" });
+            Notification({ message: "Đăng xuất thành công!", type: "success" });
             user?.dispatch({ type: ACTION_USER.LOGOUT })
             logGoogle.dispatch({ type: ACTION_LOG.OUT })
         },
@@ -129,9 +129,9 @@ function Headers() {
                             </Link>
                         </Flex>
                         <Flex className="header-link" justify="space-between">
-                            <Link to={"home"}>home</Link>
+                            <Link to={"home"}>Trang chủ</Link>
                             <div className="main_menu">
-                                <div className="categories">categories</div>
+                                <div className="categories">Danh mục</div>
                                 <div className="sub_menu">
                                     {category?.filter(item => item?.status)?.sort((a, b) => a.order - b.order)?.map((item) => (
                                         <NavLink key={item.id} to={`/client/category/${item.id}`}>{item.name}</NavLink>
@@ -139,7 +139,7 @@ function Headers() {
 
                                 </div>
                             </div>
-                            <Link to={"shop"}>shop</Link>
+                            <Link to={"shop"}>Cửa hàng</Link>
                         </Flex>
                         <div className="header-icon">
                             <div>
@@ -156,27 +156,27 @@ function Headers() {
                                     <div className="user">
                                         {(user?.state.currentUser !== null && user?.state.currentUser !== undefined) ? (<>
                                             <Link to={'user'}>
-                                                Infomation
+                                                Thông tin tài khoản
                                             </Link>
                                             <Link to={'user/change-password'}>
-                                                Change password
+                                                Đổi mật khẩu
                                             </Link>
                                             <Link to={'user/wishlist'}>
-                                                Wishlist
+                                                Yêu thích
                                             </Link>
                                             <Link to={'user/orders'}>
-                                                Orders
+                                                Đơn hàng
                                             </Link>
                                             <Link onClick={handleLogout}>
-                                                Logout
+                                                Đăng xuất
                                             </Link>
                                         </>) : (
                                             <>
                                                 <Link to={'/'}>
-                                                    Login
+                                                    Đăng nhập
                                                 </Link>
                                                 <Link to={'/register'}>
-                                                    Sign up
+                                                    Đăng ký
                                                 </Link>
                                             </>
                                         )}

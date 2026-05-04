@@ -67,7 +67,7 @@ export const ChatWidget = () => {
             socket.emit("new message", { ...data.data, sender: userId });
             setDataReceive(data?.data)
         },
-        onError: () => Notification({ message: "Send message fail", type: "error" })
+        onError: () => Notification({ message: "Gửi tin nhắn thất bại!", type: "error" })
     })
 
     const onFinish = (e) => {
@@ -119,10 +119,10 @@ export const ChatWidget = () => {
                         <Form onFinish={onFinish} form={form}>
                             <Flex gap={10} style={{ padding: "10px" }}>
                                 <Form.Item style={{ width: "80%" }} name={'content'}>
-                                    <Input className='chatbox_footer--input' placeholder='Type here' />
+                                    <Input className='chatbox_footer--input' placeholder='Nhắn tin...' />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button htmlType='submit' type='primary' icon={<SendOutlined />}>Send</Button>
+                                    <Button htmlType='submit' type='primary' icon={<SendOutlined />}>Gửi</Button>
                                 </Form.Item>
                             </Flex>
                         </Form>

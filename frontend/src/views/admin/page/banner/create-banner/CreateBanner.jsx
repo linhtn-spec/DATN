@@ -60,7 +60,7 @@ function CreateBanner() {
     const { mutate } = useMutation({
         mutationFn: (data) => addBanner(data),
         onSuccess: () => {
-            Notification({ message: "Add banner successfully!", type: "success" })
+            Notification({ message: "Thêm biểu ngữ thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['banner_admin'] })
             navigate('/admin/banner', { replace: true })
         },
@@ -84,9 +84,9 @@ function CreateBanner() {
 
     return (
         <Flex className="add_banner_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Add new banner</h2>
+            <h2 className='caption'><PlusOutlined />Thêm biểu ngữ mới</h2>
             <Card
-                title="Create a new banner"
+                title="Tạo biểu ngữ mới"
                 bordered={false}
                 className="form"
             >
@@ -101,7 +101,7 @@ function CreateBanner() {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please upload an image"
+                                        message: "Vui lòng tải lên hình ảnh"
                                     }
                                 ]}
                             >
@@ -128,7 +128,7 @@ function CreateBanner() {
                                 </Upload>
                             </Form.Item>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Title</Typography.Title>
+                                <Typography.Title level={5}>Tiêu đề</Typography.Title>
                                 <Form.Item
                                     name="title"
                                     hasFeedback
@@ -136,7 +136,7 @@ function CreateBanner() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Title must be not empty"
+                                            message: "Tiêu đề không được để trống"
 
                                         },
                                         {
@@ -149,19 +149,19 @@ function CreateBanner() {
                                         }
                                     ]}
                                 >
-                                    <Input name="title" placeholder="Title" />
+                                    <Input name="title" placeholder="Tiêu đề" />
                                 </Form.Item>
                             </Flex>
 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Description</Typography.Title>
+                                <Typography.Title level={5}>Mô tả</Typography.Title>
                                 <Form.Item
                                     name="description"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Description must be not empty"
+                                            message: "Mô tả không được để trống"
                                         },
                                         {
                                             min: 1,
@@ -173,14 +173,14 @@ function CreateBanner() {
                                         }
                                     ]}
                                     hasFeedback >
-                                    <Input.TextArea allowClear placeholder="Description" style={{
+                                    <Input.TextArea allowClear placeholder="Mô tả" style={{
                                         height: 120,
                                     }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
 
-                                <Typography.Title level={5}>Order</Typography.Title>
+                                <Typography.Title level={5}>Thứ tự</Typography.Title>
                                 <Flex style={{ width: "100%" }} gap={50}>
                                     <Form.Item
                                         hasFeedback
@@ -189,19 +189,19 @@ function CreateBanner() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Order must be not empty or negative number",
+                                                message: "Thứ tự không được để trống hoặc là số âm",
                                                 pattern: new RegExp(/^[0-9]+$/)
 
                                             }
                                         ]}
                                     >
-                                        <InputNumber placeholder="Order" />
+                                        <InputNumber placeholder="Thứ tự" />
                                     </Form.Item>
                                     <Flex gap={10}>
                                         <Form.Item name='isActive'>
-                                            <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                            <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
                                         </Form.Item>
-                                        <Typography.Title level={5}>Status</Typography.Title>
+                                        <Typography.Title level={5}>Trạng thái</Typography.Title>
 
                                     </Flex>
                                 </Flex>
@@ -209,9 +209,9 @@ function CreateBanner() {
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
                                     <Button type="primary" htmlType="submit" disabled={isLoading} >
-                                        Add new
+                                        Thêm mới
                                     </Button>
-                                    <Button htmlType="reset">Reset</Button>
+                                    <Button htmlType="reset">Làm mới</Button>
                                 </Flex>
                             </Form.Item>
                         </Flex>

@@ -59,7 +59,7 @@ export const SupportChat = () => {
             socket.emit("new message", { ...data.data, sender: state?.currentUser?.user_id })
             setDataReceive(data?.data)
         },
-        onError: () => Notification({ message: "Send message fail", type: "error" })
+        onError: () => Notification({ message: "Gửi tin nhắn thất bại", type: "error" })
     })
 
 
@@ -94,7 +94,7 @@ export const SupportChat = () => {
         });
     }, [socket, message]);
     useEffect(() => {
-        document.title = "Supports"
+        document.title = "Hỗ trợ"
 
     }, [])
     return (
@@ -109,10 +109,10 @@ export const SupportChat = () => {
                         <Form onFinish={onFinish} form={form}>
                             <Flex gap={10} style={{ padding: "10px" }} justify='space-between'>
                                 <Form.Item style={{ width: "90%" }} name='content'>
-                                    <Input className='chatbox_footer--input' placeholder='Type here' />
+                                    <Input className='chatbox_footer--input' placeholder='Nhập nội dung...' />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button htmlType='submit' type='primary' icon={<SendOutlined />}>Send</Button>
+                                    <Button htmlType='submit' type='primary' icon={<SendOutlined />}>Gửi</Button>
                                 </Form.Item>
                             </Flex>
                         </Form>

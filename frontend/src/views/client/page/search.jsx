@@ -46,7 +46,7 @@ function Search() {
     }, [searchInput]);
 
     useEffect(() => {
-        document.title = "Search for " + keyword;
+        document.title = "Kết quả tìm kiếm cho " + keyword;
     }, [keyword])
 
 
@@ -61,17 +61,17 @@ function Search() {
                 <Breadcrumb
                     items={[
                         {
-                            title: <NavLink to={'/'}>HOME</NavLink>,
+                            title: <NavLink to={'/'}>TRANG CHỦ</NavLink>,
                         },
                         {
-                            title: <NavLink to={'/search'}>SEARCH</NavLink>,
+                            title: <NavLink to={'/search'}>TÌM KIẾM</NavLink>,
                         },
                     ]}
                 />
-                {product.length === 0 ? <Empty description={"No product found"} /> :
+                {product.length === 0 ? <Empty description={"Không tìm thấy sản phẩm"} /> :
                     <Flex vertical gap={"20px"}>
                         <Flex className="results_pagination" style={{ width: "100%" }} justify="center">
-                            <p className=" text-left">Showing <b>1</b> - <b>{product.length}</b> results of <b>{totalProducts}</b> results</p>
+                            <p className=" text-left">Hiển thị <b>1</b> - <b>{product.length}</b> trong tổng số <b>{totalProducts}</b> kết quả</p>
                         </Flex>
                         <Flex className="category_items" wrap="wrap" gap="50px">
                             {product.map((item, index) => {

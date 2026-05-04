@@ -70,19 +70,19 @@ export const PUBLIC_PATHS = [
 export const getNavbarItems = (userRole, getItem) => [
     // ── Owner (ADMIN = 3) only ────────────────────────────────────
     userRole >= ROLE.ADMIN && getItem(
-        <NavLink to="overview">Overview</NavLink>,
+        <NavLink to="overview">Tổng quan</NavLink>,
         'overview',
         <PieChartOutlined />
     ),
 
     // ── Manager (MANAGER = 2) and above ────────────────────────────
     userRole >= ROLE.MANAGER && getItem(
-        'Product & Category',
+        'Sản phẩm & Danh mục',
         'products-group',
         <FolderOpenOutlined />,
         [
-            getItem(<NavLink to="category">Category</NavLink>, 'category', <FolderOutlined />),
-            getItem(<NavLink to="product">Product</NavLink>, 'product', <FileZipOutlined />),
+            getItem(<NavLink to="category">Danh mục</NavLink>, 'category', <FolderOutlined />),
+            getItem(<NavLink to="product">Sản phẩm</NavLink>, 'product', <FileZipOutlined />),
         ]
     ),
     userRole >= ROLE.MANAGER && getItem(
@@ -91,48 +91,48 @@ export const getNavbarItems = (userRole, getItem) => [
         <PictureOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="sales">Promotions</NavLink>,
+        <NavLink to="sales">Khuyến mãi</NavLink>,
         'sales',
         <PercentageOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="consignment">Consignment</NavLink>,
+        <NavLink to="consignment">Ký gửi</NavLink>,
         'consignment',
         <HomeOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="users">Users</NavLink>,
+        <NavLink to="users">Người dùng</NavLink>,
         'users',
         <ProjectOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="ratings">Ratings</NavLink>,
+        <NavLink to="ratings">Đánh giá</NavLink>,
         'ratings',
         <StarOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="blog">Blog</NavLink>,
+        <NavLink to="blog">Tin tức</NavLink>,
         'blog',
         <FileTextOutlined />
     ),
 
     // ── Staff (STAFF = 1) and above ──────────────────────────────────
     userRole >= ROLE.STAFF && getItem(
-        'Order & Customer',
+        'Đơn hàng & Khách hàng',
         'orders-group',
         <UsergroupDeleteOutlined />,
         [
-            getItem(<NavLink to="orders">Order</NavLink>, 'orders', <AccountBookOutlined />),
-            getItem(<NavLink to="customers">Customer</NavLink>, 'customers', <UserOutlined />),
+            getItem(<NavLink to="orders">Đơn hàng</NavLink>, 'orders', <AccountBookOutlined />),
+            getItem(<NavLink to="customers">Khách hàng</NavLink>, 'customers', <UserOutlined />),
         ]
     ),
     userRole >= ROLE.STAFF && getItem(
-        <NavLink to="customer-support">Customer Support</NavLink>,
+        <NavLink to="customer-support">Hỗ trợ khách hàng</NavLink>,
         'customer-support',
         <MessageOutlined />
     ),
     userRole >= ROLE.STAFF && getItem(
-        <NavLink to="comments">Feedback/Comments</NavLink>,
+        <NavLink to="comments">Phản hồi/Bình luận</NavLink>,
         'comments',
         <CommentOutlined />
     ),

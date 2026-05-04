@@ -21,10 +21,10 @@ function ProductGrid(props) {
     const addToCart = () => {
         if (info) {
             cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: 1 } })
-            Notification({ message: "Add to cart successully!", type: "success" })
+            Notification({ message: "Đã thêm vào giỏ hàng!", type: "success" })
         }
         else {
-            Notification({ message: "You have to login first!", type: "error" })
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
         }
     };
     const navigate = useNavigate()
@@ -32,7 +32,7 @@ function ProductGrid(props) {
     const addToUserFavourite = useMutation({
         mutationFn: (id) => addFavourite(id),
         onSuccess: () => {
-            Notification({ message: "Add to wishlist successfully!", type: "success" })
+            Notification({ message: "Đã thêm vào yêu thích!", type: "success" })
         },
         onError: (error) => {
             Notification({ message: error?.response?.data, type: "info" })
@@ -45,7 +45,7 @@ function ProductGrid(props) {
             favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
         }
         else
-            Notification({ message: "You have to login first!", type: "error" })
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
 
     }
 
@@ -53,9 +53,9 @@ function ProductGrid(props) {
         mutationFn: (id) => deleteFavourite(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['favourite'] })
-            Notification({ message: "Delete product from wishlist successfully!", type: "success" })
+            Notification({ message: "Đã xóa khỏi danh sách yêu thích!", type: "success" })
         },
-        onError: () => Notification({ message: "System error!", type: "error" })
+        onError: () => Notification({ message: "Lỗi hệ thống!", type: "error" })
     })
 
     const handleDelete = (id) => {
@@ -88,40 +88,25 @@ function ProductGrid(props) {
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
                             <Typography.Text className="promotion">
-                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD',
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                })}
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
                             </Typography.Text>
                             <Typography.Text className="price">
-                                {product.price?.toLocaleString('en-US', {
-                                    style: 'currency',
-                                    currency: 'USD',
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                })}
+                                {product.price?.toLocaleString('vi-VN')} ₫
                             </Typography.Text>
                         </>
                     ) : (
                         <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
-                            {product.price?.toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            })}
+                            {product.price?.toLocaleString('vi-VN')} ₫
                         </Typography.Text>
                     )}
                 </Typography.Text>
             </Flex>
             {(type !== 'wishlist') ?
                 ((!product?.status || (typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0) ?
-                    <Button className="buy" onClick={() => navigate(`/client/product/${product?.id}`)}>view detail</Button> :
-                    <Button icon={<ShoppingOutlined />} className="buy" onClick={addToCart}>add to cart</Button>
+                    <Button className="buy" onClick={() => navigate(`/client/product/${product?.id}`)}>Xem chi tiết</Button> :
+                    <Button icon={<ShoppingOutlined />} className="buy" onClick={addToCart}>Thêm vào giỏ</Button>
                 ) : (
-                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} onClick={addToCart}>Move to cart</Button>
+                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} onClick={addToCart}>Thêm vào giỏ</Button>
                 )
             }
 

@@ -59,12 +59,12 @@ function CreateCategory() {
     const { mutate } = useMutation({
         mutationFn: (data) => addCategory(data),
         onSuccess: () => {
-            Notification({ message: "Add category successfully!", type: "success" })
+            Notification({ message: "Thêm danh mục thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['category_admin'] })
             navigate('/admin/category', { replace: true })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "error" })
+            Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
         }
     })
 
@@ -81,9 +81,9 @@ function CreateCategory() {
     }, [fileList.length, form])
     return (
         <Flex className="add_category_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Add new category</h2>
+            <h2 className='caption'><PlusOutlined />Thêm danh mục mới</h2>
             <Card
-                title="Create a new category"
+                title="Thông tin danh mục"
                 bordered={false}
                 className="form"
             >
@@ -98,7 +98,7 @@ function CreateCategory() {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please upload an image"
+                                        message: "Vui lòng tải lên hình ảnh đại diện"
                                     }
                                 ]}
                             >
@@ -121,11 +121,12 @@ function CreateCategory() {
                                         type="button"
                                     >
                                         <CameraOutlined style={{ fontSize: "40px", color: 'grey' }} />
+                                        <div style={{ marginTop: 8 }}>Tải ảnh</div>
                                     </button>
                                 </Upload>
                             </Form.Item>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Name</Typography.Title>
+                                <Typography.Title level={5}>Tên danh mục</Typography.Title>
                                 <Form.Item
                                     name="name"
                                     hasFeedback
@@ -133,51 +134,43 @@ function CreateCategory() {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "name must be not empty"
+                                            message: "Tên danh mục không được để trống"
 
                                         },
                                         {
                                             min: 1,
-                                            message: "Minimum 3 character"
+                                            message: "Tên danh mục quá ngắn"
                                         },
                                         {
                                             max: 50,
-                                            message: "Maximum 50 character"
+                                            message: "Tên danh mục không quá 50 ký tự"
                                         }
                                     ]}
                                 >
-                                    <Input name="name" placeholder="Name" />
+                                    <Input name="name" placeholder="Nhập tên danh mục" />
                                 </Form.Item>
                             </Flex>
 
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Description</Typography.Title>
+                                <Typography.Title level={5}>Mô tả</Typography.Title>
                                 <Form.Item
                                     name="description"
                                     validateDebounce={1500}
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Description must be not empty"
-                                        },
-                                        {
-                                            min: 1,
-                                            message: "Minimum 5 character"
-                                        },
-                                        {
-                                            max: 300,
-                                            message: "Maximum 300 character"
+                                            message: "Mô tả không được để trống"
                                         }
                                     ]}
                                     hasFeedback >
-                                    <Input.TextArea allowClear placeholder="Description" style={{
+                                    <Input.TextArea allowClear placeholder="Nhập mô tả danh mục" style={{
                                         height: 120,
                                     }} />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
 
-                                <Typography.Title level={5}>Order</Typography.Title>
+                                <Typography.Title level={5}>Thứ tự hiển thị</Typography.Title>
                                 <Flex style={{ width: "100%" }} gap={50}>
                                     <Form.Item
                                         hasFeedback
@@ -186,29 +179,28 @@ function CreateCategory() {
                                         rules={[
                                             {
                                                 required: true,
-                                                message: "Order must be not empty or negative number",
+                                                message: "Vui lòng nhập số thứ tự",
                                                 pattern: new RegExp(/^[0-9]+$/)
 
                                             }
                                         ]}
                                     >
-                                        <InputNumber placeholder="Order" />
+                                        <InputNumber placeholder="Thứ tự" min={1} />
                                     </Form.Item>
-                                    <Flex gap={10}>
-                                        <Form.Item name='isActive'>
-                                            <Switch checkedChildren='Active' unCheckedChildren="Deactive" />
+                                    <Flex gap={10} align="center">
+                                        <Form.Item name='isActive' valuePropName="checked" style={{ marginBottom: 0 }}>
+                                            <Switch checkedChildren='Hiển thị' unCheckedChildren="Ẩn" />
                                         </Form.Item>
-                                        <Typography.Title level={5}>Status</Typography.Title>
-
+                                        <Typography.Title level={5} style={{ margin: 0 }}>Trạng thái</Typography.Title>
                                     </Flex>
                                 </Flex>
                             </Flex>
-                            <Form.Item>
+                            <Form.Item style={{ marginTop: 24, width: '100%' }}>
                                 <Flex justify="center" gap={20} className="group_btn">
-                                    <Button type="primary" htmlType="submit" disabled={isLoading}>
-                                        Add new
+                                    <Button type="primary" htmlType="submit" disabled={isLoading} size="large" style={{ minWidth: 120 }}>
+                                        Thêm mới
                                     </Button>
-                                    <Button htmlType="reset">Reset</Button>
+                                    <Button htmlType="reset" size="large" style={{ minWidth: 120 }}>Nhập lại</Button>
                                 </Flex>
                             </Form.Item>
                         </Flex>

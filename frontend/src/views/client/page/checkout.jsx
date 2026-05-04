@@ -10,7 +10,7 @@ import { CartContext } from "../../../store/cart";
 import { ACTION_ORDER } from "../../../store/order";
 import { OrderContext } from "../../../store/order/provider";
 function Checkout() {
-    document.title = "Checkout";
+    document.title = "Thanh toán";
     const [form] = Form.useForm()
 
     const cart = useContext(CartContext)
@@ -88,54 +88,39 @@ function Checkout() {
     const cartColumns = [
 
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'price',
             key: 'price',
             render: (text, row) => (
                 <Flex vertical>
                     <Typography.Text className="promotion">
-                        {Number(text).toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2,
-                        })}
+                        {Number(text).toLocaleString('vi-VN')} ₫
                     </Typography.Text>
                     {row.pricePromotion > 0 && (
                         <Typography.Text className="price">
-                            {Number(row.originalPrice).toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 2,
-                            })}
+                            {Number(row.originalPrice).toLocaleString('vi-VN')} ₫
                         </Typography.Text>
                     )}
                 </Flex>
             )
         },
         {
-            title: 'Quantity',
+            title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
         },
         {
-            title: 'Subtotal',
+            title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
             render: (text, row) => (
                 <Typography.Text style={{ fontWeight: 600 }}>
-                    {(row.price * row.quantity).toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2,
-                    })}
+                    {(row.price * row.quantity).toLocaleString('vi-VN')} ₫
                 </Typography.Text>
             )
         },
@@ -145,21 +130,21 @@ function Checkout() {
     const items = [
         {
             key: '1',
-            label: 'Subtotal',
-            children: <Typography.Text>{subTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Tạm tính',
+            children: <Typography.Text>{subTotal.toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
         },
         {
             key: '2',
-            label: 'Tax',
-            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Thuế (9%)',
+            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
 
         },
         {
             key: '3',
-            label: 'Total',
-            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</Typography.Text>,
+            label: 'Tổng cộng',
+            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
             span: 3
 
         }
@@ -193,17 +178,17 @@ function Checkout() {
     }, [])
 
     useEffect(() => {
-        document.title = "Checkout"
+        document.title = "Thanh toán"
     }, [])
     return (
         <Flex className="checkout_page container" vertical>
             <Breadcrumb
                 items={[
                     {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
                     },
                     {
-                        title: <NavLink to={'/client/checkout'}>CHECKOUT</NavLink>,
+                        title: <NavLink to={'/client/checkout'}>THANH TOÁN</NavLink>,
                     },
                 ]}
             />
@@ -219,32 +204,32 @@ function Checkout() {
                     <Flex gap='large' wrap='wrap'>
                         <Flex vertical style={{ flex: '1 1 300px', width: "100%" }}>
                             <Form.Item
-                                label="First name"
+                                label="Họ"
                                 name="firstNameReceiver"
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng nhập họ!',
                                     }, {
-                                        min: 3,
-                                        message: "At least 3 characters"
+                                        min: 2,
+                                        message: "Tối thiểu 2 ký tự"
                                     }
                                 ]}
                             >
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                label="Last name"
+                                label="Tên"
                                 name="lastNameReceiver"
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng nhập tên!',
                                     }, {
-                                        min: 3,
-                                        message: "At least 3 characters"
+                                        min: 2,
+                                        message: "Tối thiểu 2 ký tự"
                                     }
                                 ]}
                             >
@@ -257,38 +242,38 @@ function Checkout() {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng nhập email!',
                                     },
                                     {
                                         min: 6,
-                                        message: "At least 6 characters"
+                                        message: "Tối thiểu 6 ký tự"
                                     },
                                     {
                                         type: 'email',
-                                        message: 'Please input an email address'
+                                        message: 'Vui lòng nhập đúng định dạng email'
                                     }
                                 ]}
                             >
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                label="Phone number"
+                                label="Số điện thoại"
                                 name="phoneReceiver"
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng nhập số điện thoại!',
 
                                     },
                                     {
                                         min: 10,
-                                        message: 'Please input at least 10 numbers!',
+                                        message: 'Vui lòng nhập ít nhất 10 số!',
 
                                     },
                                     {
                                         max: 13,
-                                        message: 'Please input no more 13 numbers!',
+                                        message: 'Vui lòng nhập không quá 13 số!',
 
                                     }
                                 ]}
@@ -302,29 +287,29 @@ function Checkout() {
                             </Form.Item>
 
                             <Form.Item
-                                label="Address"
+                                label="Địa chỉ"
                                 name="addressReceiver"
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng nhập địa chỉ!',
                                     }, {
                                         min: 3,
-                                        message: "At least 3 characters"
+                                        message: "Tối thiểu 3 ký tự"
                                     }
                                 ]}
                             >
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                label="Country"
+                                label="Quốc gia"
                                 name="countryReceiver"
                                 hasFeedback
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input!',
+                                        message: 'Vui lòng chọn quốc gia!',
                                     },
                                 ]}
                             >
@@ -341,31 +326,31 @@ function Checkout() {
                                 />
                             </Form.Item>
                             <Form.Item
-                                label="Note"
+                                label="Ghi chú"
                                 name="note"
                             >
                                 <Input.TextArea />
                             </Form.Item>
                             <Form.Item
-                                label="Payment method"
+                                label="Phương thức thanh toán"
                                 name="paymentMethod"
                             >
                                 <Radio.Group>
                                     <Space direction='horizontal' wrap={true}>
-                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>COD</Typography.Text></Radio>
+                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>COD (Thanh toán khi nhận hàng)</Typography.Text></Radio>
                                         <Radio value={'vnpay'} className="radio"><CreditCardOutlined /><Typography.Text>VNPAY</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>
                             </Form.Item>
                             <Form.Item
-                                label="Shipping method"
+                                label="Phương thức vận chuyển"
                                 name="shippingMethod"
                             >
                                 <Radio.Group>
                                     <Space direction='horizontal' wrap={true}>
-                                        <Radio value={'free'} className="radio"><DisconnectOutlined /><Typography.Text>Free</Typography.Text></Radio>
-                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text>Standard</Typography.Text></Radio>
-                                        <Radio value={'express'} className="radio"><SendOutlined /><Typography.Text>Express</Typography.Text></Radio>
+                                        <Radio value={'free'} className="radio"><DisconnectOutlined /><Typography.Text>Miễn phí</Typography.Text></Radio>
+                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text>Tiêu chuẩn</Typography.Text></Radio>
+                                        <Radio value={'express'} className="radio"><SendOutlined /><Typography.Text>Hỏa tốc</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>
                             </Form.Item>
@@ -383,10 +368,10 @@ function Checkout() {
                             <Descriptions bordered items={items} className="sumary" />
                             <Flex gap="large" justify="center" className="wrap_btn">
                                 <Button type="primary" htmlType="button" onClick={navigateCart}>
-                                    Back to cart
+                                    Quay lại giỏ hàng
                                 </Button>
                                 <Button type="primary" htmlType="submit" >
-                                    Checkout
+                                    Thanh toán
                                 </Button>
                             </Flex>
                         </Space>

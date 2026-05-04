@@ -52,7 +52,7 @@ const renderActiveShape = (props) => {
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
             <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`${payload.name}`}</text>
             <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`${payload.value} (Rate ${(percent * 100).toFixed(2)}%)`}
+                {`${payload.value} (Tỷ lệ ${(percent * 100).toFixed(2)}%)`}
             </text>
         </g>
     );
@@ -61,8 +61,8 @@ const renderActiveShape = (props) => {
 const customTooltipOnYourLine = (e) => {
     if (e.active && e.payload != null && e.payload[0] != null) {
         return (<div className="custom-tooltip">
-            <p>{e.payload[0].payload["date"]}</p>
-            <p>{e.payload[0].payload["revenue"]}</p>
+            <p>Ngày: {e.payload[0].payload["date"]}</p>
+            <p>Doanh thu: {e.payload[0].payload["revenue"]?.toLocaleString('vi-VN')} ₫</p>
         </div>);
     }
     else {
@@ -74,8 +74,8 @@ const CustomTooltip = ({ active, payload }) => {
         const data = payload[0].payload; // Dữ liệu của điểm trên biểu đồ
         return (
             <div style={{ backgroundColor: '#fff', border: '1px solid #ccc', padding: '10px' }}>
-                <p>Date: {data.date}</p>
-                <p>Revenue: {data.revenue}</p>
+                <p>Ngày: {data.date}</p>
+                <p>Doanh thu: {data.revenue?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
             </div>
         );
     }
@@ -289,8 +289,7 @@ export const Overview = () => {
         }
     }, [queryOrder?.isSuccess, queryOrder?.data])
     useEffect(() => {
-        document.title = "Overview"
-
+        document.title = "Tổng quan"
     }, [])
 
     return (
@@ -303,10 +302,10 @@ export const Overview = () => {
                     <Flex className='card_item green'>
                         <ProductOutlined />
                     </Flex>
-                    <Card.Meta title="Product total" description={
+                    <Card.Meta title="Tổng sản phẩm" description={
                         <Flex vertical>
                             <Typography.Text>{products}</Typography.Text>
-                            <Button type='link' onClick={() => navigate('/admin/product', { replace: true })} icon={<LoginOutlined />}>View detail</Button>
+                            <Button type='link' onClick={() => navigate('/admin/product', { replace: true })} icon={<LoginOutlined />}>Xem chi tiết</Button>
                         </Flex>
                     } />
                 </Flex>
@@ -316,9 +315,9 @@ export const Overview = () => {
                     <Flex className='card_item blue'>
                         <TagOutlined />
                     </Flex>
-                    <Card.Meta title="Category total" description={<Flex vertical>
+                    <Card.Meta title="Tổng danh mục" description={<Flex vertical>
                         <Typography.Text>{categories}</Typography.Text>
-                        <Button type='link' onClick={() => navigate('/admin/category', { replace: true })} icon={<LoginOutlined />}>View detail</Button>
+                        <Button type='link' onClick={() => navigate('/admin/category', { replace: true })} icon={<LoginOutlined />}>Xem chi tiết</Button>
                     </Flex>} />
                 </Flex>
                 <Flex
@@ -328,9 +327,9 @@ export const Overview = () => {
                     <Flex className='card_item yellow'>
                         <ShoppingCartOutlined />
                     </Flex>
-                    <Card.Meta title="Order total" description={<Flex vertical>
+                    <Card.Meta title="Tổng đơn hàng" description={<Flex vertical>
                         <Typography.Text>{orders}</Typography.Text>
-                        <Button type='link' icon={<LoginOutlined />}>View detail</Button>
+                        <Button type='link' icon={<LoginOutlined />}>Xem chi tiết</Button>
                     </Flex>} />
                 </Flex>
                 <Flex
@@ -340,13 +339,13 @@ export const Overview = () => {
                     <Flex className='card_item red'>
                         <UsergroupDeleteOutlined />
                     </Flex>
-                    <Card.Meta title="Customer total" description={<Flex vertical>
+                    <Card.Meta title="Tổng khách hàng" description={<Flex vertical>
                         <Typography.Text>{customers}</Typography.Text>
-                        <Button type='link' icon={<LoginOutlined />}>View detail</Button>
+                        <Button type='link' icon={<LoginOutlined />}>Xem chi tiết</Button>
                     </Flex>} />
                 </Flex>
             </Flex>
-            <Card title="Product sort by category" style={{ height: 700 }}>
+            <Card title="Phân phối sản phẩm theo danh mục" style={{ height: 700 }}>
                 <Flex>
                     <PieChart width={550} height={300}>
                         <Pie
@@ -370,7 +369,7 @@ export const Overview = () => {
                     </Card>
                 </Flex>
             </Card>
-            <Card title="Order">
+            <Card title="Đơn hàng">
 
                 <Flex justify='space-between'>
                     <Flex vertical align='center'>
@@ -384,7 +383,7 @@ export const Overview = () => {
 
                                 outerRadius={100} fill="#8884d8" />
                         </PieChart>
-                        <Typography.Title level={5}>Order by shipping status</Typography.Title>
+                        <Typography.Title level={5}>Theo trạng thái giao hàng</Typography.Title>
                     </Flex>
                     <Flex vertical align='center'>
                         <PieChart width={250} height={250}>
@@ -397,7 +396,7 @@ export const Overview = () => {
 
                                 outerRadius={100} fill="#8884d8" />
                         </PieChart>
-                        <Typography.Title level={5}>Order by payment status</Typography.Title>
+                        <Typography.Title level={5}>Theo trạng thái thanh toán</Typography.Title>
                     </Flex>
                     <Flex vertical align='center'>
 
@@ -411,31 +410,32 @@ export const Overview = () => {
 
                                 outerRadius={100} fill="#8884d8" />
                         </PieChart>
-                        <Typography.Title level={5}>Order by order status</Typography.Title>
+                        <Typography.Title level={5}>Theo trạng thái đơn hàng</Typography.Title>
                     </Flex>
                 </Flex>
             </Card>
-            <Card title="Unsold quantity of products">
+            <Card title="Số lượng sản phẩm chưa bán được">
                 <BarChart width={950} height={250} data={unsoldProduct}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <XAxis dataKey="name" />
                     <YAxis domain={[5, "dataMax + 5"]} />
-                    <Bar dataKey="quantity" fill="#337fd6" />
+                    <Bar dataKey="quantity" name="Số lượng" fill="#337fd6" />
                     <Legend />
                 </BarChart>
             </Card>
-            <Card title="Order in month" className='inMonth'>
+            <Card title="Đơn hàng trong tháng" className='inMonth'>
                 <ResponsiveContainer width={'99%'} height={300}>
                     <ComposedChart width={730} height={250} data={perDay}>
                         <XAxis dataKey="date" />
                         <Tooltip content={<CustomTooltip />} />
                         <CartesianGrid stroke="#f5f5f5" />
-                        <Bar dataKey="revenue" barSize={20} fill="#413ea0" yAxisId="left"
+                        <Bar dataKey="revenue" name="Doanh thu" barSize={20} fill="#413ea0" yAxisId="left"
                         />
                         <Line
                             type="monotone"
                             dataKey="revenue"
+                            name="Doanh thu"
                             stroke="#ff7300"
                             yAxisId="left"
                         />
@@ -449,7 +449,7 @@ export const Overview = () => {
                     </ComposedChart>
                 </ResponsiveContainer>
             </Card>
-            <Card title="Order in year">
+            <Card title="Đơn hàng trong năm">
                 <ResponsiveContainer width={'99%'} height={300}>
                     <ComposedChart width={730} height={250} data={perMonth}>
                         <XAxis dataKey="month" />
@@ -464,11 +464,12 @@ export const Overview = () => {
                         <Tooltip />
                         <Legend />
                         <CartesianGrid stroke="#f5f5f5" />
-                        <Bar dataKey="Orders" barSize={20} fill="#5fcfe3" yAxisId="left"
+                        <Bar dataKey="Orders" name="Số đơn hàng" barSize={20} fill="#5fcfe3" yAxisId="left"
                         />
                         <Line
                             type="monotone"
                             dataKey="Revenue"
+                            name="Doanh thu"
                             stroke="#ff7300"
                             yAxisId="right"
                         />
@@ -482,7 +483,7 @@ export const Overview = () => {
                     </ComposedChart>
                 </ResponsiveContainer>
             </Card>
-            <Card title="Item added per day">
+            <Card title="Thống kê thêm mới mỗi ngày">
                 <LineChart width={950} height={250} data={transformData(statsPerday)}
                     margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -490,10 +491,10 @@ export const Overview = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="Category" stroke="#8884d8" />
-                    <Line type="monotone" dataKey="Product" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="Order" stroke="#d6333c" />
-                    <Line type="monotone" dataKey="Customer" stroke="#d6d333" />
+                    <Line type="monotone" dataKey="Category" name="Danh mục" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="Product" name="Sản phẩm" stroke="#82ca9d" />
+                    <Line type="monotone" dataKey="Order" name="Đơn hàng" stroke="#d6333c" />
+                    <Line type="monotone" dataKey="Customer" name="Khách hàng" stroke="#d6d333" />
                 </LineChart>
             </Card>
         </Flex>
