@@ -18,5 +18,6 @@ import { Role } from "../../helper/enum.js";
 const router = Router();
 
 router.get("/order", paginate_order);
+router.put("/order/:id", auditLogger("EDIT_ORDER", "Order"), edit_order_validator, edit_order);
 
 export default router;

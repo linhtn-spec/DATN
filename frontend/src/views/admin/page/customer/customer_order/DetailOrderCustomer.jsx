@@ -465,10 +465,18 @@ export function DetailOrderCustomer() {
                                 </Flex>
                             </Flex>
                         </Flex>
-                        <Flex justify="center">
-                            <Form.Item
-                            >
-                                <Button type="primary" htmlType="submit">
+                        <Flex justify="center" vertical align="center" gap="10px">
+                            {(data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done') && (
+                                <Typography.Text type="danger">
+                                    This order is {data?.data?.orderStatus} and cannot be modified.
+                                </Typography.Text>
+                            )}
+                            <Form.Item>
+                                <Button 
+                                    type="primary" 
+                                    htmlType="submit"
+                                    disabled={data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done'}
+                                >
                                     Update
                                 </Button>
                             </Form.Item>

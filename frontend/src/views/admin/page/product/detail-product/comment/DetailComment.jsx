@@ -55,7 +55,12 @@ export function DetailComment() {
         onSuccess: () => {
             Notification({ message: "Update status of feedback successfully!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['comments_admin_list'] })
-            navigate(`/admin/product/${product_id}/comments`, { replace: true })
+            queryClient.invalidateQueries({ queryKey: ['comments_global_list'] })
+            if (product_id) {
+                navigate(`/admin/product/${product_id}/comments`, { replace: true })
+            } else {
+                navigate('/admin/comments', { replace: true })
+            }
         },
         onError: () => {
             Notification({ message: "Update status of feedback unsuccessfully!", type: "error" })

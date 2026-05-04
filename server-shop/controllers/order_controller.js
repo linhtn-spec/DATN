@@ -4,6 +4,7 @@ import { sendEmail } from "../nodemailer/nodemailer_config.js";
 import product_model from "../models/product_model.js";
 import { asyncHandler } from "../helper/async_handler.js";
 import mongoose from "mongoose";
+import { Role } from "../helper/enum.js";
 
 const from = process.env.NODEMAILER_EMAIL
 
@@ -104,7 +105,7 @@ export const edit_order = asyncHandler(async (req, res) => {
         return res.status(404).json({ message: "Order does not exist" });
     }
     if (order.orderStatus === 'canceled' || order.orderStatus === 'done')
-        return res.status(404).json({ message: "You cant edit this order" });
+        return res.status(400).json({ message: "You cant edit this order" });
 
     if (orderStatus === "canceled") {
         const products = order.products;

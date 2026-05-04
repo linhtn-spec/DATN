@@ -81,6 +81,7 @@ import manager_product from './manager/product_router.js';
 import manager_sale from './manager/sale_router.js';
 import manager_user from './manager/user_router.js';
 import manager_rating from './manager/rating_router.js';
+import manager_order from './manager/order_router.js';
 
 managerRouter.use('/', manager_banner);
 managerRouter.use('/', manager_blog);
@@ -90,6 +91,7 @@ managerRouter.use('/', manager_product);
 managerRouter.use('/', manager_sale);
 managerRouter.use('/', manager_user);
 managerRouter.use('/', manager_rating);
+managerRouter.use('/', manager_order);
 
 
 // ==========================================

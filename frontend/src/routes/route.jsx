@@ -178,7 +178,11 @@ const adminRoutes = [
           },
           {
             path: "comments",
-            element: <ListOfCommentGlobal />,
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfCommentGlobal /> },
+              { path: ":comment_id", element: <DetailComment /> },
+            ],
           },
         ]
       },
