@@ -252,6 +252,14 @@ function UpdateProduct() {
                                             required: true,
                                             message: "Origin must be not empty"
 
+                                        },
+                                        {
+                                            min: 5,
+                                            message: "Origin has at least 5 character"
+                                        },
+                                        {
+                                            max: 300,
+                                            message: "Origin has maximum 300 character"
                                         }
                                     ]}
                                 >
@@ -327,6 +335,11 @@ function UpdateProduct() {
                                             message: "Price must be not empty or negative number",
                                             pattern: new RegExp(/^[0-9]+$/)
 
+                                        },
+                                        {
+                                            type: 'number',
+                                            min: 1,
+                                            message: "Price must be at least 1"
                                         }
                                     ]}
                                 >

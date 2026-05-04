@@ -7,10 +7,10 @@ import { body, validationResult } from "express-validator";
 export const create_validator = [
     body("title")
         .notEmpty().withMessage("Title is required")
-        .isLength({ min: 6, max: 50 }).withMessage("Title must be at least 3 characters and max 50 characters"),
+        .isLength({ min: 3, max: 50 }).withMessage("Title must be at least 3 characters and max 50 characters"),
     body("description")
         .notEmpty().withMessage("Description is required")
-        .isLength({ min: 6, max: 300 }).withMessage("Description has at least 6 characters and max 300 characters"),
+        .isLength({ min: 5, max: 300 }).withMessage("Description has at least 5 characters and max 300 characters"),
     body("image")
         .notEmpty().withMessage("Image is required"),
     body("isActive")
@@ -36,11 +36,11 @@ export const create_validator = [
 export const edit_validator = [
     body("title")
         .optional()
-        .isLength({ min: 6, max: 50 }).withMessage("Title must be at least 3 characters and max 50 characters"),
+        .isLength({ min: 3, max: 50 }).withMessage("Title must be at least 3 characters and max 50 characters"),
     body("description")
         .optional()
         .notEmpty().withMessage("Description is required")
-        .isLength({ min: 6, max: 300 }).withMessage("Description has at least 6 characters and max 300 characters"),
+        .isLength({ min: 5, max: 300 }).withMessage("Description has at least 5 characters and max 300 characters"),
     body("image")
         .optional()
         .notEmpty().withMessage("Image is required"),

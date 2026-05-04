@@ -140,8 +140,8 @@ function CreateBanner() {
 
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 3,
+                                            message: "Minimum 3 character"
                                         },
                                         {
                                             max: 50,

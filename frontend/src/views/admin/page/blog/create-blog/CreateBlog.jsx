@@ -72,9 +72,13 @@ function CreateBlog() {
 
                                         },
                                         {
-                                            min: 5,
-                                            message: "Minimum 5 character"
+                                            min: 3,
+                                            message: "Minimum 3 character"
                                         },
+                                        {
+                                            max: 200,
+                                            message: "Maximum 200 characters"
+                                        }
 
                                     ]}
                                 >
@@ -95,6 +99,10 @@ function CreateBlog() {
                                         {
                                             min: 5,
                                             message: "Minimum 5 character"
+                                        },
+                                        {
+                                            max: 20000,
+                                            message: "Maximum 20000 characters"
                                         }
                                     ]}
                                     hasFeedback >
