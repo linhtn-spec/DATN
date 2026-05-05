@@ -32,12 +32,20 @@ export const Infomation = () => {
                         Information
                     </NavLink>
                 </Flex>
-                <Flex justify='center' align='center' className={clsx('link', activeLink === 'orders' && 'active_link')} onClick={() => setActive('comments')} >
+                <Flex justify='center' align='center' className={clsx('link', activeLink === 'orders' && 'active_link')} onClick={() => setActive('orders')} >
                     <NavLink
                         to={'orders'}
                         className='variant'
                     >
                         Orders
+                    </NavLink>
+                </Flex>
+                <Flex justify='center' align='center' className={clsx('link', activeLink === 'ratings' && 'active_link')} onClick={() => setActive('ratings')} >
+                    <NavLink
+                        to={'ratings'}
+                        className='variant'
+                    >
+                        Đánh giá
                     </NavLink>
                 </Flex>
             </Flex >

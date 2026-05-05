@@ -1,6 +1,5 @@
 import {
     AccountBookOutlined,
-    CommentOutlined,
     FileTextOutlined,
     FileZipOutlined,
     FolderOpenOutlined,
@@ -75,8 +74,8 @@ export const getNavbarItems = (userRole, getItem) => [
         <PieChartOutlined />
     ),
 
-    // ── Manager (MANAGER = 2) and above ────────────────────────────
-    userRole >= ROLE.MANAGER && getItem(
+    // ── Staff (STAFF = 1) and above ──────────────────────────────────
+    userRole >= ROLE.STAFF && getItem(
         'Sản phẩm & Danh mục',
         'products-group',
         <FolderOpenOutlined />,
@@ -106,11 +105,6 @@ export const getNavbarItems = (userRole, getItem) => [
         <ProjectOutlined />
     ),
     userRole >= ROLE.MANAGER && getItem(
-        <NavLink to="ratings">Đánh giá</NavLink>,
-        'ratings',
-        <StarOutlined />
-    ),
-    userRole >= ROLE.MANAGER && getItem(
         <NavLink to="blog">Tin tức</NavLink>,
         'blog',
         <FileTextOutlined />
@@ -132,8 +126,8 @@ export const getNavbarItems = (userRole, getItem) => [
         <MessageOutlined />
     ),
     userRole >= ROLE.STAFF && getItem(
-        <NavLink to="comments">Phản hồi/Bình luận</NavLink>,
-        'comments',
-        <CommentOutlined />
+        <NavLink to="ratings">Đánh giá</NavLink>,
+        'ratings',
+        <StarOutlined />
     ),
 ].filter(Boolean);

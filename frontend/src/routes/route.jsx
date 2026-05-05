@@ -34,8 +34,6 @@ import { DetailOrder } from "../views/admin/page/order/DetailOrder";
 import { ListOfOrder } from "../views/admin/page/order/ListOfOrder";
 import CreateProduct from "../views/admin/page/product/create-product/CreateProduct";
 import { DetailProduct } from "../views/admin/page/product/detail-product/DetailProduct";
-import { DetailComment } from "../views/admin/page/product/detail-product/comment/DetailComment";
-import { ListOfComment } from "../views/admin/page/product/detail-product/comment/ListOfComment";
 import { DetailRating } from "../views/admin/page/product/detail-product/rating/DetailRating";
 import { ListOfRating } from "../views/admin/page/product/detail-product/rating/ListOfRating";
 import UpdateProduct from "../views/admin/page/product/detail-product/update-product/UpdateProduct";
@@ -44,8 +42,8 @@ import { DetailSale } from "../views/admin/page/sale/DetailSale";
 import { ListOfSale } from "../views/admin/page/sale/ListOfSale";
 import { CrudUser } from "../views/admin/page/user/CrudUser";
 import { ListOfUser } from "../views/admin/page/user/ListOfUser";
-import { ListOfCommentGlobal } from "../views/admin/page/comment/ListOfCommentGlobal";
 import { ListOfRatingGlobal } from "../views/admin/page/rating/ListOfRatingGlobal";
+import { ListOfRatingUser } from "../views/admin/page/customer/rating/ListOfRatingUser";
 import { BlogList } from "../views/admin/page/blog/blog-list/Blog";
 import CreateBlog from "../views/admin/page/blog/create-blog/CreateBlog";
 import UpdateBlog from "../views/admin/page/blog/update-blog/UpdateBlog";
@@ -164,6 +162,10 @@ const adminRoutes = [
                       { path: ":order_id", element: <DetailOrderCustomer /> },
                     ],
                   },
+                  {
+                    path: "ratings",
+                    element: <ListOfRatingUser />
+                  },
                 ],
               },
             ],
@@ -177,20 +179,13 @@ const adminRoutes = [
             ],
           },
           {
-            path: "comments",
+            path: "ratings",
             element: <Outlet />,
             children: [
-              { index: true, element: <ListOfCommentGlobal /> },
-              { path: ":comment_id", element: <DetailComment /> },
+              { index: true, element: <ListOfRatingGlobal /> },
+              { path: ":rating_id", element: <DetailRating /> },
             ],
           },
-        ]
-      },
-
-      // ── MANAGER (2) and above ────────────────────────────────────────────
-      {
-        element: <RoleRoute minRole={ROLE.MANAGER} />,
-        children: [
           {
             path: "category",
             element: <Outlet />,
@@ -198,15 +193,6 @@ const adminRoutes = [
               { index: true, element: <CategoryList /> },
               { path: "create", element: <CreateCategory /> },
               { path: ":category_id", element: <UpdateCategory /> },
-            ],
-          },
-          {
-            path: "banner",
-            element: <Outlet />,
-            children: [
-              { index: true, element: <BannerList /> },
-              { path: "create", element: <CreateBanner /> },
-              { path: ":banner_id", element: <UpdateBanner /> },
             ],
           },
           {
@@ -221,14 +207,6 @@ const adminRoutes = [
                 children: [
                   { index: true, element: <UpdateProduct /> },
                   {
-                    path: "comments",
-                    element: <Outlet />,
-                    children: [
-                      { index: true, element: <ListOfComment /> },
-                      { path: ":comment_id", element: <DetailComment /> },
-                    ],
-                  },
-                  {
                     path: "ratings",
                     element: <Outlet />,
                     children: [
@@ -238,6 +216,22 @@ const adminRoutes = [
                   },
                 ],
               },
+            ],
+          },
+        ]
+      },
+
+      // ── MANAGER (2) and above ────────────────────────────────────────────
+      {
+        element: <RoleRoute minRole={ROLE.MANAGER} />,
+        children: [
+          {
+            path: "banner",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <BannerList /> },
+              { path: "create", element: <CreateBanner /> },
+              { path: ":banner_id", element: <UpdateBanner /> },
             ],
           },
           {
@@ -265,14 +259,6 @@ const adminRoutes = [
               { index: true, element: <ListOfUser /> },
               { path: "create", element: <CrudUser /> },
               { path: ":user_id", element: <CrudUser /> },
-            ],
-          },
-          {
-            path: "ratings",
-            element: <Outlet />,
-            children: [
-              { index: true, element: <ListOfRatingGlobal /> },
-              { path: ":rating_id", element: <DetailRating /> },
             ],
           },
           {

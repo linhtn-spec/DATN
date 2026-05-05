@@ -155,8 +155,8 @@
 }
 
 .product_detail-client .ant-tabs-content-holder {
-    height: 30vh;
-    overflow-y: auto;
+    min-height: 30vh;
+    height: auto;
     margin-bottom: 80px;
 }
 

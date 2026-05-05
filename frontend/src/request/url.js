@@ -52,7 +52,8 @@ const URL = {
     FAVOURITE: "favourite",
     RATING: {
         CRUD: "rating",
-        PRODUCT: 'rating/product'
+        PRODUCT: 'rating/product',
+        USER: 'rating/user'
     },
     COMMENT: {
         CRUD: "comment",

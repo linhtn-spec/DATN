@@ -32,14 +32,6 @@ export const DetailProduct = () => {
                         Thông tin
                     </NavLink>
                 </Flex>
-                <Flex justify='center' align='center' className={clsx('link', activeLink === 'comments' && 'active_link')} onClick={() => setActive('comments')} >
-                    <NavLink
-                        to={'comments'}
-                        className='variant'
-                    >
-                        Bình luận
-                    </NavLink>
-                </Flex>
                 <Flex justify='center' align='center' className={clsx('link', activeLink === 'ratings' && 'active_link')} onClick={() => setActive('ratings')} >
                     <NavLink
                         to={'ratings'}

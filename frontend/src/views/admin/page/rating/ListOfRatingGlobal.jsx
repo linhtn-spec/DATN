@@ -61,17 +61,19 @@ export const ListOfRatingGlobal = () => {
 
     useEffect(() => {
         if (!isSuccess) return
-        const rawData = data?.data;
+        // React Query data + Axios data wrap
+        const rawData = data?.data?.data || data?.data;
         setItems(
-            rawData?.docs?.map((item) => ({
+            (rawData?.docs || []).map((item) => ({
                 key: item?._id,
                 name: item?.userId?.firstName + " " + item?.userId?.lastName,
                 stars: item?.stars,
+                content: item?.content,
                 isActive: item?.isActive,
                 createdAt: item?.createdAt
             }))
         );
-        setTotal(rawData?.totalDocs)
+        setTotal(rawData?.totalDocs || 0)
         return () => { setItems([]) }
     }, [data, isSuccess]);
 
@@ -96,6 +98,12 @@ export const ListOfRatingGlobal = () => {
             sorter: true,
             align: "center",
             render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
+        },
+        {
+            title: "Nội dung",
+            dataIndex: 'content',
+            width: 300,
+            render: (value) => <Typography.Text ellipsis={{ tooltip: value }}>{value || "Không có nội dung"}</Typography.Text>
         },
         {
             title: 'Trạng thái',

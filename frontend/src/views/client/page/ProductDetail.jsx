@@ -62,6 +62,8 @@ function ProductDetail() {
     const [page, setPage] = useState(1)
     const [rating, setRating] = useState([])
     const [totalRating, setTotalRating] = useState(0)
+    const [hasReviewed, setHasReviewed] = useState(false)
+    const [activeTab, setActiveTab] = useState('1')
 
     // Queries
     const detailProductClient = useQuery({
@@ -80,8 +82,8 @@ function ProductDetail() {
     })
 
     const ratingShop = useQuery({
-        queryKey: ['rating_shop', id, page],
-        queryFn: () => ratingToProduct(id, page),
+        queryKey: ['rating_shop', id, page, info?._id || info?.user_id],
+        queryFn: () => ratingToProduct(id, page, undefined, undefined, undefined, true, info?._id || info?.user_id),
         placeholderData: keepPreviousData
     })
 
@@ -93,6 +95,7 @@ function ProductDetail() {
             queryClient.invalidateQueries({ queryKey: ['rating_shop'] })
             form.resetFields()
             setFileList([])
+            setHasReviewed(true)
         },
         onError: (error) => {
             Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
@@ -179,11 +182,22 @@ function ProductDetail() {
     }, [getRecommendProduct?.isSuccess, getRecommendProduct?.data])
 
     useEffect(() => {
+        console.log('ratingShop data response:', ratingShop?.data);
         if (!ratingShop?.isSuccess) return
-        const rawData = ratingShop?.data?.data?.data
-        setRating(rawData?.docs || [])
+        // rating_product controller returns paginate result directly
+        // React Query's `data` + Axios's `data` = ratingShop.data.data
+        const rawData = ratingShop?.data?.data
+        const docs = rawData?.docs || []
+        setRating(docs)
         setTotalRating(rawData?.totalDocs || 0)
-    }, [ratingShop?.isSuccess, ratingShop?.data, id])
+
+        // Check if current user has already reviewed (persists across page reloads)
+        if (info) {
+            const currentUserId = info._id || info.user_id;
+            const userReview = docs.find(r => r.userId?._id === currentUserId)
+            setHasReviewed(prev => prev || !!userReview)
+        }
+    }, [ratingShop?.isSuccess, ratingShop?.data, id, info])
 
     useEffect(() => {
         if (product && mainImage !== '')
@@ -192,6 +206,11 @@ function ProductDetail() {
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
+        setHasReviewed(false)
+        setPage(1)
+        setActiveTab('1')
+        form.resetFields()
+        setFileList([])
     }, [id])
 
     // Handlers
@@ -238,9 +257,10 @@ function ProductDetail() {
         const formData = new FormData()
         e.fileList.forEach(file => formData.append('images', file.originFileObj))
         uploadImage(formData).then(rs => {
-            setFileList(e.fileList.map(file => ({
+            const uploadedImages = rs?.data?.images || []
+            setFileList(e.fileList.map((file, index) => ({
                 ...file,
-                url: rs?.data?.images[0]?.url,
+                url: uploadedImages[index]?.url,
                 status: 'done'
             })))
         }).catch(err => console.log(err))
@@ -263,6 +283,44 @@ function ProductDetail() {
             label: `Nhận xét (${totalRating})`,
             children: (
                 <Flex gap={24} vertical className="comments">
+                    {/* Review Form */}
+                    {info && !hasReviewed ? (
+                        <Flex gap={30} style={{ width: "100%", paddingBottom: '24px', borderBottom: '1px solid #f0f0f0' }} vertical className="submit_comment">
+                            <Typography.Title level={2}>Gửi nhận xét của bạn</Typography.Title>
+                            <Flex style={{ width: "100%" }} align="center" gap={50}>
+                                <Avatar size={50} src={info?.image} icon={<UserOutlined />} />
+                                <Form form={form} layout="vertical" onFinish={onFinish} style={{ width: "60%" }}>
+                                    <Form.Item name="stars" label="Đánh giá" rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}>
+                                        <Rate />
+                                    </Form.Item>
+                                    <Form.Item name="content" label="Nội dung" rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }, { min: 1, message: "Ít nhất 1 ký tự" }]}>
+                                        <Input.TextArea rows={3} placeholder="Chia sẻ trải nghiệm của bạn..." />
+                                    </Form.Item>
+                                    <Form.Item label="Hình ảnh">
+                                        <Upload
+                                            beforeUpload={() => false}
+                                            listType="picture-card"
+                                            fileList={fileList}
+                                            onChange={onImageChange}
+                                            multiple
+                                        >
+                                            {fileList.length >= 4 ? null : (
+                                                <div><PlusOutlined /><div style={{ marginTop: 8 }}>Tải lên</div></div>
+                                            )}
+                                        </Upload>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type="primary" htmlType="submit">Gửi nhận xét</Button>
+                                    </Form.Item>
+                                </Form>
+                            </Flex>
+                        </Flex>
+                    ) : info && hasReviewed ? (
+                        <Flex className="submit_comment" vertical align="center" style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px', marginBottom: '24px' }}>
+                            <Typography.Text strong style={{ color: '#52c41a' }}>Bạn đã đánh giá sản phẩm này. Cảm ơn bạn!</Typography.Text>
+                        </Flex>
+                    ) : null}
+
                     {rating.length > 0 ? rating.map(item => (
                         <Flex align='flex-start' gap={32} key={item?._id} className="comment-item">
                             <Avatar size={50} src={item?.userId?.avatar} icon={<UserOutlined />} />
@@ -274,13 +332,30 @@ function ProductDetail() {
                                 <Typography.Text style={{ fontSize: "15px", color: "#555", lineHeight: "1.5" }}>
                                     {item?.content}
                                 </Typography.Text>
+                                {item?.images?.length > 0 && (
+                                    <Flex gap={8} style={{ marginTop: 12 }}>
+                                        <Image.PreviewGroup>
+                                            {item.images.map((img, idx) => (
+                                                <Image key={idx} width={80} height={80} src={img} style={{ borderRadius: 8, objectFit: 'cover' }} />
+                                            ))}
+                                        </Image.PreviewGroup>
+                                    </Flex>
+                                )}
+                                {item?.reply && (
+                                    <Flex vertical style={{ marginTop: 16, padding: '12px', backgroundColor: '#f0f2f5', borderRadius: '8px', borderLeft: '4px solid #fa8c16' }}>
+                                        <Typography.Text strong style={{ color: '#fa8c16', marginBottom: 4 }}>Phản hồi từ cửa hàng:</Typography.Text>
+                                        <Typography.Text style={{ fontSize: "14px", color: "#555" }}>
+                                            {item.reply}
+                                        </Typography.Text>
+                                    </Flex>
+                                )}
                             </Flex>
                         </Flex>
                     )) : <Empty description="Chưa có nhận xét nào" />}
                     <Pagination
                         current={page}
                         total={totalRating}
-                        pageSize={4}
+                        pageSize={6}
                         hideOnSinglePage
                         onChange={(p) => setPage(p)}
                         style={{ textAlign: 'center', marginTop: 16 }}
@@ -432,41 +507,7 @@ function ProductDetail() {
                             </Flex>
                         )}
 
-                        <Tabs defaultActiveKey="1" items={items} />
-
-                        {/* Review Form */}
-                        {info && (
-                            <Flex gap={30} style={{ width: "100%" }} vertical className="submit_comment">
-                                <Typography.Title level={2}>Gửi nhận xét của bạn</Typography.Title>
-                                <Flex style={{ width: "100%" }} align="center" gap={50}>
-                                    <Avatar size={50} src={info?.image} icon={<UserOutlined />} />
-                                    <Form form={form} layout="vertical" onFinish={onFinish} style={{ width: "60%" }}>
-                                        <Form.Item name="stars" label="Đánh giá" rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}>
-                                            <Rate />
-                                        </Form.Item>
-                                        <Form.Item name="content" label="Nội dung" rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }, { min: 1, message: "Ít nhất 1 ký tự" }]}>
-                                            <Input.TextArea rows={3} placeholder="Chia sẻ trải nghiệm của bạn..." />
-                                        </Form.Item>
-                                        <Form.Item label="Hình ảnh">
-                                            <Upload
-                                                beforeUpload={() => false}
-                                                listType="picture-card"
-                                                fileList={fileList}
-                                                onChange={onImageChange}
-                                                multiple
-                                            >
-                                                {fileList.length >= 4 ? null : (
-                                                    <div><PlusOutlined /><div style={{ marginTop: 8 }}>Tải lên</div></div>
-                                                )}
-                                            </Upload>
-                                        </Form.Item>
-                                        <Form.Item>
-                                            <Button type="primary" htmlType="submit">Gửi nhận xét</Button>
-                                        </Form.Item>
-                                    </Form>
-                                </Flex>
-                            </Flex>
-                        )}
+                        <Tabs activeKey={activeTab} onChange={(key) => setActiveTab(key)} items={items} />
 
                         {/* You May Like */}
                         <Flex className="product_relate-list" vertical>

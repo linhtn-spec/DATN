@@ -21,6 +21,18 @@ const rating_schema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    content: {
+        type: String,
+        trim: true
+    },
+    images: {
+        type: [String],
+        default: []
+    },
+    reply: {
+        type: String,
+        trim: true
     }
 },
     {

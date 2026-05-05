@@ -1,10 +1,8 @@
 import { Router } from "express";
-import { update_rating } from "../../controllers/rating_controller.js";
-import { edit_validator } from "../../validator/rating_validator.js";
-import { auditLogger } from "../../middleware/audit_middleware.js";
 
 const router = Router();
 
-router.put("/rating/:id", auditLogger("EDIT_RATING", "Rating"), edit_validator, update_rating);
+// Routes for Ratings are handled by staff/rating_router.js (STAFF level 1 and above)
+// which includes MANAGER (level 2) and ADMIN (level 3).
 
 export default router;

@@ -4,7 +4,7 @@ import user_model from "../models/user_model.js";
 
 
 export const add_rating = async (req, res) => {
-    const { stars, productId } = req.body;
+    const { stars, productId, content, images } = req.body;
     const userId = req.user._id
     try {
         const checkExistProduct = await product_model.findById(productId);
@@ -15,7 +15,7 @@ export const add_rating = async (req, res) => {
         const checkExistedRating = await rating_model.findOne({ userId: userId, productId: productId })
         if (checkExistedRating) return res.status(409).json({ message: "You have rated this product" });
 
-        const newRating = await rating_model.create({ stars, productId, userId })
+        const newRating = await rating_model.create({ stars, productId, userId, content, images })
         if (!newRating) {
             return res.status(404).json({ message: "Rate a product unsuccessfully" });
         }
@@ -31,7 +31,7 @@ export const add_rating = async (req, res) => {
 }
 
 export const update_rating = async (req, res) => {
-    const { isActive } = req.body;
+    const { isActive, reply } = req.body;
     const ratingId = req.params.id
     try {
         const rating = await rating_model.findById(ratingId)
@@ -39,9 +39,13 @@ export const update_rating = async (req, res) => {
             return res.status(404).json({ message: "Rating does not exist" });
         }
 
+        const updateData = {};
+        if (isActive !== undefined) updateData.isActive = isActive;
+        if (reply !== undefined) updateData.reply = reply;
+
         const updatedRating = await rating_model.findOneAndUpdate(
             { _id: ratingId },
-            { isActive: isActive },
+            updateData,
             { new: true }
         );
         if (updatedRating)
@@ -104,7 +108,7 @@ export const paginate_rating = async (req, res) => {
 
         // Nếu tìm kiếm theo tên nhưng không có user nào khớp → trả rỗng ngay
         if (name && userIds.length === 0) {
-            return res.status(404).json({ message: "No rating" });
+            return res.status(200).json({ docs: [], totalDocs: 0, totalPages: 0 });
         }
 
         let ratingQuery = {}
@@ -122,7 +126,7 @@ export const paginate_rating = async (req, res) => {
             }
         });
         if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No rating" });
+            return res.status(200).json({ docs: [], totalDocs: 0, totalPages: 0 });
         }
         return res.status(200).json({ ...dataAll });
     } catch (error) {
@@ -134,7 +138,7 @@ export const all_rating = async (req, res) => {
     try {
         const data = await rating_model.find({});
         if (data.length === 0) {
-            return res.status(404).json({ message: "No rating" });
+            return res.status(200).json({ docs: [], totalDocs: 0, totalPages: 0 });
         }
         else return res.status(200).json({ data });
     } catch (error) {
@@ -146,12 +150,18 @@ export const all_rating = async (req, res) => {
 export const rating_product = async (req, res) => {
     const product_id = req.params.product_id
     console.log(product_id);
-    const { page, sortStar, sortDate, isActive, name } = req.query
+    const { page, sortStar, sortDate, isActive, name, currentUserId } = req.query
     const limit = 6;
     const skip = (page - 1) * limit;
     const query = {}
     query.productId = product_id
-    if (isActive) query.isActive = isActive
+    if (isActive !== undefined) {
+        if (currentUserId) {
+            query.$or = [{ isActive: isActive }, { userId: currentUserId }]
+        } else {
+            query.isActive = isActive
+        }
+    }
     let sortKind = {};
     if (sortStar) {
         if (sortStar === 'ascend') {
@@ -197,10 +207,40 @@ export const rating_product = async (req, res) => {
             ]
 
         })
-        if (data.docs === 0) {
-            return res.status(404).json({ message: "No rating" });
+        if (data.docs.length === 0) {
+            return res.status(200).json({ docs: [], totalDocs: 0, totalPages: 0 });
         }
         else return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+export const rating_user = async (req, res) => {
+    const user_id = req.params.user_id;
+    const { page } = req.query;
+    const limit = 6;
+    const skip = (page - 1) * limit;
+    try {
+        const data = await rating_model.paginate({ userId: user_id }, {
+            offset: skip, page: page, limit: limit,
+            populate: [
+                {
+                    path: "userId",
+                    model: "User",
+                    select: "firstName lastName"
+                },
+                {
+                    path: "productId",
+                    model: "Product",
+                    select: "name images"
+                }
+            ],
+            sort: { createdAt: -1 }
+        });
+        if (data.totalDocs === 0) {
+            return res.status(200).json({ docs: [], totalDocs: 0, totalPages: 0 });
+        }
+        return res.status(200).json({ ...data });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

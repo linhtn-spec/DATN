@@ -73,14 +73,15 @@ export const ListOfRating = () => {
 
     useEffect(() => {
         if (!isSuccess) return
-        const rawData = data?.data;
+        const rawData = data?.data?.data || data?.data;
         setItems(
-            rawData?.docs?.map((item) => ({
+            (rawData?.docs || []).map((item) => ({
                 key: item?._id,
                 name: item?.userId?.firstName + " " + item?.userId?.lastName,
                 stars: item?.stars,
                 isActive: item?.isActive,
-                createdAt: item?.createdAt
+                createdAt: item?.createdAt,
+                content: item?.content
             }))
         );
 
@@ -99,6 +100,21 @@ export const ListOfRating = () => {
             title: "Họ và tên",
             dataIndex: 'name',
             width: 180,
+        },
+        {
+            title: "Nội dung",
+            dataIndex: 'content',
+            width: 250,
+            render: (value) => (
+                <div style={{
+                    maxWidth: 250,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                }} title={value}>
+                    {value}
+                </div>
+            )
         },
         {
             title: "Số sao",

@@ -13,8 +13,11 @@ export const paginateRating = (page, name, sortStar, sortDate, isActive) => api.
 
 export const detailRating = (id) => api.get(URL.RATING.CRUD + `/${id}`)
 
-export const ratingToProduct = (id, page, name, sortStar, sortDate, isActive) => api.get(URL.RATING.PRODUCT + `/${id}`, {
+export const ratingToProduct = (id, page, name, sortStar, sortDate, isActive, currentUserId) => api.get(URL.RATING.PRODUCT + `/${id}`, {
     params: {
-        page, name, sortStar, sortDate, isActive
+        page, name, sortStar, sortDate, isActive, currentUserId
     }
+})
+export const ratingToUser = (id, page) => api.get(URL.RATING.USER + "/" + id, {
+    params: { page }
 })

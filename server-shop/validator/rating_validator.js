@@ -29,6 +29,9 @@ export const edit_validator = [
     body("isActive")
         .optional({ values: "falsy" })
         .notEmpty().withMessage("isActive is required"),
+    body("reply")
+        .optional({ values: "falsy" })
+        .isString().withMessage("Reply must be a string"),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
