@@ -7,7 +7,7 @@ export const get_cart = asyncHandler(async (req, res) => {
     let cart = await cart_model.findOne({ userId }).populate({
         path: "products.productId",
         model: "Product",
-        select: 'name price quantity origin images',
+        select: 'name price quantity origin unit images',
         populate: {
             path: "saleId",
             model: "Sale"
@@ -90,7 +90,7 @@ export const sync_cart = asyncHandler(async (req, res) => {
     ).populate({
         path: "products.productId",
         model: "Product",
-        select: 'name price quantity origin images',
+        select: 'name price quantity origin unit images',
         populate: {
             path: "saleId",
             model: "Sale"
@@ -165,7 +165,7 @@ export const update_cart = asyncHandler(async (req, res) => {
     const updatedCart = await cart_model.findOne({ userId }).populate({
         path: "products.productId",
         model: "Product",
-        select: 'name price quantity origin images',
+        select: 'name price quantity origin unit images',
         populate: {
             path: "saleId",
             model: "Sale"

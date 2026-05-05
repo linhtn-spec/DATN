@@ -45,7 +45,8 @@ function Home() {
             origin: item?.productId?.origin,
             pricePromotion: item?.pricePromotion,
             status: item?.productId?.isActive,
-            quantity: item?.productId?.quantity?.inTrade
+            quantity: item?.productId?.quantity?.inTrade,
+            unit: item?.productId?.unit
         })))
         setExpires(rawData?.dueDate)
     }, [querySale?.isSuccess, querySale?.data])
@@ -64,7 +65,8 @@ function Home() {
                     (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
                 : 0,
             status: item?.isActive,
-            quantity: item?.quantity?.inTrade
+            quantity: item?.quantity?.inTrade,
+            unit: item?.unit
 
         })))
         SetIsLoadingNew(false)

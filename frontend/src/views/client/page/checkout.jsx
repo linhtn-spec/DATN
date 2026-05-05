@@ -66,7 +66,8 @@ function Checkout() {
             originalPrice: item?.price,
             pricePromotion: item?.pricePromotion,
             price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
-            quantity: item?.quantityBuy
+            quantity: item?.quantityBuy,
+            unit: item?.unit
         })))
 
         return () => {
@@ -108,6 +109,12 @@ function Checkout() {
                     )}
                 </Flex>
             )
+        },
+        {
+            title: 'Đơn vị',
+            dataIndex: 'unit',
+            key: 'unit',
+            align: 'center',
         },
         {
             title: 'Số lượng',
@@ -157,16 +164,22 @@ function Checkout() {
                 span: 24,
             },
             sm: {
-                span: 6,
+                span: 24,
             },
+            md: {
+                span: 6,
+            }
         },
         wrapperCol: {
             xs: {
                 span: 24,
             },
             sm: {
-                span: 14,
+                span: 24,
             },
+            md: {
+                span: 14,
+            }
         },
     };
     const onFinish = (value) => {
@@ -196,6 +209,7 @@ function Checkout() {
                 <Form
                     form={form}
                     {...formItemLayout}
+                    labelWrap
                     style={{
                         width: "100%"
                     }}
@@ -337,7 +351,7 @@ function Checkout() {
                             >
                                 <Radio.Group>
                                     <Space direction='horizontal' wrap={true}>
-                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>COD (Thanh toán khi nhận hàng)</Typography.Text></Radio>
+                                        <Radio value={'cod'} className="radio"><MoneyCollectOutlined /><Typography.Text>COD</Typography.Text></Radio>
                                         <Radio value={'vnpay'} className="radio"><CreditCardOutlined /><Typography.Text>VNPAY</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>
@@ -349,7 +363,7 @@ function Checkout() {
                                 <Radio.Group>
                                     <Space direction='horizontal' wrap={true}>
                                         <Radio value={'free'} className="radio"><DisconnectOutlined /><Typography.Text>Miễn phí</Typography.Text></Radio>
-                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text>Tiêu chuẩn</Typography.Text></Radio>
+                                        <Radio value={'standard'} className="radio"><TruckOutlined /><Typography.Text style={{ whiteSpace: 'nowrap' }}>Tiêu chuẩn</Typography.Text></Radio>
                                         <Radio value={'express'} className="radio"><SendOutlined /><Typography.Text>Hỏa tốc</Typography.Text></Radio>
                                     </Space>
                                 </Radio.Group>

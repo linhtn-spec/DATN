@@ -165,7 +165,8 @@ function ProductDetail() {
                     0 :
                     (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0)
                 : 0,
-            quantity: item?.quantity
+            quantity: item?.quantity,
+            unit: item?.unit
         })))
         return () => { setProducts([]) }
     }, [productsMayLike?.isSuccess, productsMayLike?.data])
@@ -461,7 +462,7 @@ function ProductDetail() {
                                                     <Button shape="circle" className="fav" onClick={addToFavourite}><HeartOutlined /></Button>
                                                 </Flex>
                                                 <hr />
-                                                <p>Tình trạng: <span className="stock_status">{productQty === 0 ? 'Hết hàng' : 'Còn hàng'}</span></p>
+                                                <p>Tình trạng: <span className="stock_status">{productQty === 0 ? 'Hết hàng' : `Còn hàng ( ${productQty} ${product.unit || 'sản phẩm'} )`}</span></p>
                                                 <p>Danh mục: <span className="category">{product?.category}</span></p>
                                                 <p>Đơn vị: <span className="category">{product?.unit}</span></p>
                                                 <Rate value={product?.stars} disabled allowHalf />

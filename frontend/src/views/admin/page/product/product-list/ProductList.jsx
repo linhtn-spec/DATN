@@ -152,7 +152,14 @@ export const ProductList = () => {
       width: 100,
       sorter: (a, b) => a.price - b.price,
       align: 'center',
-      render: (text) => <Typography.Text>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
+      render: (text) => <Typography.Text style={{ whiteSpace: 'nowrap' }}>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
+    },
+    {
+      title: 'Tồn kho',
+      dataIndex: 'quantity',
+      width: 100,
+      align: 'center',
+      render: (text, row) => <Typography.Text>{(typeof text === 'object' ? text.inTrade : text)} {row.unit}</Typography.Text>
     },
 
     {

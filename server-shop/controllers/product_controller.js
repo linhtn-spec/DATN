@@ -247,6 +247,7 @@ export const category_product = async (req, res) => {
                 category_name: product.category_name,
                 thumbnail: product.thumbnail,
                 price_promotion: product.price_promotion,
+                unit: product.unit,
                 status: product.status
             })
             );

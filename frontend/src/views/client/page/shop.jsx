@@ -144,7 +144,8 @@ function Shop() {
                         0 :
                         (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0
                     : 0,
-                status: item?.isActive
+                status: item?.isActive,
+                unit: item?.unit
             })))
             setTotal(rawData?.totalDocs)
             setIsEmpty(false)

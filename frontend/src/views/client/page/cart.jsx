@@ -1,5 +1,5 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Flex, Table, Typography } from 'antd';
+import { Breadcrumb, Button, Flex, InputNumber, Table, Typography } from 'antd';
 import { useContext, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
@@ -30,6 +30,7 @@ function Cart() {
         image: item?.images && item?.images.length > 0 ? item?.images : item?.image,
         maxQuantity: getMaxQty(item?.quantity),
         quantity: item?.quantity,   // keep for dispatch payloads
+        unit: item?.unit
     }));
 
     const minus = (productId) => {
@@ -44,6 +45,11 @@ function Cart() {
         dispatch({ type: ACTION_CART.DELETE_ITEM, payload: id })
         Notification({ message: "Xóa sản phẩm thành công!", type: "success" })
     }
+
+    const onQuantityChange = (id, value) => {
+        if (value === null) return;
+        dispatch({ type: ACTION_CART.CHANGE_QUANTITY, payload: { id, quantityBuy: value } });
+    };
 
     const checkout = () => {
         navigate("/client/checkout")
@@ -99,6 +105,13 @@ function Cart() {
             )
         },
         {
+            title: 'Đơn vị',
+            dataIndex: 'unit',
+            key: 'unit',
+            width: "100px",
+            align: 'center',
+        },
+        {
             title: 'Số lượng',
             dataIndex: 'quantityBuy',
             key: 'quantityBuy',
@@ -108,7 +121,13 @@ function Cart() {
                 <Flex align='center' justify='center' vertical>
                     <Flex align='center' justify='center'>
                         <Button icon={<PlusOutlined />} onClick={() => plus(row.id)} />
-                        <Typography.Text style={{ margin: "0 20px" }}>{text}</Typography.Text>
+                        <InputNumber
+                            min={1}
+                            max={row.maxQuantity}
+                            value={text}
+                            onChange={(value) => onQuantityChange(row.id, value)}
+                            style={{ margin: "0 10px", width: "60px", textAlign: "center" }}
+                        />
                         <Button icon={<MinusOutlined />} onClick={() => minus(row.id)} />
                     </Flex>
 

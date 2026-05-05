@@ -134,6 +134,29 @@ export const cartReducer = (state = initialCartState, action) => {
             return newState;
         }
 
+        case ACTION_CART.CHANGE_QUANTITY: {
+            // payload: { id, quantityBuy }
+            const { id: targetId, quantityBuy } = action.payload;
+            const updated = state.currentCart.map((item) => {
+                if (getItemId(item) !== targetId) return item;
+                const max = getMaxQty(item.quantity);
+                let finalQty = Number(quantityBuy);
+                if (isNaN(finalQty) || finalQty < 1) finalQty = 1;
+                if (max > 0 && finalQty > max) finalQty = max;
+                return { ...item, quantityBuy: finalQty };
+            });
+            const newState = { ...state, currentCart: updated };
+            updateLocalStorage(newState, "cart");
+            
+            const user = JSON.parse(localStorage.getItem("user"))?.currentUser;
+            if (user) {
+               const changedItem = updated.find((item) => getItemId(item) === targetId);
+               if(changedItem) updateCartItem(targetId, changedItem.quantityBuy).catch(e => console.error(e));
+            }
+
+            return newState;
+        }
+
         default:
             return state;
     }

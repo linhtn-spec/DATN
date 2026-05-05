@@ -104,7 +104,8 @@ function CheckoutConfirm() {
             originalPrice: item?.price,
             pricePromotion: item?.pricePromotion,
             price: item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price,
-            quantity: item?.quantityBuy
+            quantity: item?.quantityBuy,
+            unit: item?.unit
         })))
 
         return () => {
@@ -152,6 +153,12 @@ function CheckoutConfirm() {
                     )}
                 </Flex>
             )
+        },
+        {
+            title: 'Đơn vị',
+            dataIndex: 'unit',
+            key: 'unit',
+            align: 'center',
         },
         {
             title: 'Số lượng',

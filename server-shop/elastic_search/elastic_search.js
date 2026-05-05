@@ -147,7 +147,7 @@ router.get('/suggest', async (req, res) => {
                         operator: "and"
                     }
                 },
-                _source: ['name', 'images', 'price', 'origin']
+                _source: ['name', 'images', 'price', 'origin', 'unit']
             }
         });
 
@@ -156,7 +156,8 @@ router.get('/suggest', async (req, res) => {
             name: hit._source.name,
             image: hit._source.images?.[0] || null,
             price: hit._source.price || 0,
-            origin: hit._source.origin || ''
+            origin: hit._source.origin || '',
+            unit: hit._source.unit || ''
         }));
 
         return res.status(200).json(suggestions);

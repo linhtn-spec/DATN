@@ -182,12 +182,12 @@
 .checkout_page .ant-radio-wrapper {
     border: 1px solid #e1e1e1;
     border-radius: 8px;
-    height: 60px;
+    min-height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0 20px;
+    padding: 10px 20px;
     transition: all 0.3s ease;
     background-color: #fcfcfc;
 }
@@ -203,7 +203,9 @@
 .checkout_page .ant-radio-wrapper span:nth-child(2):not(.ant-radio-inner) {
     display: flex;
     justify-content: space-between;
-    width: 50%;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
 }
 
 .checkout_page .ant-radio-wrapper .ant-typography {

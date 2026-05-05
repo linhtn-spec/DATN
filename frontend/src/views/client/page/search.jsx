@@ -34,7 +34,8 @@ function Search() {
                     0 :
                     is?.sales[is?.sales.length - 1]?.pricePromotion || 0
                 : 0,
-            status: is?.isActive
+            status: is?.isActive,
+            unit: is?.unit
 
         })))
         setTotalProducts(data?.data?.total)
