@@ -16,10 +16,10 @@ function LastView(props) {
 
     return (
         <Flex className="last_view_item d-flex align-items-center">
-            <Link to={`/client/product/${product.id}`}>
+            <Link to={`/client/product/${product?.id}`}>
                 <img src={mainImage} loading="lazy" />
             </Link>
-            <Tooltip title={product.name}><Typography.Text level={4} ellipsis={true}>{product.name}</Typography.Text></Tooltip>
+            <Tooltip title={product?.name}><Typography.Text level={4} ellipsis={true}>{product?.name}</Typography.Text></Tooltip>
         </Flex>
     );
 }

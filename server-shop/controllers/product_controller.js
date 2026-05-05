@@ -338,7 +338,7 @@ export const product_may_like = async (req, res) => {
             const combined = [...dataToCategory, ...topSold];
             const uniqueData = Array.from(new Map(combined.map(item => [item._id.toString(), item])).values());
             
-            return res.status(200).json({ data: uniqueData });
+            return res.status(200).json(uniqueData);
         }
         else {
             // Home page recommendations: Top sold + Newest if needed
@@ -358,7 +358,7 @@ export const product_may_like = async (req, res) => {
                 data = [...data, ...recent];
             }
 
-            return res.status(200).json({ data })
+            return res.status(200).json(data)
         }
 
     } catch (error) {

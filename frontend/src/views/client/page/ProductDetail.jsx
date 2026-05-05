@@ -2,7 +2,6 @@ import {
     HeartOutlined,
     MinusOutlined,
     PlusOutlined,
-    ShoppingOutlined,
     UserOutlined
 } from "@ant-design/icons";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
@@ -10,54 +9,74 @@ import {
     Avatar,
     Breadcrumb,
     Button,
-    Card,
     Empty,
     Flex,
     Form,
     Image,
     Input,
-    InputNumber,
     Pagination,
     Rate,
-    Space,
+    Skeleton,
     Tabs,
-    Tag,
-    Typography
+    Typography,
+    Upload
 } from "antd";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { queryClient } from "../../../main";
-import { uploadImage } from "../../../services/upload_service";
-import { detailProduct } from "../../../services/product_service";
-import { addRating, ratingToProduct } from "../../../services/rating_service";
 import { addFavourite } from "../../../services/favourite_service";
+import { detailProduct, productMayLike, recommendProduct } from "../../../services/product_service";
+import { addRating, ratingToProduct } from "../../../services/rating_service";
+import { uploadImage } from "../../../services/upload_service";
 import { ACTION_CART, CartContext } from "../../../store/cart";
+import { ACTION_FAVOURITE, FavouriteContext } from "../../../store/favourite";
+import { ACTION_PRODUCT_LASTVIEW, LastViewProductContext } from "../../../store/productLastView";
 import { UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
+import Banner_Big from "../layout/banner_big";
+import LastView from "../layout/last_view";
+import Product_LSView from "../layout/product_LSView";
 import "./../style/product_detail.css";
 
 function ProductDetail() {
-    const { id } = useParams()
+    const lastView = useContext(LastViewProductContext)
     const cart = useContext(CartContext)
     const user = useContext(UserContext)
+    const favourite = useContext(FavouriteContext)
+
+    const { id } = useParams()
+    const navigate = useNavigate()
     const info = user?.state?.currentUser
-    const [quantityBuy, setQuantityBuy] = useState(1);
-    const [product, setProduct] = useState(null)
+
+    const [form] = Form.useForm()
     const [fileList, setFileList] = useState([])
+
+    const [product, setProduct] = useState({})
+    const [mainImage, setMainImage] = useState('')
+    const [activeImageIndex, setActiveImageIndex] = useState(0)
+    const [quantity, setQuantity] = useState(1)
+    const [products, setProducts] = useState([])
+    const [recommendProducts, setRecommendProducts] = useState([])
     const [page, setPage] = useState(1)
     const [rating, setRating] = useState([])
     const [totalRating, setTotalRating] = useState(0)
-    const [activeImageIndex, setActiveImageIndex] = useState(0)
-    const [mainImage, setMainImage] = useState('')
 
-    const [form] = Form.useForm();
-    const navigate = useNavigate();
+    // Queries
+    const detailProductClient = useQuery({
+        queryKey: ['detail_product_client', id],
+        queryFn: () => detailProduct(id)
+    })
 
-    const detailProductQuery = useQuery({
-        queryKey: ['detailProduct', id],
-        queryFn: () => detailProduct(id),
+    const getRecommendProduct = useQuery({
+        queryKey: ['recommend_product', id],
+        queryFn: () => recommendProduct(id)
+    })
+
+    const productsMayLike = useQuery({
+        queryKey: ['product_may_like', id],
+        queryFn: () => productMayLike(id)
     })
 
     const ratingShop = useQuery({
@@ -66,7 +85,8 @@ function ProductDetail() {
         placeholderData: keepPreviousData
     })
 
-    const { mutate } = useMutation({
+    // Mutations
+    const { mutate: mutateRating } = useMutation({
         mutationFn: (data) => addRating(data),
         onSuccess: () => {
             Notification({ message: "Gửi nhận xét thành công!", type: "success" })
@@ -79,41 +99,84 @@ function ProductDetail() {
         }
     })
 
-    const { mutate: mutateWishlist } = useMutation({
-        mutationFn: (data) => addFavourite(data),
+    const rateProduct = useMutation({
+        mutationFn: (data) => addRating(data),
         onSuccess: () => {
-            Notification({ message: "Đã thêm vào danh sách yêu thích!", type: "success" })
+            Notification({ message: "Đánh giá thành công!", type: "success" })
+            queryClient.invalidateQueries({ queryKey: ['detail_product_client'] })
+        },
+        onError: (error) => Notification({ message: error?.response?.data, type: "info" })
+    })
+
+    const { mutate } = useMutation({
+        mutationFn: (id) => addFavourite(id),
+        onSuccess: () => {
+            Notification({ message: "Thêm vào yêu thích thành công!", type: "success" })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data || "Cần đăng nhập trước", type: "error" })
+            Notification({ message: error?.response?.data, type: "info" })
         }
     })
 
-
+    // Effects
     useEffect(() => {
-        if (!detailProductQuery?.isSuccess) return
-        const rawData = detailProductQuery?.data?.data?.data
+        if (!detailProductClient?.isSuccess) return
+        const rawData = detailProductClient?.data?.data
         setProduct({
+            status: rawData?.isActive ?? false,
             id: rawData?._id,
-            name: rawData?.name,
+            quantity: rawData?.quantity,
             images: rawData?.images,
-            price: rawData?.price,
-            quantity: rawData?.quantity?.inTrade,
-            description: rawData?.description,
+            name: rawData?.name,
             unit: rawData?.unit,
-            stars: rawData?.ratingId?.reduce((acc, curr) => acc + curr.stars, 0) / (rawData?.ratingId?.length || 1),
-            category: rawData?.categoryId?.name,
             origin: rawData?.origin,
-            status: rawData?.isActive,
-            pricePromotion: rawData?.saleId.length !== 0 ?
+            category: rawData?.categoryId?.name,
+            price: rawData?.price,
+            description: rawData?.description,
+            stars: rawData?.ratingId?.reduce((acc, curr) => acc + curr.stars, 0) / (rawData?.ratingId?.length || 1),
+            pricePromotion: rawData?.saleId?.length !== 0 ?
                 new Date(dayjs(rawData?.saleId[rawData?.saleId.length - 1]?.dueDate)).getTime() < new Date().getTime() ?
                     0 :
                     (rawData?.saleId[rawData?.saleId.length - 1]?.products || []).find(product => product.productId === rawData?._id)?.pricePromotion || 0
-                : 0,
+                : 0
         })
         setMainImage(rawData?.images?.[0])
         document.title = rawData?.name
-    }, [detailProductQuery?.isSuccess, detailProductQuery?.data, id])
+        return () => {
+            setProduct({})
+        }
+    }, [detailProductClient?.isSuccess, detailProductClient?.data])
+
+    useEffect(() => {
+        if (!productsMayLike?.isSuccess) return
+        const rawData = productsMayLike?.data?.data
+        const dataToMap = Array.isArray(rawData) ? rawData : (rawData?.data || [])
+        setProducts(dataToMap?.map(item => ({
+            name: item?.name,
+            price: item?.price,
+            image: item?.images?.[0],
+            id: item?._id,
+            origin: item?.origin,
+            pricePromotion: (item?.saleId && item.saleId.length !== 0) ?
+                (new Date(dayjs(item?.saleId[item?.saleId.length - 1]?.dueDate || new Date())).getTime() < new Date().getTime() ?
+                    0 :
+                    (item?.saleId[item?.saleId.length - 1]?.products || []).find(product => product.productId === item?._id)?.pricePromotion || 0)
+                : 0,
+            quantity: item?.quantity
+        })))
+        return () => { setProducts([]) }
+    }, [productsMayLike?.isSuccess, productsMayLike?.data])
+
+    useEffect(() => {
+        if (!getRecommendProduct?.isSuccess) return
+        const rawData = getRecommendProduct?.data?.data
+        setRecommendProducts((rawData || []).map(item => ({
+            mainImage: item?.images?.[0],
+            name: item?.name,
+            id: item?._id
+        })))
+        return () => { setRecommendProducts([]) }
+    }, [getRecommendProduct?.isSuccess, getRecommendProduct?.data])
 
     useEffect(() => {
         if (!ratingShop?.isSuccess) return
@@ -122,274 +185,303 @@ function ProductDetail() {
         setTotalRating(rawData?.totalDocs || 0)
     }, [ratingShop?.isSuccess, ratingShop?.data, id])
 
-    const addToCart = () => {
-        if (info) {
-            cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: quantityBuy } })
-            Notification({ message: "Thêm vào giỏ hàng thành công!", type: "success" })
+    useEffect(() => {
+        if (product && mainImage !== '')
+            lastView?.dispatch({ type: ACTION_PRODUCT_LASTVIEW.ADD_PRODUCT, payload: { ...product, mainImage: mainImage } })
+    }, [product, mainImage])
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, [id])
+
+    // Handlers
+    const handleImageClick = (index) => {
+        setActiveImageIndex(index)
+        setMainImage(product.images[index])
+    }
+
+    const minus = () => {
+        if (quantity > 1) {
+            setQuantity(prev => prev - 1)
         }
-        else {
+    }
+
+    const plus = () => {
+        const availableQty = typeof product.quantity === 'object' ? product.quantity.inTrade : product.quantity
+        if (Number(quantity) < Number(availableQty)) {
+            setQuantity(prev => Number(prev) + 1)
+        } else {
+            setQuantity(Number(availableQty))
+        }
+    }
+
+    const addToFavourite = () => {
+        if (info) {
+            mutate(id)
+            favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
+        } else {
             Notification({ message: "Bạn cần đăng nhập trước!", type: "error" })
         }
-    };
+    }
 
-    const handleWishlist = () => {
+    const addToCart = () => {
         if (info) {
-            mutateWishlist({ productId: product?.id })
+            cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: quantity } })
+            Notification({ message: "Thêm vào giỏ hàng thành công!", type: "success" })
         } else {
             Notification({ message: "Bạn cần đăng nhập trước!", type: "error" })
         }
     }
 
     const onImageChange = (e) => {
-        setFileList(e.fileList.map(file => ({
-            ...file,
-            status: 'uploading'
-        })));
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        uploadImage(formData).then((rs) => {
+        setFileList(e.fileList.map(file => ({ ...file, status: 'uploading' })))
+        const formData = new FormData()
+        e.fileList.forEach(file => formData.append('images', file.originFileObj))
+        uploadImage(formData).then(rs => {
             setFileList(e.fileList.map(file => ({
                 ...file,
                 url: rs?.data?.images[0]?.url,
                 status: 'done'
-            })));
-        }).catch(err => {
-            console.log(err);
-        })
+            })))
+        }).catch(err => console.log(err))
     }
 
     const onFinish = (value) => {
-        mutate({ ...value, images: fileList.map(item => item?.url), productId: product?.id })
+        mutateRating({ ...value, images: fileList.map(item => item?.url), productId: product?.id })
     }
 
-    const handleImageClick = (index) => {
-        setActiveImageIndex(index);
-        setMainImage(product.images[index]);
-    };
+    const productQty = typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity
 
     const items = [
         {
             key: '1',
             label: 'Mô tả',
-            children: <div style={{ padding: '20px', background: '#f9f9f9', borderRadius: '8px' }}>{product?.description}</div>,
+            children: product?.description,
         },
         {
             key: '2',
             label: `Nhận xét (${totalRating})`,
-            children: <Flex vertical gap={24}>
-                <Flex className="comment_list" vertical gap={12}>
+            children: (
+                <Flex gap={24} vertical className="comments">
                     {rating.length > 0 ? rating.map(item => (
-                        <Card key={item?._id} className="comment_item" size="small">
-                            <Flex gap={12}>
-                                <Avatar src={item?.userId?.avatar} icon={<UserOutlined />} size="large" />
-                                <Flex vertical style={{ width: "100%" }}>
-                                    <Flex justify="space-between">
-                                        <Typography.Text strong>{item?.userId?.firstName} {item?.userId?.lastName}</Typography.Text>
-                                        <Typography.Text type="secondary">{dayjs(item?.createdAt).format('DD/MM/YYYY HH:mm')}</Typography.Text>
-                                    </Flex>
-                                    <Rate disabled defaultValue={item?.stars} style={{ fontSize: 14 }} />
-                                    <Typography.Text style={{ marginTop: 8 }}>{item?.content}</Typography.Text>
-                                    {item?.images?.length > 0 && (
-                                        <Flex gap={8} style={{ marginTop: 12 }}>
-                                            {item?.images.map((img, idx) => (
-                                                <Image key={idx} src={img} width={80} height={80} style={{ objectFit: 'cover', borderRadius: '4px' }} />
-                                            ))}
-                                        </Flex>
-                                    )}
-                                </Flex>
+                        <Flex align='flex-start' gap={32} key={item?._id} className="comment-item">
+                            <Avatar size={50} src={item?.userId?.avatar} icon={<UserOutlined />} />
+                            <Flex vertical>
+                                <Typography.Title level={5} style={{ marginBottom: 8, fontSize: "16px", fontWeight: "600" }}>
+                                    {item?.userId?.firstName} {item?.userId?.lastName}
+                                </Typography.Title>
+                                <Rate disabled defaultValue={item?.stars} style={{ fontSize: 14, marginBottom: 4 }} />
+                                <Typography.Text style={{ fontSize: "15px", color: "#555", lineHeight: "1.5" }}>
+                                    {item?.content}
+                                </Typography.Text>
                             </Flex>
-                        </Card>
-                    )) : (
-                        <Empty description="Chưa có nhận xét nào" />
-                    )}
+                        </Flex>
+                    )) : <Empty description="Chưa có nhận xét nào" />}
                     <Pagination
                         current={page}
                         total={totalRating}
                         pageSize={4}
                         hideOnSinglePage
                         onChange={(p) => setPage(p)}
-                        style={{ textAlign: 'center', marginTop: 24 }}
+                        style={{ textAlign: 'center', marginTop: 16 }}
                     />
                 </Flex>
-
-                {info && (
-                    <Card title="Gửi nhận xét của bạn" className="comment_form_card">
-                        <Form form={form} layout="vertical" onFinish={onFinish}>
-                            <Form.Item name="stars" label="Đánh giá của bạn" rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}>
-                                <Rate />
-                            </Form.Item>
-                            <Form.Item name="content" label="Nội dung" rules={[{ required: true, message: 'Vui lòng nhập nội dung nhận xét!' }]}>
-                                <Input.TextArea rows={4} placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..." />
-                            </Form.Item>
-                            <Form.Item label="Hình ảnh thực tế">
-                                <Upload
-                                    beforeUpload={() => false}
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onChange={onImageChange}
-                                    multiple
-                                >
-                                    {fileList.length >= 4 ? null : (
-                                        <div>
-                                            <PlusOutlined />
-                                            <div style={{ marginTop: 8 }}>Tải lên</div>
-                                        </div>
-                                    )}
-                                </Upload>
-                            </Form.Item>
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit">Gửi nhận xét</Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                )}
-            </Flex>,
+            ),
         }
-    ];
+    ]
 
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+    const isLoading = detailProductClient.isLoading
 
     return (
-        <Flex className="container detail_page" vertical style={{ paddingTop: '20px', paddingBottom: '50px' }}>
-            <Breadcrumb
-                style={{ marginBottom: '20px' }}
-                items={[
-                    {
-                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                    },
-                    {
-                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
-                    },
-                    {
-                        title: product?.name,
-                    },
-                ]}
-            />
-            <Flex className="detail_p" wrap="wrap" gap={60}>
-                <Flex className="p_img" vertical style={{ flex: '1 1 450px' }}>
-                    <Image
-                        width={"100%"}
-                        src={mainImage}
-                        preview={true}
-                        style={{ borderRadius: '12px', border: '1px solid #eee' }}
-                    />
-                    <Flex gap={12} style={{ marginTop: 20 }} wrap="wrap">
-                        {product?.images?.map((img, index) => (
-                            <img 
-                                key={index} 
-                                src={img} 
-                                width={80} 
-                                height={80} 
-                                onClick={() => handleImageClick(index)}
-                                className={clsx("small_image", { "image_active": index === activeImageIndex })}
-                                style={{ 
-                                    objectFit: 'cover', 
-                                    borderRadius: '8px', 
-                                    cursor: 'pointer',
-                                    border: index === activeImageIndex ? '2px solid #52c41a' : '1px solid #ddd'
-                                }} 
-                            />
-                        ))}
-                    </Flex>
-                </Flex>
-                <Flex className="p_info" vertical style={{ flex: '1 2 400px' }}>
-                    <Typography.Title level={1} style={{ marginBottom: 8 }}>{product?.name}</Typography.Title>
-                    <Flex align="center" gap={12} style={{ marginBottom: 24 }}>
-                        <Rate allowHalf disabled value={product?.stars} />
-                        <Typography.Text type="secondary" style={{ fontSize: '16px' }}>({totalRating} nhận xét)</Typography.Text>
+        <Flex vertical>
+            <Banner_Big info={product?.name} />
+            <Flex className="product_detail-client container" vertical align="center">
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
+                        },
+                        {
+                            title: String(product?.name || '').toUpperCase(),
+                        },
+                    ]}
+                />
+                <Flex className="detail d-flex" justify="space-between">
+                    {/* Sidebar */}
+                    <Flex className="view" vertical gap={40}>
+                        <div className="img-group last_view d-flex flex-column">
+                            <h5>SẢN PHẨM VỪA XEM</h5>
+                            <hr />
+                            {lastView?.state?.lastViewProduct !== undefined && lastView?.state?.lastViewProduct.length >= 2 ?
+                                lastView?.state?.lastViewProduct?.filter(item => item.id !== product.id && item.id !== undefined).slice(-3).map((item, index) => (
+                                    <LastView product={item} key={index} />
+                                )) : <Empty description="Chưa có sản phẩm" />
+                            }
+                        </div>
+                        <div className="img-group last_view d-flex flex-column mt-5">
+                            <h5>SẢN PHẨM GỢI Ý</h5>
+                            <hr />
+                            {recommendProducts?.length >= 1 ?
+                                recommendProducts.slice(1, 5).map((item, index) => (
+                                    <LastView product={item} key={index} />
+                                )) : <Empty description="Chưa có sản phẩm" />
+                            }
+                        </div>
                     </Flex>
 
-                    <Flex vertical className="price_section" style={{ marginBottom: 32, background: '#f6ffed', padding: '20px', borderRadius: '12px' }}>
-                        {Number(product?.pricePromotion) > 0 ? (
-                            <Flex align="center" gap={16}>
-                                <Typography.Title level={2} style={{ color: '#ff4d4f', margin: 0, fontWeight: 700 }}>
-                                    {(product?.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
-                                </Typography.Title>
-                                <Typography.Text delete type="secondary" style={{ fontSize: 20 }}>
-                                    {product?.price?.toLocaleString('vi-VN')} ₫
-                                </Typography.Text>
-                                <Tag color="error" style={{ fontSize: '16px', padding: '4px 12px' }}> Giảm {product?.pricePromotion}%</Tag>
+                    {/* Main Content */}
+                    <div className="wrap_detail_sum">
+                        {isLoading ? (
+                            <Flex gap={40}>
+                                <Skeleton.Image active style={{ width: 400, height: 400 }} />
+                                <Skeleton active paragraph={{ rows: 10 }} style={{ width: 400 }} />
                             </Flex>
                         ) : (
-                            <Typography.Title level={2} style={{ margin: 0, color: '#237804', fontWeight: 700 }}>
-                                {product?.price?.toLocaleString('vi-VN')} ₫
-                            </Typography.Title>
+                            <Flex className="d-flex" gap={'large'}>
+                                {/* Thumbnails */}
+                                <Flex vertical gap={'small'} className="image_group">
+                                    {product?.images?.map((item, index) => (
+                                        <img
+                                            src={item}
+                                            alt={`${product?.name} ${index}`}
+                                            onClick={() => handleImageClick(index)}
+                                            className={clsx("small_image", { "image_active": index === activeImageIndex })}
+                                            key={index}
+                                            loading="lazy"
+                                        />
+                                    ))}
+                                </Flex>
+
+                                <Flex gap={40}>
+                                    {/* Main Image */}
+                                    <div className="img-product">
+                                        <Image src={mainImage} loading="lazy" className="main_image" />
+                                    </div>
+
+                                    {/* Product Info */}
+                                    <Flex className="info">
+                                        <Flex vertical gap="large">
+                                            <div>
+                                                <Typography.Title level={1} className="title">{product?.name}</Typography.Title>
+                                                <Flex gap={30} align="center">
+                                                    <Typography.Title level={3} style={{ margin: 0 }}>
+                                                        {Number(product?.pricePromotion) > 0 ? (
+                                                            <Flex gap={15} align="center">
+                                                                <span className="promotion" style={{ color: '#ff2c26', fontWeight: 700 }}>
+                                                                    {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
+                                                                </span>
+                                                                <span className="price" style={{ textDecoration: 'line-through', color: '#999', fontSize: '18px', fontWeight: 400 }}>
+                                                                    {product.price?.toLocaleString('vi-VN')} ₫
+                                                                </span>
+                                                            </Flex>
+                                                        ) : (
+                                                            <span className="promotion" style={{ color: '#ff2c26', fontWeight: 700 }}>
+                                                                {product.price?.toLocaleString('vi-VN')} ₫
+                                                            </span>
+                                                        )}
+                                                    </Typography.Title>
+                                                    <Button shape="circle" className="fav" onClick={addToFavourite}><HeartOutlined /></Button>
+                                                </Flex>
+                                                <hr />
+                                                <p>Tình trạng: <span className="stock_status">{productQty === 0 ? 'Hết hàng' : 'Còn hàng'}</span></p>
+                                                <p>Danh mục: <span className="category">{product?.category}</span></p>
+                                                <p>Đơn vị: <span className="category">{product?.unit}</span></p>
+                                                <Rate allowHalf value={product?.stars} onChange={(e) => rateProduct.mutate({ stars: e, productId: product?.id })} />
+                                                <hr />
+                                            </div>
+                                            {!product?.status ? <></> :
+                                                <Flex vertical gap={8} style={{ height: "30vh" }}>
+                                                    <Flex className='form-group' gap={7}>
+                                                        <Input
+                                                            disabled={productQty === 0}
+                                                            value={quantity}
+                                                            className="form-control quantity"
+                                                            style={{ textAlign: "center", width: "100%" }}
+                                                            onChange={(e) => {
+                                                                const val = parseInt(e.target.value)
+                                                                const availableQty = typeof product.quantity === 'object' ? product.quantity.inTrade : product.quantity
+                                                                if (!isNaN(val) && val > 0) {
+                                                                    setQuantity(Math.min(val, availableQty))
+                                                                } else if (e.target.value === '') {
+                                                                    setQuantity(1)
+                                                                }
+                                                            }}
+                                                        />
+                                                        <Flex vertical justify="space-between">
+                                                            <Button variant="light" onClick={plus} style={{ height: "45%" }} disabled={productQty === 0}>
+                                                                <PlusOutlined />
+                                                            </Button>
+                                                            <Button variant="light" onClick={minus} style={{ height: "45%" }} disabled={productQty === 0}>
+                                                                <MinusOutlined />
+                                                            </Button>
+                                                        </Flex>
+                                                    </Flex>
+                                                    <Flex style={{ height: "50%" }}>
+                                                        <Button variant="warning" className="cart" disabled={productQty === 0} onClick={addToCart}>
+                                                            Thêm vào giỏ hàng
+                                                        </Button>
+                                                    </Flex>
+                                                </Flex>
+                                            }
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                            </Flex>
                         )}
-                    </Flex>
 
-                    <Space direction="vertical" size="middle" style={{ marginBottom: 32, width: '100%' }}>
-                        <Flex justify="space-between" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '8px' }}>
-                            <Typography.Text strong>Tình trạng:</Typography.Text>
-                            <Tag color={product?.quantity > 0 ? "success" : "error"} style={{ borderRadius: '4px' }}>
-                                {product?.quantity > 0 ? "Còn hàng" : "Hết hàng"}
-                            </Tag>
-                        </Flex>
-                        <Flex justify="space-between" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '8px' }}>
-                            <Typography.Text strong>Danh mục:</Typography.Text>
-                            <Typography.Text>{product?.category}</Typography.Text>
-                        </Flex>
-                        <Flex justify="space-between" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '8px' }}>
-                            <Typography.Text strong>Đơn vị:</Typography.Text>
-                            <Typography.Text>{product?.unit}</Typography.Text>
-                        </Flex>
-                        <Flex justify="space-between" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: '8px' }}>
-                            <Typography.Text strong>Xuất xứ:</Typography.Text>
-                            <Typography.Text>{product?.origin}</Typography.Text>
-                        </Flex>
-                    </Space>
+                        <Tabs defaultActiveKey="1" items={items} />
 
-                    <Flex vertical gap={24} style={{ marginTop: 'auto' }}>
-                        <Flex align="center" gap={16}>
-                            <Typography.Text strong style={{ fontSize: '16px' }}>Số lượng:</Typography.Text>
-                            <InputNumber 
-                                min={1} 
-                                max={product?.quantity} 
-                                value={quantityBuy} 
-                                onChange={setQuantityBuy} 
-                                size="large"
-                                style={{ width: '100px' }}
-                            />
-                            <Typography.Text type="secondary">({product?.quantity} sản phẩm có sẵn)</Typography.Text>
+                        {/* Review Form */}
+                        {info && (
+                            <Flex gap={30} style={{ width: "100%" }} vertical className="submit_comment">
+                                <Typography.Title level={2}>Gửi nhận xét của bạn</Typography.Title>
+                                <Flex style={{ width: "100%" }} align="center" gap={50}>
+                                    <Avatar size={50} src={info?.image} icon={<UserOutlined />} />
+                                    <Form form={form} layout="vertical" onFinish={onFinish} style={{ width: "60%" }}>
+                                        <Form.Item name="stars" label="Đánh giá" rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}>
+                                            <Rate />
+                                        </Form.Item>
+                                        <Form.Item name="content" label="Nội dung" rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }, { min: 1, message: "Ít nhất 1 ký tự" }]}>
+                                            <Input.TextArea rows={3} placeholder="Chia sẻ trải nghiệm của bạn..." />
+                                        </Form.Item>
+                                        <Form.Item label="Hình ảnh">
+                                            <Upload
+                                                beforeUpload={() => false}
+                                                listType="picture-card"
+                                                fileList={fileList}
+                                                onChange={onImageChange}
+                                                multiple
+                                            >
+                                                {fileList.length >= 4 ? null : (
+                                                    <div><PlusOutlined /><div style={{ marginTop: 8 }}>Tải lên</div></div>
+                                                )}
+                                            </Upload>
+                                        </Form.Item>
+                                        <Form.Item>
+                                            <Button type="primary" htmlType="submit">Gửi nhận xét</Button>
+                                        </Form.Item>
+                                    </Form>
+                                </Flex>
+                            </Flex>
+                        )}
+
+                        {/* You May Like */}
+                        <Flex className="product_relate-list" vertical>
+                            <Typography.Title level={2}>Sản phẩm tương tự</Typography.Title>
+                            <Flex className="relate_list" gap="large">
+                                {products.slice(-3).map((item, index) => (
+                                    <Product_LSView products={item} key={index} />
+                                ))}
+                            </Flex>
                         </Flex>
-                        <Flex gap={16}>
-                            <Button
-                                type="primary"
-                                size="large"
-                                icon={<ShoppingOutlined />}
-                                disabled={product?.quantity === 0 || !product?.status}
-                                onClick={addToCart}
-                                style={{ flex: 2, height: 56, borderRadius: '12px', fontSize: '18px', fontWeight: 600, background: '#52c41a' }}
-                            >
-                                Thêm vào giỏ hàng
-                            </Button>
-                            <Button
-                                size="large"
-                                icon={<HeartOutlined />}
-                                onClick={handleWishlist}
-                                style={{ flex: 1, height: 56, borderRadius: '12px', fontSize: '18px' }}
-                            >
-                                Yêu thích
-                            </Button>
-                        </Flex>
-                    </Flex>
+                    </div>
                 </Flex>
             </Flex>
-
-            <Flex className="detail_tabs" style={{ marginTop: 80 }}>
-                <Tabs 
-                    defaultActiveKey="1" 
-                    items={items} 
-                    style={{ width: "100%" }} 
-                    size="large"
-                    type="card"
-                />
-            </Flex>
         </Flex>
-    );
+    )
 }
 
-export default ProductDetail;
+export default ProductDetail

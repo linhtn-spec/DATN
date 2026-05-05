@@ -28,7 +28,9 @@ export default function RecommendedProduct() {
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
         if (!isSuccess) return
-        setProducts(data?.data?.data?.map(item => ({
+        const rawData = data?.data
+        const dataToMap = Array.isArray(rawData) ? rawData : (rawData?.data || [])
+        setProducts(dataToMap?.map(item => ({
             id: item?._id,
             image: item?.images?.[0]
         })))
