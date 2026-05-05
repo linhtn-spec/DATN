@@ -11,24 +11,9 @@
 }
 
 
-.category_items .item img {
-    height: 340px;
-    width: 100%;
-    object-fit: cover;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    transition: transform 0.4s ease;
-}
-
-.category_items .item:hover img {
-    transform: scale(1.03);
-}
-
-
-
 .category_items .item {
-    height: 450px;
-    min-width: 340px;
+    height: 480px; /* Increased to accommodate content comfortably */
+    min-width: 320px;
     width: calc(90%/3);
     border-radius: 12px;
     margin-bottom: 20px;
@@ -36,6 +21,9 @@
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .category_items .item:hover {
@@ -43,6 +31,54 @@
     box-shadow: 0 12px 24px rgba(0,0,0,0.08);
 }
 
+.category_items .item a {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.category_items .item img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background-color: #fff;
+    transition: transform 0.4s ease;
+}
+
+.category_items .item:hover img {
+    transform: scale(1.05);
+}
+
+.category_items .pt-4 {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.category_items .country {
+    color: #9a9a9a;
+    font-weight: 300;
+    margin: 0 !important;
+    font-size: 14px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.category_items .title {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 8px 0 !important;
+    height: 52px; /* Fixed height for 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Standard property for compatibility */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
 
 .category_items .promotion {
     color: #ff2c26;
@@ -61,6 +97,7 @@
 .category_items .price_promo {
     text-wrap: wrap;
     margin-bottom: 5px;
+    height: 24px; /* Fixed height for price row */
 }
 
 .category_items button {
@@ -68,7 +105,7 @@
     font-weight: 600;
     text-transform: uppercase;
     font-size: 13px;
-    margin-top: 5px;
+    margin-top: auto; /* Push to bottom of flex container */
     display: none;
 }
 
@@ -83,31 +120,21 @@
     border-color: white !important;
     color: white !important;
     background-color: var(--primary-color) !important;
-
 }
 
 .category_items .item .buy {
     padding-top: 15px;
     padding-bottom: 15px;
-    height: 70px;
+    height: 60px;
+    border-radius: 0 0 12px 12px;
+    border: none;
+    background-color: #f8f8f8;
+    width: 100%;
 }
 
 .category_items .item:hover .buy {
     display: block;
     animation: SlideUp .6s ease-in-out;
-}
-
-.category_items .country {
-    color: #9a9a9a;
-    font-weight: 300;
-    margin: 0 !important;
-}
-
-.category_items .title {
-    font-weight: 600;
-    font-size: 18px;
-    margin: 0 !important;
-    margin-bottom: 5px !important;
 }
 
 .category_items .item a {

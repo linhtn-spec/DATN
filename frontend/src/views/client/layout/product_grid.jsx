@@ -69,14 +69,14 @@ function ProductGrid(props) {
             {type === 'wishlist' &&
                 <Button danger type="primary" shape="circle" className="delete_favourite" icon={<CloseOutlined />} onClick={() => handleDelete(product.id)} />}
             {!type && <Button className="favourite" onClick={() => addToFavourite()} icon={<HeartOutlined />} />}
-            <Link to={`/client/product/${product.id}`} style={{ backgroundColor: "white" }}>
-                {!type && (product.pricePromotion !== 0 ?
-                    <Badge.Ribbon text={`-${product.pricePromotion}%`} color="red" placement="start" />
-                    :
-                    <></>
+            <Link to={`/client/product/${product.id}`} className="image-wrapper">
+                {!type && product.pricePromotion !== 0 ? (
+                    <Badge.Ribbon text={`-${product.pricePromotion}%`} color="red" placement="start">
+                        <img src={product.image} loading="lazy" alt={product.name} />
+                    </Badge.Ribbon>
+                ) : (
+                    <img src={product.image} loading="lazy" alt={product.name} />
                 )}
-                <img src={product.image} loading="lazy" />
-
             </Link>
             <Flex className="pt-4" vertical>
                 {(type !== 'wishlist') &&
@@ -87,16 +87,16 @@ function ProductGrid(props) {
                 <Typography.Text className="price_promo">
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
-                            <Typography.Text className="promotion">
-                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
+                            <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
                             </Typography.Text>
-                            <Typography.Text className="price">
-                                {product.price?.toLocaleString('vi-VN')} ₫
+                            <Typography.Text className="price" style={{ whiteSpace: 'nowrap' }}>
+                                {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                             </Typography.Text>
                         </>
                     ) : (
-                        <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
-                            {product.price?.toLocaleString('vi-VN')} ₫
+                        <Typography.Text className="promotion" style={{ color: '#ff2c26', whiteSpace: 'nowrap' }}>
+                            {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                         </Typography.Text>
                     )}
                 </Typography.Text>

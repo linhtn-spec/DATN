@@ -66,16 +66,16 @@ function Product_LSView(props) {
                 <Typography.Text className="price_promo">
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
-                            <Typography.Text className="promotion">
-                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
+                            <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                                {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
                             </Typography.Text>
-                            <Typography.Text className="price">
-                                {product.price?.toLocaleString('vi-VN')} ₫
+                            <Typography.Text className="price" style={{ whiteSpace: 'nowrap' }}>
+                                {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                             </Typography.Text>
                         </>
                     ) : (
-                        <Typography.Text className="promotion" style={{ color: '#ff2c26' }}>
-                            {product.price?.toLocaleString('vi-VN')} ₫
+                        <Typography.Text className="promotion" style={{ color: '#ff2c26', whiteSpace: 'nowrap' }}>
+                            {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                         </Typography.Text>
                     )}
                 </Typography.Text>

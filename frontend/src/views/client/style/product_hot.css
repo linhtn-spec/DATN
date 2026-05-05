@@ -11,29 +11,17 @@
 }
 
 
-.product_hot .item img {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    transition: transform 0.4s ease;
-}
-
-.product_hot .item:hover img {
-    transform: scale(1.03);
-}
-
-
-
 .product_hot .item {
-    height: 100%;
+    height: 400px;
     width: calc(100%/6);
     border-radius: 15px;
-    padding-bottom: 12px;
+    padding-bottom: 0;
     transition: all 0.3s ease;
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .product_hot .item:hover {
@@ -41,35 +29,78 @@
     box-shadow: 0 12px 24px rgba(0,0,0,0.1);
 }
 
+.product_hot .item img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background-color: #fff;
+    transition: transform 0.4s ease;
+}
+
+.product_hot .item:hover img {
+    transform: scale(1.05);
+}
+
+.product_hot .pt-4 {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product_hot .country {
+    color: #9a9a9a;
+    font-weight: 300;
+    margin: 0 !important;
+    font-size: 12px;
+    height: 18px;
+    overflow: hidden;
+}
+
+.product_hot .title {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 4px 0 !important;
+    height: 44px; /* Fixed height for 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
 
 .product_hot .promotion {
     color: #ff2c26;
     font-weight: 700;
-    font-size: 16px;
-    margin-right: 8px;
+    font-size: 14px;
+    margin-right: 4px;
 }
 
 .product_hot .price {
     font-weight: 400;
     text-decoration: line-through;
     color: #999;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .product_hot .price_promo {
     text-wrap: wrap;
     margin-bottom: 5px;
+    height: 20px;
 }
 
 .product_hot button {
     color: var(--primary-color);
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 13px;
+    font-size: 12px;
     margin-top: auto;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
+    height: 40px;
+    border: none;
+    background-color: #f8f8f8;
+    border-radius: 0 0 15px 15px;
     transition: all 0.3s ease;
 }
 
@@ -77,17 +108,4 @@
     border-color: white !important;
     color: white !important;
     background-color: var(--primary-color) !important;
-}
-
-.product_hot .country {
-    color: #9a9a9a;
-    font-weight: 300;
-    margin: 0 !important;
-}
-
-.product_hot .title {
-    font-weight: 600;
-    font-size: 18px;
-    margin: 0 !important;
-    margin-bottom: 5px !important;
 }

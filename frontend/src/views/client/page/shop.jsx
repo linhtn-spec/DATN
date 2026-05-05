@@ -184,10 +184,10 @@ function Shop() {
                         <Typography.Title level={5}>Khoảng giá</Typography.Title>
                         <Radio.Group onChange={onChangePrice} value={priceFilter}>
                             <Space direction="vertical">
-                                <Radio value={'0 - 100000'}>0 - 100.000 ₫</Radio>
-                                <Radio value={'100000 - 300000'}>100.000 - 300.000 ₫</Radio>
-                                <Radio value={'300000 - 500000'}>300.000 - 500.000 ₫</Radio>
-                                <Radio value={'500000 - '}>Trên 500.000 ₫</Radio>
+                                <Radio value={'0 - 100000'}>0 - 100.000&nbsp;₫</Radio>
+                                <Radio value={'100000 - 300000'}>100.000 - 300.000&nbsp;₫</Radio>
+                                <Radio value={'300000 - 500000'}>300.000 - 500.000&nbsp;₫</Radio>
+                                <Radio value={'500000 - '}>Trên 500.000&nbsp;₫</Radio>
                             </Space>
                         </Radio.Group>
                     </Flex>
@@ -209,7 +209,7 @@ function Shop() {
                             )}
                             {priceFilter && (
                                 <Tag closable onClose={() => setPriceFilter('')}>
-                                    {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + ' ₫' : 'Trên 500.000 ₫'}
+                                    {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + '\u00A0₫' : 'Trên 500.000\u00A0₫'}
                                 </Tag>
                             )}
                             {(categoryFilter.length !== 0 && priceFilter != '') &&
@@ -283,17 +283,17 @@ function Shop() {
                                             <Typography.Title level={5} ellipsis={true}>{item?.name}</Typography.Title>
                                             <Typography.Text className="price_promo">
                                                 {Number(item?.pricePromotion) > 0 ? (
-                                                    <Flex gap={8} align="center" justify="center">
+                                                    <Flex gap={8} align="center" justify="center" style={{ whiteSpace: 'nowrap' }}>
                                                         <span className="promotion">
-                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
+                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
                                                         </span>
                                                         <span className="price">
-                                                            {item.price?.toLocaleString('vi-VN')} ₫
+                                                            {item.price?.toLocaleString('vi-VN')}&nbsp;₫
                                                         </span>
                                                     </Flex>
                                                 ) : (
-                                                    <span className="promotion">
-                                                        {item.price?.toLocaleString('vi-VN')} ₫
+                                                    <span className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                                                        {item.price?.toLocaleString('vi-VN')}&nbsp;₫
                                                     </span>
                                                 )}
                                             </Typography.Text>

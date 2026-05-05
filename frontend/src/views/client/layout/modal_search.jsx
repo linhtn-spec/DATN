@@ -75,8 +75,8 @@ function Modal_Search(props) {
                             )}
                             <div className="suggestion_info">
                                 <span className="suggestion_name">{item.name}</span>
-                                <span className="suggestion_meta">
-                                    {item.price?.toLocaleString('vi-VN')} ₫
+                                <span className="suggestion_meta" style={{ whiteSpace: 'nowrap' }}>
+                                    {item.price?.toLocaleString('vi-VN')}&nbsp;₫
                                     {item.origin ? ` · ${item.origin}` : ''}
                                 </span>
                             </div>

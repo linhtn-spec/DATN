@@ -87,12 +87,12 @@ function Cart() {
             width: "150px",
             render: (text, row) => (
                 <Flex vertical>
-                    <Typography.Text className="promotion">
-                        {Number(text).toLocaleString('vi-VN')} ₫
+                    <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                        {Number(text).toLocaleString('vi-VN')}&nbsp;₫
                     </Typography.Text>
                     {row.pricePromotion > 0 && (
-                        <Typography.Text className="price">
-                            {Number(row.originalPrice).toLocaleString('vi-VN')} ₫
+                        <Typography.Text className="price" style={{ whiteSpace: 'nowrap' }}>
+                            {Number(row.originalPrice).toLocaleString('vi-VN')}&nbsp;₫
                         </Typography.Text>
                     )}
                 </Flex>
@@ -126,8 +126,8 @@ function Cart() {
             key: 'subtotal',
             width: "250px",
             render: (text, row) => (
-                <Typography.Text style={{ fontWeight: 600 }}>
-                    {(row.price * row.quantityBuy).toLocaleString('vi-VN')} ₫
+                <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {(row.price * row.quantityBuy).toLocaleString('vi-VN')}&nbsp;₫
                 </Typography.Text>
             )
         },

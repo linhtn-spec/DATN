@@ -142,12 +142,12 @@ function CheckoutConfirm() {
             key: 'price',
             render: (text, row) => (
                 <Flex vertical>
-                    <Typography.Text className="promotion">
-                        {Number(text).toLocaleString('vi-VN')} ₫
+                    <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                        {Number(text).toLocaleString('vi-VN')}&nbsp;₫
                     </Typography.Text>
                     {row.pricePromotion > 0 && (
-                        <Typography.Text className="price">
-                            {Number(row.originalPrice).toLocaleString('vi-VN')} ₫
+                        <Typography.Text className="price" style={{ whiteSpace: 'nowrap' }}>
+                            {Number(row.originalPrice).toLocaleString('vi-VN')}&nbsp;₫
                         </Typography.Text>
                     )}
                 </Flex>
@@ -163,8 +163,8 @@ function CheckoutConfirm() {
             dataIndex: 'subtotal',
             key: 'subtotal',
             render: (text, row) => (
-                <Typography.Text style={{ fontWeight: 600 }}>
-                    {(row.price * row.quantity).toLocaleString('vi-VN')} ₫
+                <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {(row.price * row.quantity).toLocaleString('vi-VN')}&nbsp;₫
                 </Typography.Text>
             )
         },
@@ -174,19 +174,19 @@ function CheckoutConfirm() {
         {
             key: '1',
             label: 'Tạm tính',
-            children: <Typography.Text>{subTotal.toLocaleString('vi-VN')} ₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{subTotal.toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         },
         {
             key: '2',
             label: 'Thuế (9%)',
-            children: <Typography.Text>{(subTotal * 0.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 0.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         },
         {
             key: '3',
             label: 'Tổng cộng',
-            children: <Typography.Text>{(subTotal * 1.09).toLocaleString('vi-VN')} ₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         }
     ];

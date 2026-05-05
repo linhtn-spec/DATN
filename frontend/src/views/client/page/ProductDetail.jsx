@@ -444,17 +444,17 @@ function ProductDetail() {
                                                 <Flex gap={30} align="center">
                                                     <Typography.Title level={3} style={{ margin: 0 }}>
                                                         {Number(product?.pricePromotion) > 0 ? (
-                                                            <Flex gap={15} align="center">
+                                                            <Flex gap={15} align="center" style={{ whiteSpace: 'nowrap' }}>
                                                                 <span className="promotion" style={{ color: '#ff2c26', fontWeight: 700 }}>
-                                                                    {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')} ₫
+                                                                    {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
                                                                 </span>
                                                                 <span className="price" style={{ textDecoration: 'line-through', color: '#999', fontSize: '18px', fontWeight: 400 }}>
-                                                                    {product.price?.toLocaleString('vi-VN')} ₫
+                                                                    {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                                                                 </span>
                                                             </Flex>
                                                         ) : (
-                                                            <span className="promotion" style={{ color: '#ff2c26', fontWeight: 700 }}>
-                                                                {product.price?.toLocaleString('vi-VN')} ₫
+                                                            <span className="promotion" style={{ color: '#ff2c26', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                                                                {product.price?.toLocaleString('vi-VN')}&nbsp;₫
                                                             </span>
                                                         )}
                                                     </Typography.Title>
@@ -464,7 +464,7 @@ function ProductDetail() {
                                                 <p>Tình trạng: <span className="stock_status">{productQty === 0 ? 'Hết hàng' : 'Còn hàng'}</span></p>
                                                 <p>Danh mục: <span className="category">{product?.category}</span></p>
                                                 <p>Đơn vị: <span className="category">{product?.unit}</span></p>
-                                                <Rate allowHalf value={product?.stars} onChange={(e) => rateProduct.mutate({ stars: e, productId: product?.id })} />
+                                                <Rate value={product?.stars} disabled allowHalf />
                                                 <hr />
                                             </div>
                                             {!product?.status ? <></> :
