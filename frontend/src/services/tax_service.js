@@ -1,15 +1,9 @@
-import axios from 'axios';
-import { getUrlConfig } from '../config/url';
+import api from "../request/api";
 
 export const getTaxConfig = () => {
-    return axios.get(`${getUrlConfig()}/tax-config`);
+    return api.get("tax-config");
 };
 
 export const updateTaxConfig = (id, data) => {
-    return axios.put(`${getUrlConfig()}/tax-config/${id}`, data, {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
-    });
+    return api.put(`tax-config/${id}`, data);
 };
