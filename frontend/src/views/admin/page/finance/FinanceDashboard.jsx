@@ -1,9 +1,9 @@
-import { PlusOutlined, LineChartOutlined, MoneyCollectOutlined, WalletOutlined, WarningOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Descriptions, Form, Input, InputNumber, Modal, Row, Select, Statistic, Table, Tag, Typography, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import { LineChartOutlined, MoneyCollectOutlined, PlusOutlined, SearchOutlined, WalletOutlined, WarningOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Descriptions, Flex, Form, Input, InputNumber, Modal, Row, Select, Statistic, Table, Tag, Typography } from "antd";
 import axios from "axios";
+import React, { useEffect, useMemo, useState } from "react";
+import { createWithdrawal, getFinanceOverview, getWithdrawalsHistory, lookupBankAccount } from "../../../../services/finance_service";
 import Notification from "../../../../utils/configToastify";
-import { getFinanceOverview, getWithdrawalsHistory, createWithdrawal, lookupBankAccount } from "../../../../services/finance_service";
 
 const { Title } = Typography;
 
@@ -23,6 +23,7 @@ function FinanceDashboard() {
     const [form] = Form.useForm();
 
     const [banks, setBanks] = useState([]);
+    const memoizedBanks = useMemo(() => banks, [banks]);
     const [isLookingUp, setIsLookingUp] = useState(false);
 
     const fetchOverview = async () => {
@@ -53,7 +54,9 @@ function FinanceDashboard() {
                 setBanks(res.data.data.map(b => ({
                     value: b.bin,
                     label: `(${b.shortName}) ${b.name}`,
-                    name: b.shortName
+                    name: b.shortName,
+                    fullName: b.name,
+                    logo: b.logo
                 })));
             }
         } catch (error) {
@@ -93,7 +96,7 @@ function FinanceDashboard() {
                 Notification({ message: res.data?.desc || res.data?.message || "Không tìm thấy tài khoản hoặc thiếu API Key!", type: "error" });
             }
         } catch (error) {
-             Notification({ message: error.response?.data?.desc || "Tính năng tra cứu yêu cầu API Key trả phí (Casso). Vui lòng nhập tay!", type: "info" });
+            Notification({ message: error.response?.data?.desc || "Tính năng tra cứu yêu cầu API Key trả phí (Casso). Vui lòng nhập tay!", type: "info" });
         } finally {
             setIsLookingUp(false);
         }
@@ -185,9 +188,9 @@ function FinanceDashboard() {
                     <LineChartOutlined style={{ marginRight: "10px" }} />
                     Quản lý tài chính & Dòng tiền
                 </Title>
-                <Button 
-                    type="primary" 
-                    icon={<PlusOutlined />} 
+                <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
                     size="large"
                     onClick={() => setIsModalOpen(true)}
                     style={{ backgroundColor: "#52c41a", borderColor: "#52c41a" }}
@@ -196,9 +199,9 @@ function FinanceDashboard() {
                 </Button>
             </div>
 
-            <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
-                <Col span={6}>
-                    <Card>
+            <Row gutter={[16, 16]} style={{ marginBottom: "24px" }} align="stretch">
+                <Col span={8}>
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                         <Statistic
                             title="TỔNG DOANH THU"
                             value={overview.totalRevenue}
@@ -209,8 +212,8 @@ function FinanceDashboard() {
                         />
                     </Card>
                 </Col>
-                <Col span={6}>
-                    <Card>
+                <Col span={8}>
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                         <Statistic
                             title="LỢI NHUẬN GỘP (Doanh thu - Giá vốn)"
                             value={overview.totalProfit}
@@ -221,9 +224,12 @@ function FinanceDashboard() {
                         />
                     </Card>
                 </Col>
-                <Col span={6}>
+                <Col span={8}>
                     <Card
                         style={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
                             background: overview.totalAdjustmentLoss > 0 ? '#fff2f0' : undefined,
                             border: overview.totalAdjustmentLoss > 0 ? '1px solid #ffccc7' : undefined
                         }}
@@ -238,8 +244,8 @@ function FinanceDashboard() {
                         />
                     </Card>
                 </Col>
-                <Col span={6}>
-                    <Card>
+                <Col span={8}>
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                         <Statistic
                             title="LỢI NHUẬN RÒNG (Sau khi trừ hàng hủy)"
                             value={overview.netProfit}
@@ -250,8 +256,8 @@ function FinanceDashboard() {
                         />
                     </Card>
                 </Col>
-                <Col span={6}>
-                    <Card>
+                <Col span={8}>
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
                         <Statistic
                             title="ĐÃ RÚT TIỀN"
                             value={overview.totalWithdrawal}
@@ -262,10 +268,10 @@ function FinanceDashboard() {
                         />
                     </Card>
                 </Col>
-                <Col span={6}>
-                    <Card style={{ backgroundColor: "#e6ffcc", border: "1px solid #b7eb8f" }}>
+                <Col span={8}>
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center', backgroundColor: "#e6ffcc", border: "1px solid #b7eb8f" }}>
                         <Statistic
-                            title="SỐ DƯ CÓ THỂ RÚT"
+                            title="SỐ DƯ CÓ THẾ RÚT"
                             value={overview.balance}
                             precision={0}
                             valueStyle={{ color: "#389e0d", fontWeight: "bold" }}
@@ -277,10 +283,10 @@ function FinanceDashboard() {
             </Row>
 
             <Card title="Lịch sử Rút tiền ra từ Hệ thống" bordered={false}>
-                <Table 
-                    dataSource={withdrawals} 
-                    columns={columns} 
-                    rowKey="_id" 
+                <Table
+                    dataSource={withdrawals}
+                    columns={columns}
+                    rowKey="_id"
                     pagination={{ pageSize: 10 }}
                     loading={loading}
                 />
@@ -310,8 +316,8 @@ function FinanceDashboard() {
                             { type: "number", min: 1000, message: "Tối thiểu rút 1,000 VNĐ!" },
                         ]}
                     >
-                        <InputNumber 
-                            style={{ width: "100%" }} 
+                        <InputNumber
+                            style={{ width: "100%" }}
                             placeholder="Nhập số tiền..."
                             formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -323,12 +329,33 @@ function FinanceDashboard() {
                         label="Ngân hàng"
                         rules={[{ required: true, message: "Vui lòng chọn ngân hàng!" }]}
                     >
-                        <Select 
-                            placeholder="Chọn ngân hàng..." 
-                            showSearch 
+                        <Select
+                            placeholder="Chọn ngân hàng..."
+                            showSearch
                             optionFilterProp="label"
-                            options={banks}
+                            options={memoizedBanks}
                             loading={banks.length === 0}
+                            virtual={false}
+                            filterOption={(input, option) => {
+                                const searchStr = input.toLowerCase();
+                                return (
+                                    option.name.toLowerCase().includes(searchStr) ||
+                                    option.fullName.toLowerCase().includes(searchStr)
+                                );
+                            }}
+                            optionRender={(option) => (
+                                <Flex align="center" gap={10} style={{ height: 45 }}>
+                                    <img
+                                        src={option.data.logo}
+                                        alt={option.data.name}
+                                        style={{ width: 30, height: 30, objectFit: 'contain', flexShrink: 0 }}
+                                    />
+                                    <Flex vertical style={{ overflow: 'hidden' }}>
+                                        <Typography.Text strong style={{ fontSize: '13px', lineHeight: '1.2' }} ellipsis>{option.data.name}</Typography.Text>
+                                        <Typography.Text type="secondary" style={{ fontSize: '11px', lineHeight: '1.2' }} ellipsis>{option.data.fullName}</Typography.Text>
+                                    </Flex>
+                                </Flex>
+                            )}
                             onChange={(bin) => {
                                 const b = banks.find(x => x.value === bin);
                                 if (b) form.setFieldsValue({ bankName: b.name });
@@ -347,10 +374,10 @@ function FinanceDashboard() {
                             >
                                 <Input style={{ width: 'calc(100% - 100px)' }} placeholder="VD: 0123456789" />
                             </Form.Item>
-                            <Button 
-                                style={{ width: '100px' }} 
-                                type="primary" 
-                                ghost 
+                            <Button
+                                style={{ width: '100px' }}
+                                type="primary"
+                                ghost
                                 icon={<SearchOutlined />}
                                 onClick={lookupAccount}
                                 loading={isLookingUp}
