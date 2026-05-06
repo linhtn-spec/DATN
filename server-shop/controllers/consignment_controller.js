@@ -11,7 +11,7 @@ export const add_consignment = async (req, res) => {
         const productResults = await Promise.all(productPromises);
         const nonExistentProducts = productResults.some(result => !result);
         if (nonExistentProducts) {
-            return res.status(404).json({ message: "One or more products not existed." });
+            return res.status(404).json({ message: "Một hoặc nhiều sản phẩm không tồn tại." });
         }
         const createdResult = await consignment_model.create({ products, importDate: new Date(importDate), money, userId })
         for (const item of products) {
@@ -44,7 +44,7 @@ export const update_consignment = async (req, res) => {
     try {
         const findConsignment = await consignment_model.findById(consignmentId)
         if (!findConsignment) {
-            return res.status(404).json({ message: "Consignment not existed." });
+            return res.status(404).json({ message: "Lô hàng không tồn tại." });
         }
         if (products) {
             const newProductIds = products.map(item => item.productId);
@@ -80,7 +80,7 @@ export const update_consignment = async (req, res) => {
             return res.status(200).json(updatedConsignment);
         }
         const updateConsignmentImportDate = await consignment_model.findByIdAndUpdate(consignmentId, data, { new: true })
-        if (!updateConsignmentImportDate) return res.status(404).json({ message: "Update consignment unsuccessfully." });
+        if (!updateConsignmentImportDate) return res.status(404).json({ message: "Cập nhật lô hàng thất bại." });
         return res.status(200).json(updateConsignmentImportDate)
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -163,7 +163,7 @@ export const detail_consignment = async (req, res) => {
             .populate({
                 path: "userId", model: "User", select: "firstName lastName role"
             })
-        if (!consignment) return res.status(404).json({ message: "Consignment not existed!" });
+        if (!consignment) return res.status(404).json({ message: "Lô hàng không tồn tại!" });
         return res.status(200).json(consignment);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -175,7 +175,7 @@ export const delete_consignment = async (req, res) => {
     const consignmentId = req.params.id;
     try {
         const consignment = await consignment_model.findById(consignmentId);
-        if (!consignment) return res.status(404).json({ message: "Consignment not found." });
+        if (!consignment) return res.status(404).json({ message: "Không tìm thấy lô hàng." });
 
         // Rollback product quantities before deleting
         await Promise.all(consignment.products.map(async (item) => {
@@ -185,7 +185,7 @@ export const delete_consignment = async (req, res) => {
         }));
 
         await consignment_model.findByIdAndDelete(consignmentId);
-        return res.status(200).json({ message: "Consignment deleted successfully." });
+        return res.status(200).json({ message: "Xóa lô hàng thành công." });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

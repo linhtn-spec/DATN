@@ -10,13 +10,13 @@ export const add_sale = async (req, res) => {
         const productResults = await Promise.all(productPromises);
         const nonExistentProducts = productResults.some(result => !result);
         if (nonExistentProducts) {
-            return res.status(404).json({ message: "One or more products not existed." });
+            return res.status(404).json({ message: "Một hoặc nhiều sản phẩm không tồn tại." });
         }
         const createdResult = await sale_model.create({ products, applyDate: new Date(applyDate), dueDate: new Date(dueDate), isActive })
         await Promise.all(products.map(async item => {
             await product_model.findByIdAndUpdate(item?.productId, { $push: { saleId: createdResult._id } });
         }));
-        if (!createdResult) return res.status(404).json({ message: "Add sale unsuccessfully!" })
+        if (!createdResult) return res.status(404).json({ message: "Thêm khuyến mãi thất bại!" })
         return res.status(201).json(createdResult)
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -34,7 +34,7 @@ export const updateSale = async (req, res) => {
     const saleId = req.params.id
     try {
         const findSale = await sale_model.findById(saleId)
-        if (!findSale) return res.status(404).json({ message: "Sale not existed." });
+        if (!findSale) return res.status(404).json({ message: "Khuyến mãi không tồn tại." });
 
         const oldProductIds = findSale.products.map(p => p.productId.toString());
         const newProductIds = products ? products.map(p => p.productId.toString()) : oldProductIds;
@@ -55,7 +55,7 @@ export const updateSale = async (req, res) => {
             // Verify if products exist
             const existingProducts = await product_model.find({ _id: { $in: addedProducts } });
             if (existingProducts.length !== addedProducts.length) {
-                return res.status(404).json({ message: "One or more products not existed." });
+                return res.status(404).json({ message: "Một hoặc nhiều sản phẩm không tồn tại." });
             }
 
             await product_model.updateMany(
@@ -65,7 +65,7 @@ export const updateSale = async (req, res) => {
         }
 
         const updateResult = await sale_model.findByIdAndUpdate(saleId, data, { new: true });
-        if (!updateResult) return res.status(404).json({ message: "Update sale unsuccessful!" })
+        if (!updateResult) return res.status(404).json({ message: "Cập nhật khuyến mãi thất bại!" })
         return res.status(200).json(updateResult);
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -78,15 +78,15 @@ export const delete_sale = async (req, res) => {
     const saleId = req.params.id
     try {
         const deletedSale = await sale_model.findOneAndDelete({ _id: saleId })
-        if (!deletedSale) return res.status(404).json({ message: "Delete sale unsuccessful!" })
+        if (!deletedSale) return res.status(404).json({ message: "Xóa khuyến mãi thất bại!" })
         const updateResult = await product_model.updateMany(
             { saleId: { $elemMatch: { $eq: saleId } } },
             { $pull: { saleId: saleId } }
         );
         if (!updateResult) {
-            return res.status(404).json({ message: "Update products failed!" });
+            return res.status(404).json({ message: "Cập nhật sản phẩm thất bại!" });
         }
-        return res.status(200).json({ message: "Sale deleted successfully!" });
+        return res.status(200).json({ message: "Xóa khuyến mãi thành công!" });
 
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -156,7 +156,7 @@ export const detail_sale = async (req, res) => {
     const saleId = req.params.id
     try {
         const sale = await sale_model.findOne({ _id: saleId }).populate({ path: "products.productId", model: "Product" })
-        if (!sale) return res.status(404).json({ message: "Sale not existed!" });
+        if (!sale) return res.status(404).json({ message: "Khuyến mãi không tồn tại!" });
         return res.status(200).json(sale);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -172,7 +172,7 @@ export const lastest_sale = async (req, res) => {
         }).sort({ createdAt: -1 }).populate({ path: "products.productId", model: "Product" });
 
         if (!latestSale) {
-            return res.status(404).json({ message: "No sale found!" });
+            return res.status(404).json({ message: "Không tìm thấy khuyến mãi!" });
         }
 
         return res.status(200).json(latestSale);

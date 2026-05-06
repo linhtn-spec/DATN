@@ -14,7 +14,7 @@ const authLimiter = rateLimit({
     max: 10,
     message: {
         status: "error",
-        message: "Too many attempts, please try again after 15 minutes"
+        message: "Vượt quá số lần thử, vui lòng quay lại sau 15 phút"
     },
     standardHeaders: true,
     legacyHeaders: false,
@@ -31,12 +31,12 @@ router.post('/logout/google', function (req, res, next) {
         req.session.destroy(function (err) {
             if (err) {
                 console.log("error: " + err);
-                res.status(500).json({ message: "Error destroying session" });
+                res.status(500).json({ message: "Lỗi hủy phiên làm việc" });
             } else {
                 res.clearCookie('connect.sid');
                 res.clearCookie("refresh_token")
                 res.clearCookie("access_token")
-                res.status(200).json({ message: "Logged out successfully" });
+                res.status(200).json({ message: "Đăng xuất thành công" });
             }
         });
     });

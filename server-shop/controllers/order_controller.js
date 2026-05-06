@@ -105,10 +105,10 @@ export const edit_order = asyncHandler(async (req, res) => {
 
     const order = await order_model.findOne({ _id: order_id });
     if (!order) {
-        return res.status(404).json({ message: "Order does not exist" });
+        return res.status(404).json({ message: "Đơn hàng không tồn tại" });
     }
     if (order.orderStatus === 'canceled' || order.orderStatus === 'done')
-        return res.status(400).json({ message: "You cant edit this order" });
+        return res.status(400).json({ message: "Bạn không thể chỉnh sửa đơn hàng này" });
 
     if (orderStatus === "canceled") {
         const products = order.products;
@@ -128,7 +128,7 @@ export const edit_order = asyncHandler(async (req, res) => {
     );
     if (updated_order)
         return res.status(200).json({ ...updated_order._doc });
-    return res.status(400).json({ message: "Update unsuccessfully " })
+    return res.status(400).json({ message: "Cập nhật thất bại" })
 });
 
 export const detail_order = asyncHandler(async (req, res) => {
@@ -139,7 +139,7 @@ export const detail_order = asyncHandler(async (req, res) => {
         select: 'name price images'
     })
     if (!data) {
-        return res.status(404).json({ message: "Order no exists" });
+        return res.status(404).json({ message: "Đơn hàng không tồn tại" });
     }
     else {
         const modifiedData = {
@@ -215,7 +215,7 @@ export const paginate_order = asyncHandler(async (req, res) => {
     const [{ paginatedResults, totalCount }] = await order_model.aggregate(aggregationStages);
 
     if (totalCount[0]?.count === 0 || paginatedResults?.length === 0) {
-        return res.status(404).json({ message: "No order " });
+        return res.status(404).json({ message: "Không có đơn hàng " });
     }
 
     return res.status(200).json({ paginatedResults, total: totalCount[0].count, page, per_page: limit, skip, page: page ? page : 1 });
@@ -229,7 +229,7 @@ export const all_order = asyncHandler(async (req, res) => {
         select: 'name price images'
     });
     if (data.length === 0) {
-        return res.status(404).json({ message: "No order" });
+        return res.status(404).json({ message: "Không có đơn hàng" });
     }
     else {
         return res.status(200).json(data);
@@ -260,7 +260,7 @@ export const order_by_user = asyncHandler(async (req, res) => {
         }
     });
     if (dataAll.totalDocs === 0) {
-        return res.status(404).json({ message: "No order" });
+        return res.status(404).json({ message: "Không có đơn hàng" });
     }
     return res.status(200).json({ ...dataAll });
 });
@@ -294,7 +294,7 @@ export const paginate_order_user = asyncHandler(async (req, res) => {
         }
     });
     if (dataAll.totalDocs === 0) {
-        return res.status(404).json({ message: "No order " });
+        return res.status(404).json({ message: "Không có đơn hàng " });
     }
 
     return res.status(200).json(dataAll);

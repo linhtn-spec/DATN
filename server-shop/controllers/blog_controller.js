@@ -14,7 +14,7 @@ export const add_blog = async (req, res) => {
 
         const checkExistOrder = await blog_model.findOne({ order: order });
         if (checkExistOrder) {
-            return res.status(400).json({ message: "Blog order already taken" });
+            return res.status(400).json({ message: "Thứ tự bài viết đã tồn tại" });
         }
 
         const blog = await blog_model.create({
@@ -24,10 +24,10 @@ export const add_blog = async (req, res) => {
             }, content, order, isActive
         });
         if (blog) {
-            return res.status(201).json({ blog, message: "Add a blog successfully" });
+            return res.status(201).json({ blog, message: "Thêm bài viết thành công" });
         }
 
-        return res.status(400).json({ message: "Add a blog unsuccessfully " })
+        return res.status(400).json({ message: "Thêm bài viết thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -45,12 +45,12 @@ export const update_blog = async (req, res) => {
     try {
         const blog = await blog_model.findOne({ _id: blog_id });
         if (!blog) {
-            return res.status(404).json({ message: "Blog not exist" });
+            return res.status(404).json({ message: "Bài viết không tồn tại" });
         }
         if (order && Number(order) !== blog.order) {
             const checkExistOrder = await blog_model.findOne({ order: Number(order) });
             if (checkExistOrder) {
-                return res.status(400).json({ message: "Blog order already taken" });
+                return res.status(400).json({ message: "Thứ tự bài viết đã tồn tại" });
             }
         }
 
@@ -61,7 +61,7 @@ export const update_blog = async (req, res) => {
         );
         if (updated_blog)
             return res.status(200).json({ ...updated_blog._doc });
-        return res.status(400).json({ message: "Update blog unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật bài viết thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -72,7 +72,7 @@ export const detail_blog = async (req, res) => {
         const blog_id = req.params.id;
         const data = await blog_model.findOne({ _id: blog_id })
         if (data === null) {
-            return res.status(404).json({ message: "blog no exists" });
+            return res.status(404).json({ message: "Bài viết không tồn tại" });
         }
         return res.status(200).json({
             ...data._doc
@@ -87,9 +87,9 @@ export const delete_blog_one = async (req, res) => {
         const id = req.params.id;
         const data = await blog_model.findOneAndDelete({ _id: id });
         if (data !== null) {
-            return res.status(200).json({ message: "Blog deleted successfully" });
+            return res.status(200).json({ message: "Xóa bài viết thành công" });
         } else {
-            return res.status(404).json({ message: "Bog not found" });
+            return res.status(404).json({ message: "Không tìm thấy bài viết" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -101,17 +101,17 @@ export const delete_blog_list = async (req, res) => {
     try {
         const blog_id = req.body.id;
         if (!blog_id || blog_id.length === 0) {
-            return res.status(400).json({ message: "Please provide list of blog_id" });
+            return res.status(400).json({ message: "Vui lòng cung cấp danh sách blog_id" });
         }
         const existingblogs = await blog_model.find({ _id: { $in: blog_id } });
         if (existingblogs.length !== blog_id.length) {
-            return res.status(404).json({ message: "One or more blogs not found" });
+            return res.status(404).json({ message: "Một hoặc nhiều bài viết không tồn tại" });
         }
         const data = await blog_model.deleteMany({ _id: { $in: blog_id } });
         if (data) {
-            return res.status(200).json({ message: "Blogs deleted successfully" });
+            return res.status(200).json({ message: "Đã xóa các bài viết thành công" });
         } else {
-            return res.status(404).json({ message: "Blogs not found" });
+            return res.status(404).json({ message: "Không tìm thấy các bài viết" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });

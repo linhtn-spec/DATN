@@ -9,22 +9,22 @@ export const add_rating = async (req, res) => {
     try {
         const checkExistProduct = await product_model.findById(productId);
         if (!checkExistProduct) {
-            return res.status(404).json({ message: "Product not existed!" });
+            return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
         }
 
         const checkExistedRating = await rating_model.findOne({ userId: userId, productId: productId })
-        if (checkExistedRating) return res.status(409).json({ message: "You have rated this product" });
+        if (checkExistedRating) return res.status(409).json({ message: "Bạn đã đánh giá sản phẩm này" });
 
         const newRating = await rating_model.create({ stars, productId, userId, content, images })
         if (!newRating) {
-            return res.status(404).json({ message: "Rate a product unsuccessfully" });
+            return res.status(404).json({ message: "Đánh giá sao thất bại" });
         }
         await product_model.findOneAndUpdate(
             { _id: productId },
             { $push: { ratingId: newRating._id } }
         );
 
-        return res.status(201).json({ message: "Rate a product successfully" })
+        return res.status(201).json({ message: "Đánh giá sao thành công" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -36,7 +36,7 @@ export const update_rating = async (req, res) => {
     try {
         const rating = await rating_model.findById(ratingId)
         if (!rating) {
-            return res.status(404).json({ message: "Rating does not exist" });
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
         }
 
         const updateData = {};
@@ -50,7 +50,7 @@ export const update_rating = async (req, res) => {
         );
         if (updatedRating)
             return res.status(200).json({ ...updatedRating._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -65,7 +65,7 @@ export const detail_rating = async (req, res) => {
             select: 'firstName lastName _id'
         })
         if (!data) {
-            return res.status(404).json({ message: "Rating no exist" });
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
         }
         return res.status(200).json({
             ...data._doc

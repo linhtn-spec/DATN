@@ -83,6 +83,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+import cron from "node-cron";
+import order_model from "./models/order_model.js";
+import product_model from "./models/product_model.js";
+
 // cron.schedule("*/5 * * * *", async () => {
 //     try {
 //         const consignments = await consignment_model.find();
@@ -109,32 +113,32 @@ app.use(passport.session());
 //     }
 // });
 
-// cron.schedule("1-59 * * * *", async () => {
-//     try {
-//         const twentyMinutesInMilliseconds = 14 * 60 * 1000;
-//         const orders = await order_model.find({
-//             paymentMethod: "vnpay",
-//             paymentStatus: "unpaid",
-//             orderStatus: "new",
-//             createdAt: { $lte: new Date(Date.now() - twentyMinutesInMilliseconds) },
-//         });
+cron.schedule("1-59 * * * *", async () => {
+    try {
+        const twentyMinutesInMilliseconds = 14 * 60 * 1000;
+        const orders = await order_model.find({
+            paymentMethod: "vnpay",
+            paymentStatus: "unpaid",
+            orderStatus: "new",
+            createdAt: { $lte: new Date(Date.now() - twentyMinutesInMilliseconds) },
+        });
 
-//         for (const order of orders) {
-//             await order_model.findByIdAndUpdate(order._id, { orderStatus: "canceled" });
-//             for (const product of order.products) {
-//                 const originalProduct = await product_model.findById(product.productId);
-//                 if (originalProduct) {
-//                     const newInTrade = originalProduct.quantity.inTrade + product.quantity;
-//                     await product_model.findByIdAndUpdate(product.productId, {
-//                         $set: { 'quantity.inTrade': newInTrade }
-//                     });
-//                 }
-//             }
-//         }
-//     } catch (error) {
-//         console.error(error.message);
-//     }
-// });
+        for (const order of orders) {
+            await order_model.findByIdAndUpdate(order._id, { orderStatus: "canceled" });
+            for (const product of order.products) {
+                const originalProduct = await product_model.findById(product.productId);
+                if (originalProduct) {
+                    const newInTrade = originalProduct.quantity.inTrade + product.quantity;
+                    await product_model.findByIdAndUpdate(product.productId, {
+                        $set: { 'quantity.inTrade': newInTrade }
+                    });
+                }
+            }
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+});
 
 
 

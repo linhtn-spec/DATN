@@ -14,15 +14,15 @@ export const add_banner = async (req, res) => {
 
         const checkExistOrder = await banner_model.findOne({ order: order });
         if (checkExistOrder) {
-            return res.status(400).json({ message: "Banner order already taken" });
+            return res.status(400).json({ message: "Thứ tự biểu ngữ đã tồn tại" });
         }
 
         const banner = await banner_model.create({ title, image, description, order, isActive });
         if (banner) {
-            return res.status(201).json({ banner, message: "Add a banner successfully" });
+            return res.status(201).json({ banner, message: "Thêm biểu ngữ thành công" });
         }
 
-        return res.status(400).json({ message: "Add a banner unsuccessfully " })
+        return res.status(400).json({ message: "Thêm biểu ngữ thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -41,12 +41,12 @@ export const update_banner = async (req, res) => {
     try {
         const banner = await banner_model.findOne({ _id: banner_id });
         if (!banner) {
-            return res.status(404).json({ message: "Banner not exist" });
+            return res.status(404).json({ message: "Biểu ngữ không tồn tại" });
         }
         if (order && order !== banner.order) {
             const checkExistOrder = await banner_model.findOne({ order: order });
             if (checkExistOrder) {
-                return res.status(400).json({ message: "Banner order already taken" });
+                return res.status(400).json({ message: "Thứ tự biểu ngữ đã tồn tại" });
             }
         }
 
@@ -57,7 +57,7 @@ export const update_banner = async (req, res) => {
         );
         if (updated_banner)
             return res.status(200).json({ ...updated_banner._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -68,7 +68,7 @@ export const detail_banner = async (req, res) => {
         const banner_id = req.params.id;
         const data = await banner_model.findOne({ _id: banner_id })
         if (data === null) {
-            return res.status(404).json({ message: "Banner no exists" });
+            return res.status(404).json({ message: "Biểu ngữ không tồn tại" });
         }
         return res.status(200).json({
             ...data._doc
@@ -83,9 +83,9 @@ export const delete_banner_one = async (req, res) => {
         const id = req.params.id;
         const data = await banner_model.findOneAndDelete({ _id: id });
         if (data !== null) {
-            return res.status(200).json({ message: "Banner deleted successfully" });
+            return res.status(200).json({ message: "Đã xóa biểu ngữ thành công" });
         } else {
-            return res.status(404).json({ message: "Banner not found" });
+            return res.status(404).json({ message: "Không tìm thấy biểu ngữ" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -97,17 +97,17 @@ export const delete_banner_list = async (req, res) => {
     try {
         const banner_id = req.body.id;
         if (!banner_id || banner_id.length === 0) {
-            return res.status(400).json({ message: "Please provide list of banner_id" });
+            return res.status(400).json({ message: "Vui lòng cung cấp danh sách banner_id" });
         }
         const existingBanners = await banner_model.find({ _id: { $in: banner_id } });
         if (existingBanners.length !== banner_id.length) {
-            return res.status(404).json({ message: "One or more banners not found" });
+            return res.status(404).json({ message: "Một hoặc nhiều biểu ngữ không tồn tại" });
         }
         const data = await banner_model.deleteMany({ _id: { $in: banner_id } });
         if (data) {
-            return res.status(200).json({ message: "Banners deleted successfully" });
+            return res.status(200).json({ message: "Xóa các biểu ngữ thành công" });
         } else {
-            return res.status(404).json({ message: "Banners not found" });
+            return res.status(404).json({ message: "Không tìm thấy các biểu ngữ" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -148,7 +148,7 @@ export const paginate_banner = async (req, res) => {
             offset: skip, page: page, limit: limit, sort: sortKind
         });
         if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No banner" });
+            return res.status(404).json({ message: "Không có biểu ngữ" });
         }
         return res.status(200).json({ ...dataAll });
     } catch (error) {
@@ -160,7 +160,7 @@ export const all_banner = async (req, res) => {
     try {
         const data = await banner_model.find({})
         if (data.length === 0) {
-            return res.status(404).json({ message: "No banner" });
+            return res.status(404).json({ message: "Không có biểu ngữ" });
         }
         else return res.status(200).json({ data });
     } catch (error) {

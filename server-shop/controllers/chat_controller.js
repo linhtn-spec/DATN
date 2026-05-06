@@ -39,7 +39,7 @@ const getChatrooms = async (req, res) => {
                 select: "firstName lastName role"
             })
         if (rooms.length === 0)
-            return res.status(404).json({ message: "Chatrooms not existed" });
+            return res.status(404).json({ message: "Phòng chat không tồn tại" });
 
         return res.json(rooms);
     } catch (error) {

@@ -33,7 +33,7 @@ export const update_shipping_config = asyncHandler(async (req, res) => {
     );
 
     if (!updated) {
-        return res.status(404).json({ message: "Shipping configuration not found" });
+        return res.status(404).json({ message: "Không tìm thấy cấu hình vận chuyển" });
     }
 
     return res.status(200).json(updated);

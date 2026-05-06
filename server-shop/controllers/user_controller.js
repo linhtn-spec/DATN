@@ -17,14 +17,14 @@ export const login = async (req, res) => {
         const data = req.body;
         const user = await user_model.findOne({ email: data.email });
         if (!user) {
-            return res.status(404).json({ message: "Email not existed" });
+            return res.status(404).json({ message: "Email không tồn tại" });
         }
         if (!user.isActive) {
-            return res.status(401).json({ message: "Account is locked" });
+            return res.status(401).json({ message: "Tài khoản đang bị khóa" });
         }
         const verify = await bcrypt.compare(data.password, user.password);
         if (!verify) {
-            return res.status(404).json({ message: "Password not true" });
+            return res.status(404).json({ message: "Mật khẩu không chính xác" });
         }
         const dataForAccessToken = {
             username: user.username,
@@ -36,7 +36,7 @@ export const login = async (req, res) => {
         if (!accessToken) {
             return res
                 .status(503)
-                .json({ message: 'Login fail, retry' });
+                .json({ message: 'Đăng nhập thất bại, thử lại' });
         }
 
         const dataForRefreshToken = {
@@ -47,7 +47,7 @@ export const login = async (req, res) => {
         if (!refreshToken) {
             return res
                 .status(503)
-                .json({ message: 'Login fail, retry' });
+                .json({ message: 'Đăng nhập thất bại, thử lại' });
         }
         if (!user.refreshToken) {
             await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshToken })
@@ -82,11 +82,11 @@ export const register = async (req, res) => {
         const data = req.body;
         const checkUsername = await user_model.findOne({ username: data.username });
         if (checkUsername) {
-            return res.status(400).json({ message: "Username existed" });
+            return res.status(400).json({ message: "Tên đăng nhập đã tồn tại" });
         }
         const checkEmail = await user_model.findOne({ email: data.email });
         if (checkEmail) {
-            return res.status(400).json({ message: "Email existed" });
+            return res.status(400).json({ message: "Email đã tồn tại" });
         }
         const user = await user_model.create(data);
         if (user) {
@@ -98,7 +98,7 @@ export const register = async (req, res) => {
             if (!refreshToken) {
                 return res
                     .status(503)
-                    .json({ message: 'Register fail, retry' });
+                    .json({ message: 'Đăng ký thất bại, thử lại' });
             }
             if (!user.refreshToken) {
                 await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshToken })
@@ -106,7 +106,7 @@ export const register = async (req, res) => {
             else {
                 refreshToken = user.refreshToken;
             }
-            return res.status(201).json({ message: "Register successfully" });
+            return res.status(201).json({ message: "Đăng ký thành công" });
         }
         else {
             return res.status(400).json({ message: error.message });
@@ -120,7 +120,7 @@ export const logout = async (req, res) => {
     try {
         res.clearCookie("refresh_token")
         res.clearCookie("access_token")
-        return res.status(200).json({ message: "Logout successfully" });
+        return res.status(200).json({ message: "Đăng xuất thành công" });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -130,7 +130,7 @@ export const loginByGoogle = async (req, res) => {
     const user = req.user
     if (!user) return res
         .status(503)
-        .json({ message: 'Login fail, retry' });
+        .json({ message: 'Đăng nhập thất bại, thử lại' });
     const dataForAccessToken = {
         username: user?.username,
         role: user?.role,
@@ -141,7 +141,7 @@ export const loginByGoogle = async (req, res) => {
     if (!accessToken) {
         return res
             .status(503)
-            .json({ message: 'Login fail, retry' });
+            .json({ message: 'Đăng nhập thất bại, thử lại' });
     }
 
     const dataForRefreshToken = {
@@ -152,7 +152,7 @@ export const loginByGoogle = async (req, res) => {
     if (!refreshToken) {
         return res
             .status(503)
-            .json({ message: 'Login fail, retry' });
+            .json({ message: 'Đăng nhập thất bại, thử lại' });
     }
     if (!user.refreshToken) {
         await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshToken })
@@ -186,30 +186,30 @@ export const refresh_token = async (req, res) => {
 
 
         if (!accessToken) {
-            return res.status(401).json({ message: "Access token not available" });
+            return res.status(401).json({ message: "Access token không khả dụng" });
         }
         if (!refreshToken) {
-            return res.status(401).json({ message: "Refresh token not available" });
+            return res.status(401).json({ message: "Refresh token không khả dụng" });
         }
 
         let decoded;
         try {
             decoded = jwt.verify(accessToken, accessTokenSecret, { ignoreExpiration: true });
         } catch (err) {
-            return res.status(401).json({ message: "Invalid access token" });
+            return res.status(401).json({ message: "Access token không hợp lệ" });
         }
 
         if (!decoded) {
-            return res.status(404).json({ message: "Not available" });
+            return res.status(404).json({ message: "Không khả dụng" });
         }
         const { user_id, role } = decoded
         const user = await user_model.findOne({ _id: user_id });
         if (!user) {
-            return res.status(404).json({ message: "User not exist" });
+            return res.status(404).json({ message: "Người dùng không tồn tại" });
         }
 
         if (refreshToken !== user.refreshToken) {
-            return res.status(403).json({ message: "Not allowed" });
+            return res.status(403).json({ message: "Không được cho phép" });
         }
         let checkRT;
         try {
@@ -224,14 +224,14 @@ export const refresh_token = async (req, res) => {
             if (!refreshTokenNew) {
                 return res
                     .status(503)
-                    .json({ message: 'Login fail, retry' });
+                    .json({ message: 'Đăng nhập thất bại, thử lại' });
             }
             await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshTokenNew })
             res.cookie("refresh_token", refreshTokenNew, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
             checkRT = jwt.verify(refreshTokenNew, refreshTokenSecret);
         }
         if (checkRT.user_id !== user._id || checkRT.username !== user.username)
-            return res.status(403).json({ message: "Not allowed" });
+            return res.status(403).json({ message: "Không được cho phép" });
 
         const dataForAccessToken = {
             username: user.username,
@@ -240,10 +240,10 @@ export const refresh_token = async (req, res) => {
         const accessTokenNew = jwt.sign(dataForAccessToken, accessTokenSecret, { expiresIn: accessTokenLife });
         if (!accessTokenNew) {
             return res
-                .status(500).json({ message: "System error" });
+                .status(500).json({ message: "Lỗi hệ thống" });
         }
         res.cookie("access_token", accessTokenNew, { httpOnly: true, secure: true, sameSite: "strict", maxAge: 60 * 60 * 1000 * 24 });
-        return res.status(201).json({ message: "Refresh access token successfully" });
+        return res.status(201).json({ message: "Làm mới access token thành công" });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -256,7 +256,7 @@ export const getAll = async (req, res) => {
     try {
         const data = await user_model.paginate({}, options);
         if (data.totalDocs === 0) {
-            return res.status(404).json({ message: "No user" });
+            return res.status(404).json({ message: "Không có người dùng" });
         }
         return res.status(200).json({ ...data });
     } catch (error) {
@@ -270,7 +270,7 @@ export const updateUser = async (req, res) => {
     try {
         const updatedUser = await user_model.findOneAndUpdate({ _id: user_id }, req.body, { new: true })
         if (updatedUser) return res.status(200).json({ ...updatedUser });
-        return res.status(404).json({ message: "Not available" });
+        return res.status(404).json({ message: "Không khả dụng" });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -290,10 +290,10 @@ export const deleteUser = async (req, res) => {
     const { user_id } = req.params;
     try {
         const data = await user_model.findOneAndDelete({ _id: user_id })
-        if (data) return res.status(200).json({ message: "Done" });
+        if (data) return res.status(200).json({ message: "Hoàn tất" });
         return res
             .status(404)
-            .json({ message: 'User not found' });
+            .json({ message: 'Không tìm thấy người dùng' });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -304,19 +304,20 @@ export const forgetPassword = async (req, res) => {
     const from = process.env.NODEMAILER_EMAIL
     try {
         const data = await user_model.findOne({ email: email })
+        if (!data) {
+            return res.status(404).json({ message: 'Email không tồn tại' });
+        }
         if (!data.isActive) {
-            return res.status(401).json({ message: "Email is locked" });
+            return res.status(401).json({ message: "Email đang bị khóa" });
         }
-        if (data) {
-            const dataForRefreshToken = {
-                username: data.username,
-                user_id: data._id
-            };
-            const resetPasswordToken = jwt.sign(dataForRefreshToken, refreshTokenSecret, { expiresIn: 1000 * 60 * 10 });
-            await sendEmail(from, email, forget_password_subject, forget_password_text, forget_password_form(resetPasswordToken))
-            return res.status(200).json({ message: "Send email successfully" });
-        }
-        return res.status(503).json({ message: 'Email not existed' });
+        
+        const dataForRefreshToken = {
+            username: data.username,
+            user_id: data._id
+        };
+        const resetPasswordToken = jwt.sign(dataForRefreshToken, refreshTokenSecret, { expiresIn: 1000 * 60 * 10 });
+        await sendEmail(from, email, forget_password_subject, forget_password_text, forget_password_form(resetPasswordToken))
+        return res.status(200).json({ message: "Gửi email thành công" });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -329,11 +330,11 @@ export const resetPassword = async (req, res) => {
         if (user_id) {
             const data = await user_model.findOneAndUpdate({ _id: user_id, username: username }, { password: password }, { new: true })
             if (data) {
-                return res.status(200).json({ message: "Reset password successfully" });
+                return res.status(200).json({ message: "Đặt lại mật khẩu thành công" });
             }
-            return res.status(503).json({ message: 'Reset password unsuccessfully' });
+            return res.status(503).json({ message: 'Đặt lại mật khẩu thất bại' });
         }
-        return res.status(503).json({ message: 'Overtime request' });
+        return res.status(503).json({ message: 'Yêu cầu đã hết hạn' });
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -359,20 +360,20 @@ export const resetPasswordCurrentUser = async (req, res) => {
         const currentUser = req.user
         const user = await user_model.findById(currentUser._id);
         if (!user) {
-            return res.status(400).json({ message: "Not allowed" });
+            return res.status(400).json({ message: "Không được cho phép" });
         }
         if (!user.isActive) {
-            return res.status(401).json({ message: "Account is locked" });
+            return res.status(401).json({ message: "Tài khoản đang bị khóa" });
         }
         const verify = await bcrypt.compare(data.current_password, user.password);
         if (!verify) {
-            return res.status(404).json({ message: "Current password not true" });
+            return res.status(404).json({ message: "Mật khẩu hiện tại không chính xác" });
         }
         const updatedUser = await user_model.findOneAndUpdate({ _id: currentUser._id }, { password: data.new_password }, { new: true })
         if (updatedUser) {
-            return res.status(200).json({ message: "Reset password successfully" });
+            return res.status(200).json({ message: "Đặt lại mật khẩu thành công" });
         }
-        return res.status(503).json({ message: 'Reset password unsuccessfully' });
+        return res.status(503).json({ message: 'Đặt lại mật khẩu thất bại' });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -459,10 +460,10 @@ export const create_user = async (req, res) => {
     const user_role = req.user.role
     const { role } = req.body
     try {
-        if (user_role === 2 && role !== 1) return res.status(401).json({ message: "Not allowed" });
+        if (user_role === 2 && role !== 1) return res.status(401).json({ message: "Không được cho phép" });
         const createdUser = await user_model.create(req.body)
-        if (!createdUser) return res.status(404).json({ message: "Create user unsuccessfully" });
-        return res.status(201).json({ message: "Create user successfully" });
+        if (!createdUser) return res.status(404).json({ message: "Tạo người dùng thất bại" });
+        return res.status(201).json({ message: "Tạo người dùng thành công" });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

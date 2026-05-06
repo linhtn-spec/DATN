@@ -105,7 +105,7 @@ router.get('/vnpay_return', async function (req, res, next) {
             await sendEmail(from, modifiedData.emailReceiver, order_subject, order_text, order_form(modifiedData))
             res.render('success', { code: vnp_Params['vnp_ResponseCode'], frontendUrl: process.env.FRONTEND_URL || 'http://localhost' })
         }
-        // return res.status(200).json({ message: 'success', url: 'checkout/success', code: vnp_Params['vnp_ResponseCode'] })
+        // return res.status(200).json({ message: 'thành công', url: 'checkout/success', code: vnp_Params['vnp_ResponseCode'] })
     } else {
         res.render('error', { code: vnp_Params['vnp_ResponseCode'] })
 
@@ -145,29 +145,29 @@ router.get('/vnpay_return', async function (req, res, next) {
 //                         //thanh cong
 //                         //paymentStatus = '1'
 //                         // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
-//                         res.status(200).json({ RspCode: '00', Message: 'Success' })
+//                         res.status(200).json({ RspCode: '00', Message: 'Thành công' })
 //                     }
 //                     else {
 //                         //that bai
 //                         //paymentStatus = '2'
 //                         // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
-//                         res.status(200).json({ RspCode: '00', Message: 'Success' })
+//                         res.status(200).json({ RspCode: '00', Message: 'Thành công' })
 //                     }
 //                 }
 //                 else {
-//                     res.status(200).json({ RspCode: '02', Message: 'This order has been updated to the payment status' })
+//                     res.status(200).json({ RspCode: '02', Message: 'Đơn hàng này đã được cập nhật trạng thái thanh toán' })
 //                 }
 //             }
 //             else {
-//                 res.status(200).json({ RspCode: '04', Message: 'Amount invalid' })
+//                 res.status(200).json({ RspCode: '04', Message: 'Số tiền không hợp lệ' })
 //             }
 //         }
 //         else {
-//             res.status(200).json({ RspCode: '01', Message: 'Order not found' })
+//             res.status(200).json({ RspCode: '01', Message: 'Không tìm thấy đơn hàng' })
 //         }
 //     }
 //     else {
-//         res.status(200).json({ RspCode: '97', Message: 'Checksum failed' })
+//         res.status(200).json({ RspCode: '97', Message: 'Sai mã kiểm tra (Checksum failed)' })
 //     }
 // });
 

@@ -8,17 +8,17 @@ export const add_comment = async (req, res) => {
     try {
         const checkExistProduct = await product_model.findById(productId);
         if (!checkExistProduct) {
-            return res.status(404).json({ message: "Product not existed!" });
+            return res.status(404).json({ message: "Sản phẩm không tồn tại!" });
         }
 
         const checkExistedComment = await comment_model.findOne({ userId: userId, productId: productId })
-        if (checkExistedComment) return res.status(409).json({ message: "You have feedback this product" });
+        if (checkExistedComment) return res.status(409).json({ message: "Bạn đã đánh giá sản phẩm này rồi" });
 
         const newComment = await comment_model.create({ content, productId, userId })
         if (!newComment) {
-            return res.status(404).json({ message: "Feedback a product unsuccessfully" });
+            return res.status(404).json({ message: "Đánh giá sản phẩm thất bại" });
         }
-        return res.status(201).json({ message: "Feedback a product successfully" })
+        return res.status(201).json({ message: "Đánh giá sản phẩm thành công" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -30,7 +30,7 @@ export const update_comment = async (req, res) => {
     try {
         const comment = await comment_model.findById(commentId)
         if (!comment) {
-            return res.status(404).json({ message: "Feedback does not exist" });
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
         }
 
         const updatedComment = await comment_model.findOneAndUpdate(
@@ -40,7 +40,7 @@ export const update_comment = async (req, res) => {
         );
         if (updatedComment)
             return res.status(200).json({ ...updatedComment._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -55,7 +55,7 @@ export const detail_comment = async (req, res) => {
             select: 'firstName lastName _id'
         })
         if (!data) {
-            return res.status(404).json({ message: "Feedback no exist" });
+            return res.status(404).json({ message: "Đánh giá không tồn tại" });
         }
         return res.status(200).json({
             ...data._doc

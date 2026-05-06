@@ -138,7 +138,7 @@ export const update_cart = asyncHandler(async (req, res) => {
     const { productId, quantity } = req.body;
 
     if (!productId || typeof quantity !== 'number') {
-         return res.status(400).json({ message: "Invalid product or quantity" });
+         return res.status(400).json({ message: "Sản phẩm hoặc số lượng không hợp lệ" });
     }
 
     let cart = await cart_model.findOne({ userId });
@@ -229,5 +229,5 @@ export const clear_cart = asyncHandler(async (req, res) => {
         cart.products = [];
         await cart.save();
     }
-    return res.status(200).json({ message: "Cart cleared" });
+    return res.status(200).json({ message: "Đã xóa giỏ hàng" });
 });

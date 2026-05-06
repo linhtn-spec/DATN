@@ -5,7 +5,7 @@ export const checkAuth = async (req, res, next) => {
     try {
         const accessToken = filterXSS(req.cookies.access_token);
         if (!accessToken) {
-            return res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ message: "Chưa xác thực" });
         }
         const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
         
@@ -27,14 +27,14 @@ export const checkAuth = async (req, res, next) => {
                                 .json({ message: err.message });
                         }
                         // Catch-all for other errors
-                        return res.status(403).json({ message: "Invalid token" });
+                        return res.status(403).json({ message: "Token không hợp lệ" });
                     }
                     const user = await user_model.findOne({ username: decoded.username })
                     if (!user) {
-                        return res.status(404).json({ message: "Not found user" });
+                        return res.status(404).json({ message: "Không tìm thấy người dùng" });
                     }
                     if (decoded.role < 0 || decoded.role > 4) {
-                        return res.status(405).json({ message: "Not allowed to access" });
+                        return res.status(405).json({ message: "Không được cấp quyền truy cập" });
                     }
                     const { password, refreshToken, ...userWithoutPassword } = user._doc;
                     req.user = userWithoutPassword;
@@ -54,6 +54,6 @@ export const authRole = (minRole) => {
     return (req, res, next) => {
         const { role } = req.user
         if (role >= minRole) next()
-        else return res.status(403).json({ message: "You have no permission" })
+        else return res.status(403).json({ message: "Bạn không có quyền" })
     }
 }

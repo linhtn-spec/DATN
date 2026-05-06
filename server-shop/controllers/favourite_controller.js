@@ -8,7 +8,7 @@ export const addFavourite = asyncHandler(async (req, res) => {
     if (favouriteOfUser) {
         const isProductExists = favouriteOfUser.products.includes(data);
         if (isProductExists) {
-            return res.status(400).json({ message: "Product already exists in the wishlist." });
+            return res.status(400).json({ message: "Sản phẩm đã có trong danh sách yêu thích." });
         }
         const pushFavourite = await favourite_model.findOneAndUpdate({ _id: favouriteOfUser._id }, { $push: { products: data } }, { new: true })
         return res.status(200).json(pushFavourite);
@@ -30,7 +30,7 @@ export const deleteFavourite = asyncHandler(async (req, res) => {
     );
 
     if (!updatedFavourite) {
-        return res.status(404).json({ message: "No favourite" });
+        return res.status(404).json({ message: "Chưa có sản phẩm yêu thích" });
     } else {
         return res.status(200).json(updatedFavourite);
     }

@@ -8,11 +8,11 @@ export const add_product = async (req, res) => {
         
         const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'i') } });
         if (checkExistName) {
-            return res.status(400).json({ message: "Product name is existed" });
+            return res.status(400).json({ message: "Tên sản phẩm đã tồn tại" });
         }
         const product = await product_model.create(data);
         if (product) {
-            return res.status(201).json({ product, message: "Add a product successfully" });
+            return res.status(201).json({ product, message: "Thêm sản phẩm thành công" });
         }
         else {
             return res.status(400).json({ message: error.message });
@@ -39,7 +39,7 @@ export const edit_product = async (req, res) => {
     try {
         const product = await product_model.findOne({ _id: product_id });
         if (!product) {
-            return res.status(404).json({ message: "Product does not exist" });
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
 
         // Optimize quantity update
@@ -62,7 +62,7 @@ export const edit_product = async (req, res) => {
         if (data.name !== product.name && data.name) {
             const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'iyu') } });
             if (checkExistName) {
-                return res.status(400).json({ message: "Product name is existed" });
+                return res.status(400).json({ message: "Tên sản phẩm đã tồn tại" });
             }
         }
 
@@ -73,7 +73,7 @@ export const edit_product = async (req, res) => {
         );
         if (updated_product)
             return res.status(200).json({ ...updated_product._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -94,7 +94,7 @@ export const detail_product = async (req, res) => {
             })
             .populate('categoryId')
         if (!product) {
-            return res.status(404).json({ message: "Product no exists" });
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
         else {
             const productDoc = { ...product._doc };
@@ -114,9 +114,9 @@ export const delete_product_one = async (req, res) => {
         console.log(id);
         const data = await product_model.findOneAndDelete({ _id: id });
         if (data) {
-            return res.status(200).json({ message: "Product deleted successfully" });
+            return res.status(200).json({ message: "Xóa sản phẩm thành công" });
         } else {
-            return res.status(404).json({ message: "Product not found" });
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -128,9 +128,9 @@ export const delete_product_all = async (req, res) => {
     try {
         const data = await product_model.deleteMany({ _id: { $ne: null } });
         if (data) {
-            return res.status(200).json({ message: "Product deleted successfully" });
+            return res.status(200).json({ message: "Xóa sản phẩm thành công" });
         } else {
-            return res.status(404).json({ message: "Product not found" });
+            return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -141,14 +141,14 @@ export const delete_product_list = async (req, res) => {
     try {
         const product_id = req.body.product_id;
         if (!product_id || product_id.length === 0) {
-            return res.status(400).json({ message: "Please provide list of product_id" });
+            return res.status(400).json({ message: "Vui lòng cung cấp danh sách product_id" });
         }
         const data = await product_model.deleteMany({ _id: { $in: product_id } });
 
         if (data) {
-            return res.status(200).json({ message: "Products deleted successfully" });
+            return res.status(200).json({ message: "Xóa các sản phẩm thành công" });
         } else {
-            return res.status(404).json({ message: "Products not found" });
+            return res.status(404).json({ message: "Không tìm thấy các sản phẩm" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -215,7 +215,7 @@ export const all_product = async (req, res) => {
             })
             .populate('categoryId')
         if (data.length === 0) {
-            return res.status(404).json({ message: "No product" });
+            return res.status(404).json({ message: "Không có sản phẩm" });
         }
         return res.status(200).json({ data });
     } catch (error) {
@@ -234,7 +234,7 @@ export const category_product = async (req, res) => {
         const dataAll = await product_model.find({ category_name: cateName }).sort({ createdAt: -1 });
         const data = dataAll.slice(skip, skip + limit);
         if (dataAll.length === 0) {
-            return res.status(404).json({ message: "No product" });
+            return res.status(404).json({ message: "Không có sản phẩm" });
         }
         else {
             const total_page = Math.ceil(dataAll.length / limit);
@@ -262,7 +262,7 @@ export const new_product = async (req, res) => {
     try {
         const data = await product_model.find({ isActive: true }).sort({ createdAt: -1 });
         if (data.length === 0) {
-            return res.status(404).json({ message: "Product no exists" });
+            return res.status(404).json({ message: "Sản phẩm không tồn tại" });
         }
         else {
 
@@ -285,7 +285,7 @@ export const recommend_product = async (req, res) => {
         });
 
         if (dataRecommend.length === 0) {
-            return res.status(404).json({ message: "No recommend products" });
+            return res.status(404).json({ message: "Không có sản phẩm gợi ý" });
         }
         else {
             return res.status(200).json(dataRecommend);
@@ -303,7 +303,7 @@ export const product_by_category = async (req, res) => {
             ...options, populate: "categoryId"
         });
         if (data.totalDocs === 0) {
-            return res.status(404).json({ message: "No products" });
+            return res.status(404).json({ message: "Không có sản phẩm" });
         }
         return res.status(200).json({ ...data });
     } catch (error) {
@@ -318,7 +318,7 @@ export const product_may_like = async (req, res) => {
         if (hasProductId) {
             const toCategory = await product_model.findById(productId)
             if (!toCategory) {
-                return res.status(404).json({ message: "Product not found" });
+                return res.status(404).json({ message: "Không tìm thấy sản phẩm" });
             }
 
             const dataToCategory = await product_model.find({

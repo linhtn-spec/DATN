@@ -15,15 +15,15 @@ export const add_category = async (req, res) => {
 
         const checkExistOrder = await category_model.findOne({ order: order });
         if (checkExistOrder) {
-            return res.status(400).json({ message: "Category order already taken" });
+            return res.status(400).json({ message: "Thứ tự danh mục đã tồn tại" });
         }
 
         const category = await category_model.create({ name, image, description, order, isActive });
         if (category) {
-            return res.status(201).json({ category, message: "Add a category successfully" });
+            return res.status(201).json({ category, message: "Thêm danh mục thành công" });
         }
 
-        return res.status(400).json({ message: "Add a category unsuccessfully " })
+        return res.status(400).json({ message: "Thêm danh mục thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -41,14 +41,14 @@ export const update_category = async (req, res) => {
     try {
         const category = await category_model.findOne({ _id: category_id });
         if (!category) {
-            return res.status(404).json({ message: "Category does not exist" });
+            return res.status(404).json({ message: "Danh mục không tồn tại" });
         }
-        if (category.name.toLowerCase() === 'default') return res.status(400).json({ message: "Can't update default category" });
+        if (category.name.toLowerCase() === 'default') return res.status(400).json({ message: "Không thể cập nhật danh mục mặc định" });
 
         if (order && order !== category.order) {
             const checkExistOrder = await category_model.findOne({ order: order });
             if (checkExistOrder) {
-                return res.status(400).json({ message: "Category order already taken" });
+                return res.status(400).json({ message: "Thứ tự danh mục đã tồn tại" });
             }
         }
 
@@ -59,7 +59,7 @@ export const update_category = async (req, res) => {
         );
         if (updated_category)
             return res.status(200).json({ ...updated_category._doc });
-        return res.status(400).json({ message: "Update unsuccessfully " })
+        return res.status(400).json({ message: "Cập nhật thất bại" })
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -70,7 +70,7 @@ export const detail_category = async (req, res) => {
         const category_id = req.params.id;
         const data = await category_model.findOne({ _id: category_id })
         if (data === null) {
-            return res.status(404).json({ message: "Category no exists" });
+            return res.status(404).json({ message: "Danh mục không tồn tại" });
         }
         return res.status(200).json({
             ...data._doc
@@ -84,11 +84,11 @@ export const delete_category_one = async (req, res) => {
     try {
         const id = req.params.id;
         const checkDefault = await category_model.findOne({ _id: id });
-        if (!checkDefault) return res.status(404).json({ message: "Category not found" });
+        if (!checkDefault) return res.status(404).json({ message: "Không tìm thấy danh mục" });
         
         const defaultName = process.env.CATEGORY_NAME_DEFAULT || 'Default';
         if (checkDefault.name.toLowerCase() === defaultName.toLowerCase())
-            return res.status(400).json({ message: "Can't delete default category" });
+            return res.status(400).json({ message: "Không thể xóa danh mục mặc định" });
         let defaultCategory = await category_model.findOne({ 
             name: { $regex: new RegExp(`^${defaultName}$`, 'i') } 
         });
@@ -108,9 +108,9 @@ export const delete_category_one = async (req, res) => {
         const data = await category_model.findOneAndDelete({ _id: id });
 
         if (data !== null) {
-            return res.status(200).json({ message: "Category deleted successfully" });
+            return res.status(200).json({ message: "Đã xóa danh mục thành công" });
         } else {
-            return res.status(404).json({ message: "Category not found" });
+            return res.status(404).json({ message: "Không tìm thấy danh mục" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -122,16 +122,16 @@ export const delete_category_list = async (req, res) => {
     try {
         const category_id = req.body.id;
         if (!category_id || category_id.length === 0) {
-            return res.status(400).json({ message: "Please provide list of category_id" });
+            return res.status(400).json({ message: "Vui lòng cung cấp danh sách category_id" });
         }
         const existingCategories = await category_model.find({ _id: { $in: category_id } });
         const defaultName = process.env.CATEGORY_NAME_DEFAULT || 'Default';
         const hasDefaultCategory = existingCategories.some(category => 
             category.name.toLowerCase() === defaultName.toLowerCase()
         );
-        if (hasDefaultCategory) return res.status(400).json({ message: "Can't delete default category" });
+        if (hasDefaultCategory) return res.status(400).json({ message: "Không thể xóa danh mục mặc định" });
         if (existingCategories.length !== category_id.length) {
-            return res.status(404).json({ message: "One or more categories not found" });
+            return res.status(404).json({ message: "Một hoặc nhiều danh mục không tồn tại" });
         }
         let defaultCategory = await category_model.findOne({ 
             name: { $regex: new RegExp(`^${defaultName}$`, 'i') } 
@@ -151,9 +151,9 @@ export const delete_category_list = async (req, res) => {
         await product_model.updateMany({ categoryId: { $in: category_id } }, { categoryId: defaultCategory._id });
         const data = await category_model.deleteMany({ _id: { $in: category_id } });
         if (data) {
-            return res.status(200).json({ message: "Categories deleted successfully" });
+            return res.status(200).json({ message: "Khóa các danh mục thành công" });
         } else {
-            return res.status(404).json({ message: "Categories not found" });
+            return res.status(404).json({ message: "Không tìm thấy các danh mục" });
         }
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -194,7 +194,7 @@ export const paginate_category = async (req, res) => {
             offset: skip, page: page, limit: limit, sort: sortKind
         });
         if (dataAll.totalDocs === 0) {
-            return res.status(404).json({ message: "No category" });
+            return res.status(404).json({ message: "Không có danh mục" });
         }
         return res.status(200).json({ ...dataAll });
     } catch (error) {
@@ -206,7 +206,7 @@ export const all_category = async (req, res) => {
     try {
         const data = await category_model.find({});
         if (data.length === 0) {
-            return res.status(404).json({ message: "No category" });
+            return res.status(404).json({ message: "Không có danh mục" });
         }
         else return res.status(200).json({ data });
     } catch (error) {
@@ -224,7 +224,7 @@ export const product_by_category = async (req, res) => {
             }
         });
         if (data.totalDocs === 0) {
-            return res.status(404).json({ message: "No category" });
+            return res.status(404).json({ message: "Không có danh mục" });
         }
         return res.status(200).json({ ...data });
     } catch (error) {
