@@ -23,6 +23,7 @@ import public_product from './public/product_router.js';
 import public_rating from './public/rating_router.js';
 import public_sale from './public/sale_router.js';
 import public_user from './public/user_router.js';
+import public_tax from './public/tax_router.js';
 
 publicRouter.use('/', public_banner);
 publicRouter.use('/', public_blog);
@@ -34,6 +35,7 @@ publicRouter.use('/', public_product);
 publicRouter.use('/', public_rating);
 publicRouter.use('/', public_sale);
 publicRouter.use('/', public_user);
+publicRouter.use('/', public_tax);
 
 
 // ==========================================

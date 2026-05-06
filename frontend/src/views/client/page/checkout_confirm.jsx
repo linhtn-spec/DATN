@@ -13,12 +13,19 @@ import "../style/checkout_confirm.css";
 
 import { addOrder } from "../../../services/order_service";
 import { listShippingConfig } from "../../../services/shipping_service";
+import { getTaxConfig } from "../../../services/tax_service";
 import { UserContext } from "../../../store/user";
 function CheckoutConfirm() {
     document.title = "Xác nhận đặt hàng";
     const [form] = Form.useForm()
     const [subTotal, setSubtotal] = useState(0)
     const [products, setProducts] = useState([])
+    
+    // Dynamic Tax defaults
+    const [taxConfig, setTaxConfig] = useState({
+        rate: 0.09,
+        label: 'Thuế (9%)'
+    });
 
     const [orderId, setOrderId] = useState('')
     const user = useContext(UserContext)
@@ -73,9 +80,9 @@ function CheckoutConfirm() {
                     quantity: item?.quantityBuy
                 })),
                 userId: user?.state?.currentUser?.user_id,
-                tax: (subTotal * 0.09).toFixed(2)
+                tax: (subTotal * taxConfig.rate).toFixed(2)
             }, {
-                onSuccess: (res) => isVnpay.mutate({ amount: ((subTotal * 1.09 + currentShippingFee) * 25_410).toFixed(2), language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
+                onSuccess: (res) => isVnpay.mutate({ amount: ((subTotal * (1 + taxConfig.rate) + currentShippingFee) * 25_410).toFixed(2), language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
             })
         }
         else {
@@ -87,7 +94,7 @@ function CheckoutConfirm() {
                     quantity: item?.quantityBuy
                 })),
                 userId: user?.state?.currentUser?.user_id,
-                tax: (subTotal * 0.09).toFixed(2)
+                tax: (subTotal * taxConfig.rate).toFixed(2)
             }, {
                 onSuccess: () => {
                     Notification({ message: `Đặt hàng thành công!`, type: "success" })
@@ -105,17 +112,29 @@ function CheckoutConfirm() {
     });
 
     useEffect(() => {
-        const fetchFees = async () => {
-            const res = await listShippingConfig();
-            if (res.status === 200) {
+        const fetchConfigs = async () => {
+            const resShipping = await listShippingConfig();
+            if (resShipping.status === 200) {
                 const fees = {};
-                res.data.forEach(item => {
+                resShipping.data.forEach(item => {
                     fees[item.method] = item.fee;
                 });
                 setShippingFees(fees);
             }
+            
+            try {
+                const resTax = await getTaxConfig();
+                if (resTax.status === 200 && resTax.data) {
+                    setTaxConfig({
+                        rate: resTax.data.rate,
+                        label: `${resTax.data.label} (${(resTax.data.rate * 100).toFixed(0)}%)`
+                    });
+                }
+            } catch (err) {
+                console.error("Error fetching tax config", err);
+            }
         };
-        fetchFees();
+        fetchConfigs();
     }, []);
 
     const currentShippingFee = shippingFees[order?.state?.currentOrder?.shippingMethod] || 0;
@@ -215,14 +234,14 @@ function CheckoutConfirm() {
         },
         {
             key: '2',
-            label: 'Thuế (9%)',
-            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 0.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            label: taxConfig.label,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * taxConfig.rate).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         },
         {
             key: '3',
             label: 'Tổng cộng',
-            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09 + currentShippingFee).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * (1 + taxConfig.rate) + currentShippingFee).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         }
     ];

@@ -120,6 +120,7 @@ export const getNavbarItems = (userRole, getItem) => [
             getItem(<NavLink to="orders">Đơn hàng</NavLink>, 'orders', <AccountBookOutlined />),
             getItem(<NavLink to="customers">Khách hàng</NavLink>, 'customers', <UserOutlined />),
             userRole >= ROLE.MANAGER && getItem(<NavLink to="shipping">Phí vận chuyển</NavLink>, 'shipping', <TruckOutlined />),
+            userRole >= ROLE.MANAGER && getItem(<NavLink to="tax">Mức Thuế</NavLink>, 'tax', <PercentageOutlined />),
         ]
     ),
     userRole >= ROLE.STAFF && getItem(

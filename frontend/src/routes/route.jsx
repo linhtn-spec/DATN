@@ -48,6 +48,7 @@ import { BlogList } from "../views/admin/page/blog/blog-list/Blog";
 import CreateBlog from "../views/admin/page/blog/create-blog/CreateBlog";
 import UpdateBlog from "../views/admin/page/blog/update-blog/UpdateBlog";
 import { ShippingConfig } from "../views/admin/page/shipping/ShippingConfig";
+import { TaxConfig } from "../views/admin/page/tax/TaxConfig";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -274,6 +275,10 @@ const adminRoutes = [
           {
             path: "shipping",
             element: <ShippingConfig />,
+          },
+          {
+            path: "tax",
+            element: <TaxConfig />,
           },
         ]
       },
