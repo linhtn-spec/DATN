@@ -152,7 +152,6 @@ function UpdateProduct() {
 
     return (
         <Flex className="add_product_panel container" vertical>
-            <AdminHeader title="Cập nhật sản phẩm" icon={<PlusOutlined />} />
             <Card
                 title="Cập nhật sản phẩm"
                 bordered={false}

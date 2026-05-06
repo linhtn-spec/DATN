@@ -59,11 +59,10 @@ export function DetailRating() {
         onSuccess: () => {
             Notification({ message: "Cập nhật trạng thái đánh giá thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
-            queryClient.invalidateQueries({ queryKey: ['ratings_global_list'] })
             if (product_id) {
                 navigate(`/admin/product/${product_id}/ratings`, { replace: true })
             } else {
-                navigate(`/admin/ratings`, { replace: true })
+                navigate(-1)
             }
         },
         onError: () => {

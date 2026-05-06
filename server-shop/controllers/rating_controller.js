@@ -114,7 +114,7 @@ export const paginate_rating = async (req, res) => {
         let ratingQuery = {}
         if (userIds.length)
             ratingQuery.userId = { $in: userIds }
-        if (isActive) {
+        if (isActive !== undefined && isActive !== '') {
             ratingQuery.isActive = isActive;
         }
         const dataAll = await rating_model.paginate(ratingQuery, {
@@ -155,7 +155,7 @@ export const rating_product = async (req, res) => {
     const skip = (page - 1) * limit;
     const query = {}
     query.productId = product_id
-    if (isActive !== undefined) {
+    if (isActive !== undefined && isActive !== '') {
         if (currentUserId) {
             query.$or = [{ isActive: isActive }, { userId: currentUserId }]
         } else {

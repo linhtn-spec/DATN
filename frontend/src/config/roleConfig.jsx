@@ -146,9 +146,4 @@ export const getNavbarItems = (userRole, getItem) => [
         'customer-support',
         <MessageOutlined />
     ),
-    userRole >= ROLE.STAFF && getItem(
-        <NavLink to="ratings">Đánh giá</NavLink>,
-        'ratings',
-        <StarOutlined />
-    ),
 ].filter(Boolean);

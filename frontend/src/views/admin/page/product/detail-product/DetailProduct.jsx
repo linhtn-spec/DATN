@@ -2,11 +2,14 @@ import { Flex } from 'antd';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './DetailProduct.css';
+import AdminHeader from '../../../components/AdminHeader';
+import { ShoppingOutlined } from '@ant-design/icons';
 
 export const DetailProduct = () => {
 
+    const navigate = useNavigate();
     const [activeLink, setActiveLink] = useState('information');
     const location = useLocation()
     useEffect(() => {
@@ -23,6 +26,11 @@ export const DetailProduct = () => {
 
     return (
         <Flex vertical>
+            <AdminHeader 
+                title="Thông tin chi tiết sản phẩm" 
+                icon={<ShoppingOutlined />} 
+                onBack={() => navigate('/admin/product')} 
+            />
             <Flex justify='space-between' className='group_link'>
                 <Flex justify='center' align='center' className={clsx('link', activeLink === 'information' && 'active_link')} onClick={() => setActive('information')}>
                     <NavLink

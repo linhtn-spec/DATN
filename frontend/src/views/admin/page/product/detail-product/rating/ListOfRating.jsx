@@ -42,58 +42,51 @@ export const ListOfRating = () => {
         }
     })
 
-    const { data, isSuccess } = useQuery({
+    const { data, isSuccess, isLoading } = useQuery({
         queryKey: ['ratings_admin_list', page, searchSortStar, searchName, searchSortDate, searchIsActive, product_id],
-        queryFn: () => ratingToProduct(product_id, page,
-            searchName !== undefined ? searchName : '',
-            searchSortStar !== undefined ? searchSortStar : '',
-            searchSortDate !== undefined ? searchSortDate : '',
-            searchIsActive !== undefined ? searchIsActive : '',
+        queryFn: () => ratingToProduct(
+            product_id,
+            page,
+            searchName || '',
+            searchSortStar || '',
+            searchSortDate || '',
+            searchIsActive || ''
         ),
-        enabled: !!searchSortDate || !!searchName || !!page || !!searchSortStar || !!searchName || !!searchIsActive || !!product_id
+        enabled: !!product_id
     })
 
     useEffect(() => {
         setPage(1)
-
-        return () => {
-            setPage(1)
-        }
+        return () => { setPage(1) }
     }, [])
 
     useEffect(() => {
         setPage(1)
-
-        return () => {
-            setPage(1)
-        }
+        return () => { setPage(1) }
     }, [searchSortStar, searchName, searchSortDate, searchIsActive])
-
-
 
     useEffect(() => {
         if (!isSuccess) return
+        // Handle both possible data structures from backend/axios
         const rawData = data?.data?.data || data?.data;
-        setItems(
-            (rawData?.docs || []).map((item) => ({
-                key: item?._id,
-                name: item?.userId?.firstName + " " + item?.userId?.lastName,
-                stars: item?.stars,
-                isActive: item?.isActive,
-                createdAt: item?.createdAt,
-                content: item?.content
-            }))
-        );
-
-        setTotal(rawData?.totalDocs)
+        if (rawData && rawData.docs) {
+            setItems(
+                rawData.docs.map((item) => ({
+                    key: item?._id,
+                    name: item?.userId?.firstName + " " + item?.userId?.lastName,
+                    stars: item?.stars,
+                    isActive: item?.isActive,
+                    createdAt: item?.createdAt,
+                    content: item?.content
+                }))
+            );
+            setTotal(rawData.totalDocs || 0);
+        }
 
         return () => {
             setItems([])
         }
-
     }, [data, isSuccess]);
-
-    console.log(items);
 
     const columns = [
         {
@@ -189,7 +182,8 @@ export const ListOfRating = () => {
 
     }, [])
     return (
-        <Flex vertical gap={"middle"} className='banner_list'>
+        <Flex vertical gap={"middle"} style={{ paddingTop: 10 }}>
+            <Typography.Title level={5}>Quản lý đánh giá sản phẩm</Typography.Title>
             <Flex>
                 <Form form={form} onFieldsChange={onFieldsChange} style={{ width: "100%" }}>
                     <Flex gap={'middle'} width="100%">
@@ -216,7 +210,7 @@ export const ListOfRating = () => {
                 bordered
                 columns={columns}
                 dataSource={items}
-                rowHoverable
+                loading={isLoading}
                 onChange={onChange}
                 pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, showSizeChanger: false, onChange: setPage }}
             />
