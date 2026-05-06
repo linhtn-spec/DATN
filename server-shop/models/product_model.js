@@ -31,6 +31,11 @@ const product_schema = new mongoose.Schema({
         min: 1,
         required: true
     },
+    importPrice: {
+        type: Number,
+        min: 1,
+        default: 1 // Default handling for legacy records without import prices
+    },
     quantity: {
         sold: {
             type: Number,

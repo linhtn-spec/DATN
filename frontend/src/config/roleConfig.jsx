@@ -9,6 +9,7 @@ import {
     PercentageOutlined,
     PictureOutlined,
     PieChartOutlined,
+    WalletOutlined,
     ProjectOutlined,
     StarOutlined,
     UserOutlined,
@@ -73,6 +74,11 @@ export const getNavbarItems = (userRole, getItem) => [
         <NavLink to="overview">Tổng quan</NavLink>,
         'overview',
         <PieChartOutlined />
+    ),
+    userRole >= ROLE.ADMIN && getItem(
+        <NavLink to="finance">Tài chính (Finance)</NavLink>,
+        'finance',
+        <WalletOutlined />
     ),
 
     // ── Staff (STAFF = 1) and above ──────────────────────────────────

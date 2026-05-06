@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { countAddedPerDay, countDailyOrders, countMonthlyOrders, count_order, count_product_category, count_statitics, unsold } from "../../controllers/statitics_controller.js";
+import { countAddedPerDay, countDailyOrders, countMonthlyOrders, count_order, count_product_category, count_statitics, unsold, getFinanceOverview, getWithdrawalsHistory, createWithdrawal } from "../../controllers/statitics_controller.js";
 
 const router = Router();
 
@@ -10,5 +10,10 @@ router.get("/order_per_month", countMonthlyOrders)
 router.get("/order_per_day", countDailyOrders)
 router.get("/unsold", unsold)
 router.get("/statitics_perday", countAddedPerDay)
+
+// Finance Endpoints
+router.get("/finance_overview", getFinanceOverview)
+router.get("/withdrawals", getWithdrawalsHistory)
+router.post("/withdrawals", createWithdrawal)
 
 export default router;

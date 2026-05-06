@@ -2,6 +2,8 @@ import product_model from "../models/product_model.js"
 import category_model from "../models/category_model.js"
 import order_model from "../models/order_model.js"
 import user_model from "../models/user_model.js"
+import withdrawal_model from "../models/withdrawal_model.js"
+import consignment_model from "../models/consignment_model.js"
 import moment from "moment";
 
 export const count_product_category = async (req, res) => {
@@ -256,7 +258,116 @@ export const countAddedPerDay = async (req, res) => {
             userNewPerDay: userNewPerDay
         });
     } catch (error) {
-        console.error("Error counting products added per day:", error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getFinanceOverview = async (req, res) => {
+    try {
+        // 1. Fetch completed orders to sum revenue and track quantities sold per product
+        const doneOrders = await order_model.find({ orderStatus: 'done' });
+        
+        let totalRevenue = 0;
+        const soldProductMap = {}; // productId -> quantity sold
+        
+        doneOrders.forEach(order => {
+            order.products.forEach(item => {
+                const pId = item.productId.toString();
+                const qty = Number(item.quantity) || 0;
+                const subPrice = Number(item.subPrice) || 0;
+                
+                totalRevenue += (qty * subPrice);
+                
+                if (!soldProductMap[pId]) soldProductMap[pId] = 0;
+                soldProductMap[pId] += qty;
+            });
+        });
+
+        // 2. Fetch all consignments in chronological order (FIFO)
+        const consignments = await consignment_model.find().sort({ importDate: 1 });
+        
+        // 3. Compute exact COGS based on FIFO strategy
+        let totalCOGS = 0;
+        
+        Object.keys(soldProductMap).forEach(pId => {
+            let remainingToCost = soldProductMap[pId];
+            
+            for (let i = 0; i < consignments.length; i++) {
+                if (remainingToCost <= 0) break;
+                
+                const c = consignments[i];
+                // Find matching product line item in consignment
+                const cProduct = c.products.find(p => p.productId && p.productId.toString() === pId);
+                
+                if (cProduct) {
+                    const availableQtyInC = cProduct.quantity;
+                    const cogsTaken = Math.min(availableQtyInC, remainingToCost);
+                    
+                    // We treat importMoney as the Unit Import Price
+                    const unitCost = Number(cProduct.importMoney) || 0;
+                    
+                    totalCOGS += (cogsTaken * unitCost);
+                    remainingToCost -= cogsTaken;
+                }
+            }
+            
+            // Fallback for inventory sold that was never imported via consignment (e.g. seeded data)
+            if (remainingToCost > 0) {
+                // Heuristic: Use the latest known importMoney as the unit cost fallback
+                const latestC = [...consignments].reverse().find(c => c.products.some(p => p.productId && p.productId.toString() === pId));
+                let fallbackPrice = 0;
+                if (latestC) {
+                    const pItem = latestC.products.find(p => p.productId && p.productId.toString() === pId);
+                    fallbackPrice = Number(pItem.importMoney) || 0;
+                }
+                totalCOGS += (remainingToCost * fallbackPrice);
+            }
+        });
+
+        const totalProfit = totalRevenue - totalCOGS;
+
+        const withdrawalAgg = await withdrawal_model.aggregate([
+            { $match: { status: 'completed' } },
+            { $group: { _id: null, totalWithdrawal: { $sum: "$amount" } } }
+        ]);
+        const totalWithdrawal = withdrawalAgg.length ? withdrawalAgg[0].totalWithdrawal : 0;
+        
+        const balance = totalProfit - totalWithdrawal;
+
+        return res.status(200).json({
+            totalRevenue,
+            totalProfit,
+            totalWithdrawal,
+            balance
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const getWithdrawalsHistory = async (req, res) => {
+    try {
+        const list = await withdrawal_model.find().sort({ createdAt: -1 });
+        return res.status(200).json(list);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+export const createWithdrawal = async (req, res) => {
+    try {
+        const { amount, note } = req.body;
+        const userId = req.user.user_id; // Using req.user logic from checkAuth
+
+        const withdrawal = await withdrawal_model.create({
+            userId,
+            amount,
+            note,
+            status: 'completed'
+        });
+
+        return res.status(201).json({ message: "Tạo lệnh rút thành công", data: withdrawal });
+    } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };

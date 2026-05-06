@@ -127,6 +127,7 @@ function UpdateProduct() {
         form.setFieldValue('isActive', rawData?.isActive)
         form.setFieldValue('unit', rawData?.unit)
         form.setFieldValue('price', rawData?.price)
+        form.setFieldValue('importPrice', rawData?.importPrice)
         setFileList(
             rawData?.images.map((item, index) => ({
                 uid: `${index}`,
@@ -344,6 +345,29 @@ function UpdateProduct() {
                                     ]}
                                 >
                                     <InputNumber placeholder="Giá" />
+                                </Form.Item>
+                            </Flex>
+                            <Flex vertical style={{ width: "100%" }}>
+                                <Typography.Title level={5}>Giá vốn/Giá nhập</Typography.Title>
+                                <Form.Item
+                                    hasFeedback
+                                    validateDebounce={1500}
+                                    name="importPrice"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Giá vốn không được để trống hoặc là số âm",
+                                            pattern: new RegExp(/^[0-9]+$/)
+
+                                        },
+                                        {
+                                            type: 'number',
+                                            min: 1,
+                                            message: "Giá vốn phải ít nhất là 1"
+                                        }
+                                    ]}
+                                >
+                                    <InputNumber placeholder="Giá vốn" />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>

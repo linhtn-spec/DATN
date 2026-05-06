@@ -48,6 +48,7 @@ import { BlogList } from "../views/admin/page/blog/blog-list/Blog";
 import CreateBlog from "../views/admin/page/blog/create-blog/CreateBlog";
 import UpdateBlog from "../views/admin/page/blog/update-blog/UpdateBlog";
 import { ShippingConfig } from "../views/admin/page/shipping/ShippingConfig";
+import FinanceDashboard from "../views/admin/page/finance/FinanceDashboard";
 import { TaxConfig } from "../views/admin/page/tax/TaxConfig";
 
 // Auth pages
@@ -288,6 +289,7 @@ const adminRoutes = [
         element: <RoleRoute minRole={ROLE.ADMIN} />,
         children: [
           { path: "overview", element: <Overview /> },
+          { path: "finance", element: <FinanceDashboard /> },
         ]
       }
     ],
