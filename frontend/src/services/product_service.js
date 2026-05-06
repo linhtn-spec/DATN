@@ -11,11 +11,13 @@ export const listProduct = (
     sortPrice,
     sortDate,
     start_price,
-    end_price
+    end_price,
+    limit
 ) =>
     api.get(URL.PRODUCT.CRUD, {
         params: {
             page,
+            limit,
             name,
             origin,
             categoryId,
@@ -45,8 +47,8 @@ export const deleteProductList = (ids) =>
     api.delete(URL.PRODUCT.CRUD, { data: { product_id: ids } });
 
 /** Get products filtered by category */
-export const productByCategory = (categoryId, page) =>
-    api.get(URL.PRODUCT.CRUD, { params: { page, categoryId } });
+export const productByCategory = (categoryId, page, limit = 8) =>
+    api.get(URL.PRODUCT.CRUD, { params: { page, limit, categoryId } });
 
 /** Get "you may like" product recommendations */
 export const productMayLike = (id) =>

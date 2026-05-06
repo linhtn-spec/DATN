@@ -12,10 +12,10 @@
 
 
 .category_items .item {
-    min-height: 440px;
+    min-height: 400px;
     height: auto;
-    min-width: 320px;
-    width: calc(90%/3);
+    min-width: 250px;
+    width: calc(25% - 18px);
     border-radius: 12px;
     margin-bottom: 20px;
     position: relative;
@@ -107,7 +107,9 @@
     text-transform: uppercase;
     font-size: 13px;
     margin-top: auto; /* Push to bottom of flex container */
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
 .wishlist_item .item .delete_favourite {
@@ -134,7 +136,8 @@
 }
 
 .category_items .item:hover .buy {
-    display: block;
+    opacity: 1;
+    visibility: visible;
     animation: SlideUp .6s ease-in-out;
 }
 

@@ -275,7 +275,7 @@ function Shop() {
                         ) : (
                             <>
                                 <Flex className='result'>
-                                    <h3>Hiển thị <span>1 - {total > 6 ? 6 : total}</span> trong số {total} kết quả</h3>
+                                    <h3>Hiển thị <span>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</span> trong số {total} kết quả</h3>
                                 </Flex>
                                 <Flex gap={"16px"} wrap="wrap">
                                     {products.map(item => (

@@ -1,11 +1,11 @@
 // import { upload_image } from "../cloudinary/upload_image.js";
-import product_model from "../models/product_model.js"
+import product_model from "../models/product_model.js";
 import { options } from "../paginate/options.js";
 
 export const add_product = async (req, res) => {
     try {
         const data = req.body;
-        
+
         const checkExistName = await product_model.findOne({ name: { $regex: new RegExp(data.name, 'i') } });
         if (checkExistName) {
             return res.status(400).json({ message: "Tên sản phẩm đã tồn tại" });
@@ -33,8 +33,8 @@ export const edit_product = async (req, res) => {
     if (description) data.description = description;
     if (isActive !== '') data.isActive = isActive;
     if (images) {
-        data.images = typeof images === 'string' 
-            ? (images.match(/https?:\/\/[^,]+?(?=https?:\/\/|,|$)/g) || [images]) 
+        data.images = typeof images === 'string'
+            ? (images.match(/https?:\/\/[^,]+?(?=https?:\/\/|,|$)/g) || [images])
             : images;
     }
     if (categoryId) data.categoryId = categoryId
@@ -163,8 +163,8 @@ export const delete_product_list = async (req, res) => {
 };
 
 export const paginate_product = async (req, res) => {
-    const { name, origin, categoryId, sortName, page, start_price, end_price, sortPrice, sortDate } = req.query;
-    const limit = 6;
+    const { name, origin, categoryId, sortName, page, start_price, end_price, sortPrice, sortDate, limit: queryLimit } = req.query;
+    const limit = queryLimit ? parseInt(queryLimit) : 6;
     const skip = (page - 1) * limit;
     const query = {};
     if (name) query.name = new RegExp(name, 'iuy');
@@ -345,7 +345,7 @@ export const product_may_like = async (req, res) => {
             // Merge and deduplicate
             const combined = [...dataToCategory, ...topSold];
             const uniqueData = Array.from(new Map(combined.map(item => [item._id.toString(), item])).values());
-            
+
             return res.status(200).json(uniqueData);
         }
         else {

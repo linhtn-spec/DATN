@@ -1,13 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Empty, Flex, Pagination } from "antd";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import { detailCategory } from "../../../services/category_service";
+import { productByCategory } from "../../../services/product_service";
 import Banner_Big from "../layout/banner_big";
 import ProductGrid from "../layout/product_grid";
 import "./../style/category.css";
-import { useQuery } from "@tanstack/react-query";
-import { productByCategory } from "../../../services/product_service";
-import { detailCategory } from "../../../services/category_service";
-import dayjs from "dayjs";
 function Category() {
     const { category_id } = useParams();
     const [products, setProducts] = useState([]);
@@ -61,7 +61,7 @@ function Category() {
     useEffect(() => {
         if (categoryName)
             document.title = categoryName;
-        
+
     }, [categoryName])
     return (
         <>
@@ -77,8 +77,8 @@ function Category() {
                         },
                     ]}
                 />
-                <Flex className="category_pagination" justify="center"><p className=" text-left">Hiển thị <b>{total !== 0 ? 1 : 0}</b> - <b>{total < 6 ? total : 6}</b> trên tổng số <b>{total}</b> kết quả</p></Flex>
-                <Flex className="category_items" wrap="wrap" gap="50px">
+                <Flex className="category_pagination" justify="center"><p className=" text-left">Hiển thị <b>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b>{Math.min(page * 8, total)}</b> trên tổng số <b>{total}</b> kết quả</p></Flex>
+                <Flex className="category_items" wrap="wrap" gap="24px">
                     {products.length !== 0 ? (
                         products.map((item) => {
                             return <ProductGrid products={item} key={item.id} />
@@ -91,7 +91,7 @@ function Category() {
                 <Flex justify="center">
                     <Pagination
                         total={total}
-                        pageSize={6}
+                        pageSize={8}
                         current={page}
                         defaultCurrent={1}
                         hideOnSinglePage
