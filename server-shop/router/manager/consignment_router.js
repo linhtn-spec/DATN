@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { add_consignment, all_consignment, delete_consignment, detail_consignment, paginate_consignment, update_consignment } from "../../controllers/consignment_controller.js";
+import { add_consignment, all_consignment, delete_consignment, detail_consignment, expiring_soon, paginate_consignment, update_consignment } from "../../controllers/consignment_controller.js";
 import { authRole, checkAuth } from "../../middleware/check_auth.js";
 import { auditLogger } from "../../middleware/audit_middleware.js";
 import { Role } from "../../helper/enum.js";
@@ -15,5 +15,6 @@ router.delete('/consignment/:id', auditLogger("DELETE_CONSIGNMENT", "Consignment
 router.get('/consignment', paginate_consignment)
 router.get('/consignment/:id', detail_consignment)
 router.get('/consignment/options/all', all_consignment)
+router.get('/consignment/alerts/expiring', expiring_soon)
 
 export default router;

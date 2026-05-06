@@ -325,7 +325,7 @@ function UpdateProduct() {
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Giá</Typography.Title>
+                                <Typography.Title level={5}>Giá bán (VNĐ)</Typography.Title>
                                 <Form.Item
                                     hasFeedback
                                     validateDebounce={1500}
@@ -334,40 +334,21 @@ function UpdateProduct() {
                                         {
                                             required: true,
                                             message: "Giá không được để trống hoặc là số âm",
-                                            pattern: new RegExp(/^[0-9]+$/)
 
                                         },
                                         {
                                             type: 'number',
-                                            min: 1,
-                                            message: "Giá phải ít nhất là 1"
+                                            min: 1000,
+                                            message: "Giá phải ít nhất là 1,000 VNĐ"
                                         }
                                     ]}
                                 >
-                                    <InputNumber placeholder="Giá" />
-                                </Form.Item>
-                            </Flex>
-                            <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Giá vốn/Giá nhập</Typography.Title>
-                                <Form.Item
-                                    hasFeedback
-                                    validateDebounce={1500}
-                                    name="importPrice"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Giá vốn không được để trống hoặc là số âm",
-                                            pattern: new RegExp(/^[0-9]+$/)
-
-                                        },
-                                        {
-                                            type: 'number',
-                                            min: 1,
-                                            message: "Giá vốn phải ít nhất là 1"
-                                        }
-                                    ]}
-                                >
-                                    <InputNumber placeholder="Giá vốn" />
+                                    <InputNumber 
+                                        placeholder="Nhập giá bán" 
+                                        style={{ width: '100%' }}
+                                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                    />
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>

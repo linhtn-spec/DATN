@@ -50,6 +50,7 @@ import UpdateBlog from "../views/admin/page/blog/update-blog/UpdateBlog";
 import { ShippingConfig } from "../views/admin/page/shipping/ShippingConfig";
 import FinanceDashboard from "../views/admin/page/finance/FinanceDashboard";
 import { TaxConfig } from "../views/admin/page/tax/TaxConfig";
+import ExpiryAlert from "../views/admin/page/inventory/ExpiryAlert";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -253,6 +254,13 @@ const adminRoutes = [
               { index: true, element: <ListOfConsignment /> },
               { path: "create", element: <DetailConsignment /> },
               { path: ":consignment_id", element: <DetailConsignment /> },
+            ],
+          },
+          {
+            path: "inventory",
+            element: <Outlet />,
+            children: [
+              { path: "expiry", element: <ExpiryAlert /> },
             ],
           },
           {

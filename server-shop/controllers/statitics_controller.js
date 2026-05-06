@@ -189,7 +189,7 @@ export const countDailyOrders = async (req, res) => {
 
 export const unsold = async (req, res) => {
     try {
-        const products = await product_model.find({}).select("name quantity.unSold")
+        const products = await product_model.find({}).select("name quantity.inTrade")
         if (products?.length === 0) return res.status(400).json({ message: "Không có sản phẩm" });
 
         return res.status(200).json(products);

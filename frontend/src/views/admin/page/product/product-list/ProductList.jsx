@@ -1,6 +1,6 @@
 import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Flex, Form, Image, Input, Select, Switch, Table, Typography } from 'antd';
+import { Button, Flex, Form, Image, Input, Select, Switch, Table, Typography, Tag } from 'antd';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -155,11 +155,24 @@ export const ProductList = () => {
       render: (text) => <Typography.Text style={{ whiteSpace: 'nowrap' }}>{text?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
     },
     {
-      title: 'Tồn kho',
+      title: 'Đã bán',
       dataIndex: 'quantity',
       width: 100,
       align: 'center',
-      render: (text, row) => <Typography.Text>{(typeof text === 'object' ? text.inTrade : text)} {row.unit}</Typography.Text>
+      render: (text, row) => <Typography.Text>{(typeof text === 'object' ? text?.sold : 0)} {row.unit}</Typography.Text>
+    },
+    {
+      title: 'Tồn kho',
+      dataIndex: 'quantity',
+      width: 120,
+      align: 'center',
+      render: (text, row) => {
+        const inTrade = typeof text === 'object' ? text?.inTrade : (text || 0);
+        if (inTrade <= 10) {
+            return <Tag color="error">{inTrade} {row?.unit} (Sắp hết)</Tag> // Low stock badge
+        }
+        return <Typography.Text type="success" strong>{inTrade} {row?.unit}</Typography.Text>
+      }
     },
 
     {

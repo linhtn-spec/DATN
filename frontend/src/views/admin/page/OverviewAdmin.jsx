@@ -184,7 +184,7 @@ export const Overview = () => {
         const rawData = unSold?.data?.data
         setUnsoldProduct(rawData?.map(item => ({
             name: item?.name,
-            quantity: item?.quantity?.unSold,
+            quantity: item?.quantity?.inTrade,
 
 
         })))

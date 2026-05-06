@@ -190,3 +190,41 @@ export const delete_consignment = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 }
+
+export const expiring_soon = async (req, res) => {
+    const days = parseInt(req.query.days) || 7;
+    const now = new Date();
+    const threshold = new Date(now);
+    threshold.setDate(threshold.getDate() + days);
+    try {
+        const consignments = await consignment_model.find({
+            'products.expireDate': { $gte: now, $lte: threshold }
+        }).populate({ path: 'products.productId', model: 'Product', select: 'name images unit' })
+          .populate({ path: 'userId', model: 'User', select: 'firstName lastName' });
+
+        // Flatten to individual product-batch rows
+        const rows = [];
+        for (const c of consignments) {
+            for (const p of c.products) {
+                const exp = new Date(p.expireDate);
+                if (exp >= now && exp <= threshold) {
+                    const diffMs = exp - now;
+                    const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+                    rows.push({
+                        consignmentId: c._id,
+                        importDate: c.importDate,
+                        product: p.productId,
+                        quantity: p.quantity,
+                        expireDate: p.expireDate,
+                        daysLeft,
+                        importer: c.userId
+                    });
+                }
+            }
+        }
+        rows.sort((a, b) => a.daysLeft - b.daysLeft);
+        return res.status(200).json(rows);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}

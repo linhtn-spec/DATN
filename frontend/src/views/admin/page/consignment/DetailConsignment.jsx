@@ -51,7 +51,7 @@ export function DetailConsignment() {
     const { mutate } = useMutation({
         mutationFn: (data) => condition ? updateConsignment(data) : addConsignment(data),
         onSuccess: () => {
-            Notification({ message: condition ? `Cập nhật lô hàng thành công!` : "Tạo lô hàng thành công!", type: "success" })
+            Notification({ message: condition ? `Cập nhật phiếu nhập kho thành công!` : "Tạo phiếu nhập kho thành công!", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['ratings_admin_list'] })
             navigate(`/admin/consignment`, { replace: true })
         },
@@ -78,7 +78,6 @@ export function DetailConsignment() {
     useEffect(() => {
         if (!queryConsignmentDetail.isSuccess) return
         const rawData = queryConsignmentDetail.data?.data
-        console.log(rawData);
         form.setFieldValue('importDate', dayjs(rawData?.importDate))
         form.setFieldValue('money', rawData?.money)
         form.setFieldValue('products', rawData?.products.map(item => ({
@@ -89,6 +88,18 @@ export function DetailConsignment() {
         })))
 
     }, [queryConsignmentDetail.isSuccess, queryConsignmentDetail.data, form])
+
+    const watchedProducts = Form.useWatch('products', form);
+    useEffect(() => {
+        if (watchedProducts && Array.isArray(watchedProducts)) {
+            const sum = watchedProducts.reduce((acc, curr) => {
+                const qty = curr?.quantity || 0;
+                const price = curr?.importMoney || 0;
+                return acc + (qty * price);
+            }, 0);
+            form.setFieldValue('money', sum);
+        }
+    }, [watchedProducts, form]);
 
     const onFinish = (value) => {
         mutate({
@@ -103,7 +114,7 @@ export function DetailConsignment() {
         const rawData = queryAllProduct?.data?.data?.data
         setProducts(rawData?.map(item => ({
             value: item?._id,
-            label: item?.name
+            label: `${item?.name} (${item?.unit || 'Sản phẩm'})`
         })))
         return () => {
             setProducts([])
@@ -119,9 +130,9 @@ export function DetailConsignment() {
 
     return (
         <Flex className="crud_user  container" vertical>
-            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật lô hàng" : "Tạo lô hàng"}</h2>
+            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật phiếu nhập kho" : "Tạo phiếu nhập kho"}</h2>
             <Card
-                title={condition ? "Cập nhật lô hàng" : "Tạo lô hàng"}
+                title={condition ? "Cập nhật phiếu nhập kho" : "Tạo phiếu nhập kho"}
                 bordered={false}
                 className="form"
             >
@@ -150,22 +161,26 @@ export function DetailConsignment() {
                                     </Form.Item>
                                 </ConfigProvider>
                                 <Form.Item
-                                    label={"Tiền nhập"}
+                                    label={"Tổng tiền nhập"}
                                     name="money"
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Vui lòng nhập tiền nhập"
+                                            message: "Chưa có dữ liệu tiền nhập!"
                                         }
                                     ]}
                                     style={{ width: "100%" }} required
                                 >
-                                    <InputNumber min={0} placeholder="Tiền nhập" suffix="₫" style={{ width: "50%" }} />
-
+                                    <InputNumber 
+                                        min={0} 
+                                        placeholder="Tổng báo giá (Tự động)" 
+                                        suffix="₫" 
+                                        style={{ width: "50%", color: "#f5222d", fontWeight: "bold" }} 
+                                        readOnly
+                                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    />
                                 </Form.Item>
                             </Flex>
-
-
                         </Flex>
                         <Flex>
                             <Form.List name="products" rules={[
@@ -177,9 +192,9 @@ export function DetailConsignment() {
                                 {(fields, { add, remove }) =>
                                 (<Flex vertical gap={'40px'} style={{ width: "100%" }}>
                                     {fields.map((field, index) => (
-                                        <Flex key={field.key} align="center" gap={'20px'}  >
-                                            <Typography.Title level={5} style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Sản phẩm ${index + 1}`}</Typography.Title>
-                                            <Flex vertical style={{ width: "70%" }} gap={"20px"}>
+                                        <Flex key={field.key} align="flex-start" gap={'20px'} style={{ padding: "20px", border: "1px dashed #d9d9d9", borderRadius: "8px", position: "relative" }}>
+                                            <Typography.Title level={5} style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px', width: "20%" }}>{`Sản phẩm ${index + 1}`}</Typography.Title>
+                                            <Flex vertical style={{ width: "75%" }} gap={"20px"}>
                                                 <Flex style={{ width: "100%" }} gap={"16px"} vertical>
                                                     <Form.Item
                                                         name={[field.name, "productId"]}
@@ -193,82 +208,117 @@ export function DetailConsignment() {
                                                         ]}
                                                         style={{ marginBottom: 0, width: "100%" }}                                                    >
                                                         <Select
+                                                            showSearch
+                                                            optionFilterProp="label"
                                                             virtual={false}
-
                                                             options={products}
-                                                            placeholder={'Tên sản phẩm'}
+                                                            placeholder={'Chọn tên sản phẩm'}
                                                         />
                                                     </Form.Item>
-                                                    <Form.Item
-                                                        name={[field.name, "quantity"]}
-                                                        fieldId={[field.key, "quantity"]}
-                                                        label="Số lượng"
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: "Vui lòng nhập số lượng"
-                                                            },
-                                                        ]}
-                                                        style={{ marginBottom: 0 }}
 
-                                                    >
-                                                        <InputNumber min={0} max={100} placeholder="Số lượng" step={1} style={{ marginBottom: 0, width: "100%" }} />
-                                                    </Form.Item>
-
-                                                    <ConfigProvider locale={locale}>
+                                                    <Flex gap="16px">
                                                         <Form.Item
-                                                            label={"Ngày hết hạn"}
-                                                            name={[field.name, "expireDate"]}
-                                                            fieldId={[field.key, "expireDate"]}
+                                                            name={[field.name, "quantity"]}
+                                                            fieldId={[field.key, "quantity"]}
+                                                            label="Số lượng"
                                                             rules={[
                                                                 {
                                                                     required: true,
-                                                                    message: "Vui lòng nhập ngày hết hạn"
-                                                                }
+                                                                    message: "Vui lòng nhập số lượng"
+                                                                },
                                                             ]}
-                                                            style={{ width: "100%", margin: 0 }} required
+                                                            style={{ marginBottom: 0, flex: 1 }}
                                                         >
-                                                            <DatePicker placeholder='Ngày hết hạn'
-                                                                style={{ marginBottom: 0, width: "100%" }} />
+                                                            <InputNumber min={1} placeholder="Số lượng" step={1} style={{ width: "100%" }} />
                                                         </Form.Item>
-                                                    </ConfigProvider>
-                                                    <Form.Item
-                                                        name={[field.name, "importMoney"]}
-                                                        fieldId={[field.key, "importMoney"]}
-                                                        label="Tiền nhập"
-                                                        rules={[
-                                                            {
-                                                                required: true,
-                                                                message: "Vui lòng nhập tiền nhập"
-                                                            },
-                                                        ]}
-                                                        style={{ marginBottom: 0, width: "100%" }}
 
-                                                    >
-                                                        <InputNumber min={0} placeholder="Tiền nhập" suffix="₫" style={{ marginBottom: 0, width: "100%" }}
-                                                        />
-                                                    </Form.Item>
+                                                        <Form.Item
+                                                            name={[field.name, "importMoney"]}
+                                                            fieldId={[field.key, "importMoney"]}
+                                                            label="Đơn giá nhập"
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    message: "Vui lòng nhập đơn giá"
+                                                                },
+                                                            ]}
+                                                            style={{ marginBottom: 0, flex: 1 }}
+                                                        >
+                                                            <InputNumber 
+                                                                min={0} 
+                                                                placeholder="Đơn giá (VD: 10,000)" 
+                                                                suffix="₫" 
+                                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                                                style={{ width: "100%" }}
+                                                            />
+                                                        </Form.Item>
+                                                    </Flex>
+
+                                                    <Flex gap="16px" align="center">
+                                                        <ConfigProvider locale={locale}>
+                                                            <Form.Item
+                                                                label={"Ngày hết hạn"}
+                                                                name={[field.name, "expireDate"]}
+                                                                fieldId={[field.key, "expireDate"]}
+                                                                rules={[
+                                                                    {
+                                                                        required: true,
+                                                                        message: "Vui lòng chọn ngày"
+                                                                    }
+                                                                ]}
+                                                                style={{ margin: 0, flex: 1 }} required
+                                                            >
+                                                                <DatePicker placeholder='Hệ thống theo dõi HSD' style={{ width: "100%" }} />
+                                                            </Form.Item>
+                                                        </ConfigProvider>
+                                                        
+                                                        <Form.Item
+                                                            shouldUpdate={(prevValues, currentValues) => {
+                                                                const prev = prevValues.products?.[field.name];
+                                                                const curr = currentValues.products?.[field.name];
+                                                                return prev?.quantity !== curr?.quantity || prev?.importMoney !== curr?.importMoney;
+                                                            }}
+                                                            style={{ margin: 0, flex: 1, paddingLeft: "10px" }}
+                                                        >
+                                                            {({ getFieldValue }) => {
+                                                                const qty = getFieldValue(['products', field.name, 'quantity']) || 0;
+                                                                const price = getFieldValue(['products', field.name, 'importMoney']) || 0;
+                                                                return (
+                                                                    <div style={{ padding: "4px 12px", background: "#f6ffed", border: "1px solid #b7eb8f", borderRadius: "4px" }}>
+                                                                        <Typography.Text>Thành tiền: </Typography.Text>
+                                                                        <Typography.Text strong style={{ color: '#52c41a', fontSize: '18px' }}>
+                                                                            {(qty * price).toLocaleString('vi-VN')} ₫
+                                                                        </Typography.Text>
+                                                                    </div>
+                                                                )
+                                                            }}
+                                                        </Form.Item>
+                                                    </Flex>
 
                                                 </Flex>
                                             </Flex>
-                                            <Flex style={{ width: "10%", marginLeft: "70px" }}>
-                                                <MinusCircleOutlined style={{ color: 'red' }} onClick={() => remove(field.name)} />
-                                            </Flex>
+                                            <div style={{ position: "absolute", top: "10px", right: "10px" }}>
+                                                <Button type="text" danger icon={<MinusCircleOutlined />} onClick={() => remove(field.name)}>Xóa</Button>
+                                            </div>
                                         </Flex>
                                     ))}
-                                    <Flex>
-                                        <Form.Item>
-                                            <Button onClick={() => add()}>Thêm sản phẩm mới </Button>
-                                        </Form.Item>
+                                    <Flex justify="center" style={{ marginTop: "10px" }}>
+                                        <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />} style={{ height: "40px" }}>
+                                            Thêm sản phẩm nhập kho
+                                        </Button>
                                     </Flex>
                                 </Flex>)
                                 }
                             </Form.List>
                         </Flex>
-                        <Form.Item>
+                        <Form.Item style={{ marginTop: "30px" }}>
                             <Flex justify="center" gap={20} className="group_btn">
-                                <Button type="primary" htmlType="submit" >
-                                    {condition ? "Cập nhật" : "Gửi"}
+                                <Button type="default" onClick={() => navigate('/admin/consignment')} style={{ width: "120px" }}>
+                                    Hủy bỏ
+                                </Button>
+                                <Button type="primary" htmlType="submit" style={{ width: "120px", background: "#1890ff" }}>
+                                    {condition ? "Lưu thay đổi" : "Lưu phiếu nhập"}
                                 </Button>
                             </Flex>
                         </Form.Item>
@@ -278,3 +328,5 @@ export function DetailConsignment() {
         </Flex >
     );
 }
+
+export default DetailConsignment;

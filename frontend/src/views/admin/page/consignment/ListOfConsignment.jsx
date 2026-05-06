@@ -121,7 +121,7 @@ export const ListOfConsignment = () => {
             )}</Flex>
         },
         {
-            title: 'Tiền ký gửi',
+            title: 'Tổng tiền nhập',
             dataIndex: 'importMoney',
             width: 200,
             sorter: true,
@@ -129,7 +129,7 @@ export const ListOfConsignment = () => {
             render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN')} ₫</Typography.Text>
         },
         {
-            title: 'Ngày ký gửi',
+            title: 'Ngày nhập',
             dataIndex: 'importDate',
             width: 200,
             sorter: true,
@@ -189,7 +189,7 @@ export const ListOfConsignment = () => {
     };
 
     useEffect(() => {
-        document.title = "Ký gửi"
+        document.title = "Nhập kho"
 
     }, [])
     return (
@@ -217,7 +217,7 @@ export const ListOfConsignment = () => {
                             </Form.Item>
                         </ConfigProvider>
                         <Flex>
-                            <Button type='primary' onClick={() => navigate('/admin/consignment/create')}>Thêm ký gửi</Button>
+                            <Button type='primary' onClick={() => navigate('/admin/consignment/create')}>Thêm phiếu nhập</Button>
                         </Flex>
                     </Flex>
 

@@ -66,7 +66,8 @@ const URL = {
         LASTEST: 'sale/lastest/products'
     },
     CONSIGNMENT: {
-        CRUD: 'consignment'
+        CRUD: 'consignment',
+        EXPIRING: 'consignment/alerts/expiring'
     },
     STATITICS: {
         COUNT_PRODUCT_CATEGORY: 'count_product_category',

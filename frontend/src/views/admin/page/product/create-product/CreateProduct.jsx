@@ -290,32 +290,6 @@ function CreateProduct() {
                                 </Form.Item>
                             </Flex>
                             <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Giá vốn/Giá nhập (VNĐ)</Typography.Title>
-                                <Form.Item
-                                    hasFeedback
-                                    validateDebounce={1500}
-                                    name="importPrice"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Giá vốn không được để trống",
-                                        },
-                                        {
-                                            type: 'number',
-                                            min: 1000,
-                                            message: "Giá vốn tối thiểu là 1,000 VNĐ"
-                                        }
-                                    ]}
-                                >
-                                    <InputNumber 
-                                        placeholder="Nhập giá vốn" 
-                                        style={{ width: '100%' }}
-                                        formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                    />
-                                </Form.Item>
-                            </Flex>
-                            <Flex vertical style={{ width: "100%" }}>
                                 <Flex gap={10} align="center">
                                     <Form.Item name='isActive' valuePropName="checked" style={{ marginBottom: 0 }}>
                                         <Switch checkedChildren='Đang bán' unCheckedChildren="Ngừng bán" />
