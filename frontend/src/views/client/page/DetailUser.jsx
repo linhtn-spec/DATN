@@ -13,12 +13,39 @@ import Notification from '../../../utils/configToastify'
 export const DetailUser = () => {
     const [form] = Form.useForm()
     const { Option } = Select
-    const [avatar, setAvatar] = useState('');
     const [fileList, setFileList] = useState([])
     const user = useContext(UserContext)
     const info = user?.state?.currentUser;
-    const handleSubmit = (e) => {
-        mutate({ ...e, image: avatar, id: info.user_id });
+    const [isLoading, setIsLoading] = useState(false);
+    
+    const handleSubmit = async (e) => {
+        if (isLoading) return;
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            let existingUrl = '';
+
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                } else if (file.url) {
+                    existingUrl = file.url;
+                }
+            });
+
+            let newUrl = '';
+            if (Array.from(formData.entries()).length > 0) {
+                const rs = await uploadImage(formData);
+                newUrl = rs?.data?.images[0]?.url || '';
+            }
+
+            const finalImage = newUrl ? newUrl : existingUrl;
+            mutate({ ...e, image: finalImage, id: info.user_id });
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        } finally {
+            setIsLoading(false);
+        }
     }
     const navigate = useNavigate()
     const { mutate } = useMutation({
@@ -31,20 +58,8 @@ export const DetailUser = () => {
 
     })
 
-    const handleChange = async (e) => {
+    const handleChange = (e) => {
         setFileList(e.fileList)
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        try {
-            if (Array.from(formData.entries()).length === 0) return
-            const rs = await uploadImage(formData);
-            setAvatar(rs.data.images[0].url)
-
-        } catch (error) {
-            console.log(error.message);
-        }
     }
     useEffect(() => {
         form.setFieldValue('firstName', info?.firstName)
@@ -59,7 +74,6 @@ export const DetailUser = () => {
                 name: 'image.png',
                 url: info?.image,
             },])
-            setAvatar(info?.image)
         }
     }, [info?.firstName, info?.lastName, info?.address, info?.gender, info?.image, form, info?.phone])
 
@@ -218,7 +232,7 @@ export const DetailUser = () => {
 
                         <Flex vertical align="center" justify="center" className="button_group">
                             <Form.Item>
-                                <Button type="primary" htmlType="submit" className="update">Cập nhật</Button>
+                                <Button type="primary" htmlType="submit" className="update" disabled={isLoading}>Cập nhật</Button>
                             </Form.Item>
                         </Flex>
                     </Flex>

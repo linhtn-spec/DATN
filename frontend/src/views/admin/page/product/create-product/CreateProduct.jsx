@@ -28,7 +28,7 @@ import AdminHeader from "../../../components/AdminHeader";
 
 function CreateProduct() {
     const navigate = useNavigate();
-    const [avatar, setAvatar] = useState('');
+
     const [options, setOptions] = useState([])
 
     const [categories, setCategories] = useState([])
@@ -51,33 +51,8 @@ function CreateProduct() {
     })
 
 
-    const handleChange = async (e) => {
-        setFileList(e.fileList.map(file => ({
-            ...file,
-            status: 'uploading'
-        })));
-        setIsLoading(true)
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        try {
-            if (Array.from(formData.entries()).length === 0) return
-            const rs = await uploadImage(formData);
-            setAvatar(rs?.data?.images.map(item => (item.url)))
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'done'
-            })));
-            setIsLoading(false)
-
-        } catch (error) {
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'error'
-            })));
-            console.log(error.message);
-        }
+    const handleChange = (e) => {
+        setFileList(e.fileList);
     }
 
     const { mutate } = useMutation({
@@ -92,15 +67,34 @@ function CreateProduct() {
         }
     })
 
-    const handleSubmit = (value) => {
-        mutate({ ...value, images: avatar });
+    const handleSubmit = async (value) => {
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                }
+            });
+
+            let finalImages = [];
+            if (Array.from(formData.entries()).length > 0) {
+                const rs = await uploadImage(formData);
+                finalImages = rs?.data?.images.map(item => item.url);
+            }
+
+            mutate({ ...value, images: finalImages });
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
 
     useEffect(() => {
         if (fileList.length === 0) {
             form.resetFields(['images'])
-            setAvatar('')
         }
 
     }, [fileList.length, form])

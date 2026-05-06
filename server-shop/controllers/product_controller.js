@@ -10,6 +10,9 @@ export const add_product = async (req, res) => {
         if (checkExistName) {
             return res.status(400).json({ message: "Tên sản phẩm đã tồn tại" });
         }
+        if (data.images && typeof data.images === 'string') {
+            data.images = data.images.match(/https?:\/\/[^,]+?(?=https?:\/\/|,|$)/g) || [data.images];
+        }
         const product = await product_model.create(data);
         if (product) {
             return res.status(201).json({ product, message: "Thêm sản phẩm thành công" });
@@ -29,7 +32,11 @@ export const edit_product = async (req, res) => {
     if (name) data.name = name;
     if (description) data.description = description;
     if (isActive !== '') data.isActive = isActive;
-    if (images) data.images = images
+    if (images) {
+        data.images = typeof images === 'string' 
+            ? (images.match(/https?:\/\/[^,]+?(?=https?:\/\/|,|$)/g) || [images]) 
+            : images;
+    }
     if (categoryId) data.categoryId = categoryId
     if (quantity) data.quantity = quantity
     if (origin) data.origin = origin

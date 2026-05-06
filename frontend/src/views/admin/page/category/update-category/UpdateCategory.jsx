@@ -25,36 +25,13 @@ import AdminHeader from "../../../components/AdminHeader";
 
 function UpdateCategory() {
     const navigate = useNavigate();
-    const [avatar, setAvatar] = useState('');
     const [fileList, setFileList] = useState([])
     const [form] = Form.useForm();
     const { category_id } = useParams()
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleChange = async (e) => {
-
-        setFileList(e.fileList.map(file => ({
-            ...file,
-            status: 'uploading'
-        })));
-        setIsLoading(true)
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        try {
-            if (Array.from(formData.entries()).length === 0) return
-            const rs = await uploadImage(formData);
-            setAvatar(rs?.data?.images[0]?.url)
-
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'done'
-            })));
-            setIsLoading(false)
-        } catch (error) {
-            console.log(error.message);
-        }
+    const handleChange = (e) => {
+        setFileList(e.fileList);
     }
     const { isSuccess, data } = useQuery({
         queryKey: ['category_detail', category_id],
@@ -74,11 +51,9 @@ function UpdateCategory() {
             name: 'image.png',
             url: data?.data?.image,
         },])
-        setAvatar(data?.data?.image)
 
         return () => {
             setFileList([])
-            setAvatar('')
         }
     }, [data, isSuccess, form, setFileList]);
 
@@ -96,17 +71,39 @@ function UpdateCategory() {
     useEffect(() => {
         if (fileList.length === 0) {
             form.resetFields(['image'])
-            setAvatar('')
         }
 
     }, [fileList.length, form])
 
-    const handleSubmit = (e) => {
-        if (!isLoading) {
-            mutate({ ...e, image: avatar, id: category_id });
+    const handleSubmit = async (e) => {
+        if (isLoading) return;
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            let existingUrl = '';
+            
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                } else if (file.url) {
+                    existingUrl = file.url;
+                }
+            });
+
+            let newUrl = '';
+            if (Array.from(formData.entries()).length > 0) {
+                const rs = await uploadImage(formData);
+                newUrl = rs?.data?.images[0]?.url || '';
+            }
+
+            const finalImage = newUrl ? newUrl : existingUrl;
+            mutate({ ...e, image: finalImage, id: category_id });
             navigate('/admin/category')
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        } finally {
+            setIsLoading(false);
         }
-        return
     }
 
     return (

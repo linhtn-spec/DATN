@@ -26,39 +26,15 @@ import AdminHeader from "../../components/AdminHeader";
 
 export function DetailCustomer() {
     const navigate = useNavigate();
-    const [avatar, setAvatar] = useState('');
     const [fileList, setFileList] = useState([])
     const [form] = Form.useForm();
+    const [isLoading, setIsLoading] = useState(false);
 
     const { user_id } = useParams()
 
 
-    const handleChange = async (e) => {
-        setFileList(e.fileList.map(file => ({
-            ...file,
-            status: 'uploading'
-        })));
-
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        try {
-            if (Array.from(formData.entries()).length === 0) return
-            const rs = await uploadImage(formData);
-            setAvatar(rs.data.images[0].url)
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'done'
-            })));
-
-        } catch (error) {
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'error'
-            })));
-            console.log(error.message);
-        }
+    const handleChange = (e) => {
+        setFileList(e.fileList);
     }
 
     const { data, isSuccess } = useQuery({
@@ -79,15 +55,40 @@ export function DetailCustomer() {
         }
     })
 
-    const handleSubmit = (value) => {
-        mutate({ ...value, image: avatar, ...(user_id ? { id: user_id } : {}) });
+    const handleSubmit = async (value) => {
+        if (isLoading) return;
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            let existingUrl = '';
+
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                } else if (file.url) {
+                    existingUrl = file.url;
+                }
+            });
+
+            let newUrl = '';
+            if (Array.from(formData.entries()).length > 0) {
+                const rs = await uploadImage(formData);
+                newUrl = rs?.data?.images[0]?.url || '';
+            }
+
+            const finalImage = newUrl ? newUrl : existingUrl;
+            mutate({ ...value, image: finalImage, ...(user_id ? { id: user_id } : {}) });
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
 
     useEffect(() => {
         if (fileList.length === 0) {
             form.resetFields(['image'])
-            setAvatar('')
         }
 
     }, [fileList.length, form])
@@ -112,7 +113,6 @@ export function DetailCustomer() {
                 name: 'image.png',
                 url: rawData?.image,
             },])
-            setAvatar(rawData?.image)
         }
     }, [data, isSuccess, form])
 
@@ -319,7 +319,7 @@ export function DetailCustomer() {
 
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
-                                    <Button type="primary" htmlType="submit" >
+                                    <Button type="primary" htmlType="submit" disabled={isLoading}>
                                         Cập nhật
                                     </Button>
 

@@ -28,7 +28,7 @@ import AdminHeader from "../../../../components/AdminHeader";
 
 function UpdateProduct() {
     const navigate = useNavigate();
-    const [avatar, setAvatar] = useState('');
+
     const [options, setOptions] = useState([])
 
     const [categories, setCategories] = useState([])
@@ -55,34 +55,8 @@ function UpdateProduct() {
         queryKey: ['product_detail_admin', product_id],
         queryFn: () => detailProduct(product_id),
     })
-    const handleChange = async (e) => {
-
-        setFileList(e.fileList.map(file => ({
-            ...file,
-            status: 'uploading'
-        })));
-        setIsLoading(true)
-        const formData = new FormData();
-        e.fileList.forEach((file) => {
-            formData.append('images', file.originFileObj);
-        });
-        try {
-            if (Array.from(formData.entries()).length === 0) return
-            const rs = await uploadImage(formData);
-            setAvatar(avatar.concat(rs?.data?.images.map(item => (item.url))))
-            setFileList(fileList.concat(rs?.data?.images.map((item, index) => ({
-                uid: index, name: `image${index}.png`,
-                url: item?.url, status: 'done'
-            }))));
-            setIsLoading(false)
-
-        } catch (error) {
-            setFileList(e.fileList.map(file => ({
-                ...file,
-                status: 'error'
-            })));
-            console.log(error.message);
-        }
+    const handleChange = (e) => {
+        setFileList(e.fileList);
     }
 
     const { mutate } = useMutation({
@@ -96,9 +70,32 @@ function UpdateProduct() {
             Notification({ message: error?.response?.data, type: "error" })
         }
     })
-    const handleSubmit = (value) => {
-        if (!isLoading) {
-            mutate({ ...value, images: avatar, id: product_id });
+    const handleSubmit = async (value) => {
+        setIsLoading(true);
+        try {
+            const formData = new FormData();
+            const existingUrls = [];
+            
+            fileList.forEach((file) => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                } else if (file.url) {
+                    existingUrls.push(file.url);
+                }
+            });
+
+            let newUrls = [];
+            if (Array.from(formData.entries()).length > 0) {
+                const rs = await uploadImage(formData);
+                newUrls = rs?.data?.images.map(item => item.url);
+            }
+
+            const finalImages = [...existingUrls, ...newUrls];
+            mutate({ ...value, images: finalImages, id: product_id });
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -135,9 +132,7 @@ function UpdateProduct() {
                 name: `image${index}.png`,
                 url: item,
             })))
-        setAvatar(rawData?.images)
         return () => {
-            setAvatar([])
             setFileList([])
         }
     }, [getProduct?.isSuccess, getProduct?.data, form])
@@ -145,7 +140,6 @@ function UpdateProduct() {
     useEffect(() => {
         if (fileList.length === 0) {
             form.resetFields(['image'])
-            setAvatar('')
         }
 
     }, [fileList.length, form])

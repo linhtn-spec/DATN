@@ -100,7 +100,7 @@ export const OrderList = () => {
                             style={{ borderRadius: '6px' }}
                         />
                     </Tooltip>
-                    {record.orderStatus === 'new' && (
+                    {record.orderStatus === 'new' ? (
                         <Popconfirm
                             title="Xác nhận hủy đơn"
                             description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
@@ -114,6 +114,8 @@ export const OrderList = () => {
                                 <Button danger icon={<DeleteOutlined />} style={{ borderRadius: '6px' }} />
                             </Tooltip>
                         </Popconfirm>
+                    ) : (
+                        <Button style={{ visibility: 'hidden' }} icon={<DeleteOutlined />} />
                     )}
                 </Flex>
             ),
@@ -139,11 +141,12 @@ export const OrderList = () => {
                 ]}
                 style={{ margin: '0 auto' }}
             />
-            <Flex justify="space-between" align="center" style={{ padding: '0 30px' }}>
-                <Typography.Title level={2} style={{ margin: 0, color: 'var(--primary-color)' }}>Đơn hàng của bạn</Typography.Title>
-            </Flex>
+
 
             <Card className="modern-order-card" bodyStyle={{ padding: '30px' }} bordered={false}>
+                <Flex justify="space-between" align="center" style={{ padding: '30px 0' }}>
+                    <Typography.Title level={3} style={{ margin: 0, color: 'var(--primary-color)' }}>Đơn hàng của bạn</Typography.Title>
+                </Flex>
                 <Table
                     columns={columns}
                     dataSource={orders}

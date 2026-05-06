@@ -254,21 +254,34 @@ function ProductDetail() {
     }
 
     const onImageChange = (e) => {
-        setFileList(e.fileList.map(file => ({ ...file, status: 'uploading' })))
-        const formData = new FormData()
-        e.fileList.forEach(file => formData.append('images', file.originFileObj))
-        uploadImage(formData).then(rs => {
-            const uploadedImages = rs?.data?.images || []
-            setFileList(e.fileList.map((file, index) => ({
-                ...file,
-                url: uploadedImages[index]?.url,
-                status: 'done'
-            })))
-        }).catch(err => console.log(err))
+        setFileList(e.fileList)
     }
 
-    const onFinish = (value) => {
-        mutateRating({ ...value, images: fileList.map(item => item?.url), productId: product?.id })
+    const onFinish = async (value) => {
+        try {
+            let finalImageUrls = [];
+            const formData = new FormData()
+            let hasFiles = false;
+
+            fileList.forEach(file => {
+                if (file.originFileObj) {
+                    formData.append('images', file.originFileObj);
+                    hasFiles = true;
+                } else if (file.url) {
+                    finalImageUrls.push(file.url);
+                }
+            })
+
+            if (hasFiles) {
+                const rs = await uploadImage(formData);
+                const uploadedUrls = rs?.data?.images?.map(img => img.url) || [];
+                finalImageUrls = [...finalImageUrls, ...uploadedUrls];
+            }
+
+            mutateRating({ ...value, images: finalImageUrls, productId: product?.id })
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh lên!", type: "error" });
+        }
     }
 
     const productQty = typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity
