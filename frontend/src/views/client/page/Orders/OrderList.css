@@ -1,19 +1,24 @@
-.order_list {
-    padding: 0 50px;
-    margin-bottom: 100px;
+.order_list_page .ant-table-wrapper {
+    width: 100%;
 }
 
-.order_list .ant-table-wrapper {
-    width: 100%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+.modern-order-card {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     border-radius: 12px;
     overflow: hidden;
 }
 
-.order_list nav {
-    margin: 60px 0 100px;
+.order_list_page th {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid #e2e8f0 !important;
 }
 
-.order_list th {
-    background-color: rgba(0, 0, 0, 0.142) !important;
+.order_list_page td {
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.custom-breadcrumb {
+    margin-bottom: 20px;
 }

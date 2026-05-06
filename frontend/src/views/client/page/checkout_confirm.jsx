@@ -82,7 +82,7 @@ function CheckoutConfirm() {
                 userId: user?.state?.currentUser?.user_id,
                 tax: (subTotal * taxConfig.rate).toFixed(2)
             }, {
-                onSuccess: (res) => isVnpay.mutate({ amount: ((subTotal * (1 + taxConfig.rate) + currentShippingFee) * 25_410).toFixed(2), language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
+                onSuccess: (res) => isVnpay.mutate({ amount: res?.data?.order?.total, language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
             })
         }
         else {

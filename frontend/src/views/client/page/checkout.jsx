@@ -11,6 +11,7 @@ import { getTaxConfig } from "../../../services/tax_service";
 import { CartContext } from "../../../store/cart";
 import { ACTION_ORDER } from "../../../store/order";
 import { OrderContext } from "../../../store/order/provider";
+import { UserContext } from "../../../store/user";
 function Checkout() {
     document.title = "Thanh toán";
     const [form] = Form.useForm()
@@ -29,6 +30,7 @@ function Checkout() {
 
     const cart = useContext(CartContext)
     const order = useContext(OrderContext)
+    const { state: userState } = useContext(UserContext)
 
     const [subTotal, setSubtotal] = useState(0)
     const [options, setOptions] = useState([])
@@ -79,8 +81,17 @@ function Checkout() {
         const currentOrder = order?.state?.currentOrder;
         if (currentOrder && Object.keys(currentOrder).length > 0) {
             form.setFieldsValue(currentOrder);
+        } else if (userState?.currentUser) {
+            const user = userState.currentUser;
+            form.setFieldsValue({
+                firstNameReceiver: user.firstName,
+                lastNameReceiver: user.lastName,
+                emailReceiver: user.email,
+                phoneReceiver: user.phone,
+                addressReceiver: user.address,
+            });
         }
-    }, [order, form])
+    }, [order, form, userState])
 
     const navigateConfirm = () => {
         navigate('/client/checkout/confirm')

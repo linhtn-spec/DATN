@@ -103,12 +103,14 @@ router.get('/vnpay_return', async function (req, res, next) {
                 }))
             };
             await sendEmail(from, modifiedData.emailReceiver, order_subject, order_text, order_form(modifiedData))
-            res.render('success', { code: vnp_Params['vnp_ResponseCode'], frontendUrl: process.env.FRONTEND_URL || 'http://localhost' })
+            res.redirect((process.env.FRONTEND_URL || 'http://localhost') + '/client/checkout/success')
+        } else {
+            // Payment failed (e.g., canceled by user)
+            res.redirect((process.env.FRONTEND_URL || 'http://localhost') + '/client/user/orders')
         }
-        // return res.status(200).json({ message: 'thành công', url: 'checkout/success', code: vnp_Params['vnp_ResponseCode'] })
     } else {
-        res.render('error', { code: vnp_Params['vnp_ResponseCode'] })
-
+        // Invalid signature
+        res.redirect((process.env.FRONTEND_URL || 'http://localhost') + '/client/user/orders')
     }
 });
 
