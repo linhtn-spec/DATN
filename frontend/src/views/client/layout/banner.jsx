@@ -1,5 +1,5 @@
 import "./../style/banner.css";
-import { Carousel } from "antd";
+import { Carousel, Skeleton } from "antd";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { useQuery } from "@tanstack/react-query";
 import { optionBanner } from "../../../services/banner_service";
@@ -24,7 +24,7 @@ const SlickArrowRight = (props) => {
 
 function Banner() {
     const [banners, setBanners] = useState([])
-    const { isSuccess, data } = useQuery({
+    const { isSuccess, data, isLoading } = useQuery({
         queryKey: ['banners_client'],
         queryFn: () => optionBanner()
     })
@@ -37,33 +37,35 @@ function Banner() {
         }
     }, [isSuccess, data])
 
+    if (isLoading) {
+        return (
+            <div className="home-banner-skeleton" style={{ width: '100%', height: '400px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f0f0f0' }}>
+               <Skeleton.Image active style={{ width: '100%', height: '400px' }} />
+            </div>
+        )
+    }
+
+    const activeBanners = banners.filter(item => item?.isActive !== false);
+
+    if (activeBanners.length === 0) {
+        return null; // Don't render anything if no banners exist
+    }
+
     return (
         <Carousel
+            className="home-banner"
             autoplay
             autoplaySpeed={2000}
             arrows
-            prevArrow={<SlickArrowLeft />}
-            nextArrow={<SlickArrowRight />}
+            prevArrow={< SlickArrowLeft />}
+            nextArrow={< SlickArrowRight />}
             effect="fade"
         >
-            {
-                banners.filter(item => item?.isActive !== false).length !== 0 ? (
-                    banners.filter(item => item?.isActive !== false).map(item => (
-                        <div key={item.id}>
-                            <img src={item.image} alt={`Banner ${item.id}`} height='100%' width='100%' />
-                        </div>
-                    ))
-                ) : (
-                    <>
-                        <div>
-                            <img src={"/data/banner/banner-home-1.png"} alt="Default Banner 1" height='100%' width='100%' />
-                        </div>
-                        <div>
-                            <img src={"/data/banner/banner-home-2.png"} alt="Default Banner 2" height='100%' width='100%' />
-                        </div>
-                    </>
-                )
-            }
+            {activeBanners.map(item => (
+                <div key={item.id}>
+                    <img src={item.image} alt={`Banner ${item.id}`} height='100%' width='100%' />
+                </div>
+            ))}
         </Carousel>
     );
 }

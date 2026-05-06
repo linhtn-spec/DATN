@@ -1,7 +1,5 @@
 .product_hot {
-    padding: 0 50px;
     text-align: center;
-    margin-bottom: 100px;
 }
 
 .product_hot h1 {
@@ -12,13 +10,14 @@
 
 
 .product_hot .item {
-    height: 400px;
+    min-height: 380px;
+    height: auto;
     width: calc(100%/6);
     border-radius: 15px;
     padding-bottom: 0;
     transition: all 0.3s ease;
     background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -26,7 +25,7 @@
 
 .product_hot .item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .product_hot .item img {
@@ -61,7 +60,8 @@
     font-weight: 600;
     font-size: 16px;
     margin: 4px 0 !important;
-    height: 44px; /* Fixed height for 2 lines */
+    height: 44px;
+    /* Fixed height for 2 lines */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;

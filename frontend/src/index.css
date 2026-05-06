@@ -102,3 +102,14 @@ h1, h2, h3, h4, h5, h6, .ant-typography h1, .ant-typography h2, .ant-typography 
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }
+
+/* Premium Gradient Text Utility */
+.premium-gradient-text {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color, #f97316) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+  line-height: 1.3;
+}

@@ -13,9 +13,11 @@ import { Countdown } from "../layout/CountDown";
 import Product_Hot from "../layout/product_hot";
 import Product_List from "../layout/product_list";
 import RecommendedProduct from "../layout/RecommendedProduct";
+import { useScrollEffects } from "../functions/useScrollEffects";
 
 function Home() {
     document.title = "Trang chủ";
+    useScrollEffects();
     const { dispatch } = useContext(UserContext)
     const logGoogle = useContext(LogContext)
     const [productHot, setProductHot] = useState([]);
@@ -98,9 +100,18 @@ function Home() {
     return (
         <Flex vertical>
             <Banner />
-            <RecommendedProduct />
-            {expires && <Countdown expires={expires} />}
-            <Flex className="product_hot container text-center" vertical style={{ padding: "40px 0", marginTop: "20px" }}>
+            <div className="container fade-in-section" style={{ marginTop: "80px", marginBottom: "20px" }}>
+                <Typography.Title level={2} className="premium-gradient-text" style={{ textTransform: "uppercase", textAlign: "center", margin: "0 auto", display: "block", fontSize: "36px", fontWeight: "800", letterSpacing: "-0.5px" }}>Gợi ý cho bạn</Typography.Title>
+            </div>
+            <div className="fade-in-section">
+                <RecommendedProduct />
+            </div>
+            {expires && (
+                <div className="fade-in-section">
+                    <Countdown expires={expires} />
+                </div>
+            )}
+            <Flex className="product_hot container text-center fade-in-section" vertical style={{ padding: "40px 50px" }}>
                 <Flex gap='large' wrap='wrap' justify='center'>
                     {querySale.isLoading ? (
                         [...Array(4)].map((_, index) => (
@@ -115,8 +126,11 @@ function Home() {
                     )}
                 </Flex>
             </Flex>
-            <Flex className="product_list container" vertical style={{ padding: "40px 0", marginBottom: "40px" }}>
-                <Typography.Title level={2} style={{ textTransform: "uppercase", textAlign: "center", marginBottom: "30px", fontSize: "32px", fontWeight: "700" }}>Sản phẩm mới</Typography.Title>
+            <Flex className="product_list container fade-in-section" vertical style={{ padding: "40px 50px", marginBottom: "60px", backgroundColor: "#fafafb", borderRadius: "24px" }}>
+                <div style={{ textAlign: "center", marginBottom: "40px" }}>
+                    <Typography.Title level={2} className="premium-gradient-text" style={{ textTransform: "uppercase", margin: "0 auto", display: "block", fontSize: "36px", fontWeight: "800", letterSpacing: "-0.5px" }}>Sản phẩm mới</Typography.Title>
+                    <Typography.Text type="secondary" style={{ fontSize: "16px" }}>Khám phá những sản phẩm mới nhất từ cửa hàng</Typography.Text>
+                </div>
                 <Flex className="products" gap='large' wrap='wrap' justify='center'>
                     {data ? (
                         productNew.length === 0 ? (

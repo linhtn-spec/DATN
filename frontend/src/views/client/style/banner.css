@@ -1,3 +1,5 @@
+@import "./_variables.css";
+
 .ant-carousel .slick-prev,
 .ant-carousel .slick-next,
 .ant-carousel .slick-prev:hover,
@@ -110,4 +112,11 @@
     display: flex !important ;
     justify-content: center;
     align-items: center;
+}
+
+/* Home Banner Optimization - Reverted to Natural Height */
+.home-banner .slick-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
 }

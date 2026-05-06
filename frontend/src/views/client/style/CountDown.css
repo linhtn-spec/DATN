@@ -1,7 +1,13 @@
+@import "./_variables.css";
+
 .flash-sale-container {
-    padding: 20px 50px;
-    background: linear-gradient(90deg, #fff 0%, #fff 100%);
-    margin-bottom: 20px;
+    padding: 30px 60px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin: 40px 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .flash-sale-header {
@@ -14,11 +20,13 @@
     margin: 0 !important;
     text-transform: uppercase;
     font-weight: 800 !important;
-    letter-spacing: 1px;
-    font-size: 28px !important;
-    color: #ce0000;
+    letter-spacing: 2px;
+    font-size: 32px !important;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-style: italic;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .flash-sale-header img {
@@ -38,14 +46,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #ff4d4f 0%, #cf1322 100%);
+    background: var(--primary-gradient);
     color: white;
-    width: 55px;
-    height: 55px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(206, 0, 0, 0.3);
+    width: 65px;
+    height: 65px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(238, 9, 121, 0.3);
     position: relative;
     overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.countdown-item:hover {
+    transform: scale(1.05);
 }
 
 .countdown-item::before {
@@ -59,10 +72,11 @@
 }
 
 .countdown-value {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     line-height: 1.1;
     z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .countdown-label {
@@ -76,8 +90,14 @@
 .countdown-separator {
     font-size: 24px;
     font-weight: 700;
-    color: #cf1322;
+    color: #ee0979;
     padding-bottom: 5px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
 }
 
 @keyframes pulse {

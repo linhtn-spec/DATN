@@ -1,0 +1,8 @@
+:root {
+  --primary-gradient: linear-gradient(135deg, #ff6a00, #ee0979);
+  --bg-glass: rgba(255, 255, 255, 0.12);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  --radius: 12px;
+}

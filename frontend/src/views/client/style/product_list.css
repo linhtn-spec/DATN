@@ -14,13 +14,15 @@
 
 
 .product_list .item {
-    height: 480px;
-    width: calc(100%/3);
+    min-height: 400px;
+    height: auto;
+    width: calc(25% - 18px);
+    min-width: 250px;
     border-radius: 15px;
     padding-bottom: 0;
     transition: all 0.3s ease;
     background-color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -28,7 +30,7 @@
 
 .product_list .item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .product_list .item img {
@@ -63,7 +65,8 @@
     font-weight: 600;
     font-size: 18px;
     margin: 8px 0 !important;
-    height: 52px; /* Fixed height for 2 lines */
+    height: 52px;
+    /* Fixed height for 2 lines */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
