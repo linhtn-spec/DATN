@@ -51,6 +51,7 @@ import { ShippingConfig } from "../views/admin/page/shipping/ShippingConfig";
 import FinanceDashboard from "../views/admin/page/finance/FinanceDashboard";
 import { TaxConfig } from "../views/admin/page/tax/TaxConfig";
 import ExpiryAlert from "../views/admin/page/inventory/ExpiryAlert";
+import StockAdjustment from "../views/admin/page/inventory/StockAdjustment";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -261,6 +262,7 @@ const adminRoutes = [
             element: <Outlet />,
             children: [
               { path: "expiry", element: <ExpiryAlert /> },
+              { path: "adjustment", element: <StockAdjustment /> },
             ],
           },
           {

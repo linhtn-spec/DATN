@@ -11,9 +11,6 @@ router.get("/order_per_day", countDailyOrders)
 router.get("/unsold", unsold)
 router.get("/statitics_perday", countAddedPerDay)
 
-// Finance Endpoints
-router.get("/finance_overview", getFinanceOverview)
-router.get("/withdrawals", getWithdrawalsHistory)
-router.post("/withdrawals", createWithdrawal)
+// Finance routes moved to manager/finance_router.js
 
 export default router;

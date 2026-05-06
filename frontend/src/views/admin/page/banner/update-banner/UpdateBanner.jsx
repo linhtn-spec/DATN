@@ -21,6 +21,7 @@ import { detailBanner, updateBanner } from "../../../../../services/banner_servi
 import { uploadImage } from "../../../../../services/upload_service";
 import Notification from "../../../../../utils/configToastify";
 import './UpdateBanner.css';
+import AdminHeader from "../../../components/AdminHeader";
 
 function UpdateBanner() {
     const navigate = useNavigate();
@@ -110,7 +111,7 @@ function UpdateBanner() {
 
     return (
         <Flex className="update_banner_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Cập nhật biểu ngữ</h2>
+            <AdminHeader title="Cập nhật biểu ngữ" icon={<PlusOutlined />} />
             <Card
                 title="Cập nhật biểu ngữ"
                 bordered={false}

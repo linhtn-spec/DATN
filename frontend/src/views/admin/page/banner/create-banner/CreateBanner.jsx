@@ -21,6 +21,7 @@ import { addBanner } from "../../../../../services/banner_service";
 import { uploadImage } from "../../../../../services/upload_service";
 import Notification from "../../../../../utils/configToastify";
 import './CreateBanner.css';
+import AdminHeader from "../../../components/AdminHeader";
 
 function CreateBanner() {
     const navigate = useNavigate();
@@ -84,7 +85,7 @@ function CreateBanner() {
 
     return (
         <Flex className="add_banner_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Thêm biểu ngữ mới</h2>
+            <AdminHeader title="Thêm biểu ngữ mới" icon={<PlusOutlined />} />
             <Card
                 title="Tạo biểu ngữ mới"
                 bordered={false}

@@ -1,8 +1,9 @@
-import { PlusOutlined, LineChartOutlined, MoneyCollectOutlined, WalletOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Descriptions, Form, Input, InputNumber, Modal, Row, Statistic, Table, Tag, Typography } from "antd";
+import { PlusOutlined, LineChartOutlined, MoneyCollectOutlined, WalletOutlined, WarningOutlined, SearchOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Descriptions, Form, Input, InputNumber, Modal, Row, Select, Statistic, Table, Tag, Typography, Spin } from "antd";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Notification from "../../../../utils/configToastify";
-import { getFinanceOverview, getWithdrawalsHistory, createWithdrawal } from "../../../../services/finance_service";
+import { getFinanceOverview, getWithdrawalsHistory, createWithdrawal, lookupBankAccount } from "../../../../services/finance_service";
 
 const { Title } = Typography;
 
@@ -10,6 +11,9 @@ function FinanceDashboard() {
     const [overview, setOverview] = useState({
         totalRevenue: 0,
         totalProfit: 0,
+        totalCOGS: 0,
+        totalAdjustmentLoss: 0,
+        netProfit: 0,
         balance: 0,
         totalWithdrawal: 0
     });
@@ -17,6 +21,9 @@ function FinanceDashboard() {
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
+
+    const [banks, setBanks] = useState([]);
+    const [isLookingUp, setIsLookingUp] = useState(false);
 
     const fetchOverview = async () => {
         try {
@@ -39,9 +46,63 @@ function FinanceDashboard() {
         }
     };
 
+    const fetchBanks = async () => {
+        try {
+            const res = await axios.get("https://api.vietqr.io/v2/banks");
+            if (res.data?.code === '00') {
+                setBanks(res.data.data.map(b => ({
+                    value: b.bin,
+                    label: `(${b.shortName}) ${b.name}`,
+                    name: b.shortName
+                })));
+            }
+        } catch (error) {
+            console.error("Failed to fetch bank list");
+        }
+    };
+
+    const lookupAccount = async () => {
+        const bin = form.getFieldValue('bankBin');
+        const accountNumber = form.getFieldValue('accountNumber');
+
+        if (!bin || !accountNumber) {
+            Notification({ message: "Vui lòng chọn ngân hàng và nhập số tài khoản!", type: "warning" });
+            return;
+        }
+
+        try {
+            setIsLookingUp(true);
+            // Calling our backend proxy which has the Casso API keys
+            const res = await lookupBankAccount({
+                bin,
+                accountNumber
+            });
+
+            if (res.data?.code === '00' || res.data?.code === '200') {
+                const accountData = res.data.data;
+                form.setFieldsValue({
+                    accountHolder: accountData.accountName || accountData.account_name,
+                });
+                // Also set the bankName string based on selection
+                const selectedBank = banks.find(b => b.value === bin);
+                if (selectedBank) {
+                    form.setFieldsValue({ bankName: selectedBank.name });
+                }
+                Notification({ message: "Đã tìm thấy thông tin chủ tài khoản!", type: "success" });
+            } else {
+                Notification({ message: res.data?.desc || res.data?.message || "Không tìm thấy tài khoản hoặc thiếu API Key!", type: "error" });
+            }
+        } catch (error) {
+             Notification({ message: error.response?.data?.desc || "Tính năng tra cứu yêu cầu API Key trả phí (Casso). Vui lòng nhập tay!", type: "info" });
+        } finally {
+            setIsLookingUp(false);
+        }
+    };
+
     useEffect(() => {
         fetchOverview();
         fetchHistory();
+        fetchBanks();
     }, []);
 
     const handleCreateWithdrawal = async (values) => {
@@ -51,7 +112,13 @@ function FinanceDashboard() {
         }
 
         try {
-            await createWithdrawal({ amount: values.amount, note: values.note });
+            await createWithdrawal({
+                amount: values.amount,
+                bankName: values.bankName,
+                accountNumber: values.accountNumber,
+                accountHolder: values.accountHolder,
+                note: values.note
+            });
             Notification({ message: "Ghi nhận lệnh rút tiền thành công!", type: "success" });
             setIsModalOpen(false);
             form.resetFields();
@@ -64,6 +131,24 @@ function FinanceDashboard() {
 
     const columns = [
         {
+            title: "Ngân hàng",
+            dataIndex: "bankName",
+            key: "bankName",
+            render: (v) => v || <span style={{ color: '#aaa' }}>—</span>
+        },
+        {
+            title: "Số tài khoản",
+            dataIndex: "accountNumber",
+            key: "accountNumber",
+            render: (v) => v || <span style={{ color: '#aaa' }}>—</span>
+        },
+        {
+            title: "Chủ tài khoản",
+            dataIndex: "accountHolder",
+            key: "accountHolder",
+            render: (v) => v || <span style={{ color: '#aaa' }}>—</span>
+        },
+        {
             title: "Ngày rút",
             dataIndex: "createdAt",
             key: "createdAt",
@@ -73,6 +158,7 @@ function FinanceDashboard() {
             title: "Số tiền (VNĐ)",
             dataIndex: "amount",
             key: "amount",
+            align: "right",
             render: (val) => <span style={{ color: "red", fontWeight: "bold" }}>-{val?.toLocaleString()} ₫</span>,
         },
         {
@@ -126,10 +212,39 @@ function FinanceDashboard() {
                 <Col span={6}>
                     <Card>
                         <Statistic
-                            title="TỔNG LỢI NHUẬN"
+                            title="LỢI NHUẬN GỘP (Doanh thu - Giá vốn)"
                             value={overview.totalProfit}
                             precision={0}
                             valueStyle={{ color: "#fa8c16", fontWeight: "bold" }}
+                            prefix={<LineChartOutlined />}
+                            suffix="₫"
+                        />
+                    </Card>
+                </Col>
+                <Col span={6}>
+                    <Card
+                        style={{
+                            background: overview.totalAdjustmentLoss > 0 ? '#fff2f0' : undefined,
+                            border: overview.totalAdjustmentLoss > 0 ? '1px solid #ffccc7' : undefined
+                        }}
+                    >
+                        <Statistic
+                            title="THIỆT HẠI HÀNG HỦY"
+                            value={overview.totalAdjustmentLoss}
+                            precision={0}
+                            valueStyle={{ color: overview.totalAdjustmentLoss > 0 ? "#cf1322" : "#8c8c8c", fontWeight: "bold" }}
+                            prefix={<WarningOutlined />}
+                            suffix="₫"
+                        />
+                    </Card>
+                </Col>
+                <Col span={6}>
+                    <Card>
+                        <Statistic
+                            title="LỢI NHUẬN RÒNG (Sau khi trừ hàng hủy)"
+                            value={overview.netProfit}
+                            precision={0}
+                            valueStyle={{ color: overview.netProfit >= 0 ? "#fa8c16" : "#cf1322", fontWeight: "bold" }}
                             prefix={<LineChartOutlined />}
                             suffix="₫"
                         />
@@ -172,14 +287,15 @@ function FinanceDashboard() {
             </Card>
 
             <Modal
-                title="Tạo lệnh rút tiền (Finance Withdrawal)"
+                title="Tạo lệnh rút tiền"
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 footer={null}
+                width={540}
             >
                 <Form layout="vertical" form={form} onFinish={handleCreateWithdrawal}>
                     <Descriptions column={1} size="small" bordered style={{ marginBottom: 20 }}>
-                        <Descriptions.Item label="Lợi nhuận khả dụng hiện tại">
+                        <Descriptions.Item label="Số dư khả dụng">
                             <strong style={{ color: "#389e0d", fontSize: "16px" }}>
                                 {overview.balance?.toLocaleString()} ₫
                             </strong>
@@ -188,7 +304,7 @@ function FinanceDashboard() {
 
                     <Form.Item
                         name="amount"
-                        label="Số tiền muốn rút (VNĐ)"
+                        label="Số tiền rút (VNĐ)"
                         rules={[
                             { required: true, message: "Vui lòng nhập số tiền!" },
                             { type: "number", min: 1000, message: "Tối thiểu rút 1,000 VNĐ!" },
@@ -201,18 +317,65 @@ function FinanceDashboard() {
                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
                         />
                     </Form.Item>
+
+                    <Form.Item
+                        name="bankBin"
+                        label="Ngân hàng"
+                        rules={[{ required: true, message: "Vui lòng chọn ngân hàng!" }]}
+                    >
+                        <Select 
+                            placeholder="Chọn ngân hàng..." 
+                            showSearch 
+                            optionFilterProp="label"
+                            options={banks}
+                            loading={banks.length === 0}
+                            onChange={(bin) => {
+                                const b = banks.find(x => x.value === bin);
+                                if (b) form.setFieldsValue({ bankName: b.name });
+                            }}
+                        />
+                    </Form.Item>
+                    {/* Hidden field to store bank name string for backend */}
+                    <Form.Item name="bankName" hidden><Input /></Form.Item>
+
+                    <Form.Item label="Số tài khoản" required>
+                        <Input.Group compact>
+                            <Form.Item
+                                name="accountNumber"
+                                noStyle
+                                rules={[{ required: true, message: "Vui lòng nhập số tài khoản!" }]}
+                            >
+                                <Input style={{ width: 'calc(100% - 100px)' }} placeholder="VD: 0123456789" />
+                            </Form.Item>
+                            <Button 
+                                style={{ width: '100px' }} 
+                                type="primary" 
+                                ghost 
+                                icon={<SearchOutlined />}
+                                onClick={lookupAccount}
+                                loading={isLookingUp}
+                            >
+                                Check
+                            </Button>
+                        </Input.Group>
+                    </Form.Item>
+                    <Form.Item
+                        name="accountHolder"
+                        label="Chủ tài khoản"
+                        rules={[{ required: true, message: "Vui lòng nhập tên chủ tài khoản!" }]}
+                    >
+                        <Input placeholder="VD: NGUYEN VAN A" style={{ textTransform: 'uppercase' }} />
+                    </Form.Item>
                     <Form.Item
                         name="note"
                         label="Ghi chú (Tùy chọn)"
                     >
-                        <Input.TextArea rows={3} placeholder="Ví dụ: Rút tiền lãi tháng 5..." />
+                        <Input.TextArea rows={2} placeholder="VD: Rút tiền lãi tháng 5..." />
                     </Form.Item>
-                    <Form.Item style={{ textAlign: "right" }}>
-                        <Button onClick={() => setIsModalOpen(false)} style={{ marginRight: 8 }}>
-                            Hủy
-                        </Button>
-                        <Button type="primary" htmlType="submit">
-                            Ghi nhận rút tiền
+                    <Form.Item style={{ textAlign: "right", marginBottom: 0 }}>
+                        <Button onClick={() => setIsModalOpen(false)} style={{ marginRight: 8 }}>Hủy</Button>
+                        <Button type="primary" htmlType="submit" icon={<WalletOutlined />}>
+                            Xác nhận rút tiền
                         </Button>
                     </Form.Item>
                 </Form>

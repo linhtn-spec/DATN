@@ -15,7 +15,8 @@ import {
     UserOutlined,
     UsergroupDeleteOutlined,
     TruckOutlined,
-    WarningOutlined
+    WarningOutlined,
+    ToolOutlined
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
 import { ROLE } from '../constants/roles';
@@ -111,6 +112,11 @@ export const getNavbarItems = (userRole, getItem) => [
         <NavLink to="inventory/expiry">Cảnh báo hết hạn</NavLink>,
         'expiry-alert',
         <WarningOutlined style={{ color: '#faad14' }} />
+    ),
+    userRole >= ROLE.MANAGER && getItem(
+        <NavLink to="inventory/adjustment">Điều chỉnh tồn kho</NavLink>,
+        'stock-adjustment',
+        <ToolOutlined style={{ color: '#722ed1' }} />
     ),
     userRole >= ROLE.MANAGER && getItem(
         <NavLink to="users">Người dùng</NavLink>,

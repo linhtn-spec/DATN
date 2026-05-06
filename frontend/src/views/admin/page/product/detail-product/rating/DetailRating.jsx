@@ -20,6 +20,7 @@ import { queryClient } from "../../../../../../main";
 import { detailRating, updateRating } from "../../../../../../services/rating_service";
 import Notification from "../../../../../../utils/configToastify";
 import './DetailRating.css';
+import AdminHeader from "../../../../components/AdminHeader";
 
 const formItemLayout = {
     labelCol: {
@@ -88,7 +89,7 @@ export function DetailRating() {
 
     return (
         <Flex className="crud_user detail_rating container" vertical>
-            <h2 className='caption'><PlusOutlined />{"Chi tiết đánh giá"}</h2>
+            <AdminHeader title="Chi tiết đánh giá" icon={<PlusOutlined />} />
             <Card
                 title={"Chi tiết đánh giá"}
                 bordered={false}

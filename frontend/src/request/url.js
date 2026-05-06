@@ -77,6 +77,9 @@ const URL = {
         ORDER_PER_DAY: 'order_per_day',
         UNSOLD: "unsold",
         STATITICS_PER_DAY: 'statitics_perday'
+    },
+    STOCK_ADJUSTMENT: {
+        CRUD: 'stock-adjustment'
     }
 }
 export default URL;

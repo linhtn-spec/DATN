@@ -11,3 +11,7 @@ export const getWithdrawalsHistory = () => {
 export const createWithdrawal = (data) => {
     return api.post("withdrawals", data);
 };
+
+export const lookupBankAccount = (data) => {
+    return api.post("lookup-bank-account", data);
+};

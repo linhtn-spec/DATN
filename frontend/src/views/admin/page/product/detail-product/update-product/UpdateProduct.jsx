@@ -24,6 +24,7 @@ import { detailProduct, updateProduct } from "../../../../../../services/product
 import { uploadImage } from "../../../../../../services/upload_service";
 import Notification from "../../../../../../utils/configToastify";
 import './UpdateProduct.css';
+import AdminHeader from "../../../../components/AdminHeader";
 
 function UpdateProduct() {
     const navigate = useNavigate();
@@ -151,7 +152,7 @@ function UpdateProduct() {
 
     return (
         <Flex className="add_product_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Cập nhật sản phẩm</h2>
+            <AdminHeader title="Cập nhật sản phẩm" icon={<PlusOutlined />} />
             <Card
                 title="Cập nhật sản phẩm"
                 bordered={false}

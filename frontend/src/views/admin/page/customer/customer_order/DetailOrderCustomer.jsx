@@ -26,6 +26,7 @@ import { queryClient } from "../../../../../main";
 import { detailOrder, editOrder } from "../../../../../services/order_service";
 import Notification from "../../../../../utils/configToastify";
 import './DetailOrderCustomer.css';
+import AdminHeader from "../../../components/AdminHeader";
 
 const formItemLayout = {
     labelCol: {
@@ -177,7 +178,7 @@ export function DetailOrderCustomer() {
     }, [form])
     return (
         <Flex className="crud_user container" vertical>
-            <h2 className='caption'><PlusOutlined />{"Chi tiết đơn hàng"}</h2>
+            <AdminHeader title="Chi tiết đơn hàng" icon={<PlusOutlined />} />
             <Card
                 title={"Chi tiết đơn hàng"}
                 bordered={false}

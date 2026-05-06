@@ -18,6 +18,7 @@ import Editor from "../../../../../components/RichTextEditor/Editor";
 import { queryClient } from "../../../../../main";
 import { detailBlog, updateBlog } from "../../../../../services/blog_service";
 import Notification from "../../../../../utils/configToastify";
+import AdminHeader from "../../../components/AdminHeader";
 
 function UpdateBlog() {
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ function UpdateBlog() {
     }
     return (
         <Flex className="update_blog_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Cập nhật bài viết</h2>
+            <AdminHeader title="Cập nhật bài viết" icon={<PlusOutlined />} />
             <Card
                 title="Cập nhật bài viết mới"
                 bordered={false}

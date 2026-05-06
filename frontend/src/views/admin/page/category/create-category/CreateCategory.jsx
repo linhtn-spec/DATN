@@ -16,8 +16,9 @@ import Card from "antd/es/card/Card";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { uploadImage } from "../../../../../services/upload_service";
-import './CreateCategory.css';
 import Notification from "../../../../../utils/configToastify";
+import './CreateCategory.css';
+import AdminHeader from "../../../components/AdminHeader";
 import { addCategory } from "../../../../../services/category_service";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../../../../main";
@@ -81,7 +82,7 @@ function CreateCategory() {
     }, [fileList.length, form])
     return (
         <Flex className="add_category_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Thêm danh mục mới</h2>
+            <AdminHeader title="Thêm danh mục mới" icon={<PlusOutlined />} />
             <Card
                 title="Thông tin danh mục"
                 bordered={false}

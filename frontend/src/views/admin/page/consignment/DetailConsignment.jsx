@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import './DetailConsignment.css';
+import AdminHeader from "../../components/AdminHeader";
 
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import dayjs from 'dayjs';
@@ -130,7 +131,10 @@ export function DetailConsignment() {
 
     return (
         <Flex className="crud_user  container" vertical>
-            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật phiếu nhập kho" : "Tạo phiếu nhập kho"}</h2>
+            <AdminHeader 
+                title={condition ? "Cập nhật phiếu nhập kho" : "Tạo phiếu nhập kho"} 
+                icon={<PlusOutlined />} 
+            />
             <Card
                 title={condition ? "Cập nhật phiếu nhập kho" : "Tạo phiếu nhập kho"}
                 bordered={false}

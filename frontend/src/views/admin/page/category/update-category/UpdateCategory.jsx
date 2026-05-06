@@ -21,6 +21,7 @@ import { detailCategory, updateCategory } from "../../../../../services/category
 import { uploadImage } from "../../../../../services/upload_service";
 import Notification from "../../../../../utils/configToastify";
 import './UpdateCategory.css';
+import AdminHeader from "../../../components/AdminHeader";
 
 function UpdateCategory() {
     const navigate = useNavigate();
@@ -110,7 +111,7 @@ function UpdateCategory() {
 
     return (
         <Flex className="update_category_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Cập nhật danh mục</h2>
+            <AdminHeader title="Cập nhật danh mục" icon={<PlusOutlined />} />
             <Card
                 title="Cập nhật danh mục"
                 bordered={false}

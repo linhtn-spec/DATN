@@ -85,6 +85,8 @@ import manager_user from './manager/user_router.js';
 import manager_rating from './manager/rating_router.js';
 import manager_order from './manager/order_router.js';
 import manager_shipping from './manager/shipping_router.js';
+import manager_stock_adjustment from './manager/stock_adjustment_router.js';
+import manager_finance from './manager/finance_router.js';
 
 managerRouter.use('/', manager_banner);
 managerRouter.use('/', manager_blog);
@@ -96,6 +98,7 @@ managerRouter.use('/', manager_user);
 managerRouter.use('/', manager_rating);
 managerRouter.use('/', manager_order);
 managerRouter.use('/', manager_shipping);
+managerRouter.use('/', manager_stock_adjustment);
 
 
 // ==========================================
@@ -106,6 +109,7 @@ import admin_statitics from './admin/statitics_router.js';
 
 adminRouter.use('/', admin_audit);
 adminRouter.use('/', admin_statitics);
+adminRouter.use('/', manager_finance);
 
 
 // ==========================================

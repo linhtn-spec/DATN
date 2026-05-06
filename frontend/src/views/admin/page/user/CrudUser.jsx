@@ -23,6 +23,7 @@ import { createUser, detailUser, updateUser } from '../../../../services/user_se
 import { UserContext } from "../../../../store/user";
 import Notification from '../../../../utils/configToastify';
 import './CrudUser.css';
+import AdminHeader from "../../components/AdminHeader";
 
 
 export function CrudUser() {
@@ -146,7 +147,10 @@ export function CrudUser() {
 
     return (
         <Flex className="crud_user container" vertical>
-            <h2 className='caption'><PlusOutlined />{isUpdate ? 'Cập nhật người dùng' : "Thêm người dùng mới"}</h2>
+            <AdminHeader 
+                title={isUpdate ? 'Cập nhật người dùng' : "Thêm người dùng mới"} 
+                icon={<PlusOutlined />} 
+            />
             <Card
                 title={isUpdate ? 'Cập nhật người dùng' : "Thêm người dùng mới"}
                 bordered={false}

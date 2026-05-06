@@ -21,6 +21,7 @@ import { uploadImage } from '../../../../services/upload_service';
 import { detailUser, updateUser } from '../../../../services/user_service';
 import Notification from '../../../../utils/configToastify';
 import './DetailCustomer.css';
+import AdminHeader from "../../components/AdminHeader";
 
 
 export function DetailCustomer() {
@@ -118,7 +119,7 @@ export function DetailCustomer() {
 
     return (
         <Flex className="crud_user container" vertical>
-            <h2 className='caption'><PlusOutlined />{'Cập nhật khách hàng'}</h2>
+            <AdminHeader title="Cập nhật khách hàng" icon={<PlusOutlined />} />
             <Card
                 title={'Cập nhật khách hàng'}
                 bordered={false}

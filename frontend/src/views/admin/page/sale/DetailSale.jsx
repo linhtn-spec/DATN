@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import './DetailSale.css';
+import AdminHeader from "../../components/AdminHeader";
 
 import locale from 'antd/es/date-picker/locale/vi_VN';
 import dayjs from 'dayjs';
@@ -112,7 +113,10 @@ export function DetailSale() {
 
     return (
         <Flex className="crud_user  container" vertical>
-            <h2 className='caption'><PlusOutlined />{condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}</h2>
+            <AdminHeader 
+                title={condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"} 
+                icon={<PlusOutlined />} 
+            />
             <Card
                 title={condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}
                 bordered={false}

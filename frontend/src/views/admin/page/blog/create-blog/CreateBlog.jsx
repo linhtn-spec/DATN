@@ -19,6 +19,7 @@ import { queryClient } from "../../../../../main";
 import { addBlog } from "../../../../../services/blog_service";
 import Notification from "../../../../../utils/configToastify";
 import './CreateBlog.css';
+import AdminHeader from "../../../components/AdminHeader";
 
 
 
@@ -47,7 +48,7 @@ function CreateBlog() {
 
     return (
         <Flex className="add_blog_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Thêm bài viết mới</h2>
+            <AdminHeader title="Thêm bài viết mới" icon={<PlusOutlined />} />
             <Card
                 title="Tạo bài viết mới"
                 bordered={false}

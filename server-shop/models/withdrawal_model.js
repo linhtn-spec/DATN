@@ -12,6 +12,18 @@ const withdrawal_schema = new mongoose.Schema({
         min: 1,
         required: true
     },
+    bankName: {
+        type: String,
+        trim: true
+    },
+    accountNumber: {
+        type: String,
+        trim: true
+    },
+    accountHolder: {
+        type: String,
+        trim: true
+    },
     note: {
         type: String,
         trim: true,

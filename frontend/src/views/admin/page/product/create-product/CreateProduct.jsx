@@ -24,6 +24,7 @@ import { uploadImage } from "../../../../../services/upload_service";
 import Notification from "../../../../../utils/configToastify";
 import './CreateProduct.css';
 import axios from "axios";
+import AdminHeader from "../../../components/AdminHeader";
 
 function CreateProduct() {
     const navigate = useNavigate();
@@ -119,7 +120,7 @@ function CreateProduct() {
     }, [optionsCategories?.isSuccess, optionsCategories?.data, setCategories])
     return (
         <Flex className="add_product_panel container" vertical>
-            <h2 className='caption'><PlusOutlined />Thêm sản phẩm mới</h2>
+            <AdminHeader title="Thêm sản phẩm mới" icon={<PlusOutlined />} />
             <Card
                 title="Thông tin sản phẩm"
                 bordered={false}
