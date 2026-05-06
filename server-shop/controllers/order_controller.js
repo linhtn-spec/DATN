@@ -2,6 +2,7 @@ import { order_form, order_subject, order_text } from "../form_mail/order_form.j
 import order_model from "../models/order_model.js"
 import { sendEmail } from "../nodemailer/nodemailer_config.js";
 import product_model from "../models/product_model.js";
+import shipping_model from "../models/shipping_model.js";
 import { asyncHandler } from "../helper/async_handler.js";
 import mongoose from "mongoose";
 import { Role } from "../helper/enum.js";
@@ -11,10 +12,12 @@ const from = process.env.NODEMAILER_EMAIL
 export const add_order = asyncHandler(async (req, res) => {
     const data = req.body;
     const { tax, products, shippingMethod } = data
-    const update = {}
-    if (shippingMethod === 'free') update.shippingCost = 0
-    if (shippingMethod === 'express') update.shippingCost = 100
-    if (shippingMethod === 'standard') update.shippingCost = 10
+    
+    // Fetch dynamic shipping cost from database
+    const shippingConfig = await shipping_model.findOne({ method: shippingMethod });
+    const shippingCost = shippingConfig ? shippingConfig.fee : 0;
+    
+    const update = { shippingCost };
 
     const subPriceSumForEachProduct = products.map(product => product.subPrice);
     const totalSubPrice = subPriceSumForEachProduct.reduce((acc, curr) => acc + curr, 0) + update.shippingCost;

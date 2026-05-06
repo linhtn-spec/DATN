@@ -6,12 +6,19 @@ import "../style/checkout.css";
 import { CreditCardOutlined, DisconnectOutlined, MoneyCollectOutlined, SendOutlined, TruckOutlined } from "@ant-design/icons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { listShippingConfig } from "../../../services/shipping_service";
 import { CartContext } from "../../../store/cart";
 import { ACTION_ORDER } from "../../../store/order";
 import { OrderContext } from "../../../store/order/provider";
 function Checkout() {
     document.title = "Thanh toán";
     const [form] = Form.useForm()
+    const shippingMethod = Form.useWatch('shippingMethod', form);
+    const [shippingFees, setShippingFees] = useState({
+        free: 0,
+        standard: 30000,
+        express: 50000
+    });
 
     const cart = useContext(CartContext)
     const order = useContext(OrderContext)
@@ -33,21 +40,26 @@ function Checkout() {
         setOptions(rawData?.map(item => ({ value: item?.name, label: item?.name })))
     }, [isError, data])
 
+
     useEffect(() => {
-        form.setFieldValue("paymentMethod", "cod")
-        form.setFieldValue("shippingMethod", "free")
-    }, [form])
+        const fetchFees = async () => {
+            const res = await listShippingConfig();
+            if (res.status === 200) {
+                const fees = {};
+                res.data.forEach(item => {
+                    fees[item.method] = item.fee;
+                });
+                setShippingFees(fees);
+            }
+        };
+        fetchFees();
+    }, []);
+
+    const currentShippingFee = shippingFees[shippingMethod] || 0;
     useEffect(() => {
-        if (order?.state?.currentOrder) {
-            form.setFieldValue("firstNameReceiver", order?.state?.currentOrder?.firstNameReceiver)
-            form.setFieldValue("lastNameReceiver", order?.state?.currentOrder?.lastNameReceiver)
-            form.setFieldValue("emailReceiver", order?.state?.currentOrder?.emailReceiver)
-            form.setFieldValue("phoneReceiver", order?.state?.currentOrder?.phoneReceiver)
-            form.setFieldValue("addressReceiver", order?.state?.currentOrder?.addressReceiver)
-            form.setFieldValue("countryReceiver", order?.state?.currentOrder?.countryReceiver)
-            form.setFieldValue("note", order?.state?.currentOrder?.note)
-            form.setFieldValue("paymentMethod", order?.state?.currentOrder?.paymentMethod)
-            form.setFieldValue("shippingMethod", order?.state?.currentOrder?.shippingMethod)
+        const currentOrder = order?.state?.currentOrder;
+        if (currentOrder && Object.keys(currentOrder).length > 0) {
+            form.setFieldsValue(currentOrder);
         }
     }, [order, form])
 
@@ -142,18 +154,22 @@ function Checkout() {
             span: 3
         },
         {
+            key: '4',
+            label: 'Phí vận chuyển',
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{currentShippingFee.toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            span: 3
+        },
+        {
             key: '2',
             label: 'Thuế (9%)',
             children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 0.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
-
         },
         {
             key: '3',
             label: 'Tổng cộng',
-            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09 + currentShippingFee).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
-
         }
     ];
 
@@ -208,6 +224,10 @@ function Checkout() {
             <Flex>
                 <Form
                     form={form}
+                    initialValues={{
+                        paymentMethod: "cod",
+                        shippingMethod: "free"
+                    }}
                     {...formItemLayout}
                     labelWrap
                     style={{

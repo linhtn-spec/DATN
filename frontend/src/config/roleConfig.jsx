@@ -13,6 +13,7 @@ import {
     StarOutlined,
     UserOutlined,
     UsergroupDeleteOutlined,
+    TruckOutlined
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
 import { ROLE } from '../constants/roles';
@@ -118,6 +119,7 @@ export const getNavbarItems = (userRole, getItem) => [
         [
             getItem(<NavLink to="orders">Đơn hàng</NavLink>, 'orders', <AccountBookOutlined />),
             getItem(<NavLink to="customers">Khách hàng</NavLink>, 'customers', <UserOutlined />),
+            userRole >= ROLE.MANAGER && getItem(<NavLink to="shipping">Phí vận chuyển</NavLink>, 'shipping', <TruckOutlined />),
         ]
     ),
     userRole >= ROLE.STAFF && getItem(

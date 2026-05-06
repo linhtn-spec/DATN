@@ -12,6 +12,7 @@ import Notification from '../../../utils/configToastify';
 import "../style/checkout_confirm.css";
 
 import { addOrder } from "../../../services/order_service";
+import { listShippingConfig } from "../../../services/shipping_service";
 import { UserContext } from "../../../store/user";
 function CheckoutConfirm() {
     document.title = "Xác nhận đặt hàng";
@@ -74,7 +75,7 @@ function CheckoutConfirm() {
                 userId: user?.state?.currentUser?.user_id,
                 tax: (subTotal * 0.09).toFixed(2)
             }, {
-                onSuccess: (res) => isVnpay.mutate({ amount: (subTotal * 1.09 * 25_410).toFixed(2), language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
+                onSuccess: (res) => isVnpay.mutate({ amount: ((subTotal * 1.09 + currentShippingFee) * 25_410).toFixed(2), language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
             })
         }
         else {
@@ -96,6 +97,28 @@ function CheckoutConfirm() {
             )
         }
     }
+
+    const [shippingFees, setShippingFees] = useState({
+        free: 0,
+        standard: 30000,
+        express: 50000
+    });
+
+    useEffect(() => {
+        const fetchFees = async () => {
+            const res = await listShippingConfig();
+            if (res.status === 200) {
+                const fees = {};
+                res.data.forEach(item => {
+                    fees[item.method] = item.fee;
+                });
+                setShippingFees(fees);
+            }
+        };
+        fetchFees();
+    }, []);
+
+    const currentShippingFee = shippingFees[order?.state?.currentOrder?.shippingMethod] || 0;
 
     useEffect(() => {
         setProducts(cart?.state?.currentCart?.map(item => ({
@@ -185,6 +208,12 @@ function CheckoutConfirm() {
             span: 3
         },
         {
+            key: '4',
+            label: 'Phí vận chuyển',
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{currentShippingFee.toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            span: 3
+        },
+        {
             key: '2',
             label: 'Thuế (9%)',
             children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 0.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
@@ -193,7 +222,7 @@ function CheckoutConfirm() {
         {
             key: '3',
             label: 'Tổng cộng',
-            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
+            children: <Typography.Text style={{ whiteSpace: 'nowrap' }}>{(subTotal * 1.09 + currentShippingFee).toLocaleString('vi-VN')}&nbsp;₫</Typography.Text>,
             span: 3
         }
     ];
