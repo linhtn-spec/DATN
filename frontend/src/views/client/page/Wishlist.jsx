@@ -2,7 +2,6 @@ import { Breadcrumb, Empty, Flex, Pagination } from 'antd';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FavouriteContext } from '../../../store/favourite';
-import Banner_Big from '../layout/banner_big';
 import ProductGrid from '../layout/product_grid';
 import '../style/Wishlist.css';
 
@@ -27,7 +26,6 @@ export const Wishlist = () => {
 
     return (
         <>
-            <Banner_Big info="DANH SÁCH YÊU THÍCH" />
             <Flex className='category_page' vertical>
                 <Breadcrumb
                     items={[
