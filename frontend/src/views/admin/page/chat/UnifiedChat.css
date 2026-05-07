@@ -1,0 +1,109 @@
+.unified-chat-layout {
+    background: #fff !important;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+}
+
+.chat-sidebar {
+    border-right: 1px solid #f0f0f0;
+    background: #f9f9f9 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-sidebar .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-content {
+    background: #fff !important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar Item Styling */
+.room-item {
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.room-item:hover {
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+.room-item.active {
+    background: #fff;
+    border-left: 4px solid var(--primary-color);
+}
+
+.room-item-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.room-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.room-item-name {
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1; /* Added standard property */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.room-item-last-msg {
+    font-size: 0.85rem;
+    color: #8c8c8c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Empty State */
+.chat-empty-state {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #bfbfbf;
+}
+
+/* Scrollbar styling */
+.chat-sidebar ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-sidebar ::-webkit-scrollbar-thumb {
+    background: #e8e8e8;
+    border-radius: 3px;
+}
+
+.chat-sidebar ::-webkit-scrollbar-thumb:hover {
+    background: #d9d9d9;
+}

@@ -23,6 +23,7 @@ import CreateCategory from "../views/admin/page/category/create-category/CreateC
 import UpdateCategory from "../views/admin/page/category/update-category/UpdateCategory";
 import { ManageChat } from "../views/admin/page/chat/ManageChat";
 import { SupportChat } from "../views/admin/page/chat/SupportChat";
+import { UnifiedChatLayout } from "../views/admin/page/chat/UnifiedChatLayout";
 import { DetailConsignment } from "../views/admin/page/consignment/DetailConsignment";
 import { ListOfConsignment } from "../views/admin/page/consignment/ListOfConsignment";
 import { DetailCustomer } from "../views/admin/page/customer/DetailCustomer";
@@ -178,9 +179,9 @@ const adminRoutes = [
           },
           {
             path: "customer-support",
-            element: <Outlet />,
+            element: <UnifiedChatLayout />,
             children: [
-              { index: true, element: <ManageChat /> },
+              { index: true, element: <SupportChat /> },
               { path: ":chat_id", element: <SupportChat /> },
             ],
           },

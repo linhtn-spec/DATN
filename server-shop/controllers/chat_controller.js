@@ -2,8 +2,14 @@ import chat_model from "../models/chat_model.js";
 
 const getChatroomDetail = async (req, res) => {
     try {
-
         const roomId = req.params.roomId;
+        const { _id, role } = req.user;
+
+        // Security check: Customers (role 0) can only access their own chatroom
+        if (role === 0 && _id.toString() !== roomId) {
+            return res.status(403).json({ message: " Bạn không có quyền truy cập phòng chat này" });
+        }
+
         const chatroom = await chat_model.findOne({ roomId: roomId }).populate(
             {
                 path: "roomId",
@@ -20,7 +26,7 @@ const getChatroomDetail = async (req, res) => {
         if (!chatroom)
             return res.status(200).json({ roomId: roomId, message: [] });
 
-        const sortedMessages = chatroom.message.sort((a, b) => b.day - a.day);
+        const sortedMessages = chatroom.message.sort((a, b) => a.day - b.day);
 
         return res.status(200).json({ ...chatroom.toObject(), message: sortedMessages });
     } catch (error) {
@@ -58,19 +64,18 @@ const sendMessage = async (req, res) => {
             room.message.push({
                 userId: _id,
                 content: content,
+                day: new Date()
             });
             await room.save();
         } else {
             // Optional: Create room if it doesn't exist
             const createdRoom = await chat_model.create({
                 roomId: _id,
-                message: {
-                    sender: {
-                        id: _id,
-                        role: role,
-                    },
+                message: [{
+                    userId: _id,
                     content: content,
-                },
+                    day: new Date()
+                }],
             });
             const chatroom = await chat_model.findOne({ _id: createdRoom._id }).populate(
                 {

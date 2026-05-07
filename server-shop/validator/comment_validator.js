@@ -7,7 +7,7 @@ import { body, validationResult } from "express-validator";
 export const create_validator = [
     body("content")
         .notEmpty().withMessage("Content is required")
-        .isLength({ min: 3, max: 150 }).withMessage("Content must be at least 3 characters and max 150 characters"),
+        .isLength({ min: 1, max: 150 }).withMessage("Content must be at least 1 character and max 150 characters"),
     body("productId")
         .notEmpty().withMessage("ProductId is required"),
     (req, res, next) => {

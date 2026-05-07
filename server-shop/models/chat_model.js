@@ -21,7 +21,7 @@ const chat_schema = new mongoose.Schema({
             type: String,
             required: true,
             trim: true,
-            min: 3
+            minlength: 1
         },
         day: {
             type: Date,

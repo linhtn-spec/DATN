@@ -42,6 +42,7 @@ publicRouter.use('/', public_tax);
 // 2. CUSTOMER ROUTES (Level 0)
 // ==========================================
 import customer_comment from './customer/comment_router.js';
+import customer_chat from './customer/chat_router.js';
 import customer_favourite from './customer/favourite_router.js';
 import customer_order from './customer/order_router.js';
 import customer_rating from './customer/rating_router.js';
@@ -49,6 +50,7 @@ import customer_upload from './customer/upload_router.js';
 import customer_user from './customer/user_router.js';
 
 customerRouter.use('/', customer_comment);
+customerRouter.use('/', customer_chat);
 customerRouter.use('/', customer_favourite);
 customerRouter.use('/', customer_order);
 customerRouter.use('/', customer_rating);

@@ -4,7 +4,7 @@ import { body, validationResult } from "express-validator";
 export const create_validator = [
     body("content")
         .notEmpty().withMessage("Content is required")
-        .isLength({ min: 3 }).withMessage("Content must be at least 3 characters"),
+        .isLength({ min: 1 }).withMessage("Content must be at least 1 character"),
     body("roomId")
         .notEmpty().withMessage("RoomId is required"),
     (req, res, next) => {

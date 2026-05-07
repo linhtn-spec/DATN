@@ -62,12 +62,12 @@ socketIO.on('connection', (socket) => {
         socket.to(receiverId).emit("receive message", { senderId, content });
     });
 
-    socket.on("new message", (newMessageRecieved) => {
-        if (!newMessageRecieved.roomId) return console.log("Not defined");
-        newMessageRecieved.message.forEach((user) => {
-            console.log(user.userId._id);
-            socket.in(user.userId._id).emit("message recieved", newMessageRecieved);
-        });
+    socket.on("new message", (newMessageReceived) => {
+        const roomId = newMessageReceived?.roomId?._id || newMessageReceived?.roomId;
+        if (!roomId) return console.log("Room ID not defined");
+
+        // Broadcast to the room (both customer and staff should be in this room)
+        socket.to(roomId).emit("message recieved", newMessageReceived);
     });
 
     socket.off("setup", (userData) => {

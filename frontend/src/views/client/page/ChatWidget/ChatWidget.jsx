@@ -1,7 +1,7 @@
 import { CommentOutlined, SendOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Flex, FloatButton, Form, Input, Layout, Typography } from 'antd'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { io } from 'socket.io-client'
 import { detail_room, send_message } from '../../../../services/chat_service'
 import { UserContext } from '../../../../store/user'
@@ -24,7 +24,7 @@ export const ChatWidget = () => {
     const { Footer, Content } = Layout
     const { state } = useContext(UserContext)
     const userId = state?.currentUser?.user_id
-    const socket = io(END_POINT);
+    const socket = useMemo(() => io(END_POINT), [userId]);
     const contentRef = useRef(null);
     const [form] = Form.useForm()
 
@@ -50,6 +50,7 @@ export const ChatWidget = () => {
         else {
             setMessage(data?.data?.message.map(item => ({
                 content: item?.content,
+                userId: item?.userId?._id,
                 role: item?.userId?.role,
                 id: item?._id
             })))
@@ -63,9 +64,17 @@ export const ChatWidget = () => {
 
     const { mutate } = useMutation({
         mutationFn: (data) => send_message(data),
-        onSuccess: (data) => {
-            socket.emit("new message", { ...data.data, sender: userId });
-            setDataReceive(data?.data)
+        onSuccess: (res) => {
+            socket.emit("new message", { ...res.data, sender: userId });
+            const newMsg = res.data.message[res.data.message.length - 1];
+            const mappedMsg = {
+                content: newMsg.content,
+                id: newMsg._id,
+                userId: newMsg.userId?._id || userId,
+                role: newMsg.userId?.role || state?.currentUser?.role,
+                day: newMsg.day
+            };
+            setUni(prev => [...prev, mappedMsg]);
         },
         onError: () => Notification({ message: "Gửi tin nhắn thất bại!", type: "error" })
     })
@@ -87,49 +96,95 @@ export const ChatWidget = () => {
 
     useEffect(() => {
         if (contentRef.current) {
-            contentRef.current.scrollTop = contentRef.current.scrollHeight + (68 * uni.length);
+            // Increased delay to 300ms to ensure all UI animations/renders are complete
+            const timer = setTimeout(() => {
+                if (contentRef.current) {
+                    contentRef.current.scrollTop = contentRef.current.scrollHeight;
+                }
+            }, 300);
+            return () => clearTimeout(timer);
         }
     }, [message, uni]);
     useEffect(() => {
-        socket.on("message recieved", (newMessageRecieved) => {
-            if (newMessageRecieved) {
-                const rawData = newMessageRecieved?.message.map(item => ({ content: item?.content, id: item?._id, role: item?.userId?.role }))
-                const filteredArr1 = rawData.filter(item => !message.includes(item));
+        socket.on("message recieved", (newMessageReceived) => {
+            if (newMessageReceived) {
+                const rawData = newMessageReceived?.message.map(item => ({ 
+                    content: item?.content, 
+                    id: item?._id, 
+                    userId: item?.userId?._id,
+                    role: item?.userId?.role,
+                    day: item?.day
+                }))
+                const filteredArr1 = rawData.filter(item => !message.some(m => m.id === item.id));
                 setUni(filteredArr1)
             }
         });
+        return () => socket.off("message recieved");
     }, [socket, message]);
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleOpenChange = (open) => {
+        setIsOpen(open);
+        if (open) {
+            // Force scroll when widget opens
+            setTimeout(() => {
+                if (contentRef.current) {
+                    contentRef.current.scrollTop = contentRef.current.scrollHeight;
+                }
+            }, 300);
+        }
+    }
 
     return (
         <FloatButton.Group
             trigger='click'
+            open={isOpen}
+            onOpenChange={handleOpenChange}
             style={{ left: "40px", bottom: "20px", margin: 0 }}
-            type="primary" icon={<CommentOutlined />}
+            type="primary" 
+            icon={<CommentOutlined />}
         >
-            <Flex>
-                <Layout className='chatbox'>
-                    <Flex className='chatbox_header' justify='space-between' align='center'>
-                        <Typography.Title level={4} className='chatbox_header--text'>Chatbox</Typography.Title>
+            <Layout className='chatbox'>
+                <div className='chatbox_header'>
+                    <Flex align='center' gap={8} style={{ width: "100%" }}>
+                        <div className="status-indicator"></div>
+                        <div>
+                            <Typography.Text className='chatbox_header--text' strong>
+                                Support Assistant
+                            </Typography.Text>
+                            <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px", marginTop: "-4px" }}>
+                                Online now
+                            </div>
+                        </div>
                     </Flex>
-                    <Content className='chatbox_body' ref={contentRef}>
-                        <Message message={message} append={uni} />
-
-                    </Content>
-                    <Footer className='chatbox_footer'>
-                        <Form onFinish={onFinish} form={form}>
-                            <Flex gap={10} style={{ padding: "10px" }}>
-                                <Form.Item style={{ width: "80%" }} name={'content'}>
-                                    <Input className='chatbox_footer--input' placeholder='Nhắn tin...' />
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button htmlType='submit' type='primary' icon={<SendOutlined />}>Gửi</Button>
-                                </Form.Item>
-                            </Flex>
-                        </Form>
-                    </Footer>
-                </Layout>
-            </Flex>
+                </div>
+                
+                <Content className='chatbox_body' ref={contentRef}>
+                    <Message message={message} append={uni} currentUserId={userId} />
+                </Content>
+                
+                <Footer className='chatbox_footer'>
+                    <Form onFinish={onFinish} form={form}>
+                        <Flex gap={10} align="center">
+                            <Form.Item style={{ flex: 1 }} name={'content'}>
+                                <Input 
+                                    className='chatbox_footer--input' 
+                                    placeholder='Type your message...' 
+                                    size="large"
+                                />
+                            </Form.Item>
+                            <Button 
+                                htmlType='submit' 
+                                type='primary' 
+                                shape="circle"
+                                icon={<SendOutlined />} 
+                                size="large"
+                            />
+                        </Flex>
+                    </Form>
+                </Footer>
+            </Layout>
         </FloatButton.Group>
-
     )
 }

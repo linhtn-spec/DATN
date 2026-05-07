@@ -1,20 +1,64 @@
-.message {
-    padding: 0.5rem 1rem;
+.message-list {
+    width: 100%;
 }
 
-.message_user .ant-typography {
-    background-color: rgb(200, 196, 196);
-    padding: .5rem;
-    border-top-left-radius: .8rem;
-    border-bottom-left-radius: .8rem;
-    border-top-right-radius: .8rem;
+/* My Messages (Customer in Client View) - Right side */
+.message-bubble-me {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 10px 14px;
+    border-radius: 18px 18px 4px 18px;
+    max-width: 80%;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
-.message_admin .ant-typography {
-    background-color: rgb(145, 143, 143);
-    padding: .5rem;
-    color: white;
-    border-top-left-radius: .8rem;
-    border-bottom-right-radius: .8rem;
-    border-top-right-radius: .8rem;
+.message-bubble-me .message-content {
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+/* Their Messages (Admin/Staff in Client View) - Left side */
+.message-bubble-them {
+    background-color: #f0f2f5;
+    padding: 10px 14px;
+    border-radius: 18px 18px 18px 4px;
+    max-width: 80%;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.message-bubble-them .message-content {
+    color: #262626;
+    font-size: 0.95rem;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    opacity: 0.7;
+    text-align: right;
+}
+
+.message-bubble-me .message-time {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.message-bubble-them .message-time {
+    color: #8c8c8c;
+}
+
+/* Animation */
+@keyframes bubbleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.message-bubble-me, .message-bubble-them {
+    animation: bubbleIn 0.2s ease-out;
 }
