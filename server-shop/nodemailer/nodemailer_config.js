@@ -10,19 +10,22 @@ const transporter = nodemailer.createTransport({
     }
 });
 const sendEmail = async (from, to, subject, text, html) => {
-    transporter.sendMail({
-        from: from,
-        to: to,
-        subject: subject,
-        text: text,
-        html: html
-    }, (err) => {
-        if (err)
-            res.status(500).json({ message: err })
-        else {
-            transporter.close();
-            res.status(200).json({ message: "ok" })
-        }
+    return new Promise((resolve, reject) => {
+        transporter.sendMail({
+            from: from,
+            to: to,
+            subject: subject,
+            text: text,
+            html: html
+        }, (err, info) => {
+            if (err) {
+                console.error("Mail error: ", err);
+                reject(err);
+            } else {
+                transporter.close();
+                resolve(info);
+            }
+        });
     });
 }
 export { sendEmail }

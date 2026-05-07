@@ -38,3 +38,7 @@ export const listCustomer = (page, name, email, isActive) => api.get(URL.USER.CU
 export const detailUser = (id) => api.get(URL.USER.CRUD + `/${id}`)
 
 export const createUser = (data) => api.post(URL.USER.CRUD, data)
+
+export const verifyEmail = (token) => api.get(URL.USER.VERIFY + `/${token}`)
+
+export const resendVerification = (email) => api.post(URL.USER.RESEND_VERIFICATION, { email })

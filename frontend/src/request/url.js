@@ -35,7 +35,9 @@ const URL = {
         LOGOUT_GOOGLE: 'logout/google',
         RESET_PASSWORD_CURRENT: 'reset-password-current',
         ALL: "users/options/all",
-        CUSTOMERS: "customers"
+        CUSTOMERS: "customers",
+        VERIFY: "verify-email",
+        RESEND_VERIFICATION: "resend-verification"
     },
     ORDER: {
         CRUD: 'order',

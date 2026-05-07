@@ -59,6 +59,7 @@ import Forget from "../views/authentication/forget/forget";
 import Login from "../views/authentication/login/login";
 import Register from "../views/authentication/register/register";
 import Reset from "../views/authentication/reset/reset";
+import VerifyEmail from "../views/authentication/verify-email/VerifyEmail";
 
 // Client pages
 import { ChangePassword } from "../views/client/page/ChangePassword";
@@ -118,6 +119,16 @@ const authRoutes = [
       <ProtectRoute>
         <LogProvider>
           <Register />
+        </LogProvider>
+      </ProtectRoute>
+    ),
+  },
+  {
+    path: "verify-email/:token",
+    element: (
+      <ProtectRoute>
+        <LogProvider>
+          <VerifyEmail />
         </LogProvider>
       </ProtectRoute>
     ),

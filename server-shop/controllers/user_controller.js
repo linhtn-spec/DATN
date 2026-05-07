@@ -4,6 +4,8 @@ import { forget_password_form, forget_password_subject, forget_password_text } f
 import user_model from "../models/user_model.js";
 import { sendEmail } from "../nodemailer/nodemailer_config.js";
 import { options } from "../paginate/options.js";
+import crypto from "crypto";
+import { verify_email_form, verify_email_subject, verify_email_text } from "../form_mail/verify_email.js";
 
 const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
@@ -21,6 +23,9 @@ export const login = async (req, res) => {
         }
         if (!user.isActive) {
             return res.status(401).json({ message: "Tài khoản đang bị khóa" });
+        }
+        if (!user.isVerified) {
+            return res.status(401).json({ message: "Vui lòng xác nhận email của bạn trước khi đăng nhập" });
         }
         const verify = await bcrypt.compare(data.password, user.password);
         if (!verify) {
@@ -88,29 +93,77 @@ export const register = async (req, res) => {
         if (checkEmail) {
             return res.status(400).json({ message: "Email đã tồn tại" });
         }
-        const user = await user_model.create(data);
+
+        // Generate verification token
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const user = await user_model.create({ ...data, verificationToken });
+
         if (user) {
-            const dataForRefreshToken = {
-                username: user.username,
-                user_id: user._id
-            };
-            const refreshToken = jwt.sign(dataForRefreshToken, refreshTokenSecret, { expiresIn: refreshTokenLife });
-            if (!refreshToken) {
-                return res
-                    .status(503)
-                    .json({ message: 'Đăng ký thất bại, thử lại' });
-            }
-            if (!user.refreshToken) {
-                await user_model.findOneAndUpdate({ _id: user._id }, { refreshToken: refreshToken })
-            }
-            else {
-                refreshToken = user.refreshToken;
-            }
-            return res.status(201).json({ message: "Đăng ký thành công" });
+            const from = process.env.NODEMAILER_EMAIL;
+            await sendEmail(
+                from,
+                user.email,
+                verify_email_subject,
+                verify_email_text(verificationToken),
+                verify_email_form(verificationToken)
+            );
+
+            return res.status(201).json({ message: "Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản." });
         }
         else {
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ message: "Đăng ký thất bại" });
         }
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const user = await user_model.findOne({ verificationToken: token });
+
+        if (!user) {
+            return res.status(404).json({ message: "Mã xác thực không hợp lệ hoặc đã hết hạn" });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined;
+        await user.save();
+
+        return res.status(200).json({ message: "Xác nhận email thành công. Bạn có thể đăng nhập ngay bây giờ." });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export const resendVerification = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await user_model.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ message: "Email không tồn tại" });
+        }
+
+        if (user.isVerified) {
+            return res.status(400).json({ message: "Email này đã được xác nhận" });
+        }
+
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        user.verificationToken = verificationToken;
+        await user.save();
+
+        const from = process.env.NODEMAILER_EMAIL;
+        await sendEmail(
+            from,
+            user.email,
+            verify_email_subject,
+            verify_email_text(verificationToken),
+            verify_email_form(verificationToken)
+        );
+
+        return res.status(200).json({ message: "Gửi lại email xác nhận thành công. Vui lòng kiểm tra hộp thư của bạn." });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

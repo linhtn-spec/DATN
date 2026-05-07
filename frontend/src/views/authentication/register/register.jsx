@@ -11,8 +11,8 @@ function Register() {
     const { mutate, isPending } = useMutation({
         mutationKey: ['register_account'],
         mutationFn: (data) => register(data),
-        onSuccess: () => {
-            Notification({ message: "Đăng ký thành công!", type: "success" })
+        onSuccess: (res) => {
+            Notification({ message: res?.data?.message || "Đăng ký thành công! Vui lòng kiểm tra email của bạn.", type: "success" })
             navigate('/')
         },
         onError: (error) => Notification({ message: error?.response?.data, type: "error" })

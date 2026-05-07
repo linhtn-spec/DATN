@@ -1,7 +1,7 @@
 import { Router } from "express";
 import rateLimit from "express-rate-limit";
 import passport from "passport";
-import { detailUser, forgetPassword, getAll, login, loginByGoogle, refresh_token, register, resetPassword } from "../../controllers/user_controller.js";
+import { detailUser, forgetPassword, getAll, login, loginByGoogle, refresh_token, register, resetPassword, resendVerification, verifyEmail } from "../../controllers/user_controller.js";
 import { forgot_password_validator, login_validator, register_validator, send_email_validator } from "../../validator/user_validator.js";
 
 
@@ -48,5 +48,7 @@ router.post('/register', authLimiter, register_validator, register);
 router.post('/login', authLimiter, login_validator, login);
 router.post('/forget-password', authLimiter, send_email_validator, forgetPassword)
 router.post('/refresh_token', refresh_token)
+router.get('/verify-email/:token', verifyEmail)
+router.post('/resend-verification', resendVerification)
 
 export default router;
