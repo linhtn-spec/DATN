@@ -1,4 +1,5 @@
 import {
+    HeartFilled,
     HeartOutlined,
     MinusOutlined,
     PlusOutlined,
@@ -44,9 +45,10 @@ function ProductDetail() {
     const lastView = useContext(LastViewProductContext)
     const cart = useContext(CartContext)
     const user = useContext(UserContext)
-    const favourite = useContext(FavouriteContext)
-
     const { id } = useParams()
+    const favourite = useContext(FavouriteContext)
+    const isFavourite = favourite?.state?.favourite?.some(item => item.id === id)
+
     const navigate = useNavigate()
     const info = user?.state?.currentUser
 
@@ -472,7 +474,13 @@ function ProductDetail() {
                                                             </span>
                                                         )}
                                                     </Typography.Title>
-                                                    <Button shape="circle" className="fav" onClick={addToFavourite}><HeartOutlined /></Button>
+                                                    <Button 
+                                                        shape="circle" 
+                                                        className={clsx("fav", { "is-favourite": isFavourite })} 
+                                                        onClick={addToFavourite}
+                                                    >
+                                                        {isFavourite ? <HeartFilled /> : <HeartOutlined />}
+                                                    </Button>
                                                 </Flex>
                                                 <hr />
                                                 <p>Tình trạng: <span className="stock_status">{productQty === 0 ? 'Hết hàng' : `Còn hàng ( ${productQty} ${product.unit || 'sản phẩm'} )`}</span></p>

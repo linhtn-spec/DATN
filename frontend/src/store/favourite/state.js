@@ -1,4 +1,5 @@
-
-const favourite = []
+const favourite = {
+    favourite: []
+}
 
 export { favourite }

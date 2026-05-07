@@ -1,6 +1,7 @@
-import { CloseOutlined, HeartOutlined, ShoppingOutlined } from "@ant-design/icons";
+import { CloseOutlined, DeleteOutlined, HeartFilled, HeartOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { Badge, Button, Flex, Typography } from "antd";
+import clsx from "clsx";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { queryClient } from "../../../main";
@@ -16,6 +17,7 @@ function ProductGrid(props) {
     const cart = useContext(CartContext)
     const user = useContext(UserContext)
     const favourite = useContext(FavouriteContext)
+    const isFavourite = favourite?.state?.favourite?.some(item => item.id === product.id)
 
     const info = user?.state?.currentUser?.user_id
     const addToCart = () => {
@@ -67,8 +69,14 @@ function ProductGrid(props) {
     return (
         <Flex className='item' key={product.id} vertical >
             {type === 'wishlist' &&
-                <Button danger type="primary" shape="circle" className="delete_favourite" icon={<CloseOutlined />} onClick={() => handleDelete(product.id)} />}
-            {!type && <Button className="favourite" onClick={() => addToFavourite()} icon={<HeartOutlined />} />}
+                <Button danger className="delete_favourite" icon={<DeleteOutlined />} onClick={() => handleDelete(product.id)} />}
+            {!type && (
+                <Button 
+                    className={clsx("favourite", { "is-favourite": isFavourite })} 
+                    onClick={() => addToFavourite()} 
+                    icon={isFavourite ? <HeartFilled /> : <HeartOutlined />} 
+                />
+            )}
             <Link to={`/client/product/${product.id}`} className="image-wrapper">
                 {!type && product.pricePromotion !== 0 ? (
                     <Badge.Ribbon text={`-${product.pricePromotion}%`} color="red" placement="start">

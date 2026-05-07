@@ -184,11 +184,19 @@
 
 
 .product_detail-client .info .fav:hover svg {
-    color: red;
+    color: #ff69b4;
 }
 
 .product_detail-client .info .fav:hover {
-    border-color: red !important;
+    border-color: #ff69b4 !important;
+}
+
+.product_detail-client .info .fav.is-favourite svg {
+    color: #ff69b4 !important;
+}
+
+.product_detail-client .info .fav.is-favourite {
+    border-color: #ff69b4 !important;
 }
 
 .product_detail-client .submit_comment {

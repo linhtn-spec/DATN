@@ -1,19 +1,11 @@
 .cart_page {
-    padding: 0px 50px;
     margin-bottom: 100px;
 }
 
-:root {
-    --blue: #1e90ff;
-    --white: #ffffff;
-    --font-family-header: Arial;
-    --font-size-header: 30px;
-
+.category_page .ant-breadcrumb {
+    margin-bottom: 40px;
 }
 
-.cart_page .ant-breadcrumb {
-    margin-top: 60px;
-}
 
 .cart_page table th:first-child,
 .cart_page table tr:first-child {

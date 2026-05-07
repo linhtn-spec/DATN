@@ -1,5 +1,6 @@
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Button, Flex, Typography } from "antd";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import "./../style/product_LSView.css";
 import { useContext } from "react";
@@ -14,6 +15,7 @@ function Product_LSView(props) {
     const cart = useContext(CartContext)
     const user = useContext(UserContext)
     const favourite = useContext(FavouriteContext)
+    const isFavourite = favourite?.state?.favourite?.some(item => item.id === product.id)
 
     const info = user?.state?.currentUser
     const addToCart = () => {
@@ -82,7 +84,12 @@ function Product_LSView(props) {
             </Flex>
             <Flex className="button_group" justify="space-evenly">
                 <Button shape="circle" onClick={addToCart} disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0}><ShoppingCartOutlined /></Button>
-                <Button shape="circle" onClick={addToFavourite}><HeartOutlined /></Button>
+                <Button 
+                    shape="circle" 
+                    className={clsx({ "is-favourite": isFavourite })} 
+                    onClick={addToFavourite}
+                    icon={isFavourite ? <HeartFilled /> : <HeartOutlined />}
+                />
             </Flex>
         </Flex>
 

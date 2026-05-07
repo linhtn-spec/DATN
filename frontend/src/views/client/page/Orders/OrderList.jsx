@@ -10,6 +10,7 @@ import { UserContext } from "../../../../store/user";
 import Notification from "../../../../utils/configToastify";
 import './OrderList.css';
 
+
 export const OrderList = () => {
     const [orders, setOrders] = useState([])
     const [total, setTotal] = useState(1)
@@ -128,43 +129,44 @@ export const OrderList = () => {
     }, [])
 
     return (
-        <Flex className="container order_list_page" vertical gap={24} style={{ padding: '40px 0' }}>
-            <Breadcrumb
-                className="custom-breadcrumb"
-                items={[
-                    {
-                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                    },
-                    {
-                        title: 'LỊCH SỬ ĐƠN HÀNG',
-                    },
-                ]}
-                style={{ margin: '0 auto' }}
-            />
-
-
-            <Card className="modern-order-card" bodyStyle={{ padding: '30px' }} bordered={false}>
-                <Flex justify="space-between" align="center" style={{ padding: '30px 0' }}>
-                    <Typography.Title level={3} style={{ margin: 0, color: 'var(--primary-color)' }}>Đơn hàng của bạn</Typography.Title>
-                </Flex>
-                <Table
-                    columns={columns}
-                    dataSource={orders}
-                    loading={isFetching}
-                    pagination={{
-                        hideOnSinglePage: true,
-                        pageSize: 6,
-                        total: total,
-                        current: page,
-                        onChange: setPage,
-                        showSizeChanger: false,
-                        style: { padding: '20px' }
-                    }}
-                    locale={{ emptyText: <Empty description="Bạn chưa có đơn hàng nào" /> }}
-                    rowKey="id"
+        <>
+            <Flex className='category_page' vertical>
+                <Breadcrumb
+                    className="custom-breadcrumb"
+                    items={[
+                        {
+                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
+                        },
+                        {
+                            title: 'LỊCH SỬ ĐƠN HÀNG',
+                        },
+                    ]}
                 />
-            </Card>
-        </Flex>
+
+
+                <Card className="modern-order-card" bodyStyle={{ padding: '30px' }} bordered={false}>
+                    <Flex justify="space-between" align="center" style={{ padding: '0 0 30px' }}>
+                        <Typography.Title level={3} style={{ margin: 0, color: 'var(--primary-color)' }}>Đơn hàng của bạn</Typography.Title>
+                    </Flex>
+                    <Table
+                        columns={columns}
+                        dataSource={orders}
+                        loading={isFetching}
+                        pagination={{
+                            hideOnSinglePage: true,
+                            pageSize: 6,
+                            total: total,
+                            current: page,
+                            onChange: setPage,
+                            showSizeChanger: false,
+                            style: { padding: '20px 0' }
+                        }}
+                        locale={{ emptyText: <Empty description="Bạn chưa có đơn hàng nào" /> }}
+                        rowKey="id"
+                    />
+                </Card>
+            </Flex>
+        </>
     )
 }
 

@@ -66,9 +66,13 @@
     border-color: rgb(214, 171, 42) !important;
 }
 
-.product_relate-list .button_group button:last-child:hover span {
-    color: #c32a2a;
-    border-color: #c32a2a !important;
+.product_relate-list .button_group button:last-child:hover span,
+.product_relate-list .button_group button.is-favourite span {
+    color: #ff69b4 !important;
+}
+
+.product_relate-list .button_group button.is-favourite {
+    border-color: #ff69b4 !important;
 }
 
 .product_relate-list .item_related .promotion {

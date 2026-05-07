@@ -114,11 +114,21 @@
     transition: all 0.3s ease;
 }
 
-.wishlist_item .item .delete_favourite {
+.category_items .item .delete_favourite,
+.wishlist_items .item .delete_favourite {
     position: absolute;
     top: 15px;
     right: 15px;
-    z-index: 10;
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.wishlist_items .item .delete_favourite:hover {
+    transform: scale(1.1);
+    background-color: #ff4d4f !important;
+    color: #fff !important;
 }
 
 .category_items button:hover {
@@ -172,8 +182,13 @@
 }
 
 .category_items .item .favourite span {
-    color: red;
+    color: #ff69b4;
     font-size: 30px;
+    transition: all 0.3s ease;
+}
+
+.category_items .item .favourite.is-favourite span {
+    color: #ff69b4;
 }
 
 

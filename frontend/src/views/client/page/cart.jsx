@@ -6,6 +6,7 @@ import { ACTION_CART, CartContext } from '../../../store/cart';
 import Notification from '../../../utils/configToastify';
 import "./../style/cart.css";
 
+
 function Cart() {
     document.title = "Giỏ hàng";
     const navigate = useNavigate();
@@ -165,33 +166,39 @@ function Cart() {
     }, [])
 
     return (
-        <Flex className='container cart_page' vertical>
-            <Breadcrumb
-                items={[
-                    {
-                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                    },
-                    {
-                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
-                    },
-                ]}
-            />
-            <Table
-                bordered
-                rowKey="id"
-                columns={columns}
-                dataSource={products}
-                scroll={{ x: 'max-content' }}
-                pagination={{ hideOnSinglePage: true, pageSize: 3, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
+        <>
+            <Flex className='category_page' vertical>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
+                        },
+                        {
+                            title: "GIỎ HÀNG",
+                        },
+                    ]}
+                />
+                <Table
+                    bordered
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={products}
+                    scroll={{ x: 'max-content' }}
+                    pagination={{ hideOnSinglePage: true, pageSize: 6, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
 
-            />
-            <Flex className='wrap_btn' justify='flex-end'>
-                <Button variant='warning' onClick={checkout} disabled={!state?.currentCart || state?.currentCart?.length < 1}>
-                    Thanh toán
-                </Button>
+                />
+                <Flex className='wrap_btn' justify='flex-end' style={{ marginTop: '20px' }}>
+                    <Button variant='warning' onClick={checkout} disabled={!state?.currentCart || state?.currentCart?.length < 1}>
+                        TIẾN HÀNH THANH TOÁN
+                    </Button>
+                </Flex>
             </Flex>
-        </Flex>
+        </>
     );
+
 }
 
 export default Cart; 
