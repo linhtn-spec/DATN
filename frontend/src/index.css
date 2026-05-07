@@ -6,6 +6,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-gutter: stable; /* Prevent layout jump when scrollbar appears/disappears */
+}
+
+html {
+  scrollbar-gutter: stable; /* Reserve scrollbar space to prevent horizontal shift */
+  overflow-y: scroll; /* Always show vertical scrollbar */
 }
 
 body {

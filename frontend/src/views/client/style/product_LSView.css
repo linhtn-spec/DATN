@@ -1,5 +1,5 @@
 .product_relate-list {
-    height: 110vh;
+    height: 700px;
 }
 
 .product_relate-list img {
@@ -88,4 +88,3 @@
 .product_relate-list .item_related .title {
     font-weight: 400;
 }
-

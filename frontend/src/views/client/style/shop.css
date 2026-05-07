@@ -1,13 +1,13 @@
 .shop {
-    margin-top: 50px;
     margin-bottom: 100px;
-    padding: 50px;
+    padding: 0 50px;
     background: linear-gradient(145deg, #ffffff 0%, #f6f9fc 100%);
     border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06), 0 5px 15px rgba(0, 0, 0, 0.03);
     border: 1px solid rgba(226, 232, 240, 0.8);
     position: relative;
     z-index: 10;
+    width: 100%;
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
@@ -19,7 +19,10 @@
 }
 
 .shop .filterCAP {
-    width: 25%;
+    width: 25% !important;
+    min-width: 300px;
+    flex: 0 0 25% !important;
+    flex-shrink: 0 !important;
     margin-right: 40px;
     background-color: #f9f9f9;
     padding: 24px;
@@ -28,7 +31,33 @@
 }
 
 .shop .products_cate {
-    width: 70%;
+    width: 72% !important;
+    flex: 0 0 72% !important;
+    flex-shrink: 0 !important;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop .products_result {
+    width: 100% !important;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Use Grid for products to ensure they don't affect parent width */
+.shop .product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+.shop .shop_item {
+    width: 100% !important;
+    /* Fill grid cell */
+    margin-bottom: 0 !important;
 }
 
 .shop .filterCAP,
@@ -146,17 +175,22 @@
     flex-direction: column;
     gap: 12px;
 }
-.shop .ant-radio-wrapper, .shop .ant-checkbox-wrapper {
+
+.shop .ant-radio-wrapper,
+.shop .ant-checkbox-wrapper {
     font-size: 15px;
 }
-.shop .ant-radio-wrapper:hover, .shop .ant-checkbox-wrapper:hover {
+
+.shop .ant-radio-wrapper:hover,
+.shop .ant-checkbox-wrapper:hover {
     color: var(--primary-color);
 }
 
 .shop .products_result {
     background-color: transparent;
     padding: 30px 10px;
-    width: 100%
+    width: 100%;
+    min-height: 800px;
 }
 
 .shop .result h3 {
@@ -164,7 +198,7 @@
     background: rgba(255, 255, 255, 0.8);
     padding: 10px 24px;
     border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
     display: inline-block;
     font-weight: 500;
@@ -211,16 +245,55 @@
 }
 
 .shop .filter_tag {
-    height: 100%;
-    width: 500px;
+    height: auto;
+    min-width: 300px;
+    flex: 1;
+    margin-right: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
 }
 
 .shop .filter_tag .ant-tag {
-    font-size: 16px;
+    margin: 4px 0;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
     display: flex;
     align-items: center;
-    line-height: 19px;
-    font-weight: 400;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.shop .filter_tag .ant-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.shop .filter_tag .category-chip {
+    color: var(--primary-color);
+    border-color: rgba(21, 128, 61, 0.2);
+}
+
+.shop .filter_tag .price-chip {
+    color: #f97316;
+    border-color: rgba(249, 115, 22, 0.2);
+}
+
+.shop .clear-all-link {
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 8px;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.shop .clear-all-link:hover {
+    color: #ff4d4f;
 }
 
 .shop .filter_tag .ant-tag .anticon-close {
@@ -233,23 +306,23 @@
     align-items: center;
 }
 
-.shop .shop_item{
+.shop .shop_item {
     width: calc(33.33% - 11px);
     border-radius: 20px;
     background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     padding: 20px 15px;
     margin-bottom: 30px;
-    border: 1px solid rgba(0,0,0,0.03);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
 }
 
 .shop .shop_item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border-color: rgba(0,0,0,0.08);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.08);
 }
 
 .shop .shop_item img {

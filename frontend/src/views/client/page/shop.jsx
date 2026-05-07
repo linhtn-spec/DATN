@@ -177,7 +177,7 @@ function Shop() {
                         },
                     ]}
                 />
-            <Flex className='products_filter' justify="space-evenly" wrap="wrap">
+            <Flex className='products_filter' justify="space-between" wrap="nowrap" style={{ width: "100%" }}>
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
                         <Typography.Title level={5}>Danh mục</Typography.Title>
@@ -196,31 +196,44 @@ function Shop() {
                         </Radio.Group>
                     </Flex>
                 </Flex>
-                <Flex className="products_cate d-flex flex-column" vertical>
+                <Flex className="products_cate" vertical>
                     <Flex justify='space-between' align="center" style={{ marginBottom: "10px" }}>
-                        <Space className="filter_tag" >
+                        <Space className="filter_tag" wrap>
                             {categoryFilter.length !== 0 && (
-                                <Tag
-                                    closable
-                                    onClose={() => setCategoryFilter([])}
-                                    style={{
-                                        textWrap: "wrap",
-                                        maxWidth: "300px"
-                                    }}
-                                >
-                                    {getCategoryLabels(categoryFilter, optionsCategory).join(', ')}
-                                </Tag>
+                                optionsCategory
+                                    .filter(opt => categoryFilter.includes(opt.value))
+                                    .map(category => (
+                                        <Tag
+                                            key={category.value}
+                                            closable
+                                            onClose={() => {
+                                                const newFilters = categoryFilter.filter(id => id !== category.value);
+                                                setCategoryFilter(newFilters);
+                                            }}
+                                            className="category-chip"
+                                        >
+                                            {category.label}
+                                        </Tag>
+                                    ))
                             )}
                             {priceFilter && (
-                                <Tag closable onClose={() => setPriceFilter('')}>
+                                <Tag 
+                                    closable 
+                                    onClose={() => setPriceFilter('')}
+                                    className="price-chip"
+                                >
                                     {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + '\u00A0₫' : 'Trên 500.000\u00A0₫'}
                                 </Tag>
                             )}
-                            {(categoryFilter.length !== 0 && priceFilter != '') &&
-                                (<Typography.Link onClick={() => {
-                                    setCategoryFilter([]), setPriceFilter(''), setIsEmpty(false)
-
-                                }}>
+                            {(categoryFilter.length !== 0 || priceFilter != '') &&
+                                (<Typography.Link 
+                                    className="clear-all-link"
+                                    onClick={() => {
+                                        setCategoryFilter([]);
+                                        setPriceFilter('');
+                                        setIsEmpty(false);
+                                    }}
+                                >
                                     Xóa tất cả
                                 </Typography.Link>
                                 )}
@@ -263,8 +276,8 @@ function Shop() {
                             ]}
                         />
                     </Flex>
-                    <Flex className="products_result d-flex row text-center" gap="16px" vertical>
-                        {productShop.isFetching ? (
+                    <Flex className="products_result" gap="16px" vertical>
+                        {(productShop.isLoading && products.length === 0) ? (
                             <Flex gap={"16px"} wrap="wrap">
                                 {[...Array(6)].map((_, index) => (
                                     <Flex className="shop_item col-4" vertical align="center" key={index} style={{ padding: '20px' }}>
@@ -278,11 +291,11 @@ function Shop() {
                         ) : (
                             <>
                                 <Flex className='result'>
-                                    <h3>Hiển thị <span>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</span> trong số {total} kết quả</h3>
+                                    <h3>Hiển thị <span>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</span> trong số {total} kết quả {productShop.isFetching && <Skeleton.Button active size="small" style={{ marginLeft: 10, width: 20 }} />}</h3>
                                 </Flex>
-                                <Flex gap={"16px"} wrap="wrap" style={{ width: "100%" }}>
+                                <div className="product-grid" style={{ opacity: productShop.isFetching ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
                                     {products.map(item => (
-                                        <Flex className="shop_item col-4" vertical align="center" key={item?.id}>
+                                        <Flex className="shop_item" vertical align="center" key={item?.id}>
                                             <img src={item?.image} alt={item?.name} width={60} style={{ cursor: "pointer" }} height={150} onClick={() => navigate(`/client/product/${item?.id}`)} />
                                             <Typography.Title level={5} ellipsis={true}>{item?.name}</Typography.Title>
                                             <Typography.Text className="price_promo">
@@ -309,7 +322,7 @@ function Shop() {
                                             )}
                                         </Flex>
                                     ))}
-                                </Flex>
+                                </div>
                             </>
                         )}
                         <Pagination
