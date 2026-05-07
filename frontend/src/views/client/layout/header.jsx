@@ -107,7 +107,7 @@ function Headers() {
         if (isError) return
         const rawData = data?.data?.data
         setCategory(rawData?.map((item) => ({
-            name: truncate(item.name),
+            name: item.name,
             id: item._id,
             order: item?.order,
             status: item?.isActive
