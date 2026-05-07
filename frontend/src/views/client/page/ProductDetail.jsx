@@ -383,7 +383,7 @@ function ProductDetail() {
 
     return (
         <Flex vertical>
-            <Banner_Big info={product?.name} />
+            <Banner_Big info={product?.name} image={mainImage} />
             <Flex className="product_detail-client container" vertical align="center">
                 <Breadcrumb
                     items={[

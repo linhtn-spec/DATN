@@ -74,7 +74,7 @@ function Search() {
                         <Flex className="results_pagination" style={{ width: "100%" }} justify="center">
                             <p className=" text-left">Hiển thị <b>1</b> - <b>{product.length}</b> trong tổng số <b>{totalProducts}</b> kết quả</p>
                         </Flex>
-                        <Flex className="category_items" wrap="wrap" gap="50px">
+                        <Flex className="category_items" wrap="wrap" gap="50px" style={{ width: "100%" }}>
                             {product.map((item, index) => {
                                 return <ProductGrid products={item} key={index} />
                             })}

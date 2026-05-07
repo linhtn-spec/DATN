@@ -14,6 +14,7 @@ function Category() {
     const [page, setPage] = useState(1);
     console.log(page);
     const [categoryName, setCategoryName] = useState('')
+    const [categoryImage, setCategoryImage] = useState('')
     const [total, setTotal] = useState(0)
 
     const { isSuccess, data } = useQuery({
@@ -48,8 +49,10 @@ function Category() {
 
     useEffect(() => {
         if (!getNameCategory?.isSuccess) return
-        const rawData = getNameCategory?.data?.data?.name
-        setCategoryName(rawData)
+        const rawName = getNameCategory?.data?.data?.name
+        const rawImage = getNameCategory?.data?.data?.image
+        setCategoryName(rawName)
+        setCategoryImage(rawImage)
 
     }, [getNameCategory?.isSuccess, getNameCategory?.data])
 
@@ -65,7 +68,7 @@ function Category() {
     }, [categoryName])
     return (
         <>
-            <Banner_Big info={categoryName?.toUpperCase()} />
+            <Banner_Big info={categoryName?.toUpperCase()} image={categoryImage} />
             <Flex className="category_page" vertical>
                 <Breadcrumb
                     items={[
@@ -78,7 +81,7 @@ function Category() {
                     ]}
                 />
                 <Flex className="category_pagination" justify="center"><p className=" text-left">Hiển thị <b>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b>{Math.min(page * 8, total)}</b> trên tổng số <b>{total}</b> kết quả</p></Flex>
-                <Flex className="category_items" wrap="wrap" gap="24px">
+                <Flex className="category_items" wrap="wrap" gap="24px" style={{ width: "100%" }}>
                     {products.length !== 0 ? (
                         products.map((item) => {
                             return <ProductGrid products={item} key={item.id} />

@@ -10,6 +10,7 @@ import { ACTION_CART, CartContext } from "../../../store/cart";
 import { UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
 import useDebounce from "../../../utils/useDebounce";
+import Banner_Big from "../layout/banner_big";
 import "../style/shop.css";
 
 const getCategoryLabels = (categoryFilter, optionsCategory) => {
@@ -163,17 +164,19 @@ function Shop() {
         window.scrollTo(0, 0)
     }, [])
     return (
-        <Flex className="shop" vertical>
-            <Breadcrumb
-                items={[
-                    {
-                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                    },
-                    {
-                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
-                    },
-                ]}
-            />
+        <Flex vertical align="center" style={{ width: "100%" }}>
+            <Banner_Big info="CỬA HÀNG" />
+            <Flex className="shop" vertical>
+                <Breadcrumb
+                    items={[
+                        {
+                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
+                        },
+                        {
+                            title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
+                        },
+                    ]}
+                />
             <Flex className='products_filter' justify="space-evenly" wrap="wrap">
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
@@ -277,7 +280,7 @@ function Shop() {
                                 <Flex className='result'>
                                     <h3>Hiển thị <span>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</span> trong số {total} kết quả</h3>
                                 </Flex>
-                                <Flex gap={"16px"} wrap="wrap">
+                                <Flex gap={"16px"} wrap="wrap" style={{ width: "100%" }}>
                                     {products.map(item => (
                                         <Flex className="shop_item col-4" vertical align="center" key={item?.id}>
                                             <img src={item?.image} alt={item?.name} width={60} style={{ cursor: "pointer" }} height={150} onClick={() => navigate(`/client/product/${item?.id}`)} />
@@ -324,6 +327,7 @@ function Shop() {
                     </Flex>
                 </Flex>
             </Flex>
+        </Flex>
         </Flex>
 
     );

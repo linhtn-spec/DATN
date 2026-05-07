@@ -1,25 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
-import { Empty, Flex, Skeleton, Typography } from "antd";
+import { Button, Empty, Flex, Skeleton, Typography } from "antd";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { listProduct } from "../../../services/product_service";
 import { latestSale } from "../../../services/sale_service";
 import { loginByGoogle } from "../../../services/user_service";
 import { ACTION_LOG } from "../../../store/typeLog/action";
 import { LogContext } from "../../../store/typeLog/provider";
 import { ACTION_USER, UserContext } from "../../../store/user";
+import { useScrollEffects } from "../functions/useScrollEffects";
 import Banner from "../layout/banner";
 import { Countdown } from "../layout/CountDown";
 import Product_Hot from "../layout/product_hot";
 import Product_List from "../layout/product_list";
 import RecommendedProduct from "../layout/RecommendedProduct";
-import { useScrollEffects } from "../functions/useScrollEffects";
 
 function Home() {
     document.title = "Trang chủ";
     useScrollEffects();
     const { dispatch } = useContext(UserContext)
     const logGoogle = useContext(LogContext)
+    const navigate = useNavigate()
     const [productHot, setProductHot] = useState([]);
     const [productNew, setProductNew] = useState([]);
     const [isLoadingSale, SetIsLoadingSale] = useState(true)
@@ -112,7 +114,7 @@ function Home() {
                 </div>
             )}
             <Flex className="product_hot container text-center fade-in-section" vertical style={{ padding: "40px 50px" }}>
-                <Flex gap='large' wrap='wrap' justify='center'>
+                <Flex gap='large' wrap='wrap' justify='start'>
                     {querySale.isLoading ? (
                         [...Array(4)].map((_, index) => (
                             <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
@@ -125,18 +127,42 @@ function Home() {
                         ))
                     )}
                 </Flex>
+                {productHot.length > 4 && (
+                    <Flex justify="center" style={{ marginTop: "40px" }}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="premium-button"
+                            onClick={() => navigate('/client/sale')}
+                            style={{
+                                height: "50px",
+                                padding: "0 40px",
+                                borderRadius: "25px",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                textAlign: 'center'
+                            }}
+                        >
+                            XEM TẤT CẢ KHUYẾN MÃI
+                        </Button>
+                    </Flex>
+                )}
             </Flex>
             <Flex className="product_list container fade-in-section" vertical style={{ padding: "40px 50px", marginBottom: "60px", backgroundColor: "#fafafb", borderRadius: "24px" }}>
                 <div style={{ textAlign: "center", marginBottom: "40px" }}>
                     <Typography.Title level={2} className="premium-gradient-text" style={{ textTransform: "uppercase", margin: "0 auto", display: "block", fontSize: "36px", fontWeight: "800", letterSpacing: "-0.5px" }}>Sản phẩm mới</Typography.Title>
                     <Typography.Text type="secondary" style={{ fontSize: "16px" }}>Khám phá những sản phẩm mới nhất từ cửa hàng</Typography.Text>
                 </div>
-                <Flex className="products" gap='large' wrap='wrap' justify='center'>
+                <Flex className="products" gap='large' wrap='wrap' justify='start'>
                     {data ? (
                         productNew.length === 0 ? (
                             <Empty description={"Không có sản phẩm nào"} />
                         ) : (
-                            productNew.slice(1, 5).map((item) => (
+                            productNew.slice(0, 4).map((item) => (
                                 <Product_List products={item} key={item.id} />
                             ))
                         )
@@ -146,6 +172,30 @@ function Home() {
                         ))
                     )}
                 </Flex>
+                {productNew.length > 4 && (
+                    <Flex justify="center" style={{ marginTop: "40px" }}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            className="premium-button"
+                            onClick={() => navigate('/client/shop')}
+                            style={{
+                                height: "50px",
+                                padding: "0 40px",
+                                borderRadius: "25px",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                textAlign: 'center'
+                            }}
+                        >
+                            XEM TẤT CẢ SẢN PHẨM
+                        </Button>
+                    </Flex>
+                )}
             </Flex>
         </Flex>
     );

@@ -32,7 +32,9 @@ export default function RecommendedProduct() {
         const dataToMap = Array.isArray(rawData) ? rawData : (rawData?.data || [])
         setProducts(dataToMap?.map(item => ({
             id: item?._id,
-            image: item?.images?.[0]
+            image: item?.images?.[0],
+            name: item?.name,
+            price: item?.price
         })))
         setIsLoading(false)
         return () => {
@@ -40,6 +42,13 @@ export default function RecommendedProduct() {
             setProducts([])
         }
     }, [isSuccess, data])
+
+    const ProductInfo = ({ name, price }) => (
+        <div className="product-info-overlay">
+            <h3 className="product-name">{name}</h3>
+            <p className="product-price">{price?.toLocaleString('vi-VN')} ₫</p>
+        </div>
+    );
 
     return (
         <section className="container product-recommend">
@@ -49,7 +58,8 @@ export default function RecommendedProduct() {
                 ) : (
                     products[0] && (
                         <NavLink to={`/client/product/${products[0]?.id}`}>
-                            <ProductImage src={products[0]?.image} alt="Sản phẩm nổi bật 1" />
+                            <ProductImage src={products[0]?.image} alt={products[0]?.name} />
+                            <ProductInfo name={products[0]?.name} price={products[0]?.price} />
                         </NavLink>
                     )
                 )}
@@ -62,7 +72,8 @@ export default function RecommendedProduct() {
                     ) : (
                         products[1] && (
                             <NavLink to={`/client/product/${products[1]?.id}`}>
-                                <ProductImage src={products[1]?.image} alt="Sản phẩm nổi bật 2" />
+                                <ProductImage src={products[1]?.image} alt={products[1]?.name} />
+                                <ProductInfo name={products[1]?.name} price={products[1]?.price} />
                             </NavLink>
                         )
                     )}
@@ -73,7 +84,8 @@ export default function RecommendedProduct() {
                     ) : (
                         products[2] && (
                             <NavLink to={`/client/product/${products[2]?.id}`}>
-                                <ProductImage src={products[2]?.image} alt="Sản phẩm nổi bật 3" />
+                                <ProductImage src={products[2]?.image} alt={products[2]?.name} />
+                                <ProductInfo name={products[2]?.name} price={products[2]?.price} />
                             </NavLink>
                         )
                     )}
@@ -84,7 +96,8 @@ export default function RecommendedProduct() {
                     ) : (
                         products[3] && (
                             <NavLink to={`/client/product/${products[3]?.id}`}>
-                                <ProductImage src={products[3]?.image} style={{ width: "100%" }} alt="Sản phẩm nổi bật 4" />
+                                <ProductImage src={products[3]?.image} style={{ width: "100%" }} alt={products[3]?.name} />
+                                <ProductInfo name={products[3]?.name} price={products[3]?.price} />
                             </NavLink>
                         )
                     )}
@@ -97,7 +110,8 @@ export default function RecommendedProduct() {
                 ) : (
                     products[4] && (
                         <NavLink to={`/client/product/${products[4]?.id}`}>
-                            <ProductImage src={products[4]?.image} alt="Sản phẩm nổi bật 5" />
+                            <ProductImage src={products[4]?.image} alt={products[4]?.name} />
+                            <ProductInfo name={products[4]?.name} price={products[4]?.price} />
                         </NavLink>
                     )
                 )}
