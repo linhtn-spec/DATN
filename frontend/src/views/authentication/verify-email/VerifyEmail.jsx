@@ -1,15 +1,17 @@
-import { CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined } from '@ant-design/icons'
-import { Button, Result, Spin } from 'antd'
+import { CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined, MailOutlined } from '@ant-design/icons'
+import { Button, Result, Spin, message as antMessage } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { verifyEmail } from '../../../services/user_service'
+import { verifyEmail, resendVerification } from '../../../services/user_service'
 import './VerifyEmail.css'
 
 const VerifyEmail = () => {
     const { token } = useParams()
     const navigate = useNavigate()
-    const [status, setStatus] = useState('verifying') // verifying, success, error
+    const [status, setStatus] = useState('verifying') // verifying, success, error, expired
     const [message, setMessage] = useState('')
+    const [userEmail, setUserEmail] = useState('')
+    const [resending, setResending] = useState(false)
 
     useEffect(() => {
         const verify = async () => {
@@ -18,12 +20,30 @@ const VerifyEmail = () => {
                 setStatus('success')
                 setMessage(response.data.message)
             } catch (error) {
-                setStatus('error')
+                if (error.response?.status === 410) {
+                    setStatus('expired')
+                    setUserEmail(error.response.data.email)
+                } else {
+                    setStatus('error')
+                }
                 setMessage(error.response?.data?.message || 'Xác nhận email thất bại')
             }
         }
         verify()
     }, [token])
+
+    const handleResend = async () => {
+        setResending(true)
+        try {
+            const response = await resendVerification(userEmail)
+            antMessage.success(response.data.message)
+            navigate('/')
+        } catch (error) {
+            antMessage.error(error.response?.data?.message || 'Gửi lại email thất bại')
+        } finally {
+            setResending(false)
+        }
+    }
 
     return (
         <div className="verify-email-container">
@@ -42,6 +62,28 @@ const VerifyEmail = () => {
                     extra={[
                         <Button type="primary" key="login" onClick={() => navigate('/')}>
                             Đăng nhập ngay
+                        </Button>
+                    ]}
+                />
+            )}
+
+            {status === 'expired' && (
+                <Result
+                    status="warning"
+                    title="Liên kết đã hết hạn"
+                    subTitle={message}
+                    extra={[
+                        <Button 
+                            type="primary" 
+                            key="resend" 
+                            icon={<MailOutlined />}
+                            loading={resending}
+                            onClick={handleResend}
+                        >
+                            Gửi lại email xác nhận cho {userEmail}
+                        </Button>,
+                        <Button key="register" onClick={() => navigate('/register')}>
+                            Quay lại đăng ký
                         </Button>
                     ]}
                 />

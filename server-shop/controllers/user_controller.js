@@ -11,6 +11,22 @@ const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
 const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 const refreshTokenLife = process.env.REFRESH_TOKEN_LIFE;
+const parseTimeToMs = (timeStr) => {
+    const unit = timeStr.slice(-1);
+    const value = parseInt(timeStr.slice(0, -1));
+    switch (unit) {
+        case 'h': return value * 60 * 60 * 1000;
+        case 'd': return value * 24 * 60 * 60 * 1000;
+        case 'm': return value * 60 * 1000;
+        case 's': return value * 1000;
+        default: return parseInt(timeStr);
+    }
+};
+
+const getVerificationTokenLifeMs = () => {
+    const life = process.env.VERIFICATION_TOKEN_LIFE || '24h';
+    return parseTimeToMs(life);
+};
 
 
 
@@ -94,9 +110,10 @@ export const register = async (req, res) => {
             return res.status(400).json({ message: "Email đã tồn tại" });
         }
 
-        // Generate verification token
+        // Generate verification token and expiration
         const verificationToken = crypto.randomBytes(32).toString('hex');
-        const user = await user_model.create({ ...data, verificationToken });
+        const verificationTokenExpires = Date.now() + getVerificationTokenLifeMs();
+        const user = await user_model.create({ ...data, verificationToken, verificationTokenExpires });
 
         if (user) {
             const from = process.env.NODEMAILER_EMAIL;
@@ -124,11 +141,30 @@ export const verifyEmail = async (req, res) => {
         const user = await user_model.findOne({ verificationToken: token });
 
         if (!user) {
-            return res.status(404).json({ message: "Mã xác thực không hợp lệ hoặc đã hết hạn" });
+            console.log(`VerifyEmail: Token not found: ${token}`);
+            return res.status(404).json({ message: "Mã xác thực không hợp lệ" });
+        }
+
+        const now = Date.now();
+        const expiresAt = user.verificationTokenExpires ? user.verificationTokenExpires.getTime() : 0;
+
+        console.log(`VerifyEmail Check:`, {
+            email: user.email,
+            expiresAt: new Date(expiresAt).toISOString(),
+            now: new Date(now).toISOString(),
+            isExpired: expiresAt < now
+        });
+
+        if (expiresAt < now) {
+            return res.status(410).json({ 
+                message: "Mã xác thực đã hết hạn", 
+                email: user.email 
+            });
         }
 
         user.isVerified = true;
         user.verificationToken = undefined;
+        user.verificationTokenExpires = undefined;
         await user.save();
 
         return res.status(200).json({ message: "Xác nhận email thành công. Bạn có thể đăng nhập ngay bây giờ." });
@@ -151,7 +187,17 @@ export const resendVerification = async (req, res) => {
         }
 
         const verificationToken = crypto.randomBytes(32).toString('hex');
+        const lifeMs = getVerificationTokenLifeMs();
+        const verificationTokenExpires = Date.now() + lifeMs;
+        
+        console.log(`ResendVerification:`, {
+            email: user.email,
+            lifeMs,
+            expiresAt: new Date(verificationTokenExpires).toISOString()
+        });
+
         user.verificationToken = verificationToken;
+        user.verificationTokenExpires = verificationTokenExpires;
         await user.save();
 
         const from = process.env.NODEMAILER_EMAIL;
