@@ -1,10 +1,10 @@
-import { Breadcrumb, Flex, Pagination, Empty } from 'antd'
-import { NavLink } from 'react-router-dom'
-import ProductGrid from '../layout/product_grid'
-import { useContext, useEffect, useState, useMemo } from 'react';
-import '../style/Wishlist.css'
+import { Breadcrumb, Empty, Flex, Pagination } from 'antd';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { FavouriteContext } from '../../../store/favourite';
 import Banner_Big from '../layout/banner_big';
+import ProductGrid from '../layout/product_grid';
+import '../style/Wishlist.css';
 
 export const Wishlist = () => {
     const [page, setPage] = useState(1);
@@ -39,7 +39,7 @@ export const Wishlist = () => {
                         },
                     ]}
                 />
-                
+
                 <Flex className="category_pagination" justify="center">
                     <p>Hiển thị <b>{total !== 0 ? (page - 1) * pageSize + 1 : 0}</b> - <b>{Math.min(page * pageSize, total)}</b> trên tổng số <b>{total}</b> kết quả</p>
                 </Flex>
@@ -47,14 +47,14 @@ export const Wishlist = () => {
                 <Flex className="category_items" wrap="wrap" gap="24px" style={{ width: "100%" }}>
                     {displayItems.length !== 0 ? (
                         displayItems.map((item, index) => (
-                            <ProductGrid 
-                                type={'wishlist'} 
-                                products={{ ...item, id: item?._id || item.id, image: item.images ? item?.images[0] : item.image }} 
-                                key={item._id || item.id || index} 
+                            <ProductGrid
+                                type={'wishlist'}
+                                products={{ ...item, id: item?._id || item.id, image: item.images ? item?.images[0] : item.image }}
+                                key={item._id || item.id || index}
                             />
                         ))
                     ) : (
-                        <Flex justify='center' style={{ width: "100%", padding: "50px 0" }}>
+                        <Flex justify='center' style={{ width: "100%", padding: "50px 0", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <Empty description={"Không có sản phẩm nào trong danh sách yêu thích"} />
                         </Flex>
                     )}
@@ -71,7 +71,7 @@ export const Wishlist = () => {
                             onChange={(p) => {
                                 setPage(p);
                                 window.scrollTo({ top: 400, behavior: 'smooth' });
-                            }} 
+                            }}
                         />
                     </Flex>
                 )}
