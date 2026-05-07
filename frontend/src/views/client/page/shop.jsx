@@ -10,7 +10,6 @@ import { ACTION_CART, CartContext } from "../../../store/cart";
 import { UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
 import useDebounce from "../../../utils/useDebounce";
-import Banner_Big from "../layout/banner_big";
 import "../style/shop.css";
 
 const getCategoryLabels = (categoryFilter, optionsCategory) => {
@@ -164,19 +163,17 @@ function Shop() {
         window.scrollTo(0, 0)
     }, [])
     return (
-        <Flex vertical align="center" style={{ width: "100%" }}>
-            <Banner_Big info="CỬA HÀNG" />
-            <Flex className="shop" vertical>
-                <Breadcrumb
-                    items={[
-                        {
-                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                        },
-                        {
-                            title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
-                        },
-                    ]}
-                />
+        <Flex className="shop" vertical>
+            <Breadcrumb
+                items={[
+                    {
+                        title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
+                    },
+                    {
+                        title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
+                    },
+                ]}
+            />
             <Flex className='products_filter' justify="space-between" wrap="nowrap" style={{ width: "100%" }}>
                 <Flex className="filterCAP">
                     <Flex className='filterCate'>
@@ -217,8 +214,8 @@ function Shop() {
                                     ))
                             )}
                             {priceFilter && (
-                                <Tag 
-                                    closable 
+                                <Tag
+                                    closable
                                     onClose={() => setPriceFilter('')}
                                     className="price-chip"
                                 >
@@ -226,7 +223,7 @@ function Shop() {
                                 </Tag>
                             )}
                             {(categoryFilter.length !== 0 || priceFilter != '') &&
-                                (<Typography.Link 
+                                (<Typography.Link
                                     className="clear-all-link"
                                     onClick={() => {
                                         setCategoryFilter([]);
@@ -340,7 +337,6 @@ function Shop() {
                     </Flex>
                 </Flex>
             </Flex>
-        </Flex>
         </Flex>
 
     );

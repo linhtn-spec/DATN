@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { searchProduct } from "../../../services/product_service";
-import Banner_Big from "../layout/banner_big";
 import ProductGrid from "../layout/product_grid";
 import "./../style/search.css";
 function Search() {
@@ -56,9 +55,9 @@ function Search() {
     }, [keyword])
     console.log(data?.data);
     return (
-        <Flex className="search" vertical align='center'>
-            <Banner_Big info={keyword} />
-            <div className="container search_page">
+        <>
+            <Flex className='category_page' vertical>
+
                 <Breadcrumb
                     items={[
                         {
@@ -71,10 +70,11 @@ function Search() {
                 />
                 {product.length === 0 ? <Empty description={"Không tìm thấy sản phẩm"} /> :
                     <Flex vertical gap={"20px"}>
-                        <Flex className="results_pagination" style={{ width: "100%" }} justify="center">
-                            <p className=" text-left">Hiển thị <b>1</b> - <b>{product.length}</b> trong tổng số <b>{totalProducts}</b> kết quả</p>
+                        <Flex className="category_pagination" justify="center">
+                            <p>Hiển thị <b>1</b> - <b>{product.length}</b> trong tổng số <b>{totalProducts}</b> kết quả</p>
                         </Flex>
-                        <Flex className="category_items" wrap="wrap" gap="50px" style={{ width: "100%" }}>
+                        <Flex className="category_items" wrap="wrap" gap="24px" style={{ width: "100%" }}>
+
                             {product.map((item, index) => {
                                 return <ProductGrid products={item} key={index} />
                             })}
@@ -89,8 +89,9 @@ function Search() {
                                 onChange={setPage} />
                         </Flex>
                     </Flex>}
-            </div>
-        </Flex>
+            </Flex>
+        </>
     );
+
 }
 export default Search;

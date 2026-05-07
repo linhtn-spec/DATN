@@ -1,5 +1,35 @@
-.order_list_page .ant-table-wrapper {
-    width: 100%;
+.category_page {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    padding: 50px;
+    background: linear-gradient(145deg, #ffffff 0%, #f6f9fc 100%);
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.category_page .ant-breadcrumb a {
+    font-size: 16px;
+    text-decoration: none;
+    color: rgb(102, 101, 101);
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.category_page .ant-breadcrumb .ant-breadcrumb-link {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(23, 23, 23);
+}
+
+.category_page .ant-breadcrumb a:hover {
+    color: #ff4d4f;
 }
 
 .modern-order-card {
@@ -8,14 +38,14 @@
     overflow: hidden;
 }
 
-.order_list_page th {
+.category_page table th {
     background-color: #f8fafc !important;
     color: #475569 !important;
     font-weight: 600 !important;
     border-bottom: 2px solid #e2e8f0 !important;
 }
 
-.order_list_page td {
+.category_page table td {
     border-bottom: 1px solid #f1f5f9 !important;
 }
 
