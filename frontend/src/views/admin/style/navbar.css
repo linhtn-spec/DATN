@@ -3,7 +3,7 @@
     z-index: 2;
 }
 
-.ant-layout-sider-children .logo {
+.side_bar .logo {
     font-size: 26px !important;
     height: 10vh;
     text-align: center;
@@ -12,7 +12,7 @@
     color: rgb(255, 255, 255);
 }
 
-.ant-layout-sider-children .logo span {
+.side_bar .logo span {
     font-weight: 300;
 }
 
