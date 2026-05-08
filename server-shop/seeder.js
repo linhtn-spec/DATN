@@ -78,7 +78,7 @@ const seedUser = async (data) => {
         }
 
         // Note: Password hashing is handled by pre('save') hook in user_model.js
-        const user = await user_model.create(data);
+        const user = await user_model.create({ ...data, isVerified: true });
         if (user) {
             const dataForRefreshToken = {
                 username: user.username,
@@ -111,7 +111,6 @@ const dbSeed = async () => {
     await connectDB();
     
     console.log("\n--- Seeding Initial Data ---");
-    await seedUser(defaultAdmin);
     await seedCategory(defaultCategory);
 
     console.log("\n--- Seeding Demo Accounts ---");

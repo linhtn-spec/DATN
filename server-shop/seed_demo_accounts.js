@@ -67,7 +67,7 @@ const seedAccounts = async () => {
             }
 
             // Mongoose will trigger pre('save') which hashes the password for us
-            const user = await user_model.create(data);
+            const user = await user_model.create({ ...data, isVerified: true });
             
             if (user) {
                 const dataForRefreshToken = {
