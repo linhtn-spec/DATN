@@ -9,6 +9,7 @@ const category_schema = new mongoose.Schema({
         max: 50,
         trim: true,
     },
+
     image: {
         type: String,
         required: true

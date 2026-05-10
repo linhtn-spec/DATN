@@ -158,11 +158,8 @@ export const paginate_banner = async (req, res) => {
 
 export const all_banner = async (req, res) => {
     try {
-        const data = await banner_model.find({})
-        if (data.length === 0) {
-            return res.status(404).json({ message: "Không có biểu ngữ" });
-        }
-        else return res.status(200).json({ data });
+        const data = await banner_model.find({ isActive: true }).sort({ order: 1 })
+        return res.status(200).json({ data });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

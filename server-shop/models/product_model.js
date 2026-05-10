@@ -9,6 +9,12 @@ const product_schema = new mongoose.Schema({
         maxlength: 50,
         trim: true
     },
+    sku: {
+        type: String,
+        required: false,
+        unique: true,
+        trim: true
+    },
     description: {
         required: true,
         type: String,
@@ -68,6 +74,10 @@ const product_schema = new mongoose.Schema({
     saleId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Sale",
+    }],
+    tags: [{
+        type: String,
+        trim: true
     }]
 }
     ,

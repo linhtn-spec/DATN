@@ -78,6 +78,10 @@ const user_schema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    isVIP: {
+        type: Boolean,
+        default: false
+    },
     isVerified: {
         type: Boolean,
         default: false

@@ -17,13 +17,11 @@ RUN chown mongodb:mongodb /etc/mongod.conf && \
 
 # Tạo startup script để đảm bảo permissions
 RUN echo '#!/bin/bash\n\
-    # Đảm bảo thư mục log tồn tại và có quyền đúng\n\
-    mkdir -p /var/log/mongodb\n\
-    chown -R mongodb:mongodb /var/log/mongodb\n\
-    chmod 755 /var/log/mongodb\n\
+    # Đảm bảo thư mục log và data tồn tại\n\
+    mkdir -p /var/log/mongodb /data/db\n\
     \n\
-    # Khởi động MongoDB với user mongodb\n\
-    exec gosu mongodb mongod --config /etc/mongod.conf --replSet rs0\n\
+    # Khởi động MongoDB trực tiếp (chạy với user root của container để tránh lỗi permission trên Windows volumes)\n\
+    exec mongod --config /etc/mongod.conf --replSet rs0\n\
     ' > /docker-entrypoint.sh && \
     chmod +x /docker-entrypoint.sh
 

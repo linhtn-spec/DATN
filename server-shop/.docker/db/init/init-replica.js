@@ -1,7 +1,7 @@
 // init-replica.js
 // File này được đặt trong .docker/db/init-replica.js
 
-sleep(30000);
+sleep(5000);
 print('🚀 Bắt đầu khởi tạo MongoDB Replica Set với Authentication...');
 
 // Function để kiểm tra kết nối với keyfile authentication

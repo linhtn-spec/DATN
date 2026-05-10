@@ -39,7 +39,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copy runtime entrypoint that injects env variables into built JS
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
 # Expose port
 EXPOSE 80

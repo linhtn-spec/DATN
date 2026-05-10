@@ -7,12 +7,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --experimental-specifier-resolution=node server.js",
-    "seed": "node seeder.js",
+    "seed": "node seeders/index.js",
     "unit_test": "cross-env NODE_ENV=test jest --testTimeout=5000  --runInBand --detectOpenHandles --verbose=true"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
     "@elastic/elasticsearch": "^7.13.0",

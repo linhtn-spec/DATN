@@ -1,0 +1,38 @@
+# DATN Project Coding Standards & Patterns
+
+This project follows strict coding standards for both Node.js Backend and React Frontend. All AI assistants must adhere to these rules.
+
+## 1. Backend Patterns (Node.js/Express/Mongoose)
+
+### 1.1. Architecture & API Design
+- **RESTful URLs**: Use resource-based URLs (`GET /api/markets`, `POST /api/markets/:id`). Use query params for filtering/pagination (`?status=active&limit=20`).
+- **Separation of Concerns**: Keep Routes simple. Move business logic to Services/Controllers. Move DB logic to Mongoose Models or Repositories.
+- **Middleware**: Use middleware for Auth, Rate Limiting, and Error Handling.
+
+### 1.2. Database Optimization (MongoDB/Mongoose)
+- **Lean Queries**: ALWAYS use `.lean()` when fetching data that doesn't need to be modified or saved back (`User.find().lean()`).
+- **Select Specific Fields**: Only fetch needed columns (`User.find({}, '_id firstName lastName')`).
+- **Batch Processing**: Use `Model.insertMany()` and `Model.bulkWrite()` for large data insertions to prevent memory overflow (Memory Leaks). Avoid massive `Promise.all`.
+- **Avoid N+1 Queries**: Use `.populate()` or batch fetch IDs and map them in memory instead of querying in a loop.
+
+### 1.3. Error Handling
+- **Centralized Error Handler**: Never return raw error stack traces to the client. Use a custom `ApiError` class and a global error handling middleware.
+- **Validation**: Validate all incoming requests (using `express-validator` or `zod`) before processing them.
+
+---
+
+## 2. Frontend Patterns (React/Vite/Ant Design)
+
+### 2.1. State & Data Fetching
+- **Server State**: Use **React Query** (`@tanstack/react-query`) for all API fetching, caching, and state synchronization. DO NOT use raw `useEffect` + `useState` for data fetching.
+- **Local State**: Use `useState` for simple UI state. Use `useReducer` or `Zustand` for complex component state.
+- **Custom Hooks**: Extract reusable logic into custom hooks (e.g., `useToggle`, `useDebounce`).
+
+### 2.2. Component Patterns
+- **Composition over Inheritance**: Use smaller, focused components (`<Card>`, `<CardHeader>`, `<CardBody>`) instead of massive monolithic components with dozens of props.
+- **Memoization**: Use `useMemo` for expensive calculations and `useCallback` for functions passed as props to prevent unnecessary re-renders. Use `React.memo` only when proven necessary.
+
+### 2.3. Performance & UI
+- **Lazy Loading**: Use `React.lazy()` and `<Suspense>` for heavy components or routes.
+- **Virtualization**: Use virtualization (e.g., `react-window` or `@tanstack/react-virtual`) if rendering long lists (hundreds of items).
+- **Form Handling**: Use controlled components with clear validation logic before submission.
