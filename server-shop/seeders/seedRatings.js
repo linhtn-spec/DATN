@@ -71,26 +71,50 @@ export const seedBannersAndBlogs = async () => {
   const owner = await User.findOne({ role: 3 }).lean();
   if (owner) {
     await Blog.insertMany([
-      {
-        title: 'Lợi ích của việc ăn trái cây mỗi ngày',
-        user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
-        content: 'Trái cây chứa rất nhiều vitamin và khoáng chất cần thiết cho cơ thể. Việc duy trì thói quen ăn trái cây mỗi ngày giúp tăng cường hệ miễn dịch, cải thiện hệ tiêu hóa và giảm nguy cơ mắc các bệnh mãn tính. Theo khuyến nghị của WHO, mỗi người nên ăn ít nhất 400g trái cây và rau củ mỗi ngày.',
-        order: 1
-      },
-      {
-        title: 'Cách chọn xoài Cát Hòa Lộc chuẩn nhất',
-        user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
-        content: 'Xoài Cát Hòa Lộc là loại xoài ngon nhất miền Tây, nổi tiếng với vị ngọt thanh và thơm đặc trưng. Để chọn được quả xoài chín cây, hãy chú ý: vỏ căng bóng không bị nhăn, màu vàng đều, có mùi thơm nhẹ ở cuống, và khi ấn nhẹ cảm thấy đàn hồi chứ không bị mềm nhão.',
-        order: 2
-      },
-      {
-        title: 'Top 5 loại trái cây tốt nhất cho sức đề kháng mùa hè',
-        user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
-        content: 'Mùa hè nắng nóng cần bổ sung vitamin C và các chất chống oxy hóa để tăng sức đề kháng. 5 loại trái cây bạn nên ăn nhiều hơn trong mùa này: Cam, Dâu tây, Kiwi, Ổi và Thanh long. Tất cả đều có sẵn tại cửa hàng chúng tôi với mức giá phải chăng.',
-        order: 3
-      }
+        {
+          title: 'Lợi ích bất ngờ của việc ăn trái cây mỗi ngày',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=800&q=80',
+          content: '<p>Trái cây chứa rất nhiều vitamin và khoáng chất cần thiết cho cơ thể. Việc duy trì thói quen ăn trái cây mỗi ngày giúp tăng cường hệ miễn dịch, cải thiện hệ tiêu hóa và giảm nguy cơ mắc các bệnh mãn tính.</p><blockquote>Theo khuyến nghị của WHO, mỗi người nên ăn ít nhất 400g trái cây và rau củ mỗi ngày để có sức khỏe tốt nhất.</blockquote><p>Hãy cùng Klever Fruit bắt đầu hành trình ăn sạch sống khỏe ngay từ hôm nay nhé!</p>',
+          order: 1
+        },
+        {
+          title: 'Cách chọn xoài Cát Hòa Lộc chuẩn nhất miền Tây',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&q=80',
+          content: '<p>Xoài Cát Hòa Lộc là loại xoài ngon nhất miền Tây, nổi tiếng với vị ngọt thanh và thơm đặc trưng. Để chọn được quả xoài chín cây, hãy chú ý:</p><ul><li>Vỏ căng bóng không bị nhăn.</li><li>Màu vàng đều từ đầu đến cuống.</li><li>Có mùi thơm nhẹ đặc trưng.</li><li>Khi ấn nhẹ cảm thấy đàn hồi tốt.</li></ul>',
+          order: 2
+        },
+        {
+          title: 'Top 5 loại trái cây tốt nhất cho sức đề kháng mùa hè',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=800&q=80',
+          content: '<p>Mùa hè nắng nóng cần bổ sung vitamin C và các chất chống oxy hóa để tăng sức đề kháng. 5 loại trái cây bạn nên ăn nhiều hơn trong mùa này:</p><ol><li>Cam sành</li><li>Dâu tây Đà Lạt</li><li>Kiwi New Zealand</li><li>Ổi trân châu</li><li>Thanh long ruột đỏ</li></ol>',
+          order: 3
+        },
+        {
+          title: 'Cherry Mỹ - Nữ hoàng của các loại trái cây nhập khẩu',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=800&q=80',
+          content: '<p>Cherry Mỹ không chỉ ngon miệng mà còn cực kỳ tốt cho giấc ngủ và tim mạch. Loại quả này chứa hàm lượng chất chống oxy hóa rất cao, đặc biệt là Anthocyanins giúp giảm sưng đau do Gout.</p><p>Tại Klever Fruit, chúng tôi nhập trực tiếp các lô Cherry tươi ngon nhất từ các trang trại tại Washington và California.</p>',
+          order: 4
+        },
+        {
+          title: 'Bí quyết bảo quản trái cây nhập khẩu luôn tươi ngon',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&q=80',
+          content: '<p>Nhiều người có thói quen rửa sạch trái cây rồi mới cho vào tủ lạnh, đây là sai lầm phổ biến khiến trái cây nhanh hỏng. Hãy để trái cây khô ráo, bọc trong giấy báo hoặc túi đục lỗ rồi mới bảo quản ở ngăn mát tủ lạnh.</p>',
+          order: 5
+        },
+        {
+          title: 'Tầm quan trọng của việc ăn thực phẩm Organic',
+          user: { userId: owner._id, firstName: owner.firstName, lastName: owner.lastName },
+          image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80',
+          content: '<p>Organic không chỉ là một xu hướng, mà là cách chúng ta tôn trọng thiên nhiên và bảo vệ sức khỏe chính mình. Thực phẩm hữu cơ đảm bảo không tồn dư hóa chất, mang lại hàm lượng dinh dưỡng cao hơn hẳn thực phẩm thông thường.</p>',
+          order: 6
+        }
     ]);
-    console.log('   └─ 3 blogs created');
+    console.log('   └─ 6 blogs created with images');
   }
 };
 

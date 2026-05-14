@@ -77,6 +77,8 @@ import OrderSuccess from "../views/client/page/order_success";
 import Search from "../views/client/page/search";
 import Shop from "../views/client/page/shop";
 import Sale from "../views/client/page/Sale";
+import Blog_Page from "../views/client/page/blog";
+import { DetailBlog } from "../views/client/page/DetailBlog";
 
 // ---------------------------------------------------------------------------
 // Route definitions split by area for easier maintenance
@@ -335,6 +337,8 @@ const clientRoutes = [
       { path: "search", element: <Search /> },
       { path: "shop", element: <Shop /> },
       { path: "sale", element: <Sale /> },
+      { path: "blog", element: <Blog_Page /> },
+      { path: "blog/:id", element: <DetailBlog /> },
       { path: "cart", element: <Cart /> },
       { path: "category/:category_id", element: <Category /> },
       {

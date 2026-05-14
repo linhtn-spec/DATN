@@ -1,56 +1,122 @@
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import { Breadcrumb, Button, Divider, Flex, Typography } from 'antd'
-import { NavLink } from 'react-router-dom'
+import { LeftOutlined, UserOutlined, CalendarOutlined, FacebookFilled, XOutlined } from '@ant-design/icons'
+import { Breadcrumb, Divider, Flex, Typography, Spin } from 'antd'
+import { NavLink, useParams, Link } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
+import { detailBlog } from '../../../services/blog_service'
 import '../style/DetailBlog.css'
 
 
 export const DetailBlog = () => {
-    return (
-        <Flex className="detail_blog" vertical align="center">
-            <Breadcrumb
-                items={[
-                    {
-                        title: <NavLink to={'/client'}>HOME</NavLink>,
-                    },
-                    {
-                        title: <NavLink to={'/client/user'}>INFORMATION</NavLink>,
-                    },
-                ]}
-            />
-            <Flex className="content" vertical>
-                <Typography.Title>OVERVIEW OF THE WELCOME EVENT FROM THE WASHINGTON STATE DEPARTMENT OF AGRICULTURE</Typography.Title>
-                <Typography.Text>10, March, 2026</Typography.Text>
-                <Typography.Paragraph>
-                    Ngày 9/4 vừa qua Klever Fruit đã có vinh dự được tiếp đón Bộ nông nghiệp Bang Washington (Mỹ) và trao đổi về phương hướng hợp tác kinh doanh trong tương lai.
+    const { id } = useParams();
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['blog_detail_client', id],
+        queryFn: () => detailBlog(id),
+        enabled: !!id
+    });
 
-                    Washington là vùng đất sở hữu điều kiện thiên nhiên thuận lợi cùng nền nông nghiệp tiên tiến mang đến nhiều loại trái cây tươi ngon và đạt tiêu chuẩn an toàn thực phẩm vượt ngưỡng mong đợi.
+    const blog = data?.data;
 
-                    Theo Giám đốc Tiếp thị Quốc tế của Bộ Nông nghiệp Bang Washington thông tin, Việt Nam là một trong những thị trường xuất khẩu nông sản hàng đầu của tiểu bang. Năm 2023, kim ngạch xuất khẩu từ bang Washington vào Việt Nam đạt 157 triệu USD chủ yếu là nông sản, thực phẩm.
+    const handleShareFacebook = () => {
+        const url = encodeURIComponent(window.location.href);
+        const quote = encodeURIComponent(blog?.title || '');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
+    };
 
-                    Cụ thể trong năm 2023, táo, sản phẩm từ sữa, lúa mì, hải sản, cherry, khoai tây chiên, thịt bò… là những sản phẩm hàng đầu của bang Washington xuất khẩu sang Việt Nam.
-                    <br />
-                    <img src="/data/blog/blog1.png" alt="blog" width="600px" height="337px" />
-                    <br />
-                    Klever Fruit là thương hiệu số 1 về chuỗi bán lẻ trái cây nhập khẩu hiện nay trên thị trường Việt Nam. Sau hơn 15 phát triển, đến nay Klever Fruit sở hữu một chuỗi 53 cửa hàng trong đó có 41 cửa hàng tại các địa điểm đắc địa tại trung tâm Hà Nội và 12 cửa hàng tại thành phố HCM.
-                    <img src="/data/blog/blog1.png" alt="blog" width="600px" height="337px" />
-                    <br />
-                    Vùng đất bang Washington tạo nên sự hòa quyện thú vị giữa vẻ ngoài cuốn hút cùng hương vị khó quên, đây chính là bản giao hưởng tuyệt mỹ!
-                    Trong sự kiện tiếp đón đoàn bộ nông nghiệp bang Washington vừa qua, Klever Fruit lấy chủ đề “Bản giao hưởng sắc trắng và đỏ - Symphony in white and red” để gợi nhớ về vẻ đẹp thiên nhiên bang Washington, cùng những nông sản thượng hạng tại vùng đất kỳ vĩ này.
+    const handleShareX = () => {
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent(blog?.title || '');
+        window.open(`https://x.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+    };
 
-                    Và đặc biệt hơn cả là cùng nhau đón chờ mùa cherry Washington sắp tới mang hương vị của một ngày hè ngập nắng!
-                </Typography.Paragraph>
-                <Divider />
-                <Flex align="center">
-                    <Flex>
-                        <Typography.Text ellipsis={true} style={{ width: "60%", fontSize: "14px" }}>Watching: <Typography.Text style={{ fontSize: "16px", fontWeight: 500 }}>OVERVIEW OF THE WELCOME EVENT FROM THE WASHINGTON STATE DEPARTMENT OF AGRICULTURE</Typography.Text></Typography.Text>
-                    </Flex>
-                    <Flex align="center" className="nav">
-                        <Button type="link" ><LeftOutlined />Previous blog</Button>
-                        <hr style={{ border: "1px solid black", height: "10px" }} />
-                        <Button type="link">Next blog<RightOutlined /></Button>
-                    </Flex>
-                </Flex>
+    if (isLoading) {
+        return (
+            <Flex align="center" justify="center" style={{ minHeight: '80vh', backgroundColor: 'var(--bg-color)' }}>
+                <Spin size="large" tip="Đang tải nội dung bài viết..." />
             </Flex>
+        );
+    }
+
+    if (isError || !blog) {
+        return (
+            <Flex align="center" justify="center" style={{ minHeight: '80vh', backgroundColor: 'var(--bg-color)' }}>
+                <Typography.Title level={4}>Không tìm thấy bài viết!</Typography.Title>
+            </Flex>
+        );
+    }
+
+    // Truncate content for meta description
+    const plainText = blog.content.replace(/<[^>]*>?/gm, '');
+    const metaDescription = plainText.substring(0, 150) + '...';
+
+    return (
+        <Flex className="detail_blog" vertical>
+            <Helmet>
+                <title>{blog.title} | Klever Fruit</title>
+                <meta name="description" content={metaDescription} />
+                <meta property="og:title" content={blog.title} />
+                <meta property="og:description" content={metaDescription} />
+                <meta property="og:image" content={blog.image} />
+                <meta property="og:url" content={window.location.href} />
+                <meta property="og:type" content="article" />
+            </Helmet>
+
+            <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                <Breadcrumb
+                    items={[
+                        { title: <NavLink to={'/client/home'}>TRANG CHỦ</NavLink> },
+                        { title: <NavLink to={'/client/blog'}>BÀI VIẾT</NavLink> },
+                        { title: blog.title },
+                    ]}
+                />
+
+                <Link to="/client/blog" className="nav-back">
+                    <LeftOutlined /> Quay lại danh sách
+                </Link>
+
+                <article className="content">
+                    <Typography.Title level={1}>{blog.title}</Typography.Title>
+                    
+                    <div className="meta">
+                        <div className="meta-item">
+                            <CalendarOutlined /> {new Date(blog.createdAt).toLocaleDateString('vi-VN')}
+                        </div>
+                        <div className="meta-item">
+                            <UserOutlined /> {blog.user ? `${blog.user.firstName} ${blog.user.lastName}` : 'Ban biên tập'}
+                        </div>
+                    </div>
+                    
+                    {blog.image && (
+                        <img 
+                            src={blog.image} 
+                            alt={blog.title} 
+                            className="main-image"
+                        />
+                    )}
+
+                    <div 
+                        className="blog-content-html"
+                        dangerouslySetInnerHTML={{ __html: blog.content }}
+                    />
+                    
+                    <Divider />
+                    
+                    <Flex align="center" justify="space-between">
+                        <Typography.Text type="secondary">
+                            Cảm ơn bạn đã đọc bài viết này.
+                        </Typography.Text>
+                        <Flex gap={16} align="center">
+                            <Typography.Text strong>Chia sẻ bài viết:</Typography.Text>
+                            <Typography.Link onClick={handleShareFacebook} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <FacebookFilled style={{ fontSize: '18px', color: '#1877F2' }} /> Facebook
+                            </Typography.Link>
+                            <Typography.Link onClick={handleShareX} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <XOutlined style={{ fontSize: '18px', color: '#000000' }} /> X
+                            </Typography.Link>
+                        </Flex>
+                    </Flex>
+                </article>
+            </div>
         </Flex>
     )
 }

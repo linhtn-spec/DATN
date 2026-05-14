@@ -1,5 +1,6 @@
 import {
-    PlusOutlined
+    PlusOutlined,
+    CameraOutlined
 } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -9,7 +10,8 @@ import {
     Input,
     InputNumber,
     Switch,
-    Typography
+    Typography,
+    Upload
 } from 'antd';
 import Card from "antd/es/card/Card";
 import { useState } from "react";
@@ -17,6 +19,7 @@ import { useNavigate } from "react-router";
 import Editor from "../../../../../components/RichTextEditor/Editor";
 import { queryClient } from "../../../../../main";
 import { addBlog } from "../../../../../services/blog_service";
+import { uploadImage } from "../../../../../services/upload_service";
 import Notification from "../../../../../utils/configToastify";
 import './CreateBlog.css';
 import AdminHeader from "../../../components/AdminHeader";
@@ -26,7 +29,9 @@ import AdminHeader from "../../../components/AdminHeader";
 function CreateBlog() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const [value, setValue] = useState('');
+    const [fileList, setFileList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
     const { mutate } = useMutation({
         mutationFn: (data) => addBlog(data),
         onSuccess: () => {
@@ -39,9 +44,27 @@ function CreateBlog() {
         }
     })
 
-    const handleSubmit = (value) => {
-        mutate(value)
-        // console.log(value);
+    const handleChange = (info) => {
+        setFileList(info.fileList);
+    }
+
+    const handleSubmit = async (values) => {
+        setIsLoading(true);
+        try {
+            let imageUrl = '';
+            if (fileList.length > 0 && fileList[0].originFileObj) {
+                const formData = new FormData();
+                formData.append('images', fileList[0].originFileObj);
+                const res = await uploadImage(formData);
+                imageUrl = res?.data?.images[0]?.url;
+            }
+            
+            mutate({ ...values, image: imageUrl });
+        } catch (error) {
+            Notification({ message: "Lỗi tải ảnh bài viết!", type: "error" });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
 
@@ -59,6 +82,39 @@ function CreateBlog() {
                         form={form}
                     >
                         <Flex vertical align="center" style={{ width: "100%" }}>
+                            <Form.Item
+                                name="image"
+                                hasFeedback
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng tải lên ảnh bài viết"
+                                    }
+                                ]}
+                            >
+                                <Upload
+                                    beforeUpload={() => false}
+                                    listType="picture-card"
+                                    fileList={fileList}
+                                    onChange={handleChange}
+                                    maxCount={1}
+                                    accept='image/*'
+                                >
+                                    {fileList.length < 1 && (
+                                        <button
+                                            style={{
+                                                border: 0,
+                                                background: 'none',
+                                            }}
+                                            type="button"
+                                        >
+                                            <CameraOutlined style={{ fontSize: "40px", color: 'grey' }} />
+                                            <div style={{ marginTop: 8 }}>Tải ảnh</div>
+                                        </button>
+                                    )}
+                                </Upload>
+                            </Form.Item>
+
                             <Flex vertical style={{ width: "100%" }}>
                                 <Typography.Title level={5}>Tiêu đề</Typography.Title>
                                 <Form.Item
@@ -73,7 +129,7 @@ function CreateBlog() {
                                         },
                                         {
                                             min: 1,
-                                            message: "Tối thiểu 1 ký tự"
+                                            message: "Tối thiểu 3 ký tự"
                                         },
                                         {
                                             max: 200,
@@ -82,7 +138,7 @@ function CreateBlog() {
 
                                     ]}
                                 >
-                                    <Input name="name" placeholder="Nhập tiêu đề" />
+                                    <Input placeholder="Nhập tiêu đề" />
                                 </Form.Item>
                             </Flex>
 
@@ -131,7 +187,7 @@ function CreateBlog() {
                                         <InputNumber placeholder="Thứ tự" />
                                     </Form.Item>
                                     <Flex gap={10}>
-                                        <Form.Item name='isActive'>
+                                        <Form.Item name='isActive' valuePropName="checked">
                                             <Switch checkedChildren='Bật' unCheckedChildren="Tắt" />
                                         </Form.Item>
                                         <Typography.Title level={5}>Trạng thái</Typography.Title>
@@ -141,10 +197,10 @@ function CreateBlog() {
                             </Flex>
                             <Form.Item>
                                 <Flex justify="center" gap={20} className="group_btn">
-                                    <Button type="primary" htmlType="submit">
+                                    <Button type="primary" htmlType="submit" loading={isLoading}>
                                         Thêm mới
                                     </Button>
-                                    <Button htmlType="reset">Làm mới</Button>
+                                    <Button htmlType="reset" onClick={() => setFileList([])}>Làm mới</Button>
                                 </Flex>
                             </Form.Item>
                         </Flex>

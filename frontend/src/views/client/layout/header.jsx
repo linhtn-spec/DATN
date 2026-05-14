@@ -14,7 +14,6 @@ import { ACTION_LOG } from "../../../store/typeLog";
 import { LogContext } from "../../../store/typeLog/provider";
 import { ACTION_USER, UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
-import { truncate } from "../../../utils/ellipse";
 import "./../style/header.css";
 import Modal_Search from "./modal_search";
 
@@ -30,7 +29,6 @@ function Headers() {
 
     const [fetched, setFetched] = useState(true)
     const navigate = useNavigate()
-    console.log(1235689023);
     const getFavouriteNow = useQuery({
         queryKey: ['favourite'],
         queryFn: () => getFavourite(),
@@ -139,6 +137,8 @@ function Headers() {
 
                                 </div>
                             </div>
+                            <Link to={"sale"}>Flash Sale</Link>
+                            <Link to={"blog"}>Bài viết</Link>
                             <Link to={"shop"}>Cửa hàng</Link>
                         </Flex>
                         <div className="header-icon">

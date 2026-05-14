@@ -4,7 +4,7 @@ import { options } from "../paginate/options.js";
 
 export const add_blog = async (req, res) => {
 
-    const { title, content, order, isActive } = req.body;
+    const { title, content, order, isActive, image } = req.body;
     const { _id, lastName, firstName } = req.user
     try {
         const checkExistTitle = await blog_model.findOne({ title: title });
@@ -21,7 +21,7 @@ export const add_blog = async (req, res) => {
             title, user: {
                 userId: _id,
                 lastName, firstName
-            }, content, order, isActive
+            }, content, order, isActive, image
         });
         if (blog) {
             return res.status(201).json({ blog, message: "Thêm bài viết thành công" });
@@ -36,12 +36,13 @@ export const add_blog = async (req, res) => {
 export const update_blog = async (req, res) => {
 
     const blog_id = req.params.id;
-    const { title, content, order, isActive } = req.body;
+    const { title, content, order, isActive, image } = req.body;
     const data = {};
     if (title) data.title = title;
     if (content) data.content = content;
     if (isActive !== '') data.isActive = isActive;
-    if (order) data.order = order
+    if (order) data.order = order;
+    if (image) data.image = image;
     try {
         const blog = await blog_model.findOne({ _id: blog_id });
         if (!blog) {

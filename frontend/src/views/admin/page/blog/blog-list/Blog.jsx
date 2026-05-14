@@ -55,6 +55,7 @@ export const BlogList = () => {
         key: item._id,
         title: item.title,
         content: item.content,
+        image: item.image,
         order: item.order,
         isActive: item.isActive,
         author: item.user ? `${item.user.firstName} ${item.user.lastName}` : '—',
@@ -69,6 +70,12 @@ export const BlogList = () => {
   useEffect(() => { document.title = 'Quản lý bài viết'; }, []);
 
   const columns = [
+    {
+      title: 'Hình ảnh',
+      dataIndex: 'image',
+      width: 100,
+      render: (url) => url ? <img src={url} alt="blog" style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4 }} /> : '—',
+    },
     { title: 'Tiêu đề', dataIndex: 'title', sorter: true, ellipsis: true, width: 220 },
     { title: 'Nội dung', dataIndex: 'content', ellipsis: true },
     { title: 'Tác giả', dataIndex: 'author', width: 160 },
