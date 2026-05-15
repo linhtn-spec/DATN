@@ -27,7 +27,7 @@ import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { queryClient } from "../../../main";
-import { addFavourite } from "../../../services/favourite_service";
+import { addFavourite, deleteFavourite } from "../../../services/favourite_service";
 import { detailProduct, productMayLike, recommendProduct } from "../../../services/product_service";
 import { addRating, ratingToProduct } from "../../../services/rating_service";
 import { uploadImage } from "../../../services/upload_service";
@@ -113,15 +113,39 @@ function ProductDetail() {
         onError: (error) => Notification({ message: error?.response?.data, type: "info" })
     })
 
-    const { mutate } = useMutation({
+    const { mutate: addMutate } = useMutation({
         mutationFn: (id) => addFavourite(id),
         onSuccess: () => {
-            Notification({ message: "Thêm vào yêu thích thành công!", type: "success" })
+             Notification({ message: "Đã thêm vào danh sách yêu thích!", type: "success" })
         },
         onError: (error) => {
-            Notification({ message: error?.response?.data, type: "info" })
+            Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
         }
     })
+
+    const { mutate: deleteMutate } = useMutation({
+        mutationFn: (id) => deleteFavourite(id),
+        onSuccess: () => {
+             Notification({ message: "Đã xóa khỏi danh sách yêu thích!", type: "success" })
+        },
+        onError: (error) => {
+            Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
+        }
+    })
+
+    const toggleFavourite = () => {
+        if (!info) {
+             Notification({ message: "Vui lòng đăng nhập trước!", type: "error" });
+             return;
+        }
+        if (isFavourite) {
+            deleteMutate(id);
+            favourite.dispatch({ type: ACTION_FAVOURITE.DELETE_ITEM, payload: id });
+        } else {
+            addMutate(id);
+            favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product });
+        }
+    }
 
     // Effects
     useEffect(() => {
@@ -477,7 +501,7 @@ function ProductDetail() {
                                                     <Button 
                                                         shape="circle" 
                                                         className={clsx("fav", { "is-favourite": isFavourite })} 
-                                                        onClick={addToFavourite}
+                                                        onClick={toggleFavourite}
                                                     >
                                                         {isFavourite ? <HeartFilled /> : <HeartOutlined />}
                                                     </Button>

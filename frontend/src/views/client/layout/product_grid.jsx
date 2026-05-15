@@ -40,18 +40,7 @@ function ProductGrid(props) {
             Notification({ message: error?.response?.data, type: "info" })
         }
     })
-    const addToFavourite = () => {
-
-        if (info) {
-            addToUserFavourite.mutate(product.id)
-            favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
-        }
-        else
-            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
-
-    }
-
-    const { mutate } = useMutation({
+    const { mutate: deleteMutate } = useMutation({
         mutationFn: (id) => deleteFavourite(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['favourite'] })
@@ -60,8 +49,24 @@ function ProductGrid(props) {
         onError: () => Notification({ message: "Lỗi hệ thống!", type: "error" })
     })
 
+    const toggleFavourite = () => {
+        if (info) {
+            if (isFavourite) {
+                deleteMutate(product.id)
+                favourite.dispatch({ type: ACTION_FAVOURITE.DELETE_ITEM, payload: product.id })
+            } else {
+                addToUserFavourite.mutate(product.id)
+                favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
+            }
+        }
+        else
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
+
+    }
+
+
     const handleDelete = (id) => {
-        mutate(id)
+        deleteMutate(id)
         favourite.dispatch({ type: ACTION_FAVOURITE.DELETE_ITEM, payload: id })
 
     }
@@ -81,7 +86,7 @@ function ProductGrid(props) {
                     className={clsx("favourite-btn", { "is-favourite": isFavourite })} 
                     onClick={(e) => {
                         e.preventDefault();
-                        addToFavourite();
+                        toggleFavourite();
                     }}
                 >
                     {isFavourite ? <HeartFilled /> : <HeartOutlined />}

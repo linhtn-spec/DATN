@@ -8,7 +8,7 @@ import { ACTION_CART, CartContext } from "../../../store/cart";
 import { UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
 import { useMutation } from "@tanstack/react-query";
-import { addFavourite } from "../../../services/favourite_service";
+import { addFavourite, deleteFavourite } from "../../../services/favourite_service";
 import { ACTION_FAVOURITE, FavouriteContext } from "../../../store/favourite";
 function Product_LSView(props) {
     const product = props.products;
@@ -27,24 +27,31 @@ function Product_LSView(props) {
             Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
         }
     };
-    const { mutate } = useMutation({
-        mutationFn: (id) => addFavourite(id),
-        onSuccess: () => {
-            Notification({ message: "Đã thêm vào yêu thích!", type: "success" })
-        },
-        onError: (error) => {
-            Notification({ message: error?.response?.data, type: "info" })
-        }
-    })
-    const addToFavourite = () => {
 
-        if (info) {
-            mutate(product.id)
+    const { mutate: addMutate } = useMutation({
+        mutationFn: (id) => addFavourite(id),
+        onSuccess: () => Notification({ message: "Đã thêm vào danh sách yêu thích!", type: "success" }),
+        onError: (error) => Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
+    })
+
+    const { mutate: deleteMutate } = useMutation({
+        mutationFn: (id) => deleteFavourite(id),
+        onSuccess: () => Notification({ message: "Đã xóa khỏi danh sách yêu thích!", type: "success" }),
+        onError: (error) => Notification({ message: error?.response?.data || "Đã xảy ra lỗi", type: "error" })
+    })
+
+    const toggleFavourite = () => {
+        if (!info) {
+            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
+            return
+        }
+        if (isFavourite) {
+            deleteMutate(product.id)
+            favourite.dispatch({ type: ACTION_FAVOURITE.DELETE_ITEM, payload: product.id })
+        } else {
+            addMutate(product.id)
             favourite.dispatch({ type: ACTION_FAVOURITE.ADD_FAVOURITE, payload: product })
         }
-        else
-            Notification({ message: "Vui lòng đăng nhập trước!", type: "error" })
-
     }
     // const addToCart = () => {
     //     const cart = props.state.cart;
@@ -87,7 +94,7 @@ function Product_LSView(props) {
                 <Button 
                     shape="circle" 
                     className={clsx({ "is-favourite": isFavourite })} 
-                    onClick={addToFavourite}
+                    onClick={toggleFavourite}
                     icon={isFavourite ? <HeartFilled /> : <HeartOutlined />}
                 />
             </Flex>
