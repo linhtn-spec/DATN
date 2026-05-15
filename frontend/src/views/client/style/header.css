@@ -267,24 +267,234 @@ header .main_menu:hover .user {
 
 @media (max-width: 768px) {
     header {
-        padding: 0 10px;
+        padding: 0 16px;
     }
 
     .header-logo {
-        width: 30%;
+        width: auto;
+    }
+
+    /* Hide desktop nav and user icon dropdown on mobile */
+    .header-link,
+    .header-icon .main_menu {
+        display: none !important;
+    }
+
+    /* Show hamburger button on mobile */
+    .mobile-menu-btn {
+        display: flex !important;
     }
 
     .header-icon {
-        width: 30%;
-    }
-
-    .header-link a {
-        padding: 0 5px;
-        font-size: 11px;
-        margin: 0px 3px;
+        width: auto;
+        gap: 16px;
     }
 
     .header-icon .qty {
-        right: 25px;
+        right: 50px;
     }
+}
+
+/* =====================
+   Mobile Hamburger Button
+   (Hidden on desktop)
+   ===================== */
+.mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+    color: var(--primary-color);
+}
+
+/* =====================
+   Mobile Overlay (backdrop)
+   ===================== */
+/* Overlay is conditionally rendered in JSX — no display:none needed here */
+.mobile-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1999;
+    background: rgba(0, 0, 0, 0.45);
+    animation: fadeIn 0.25s ease;
+}
+
+/* =====================
+   Mobile Drawer
+   ===================== */
+.mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2000;
+    width: 100vw;
+    max-width: 100%;
+    height: 100dvh;
+    background: #fff;
+    box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 0.3s;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.mobile-drawer.open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s linear 0s;
+}
+
+/* Drawer header */
+.mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+.mobile-close-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #666;
+    padding: 6px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-close-btn:hover {
+    background: #f0f0f0;
+    color: var(--primary-color);
+}
+
+/* Drawer links */
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    flex: 1;
+}
+
+.mobile-nav-links a {
+    display: block;
+    padding: 13px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-color, #333);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: none;
+}
+
+.mobile-nav-links a:hover,
+.mobile-nav-links a.active {
+    color: var(--primary-color);
+    background: rgba(21, 128, 61, 0.05);
+    padding-left: 30px;
+}
+
+/* Category section */
+.mobile-category-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-section-label {
+    display: block;
+    padding: 10px 24px 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.mobile-divider {
+    height: 1px;
+    background: #f0f0f0;
+    margin: 8px 0;
+}
+
+/* Logout button */
+.mobile-logout-btn {
+    display: block;
+    width: 100%;
+    padding: 13px 24px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ff4d4f;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mobile-logout-btn:hover {
+    background: rgba(255, 77, 79, 0.05);
+    padding-left: 30px;
+}
+
+/* Auth buttons */
+.mobile-auth-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 24px;
+}
+
+.mobile-login-btn,
+.mobile-register-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.mobile-login-btn {
+    background: var(--primary-color);
+    color: #fff !important;
+}
+
+.mobile-login-btn:hover {
+    opacity: 0.85;
+}
+
+.mobile-register-btn {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color) !important;
+    background: transparent;
+}
+
+.mobile-register-btn:hover {
+    background: rgba(21, 128, 61, 0.06);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
