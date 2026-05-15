@@ -132,7 +132,7 @@ export const OrderDetail = () => {
                 />
 
                 <Card className="modern-order-card" bodyStyle={{ padding: '30px' }} bordered={false}>
-                    <Flex justify="space-between" align="flex-start" style={{ marginBottom: '30px' }}>
+                    <Flex justify="space-between" align="flex-start" style={{ marginBottom: '30px' }} className="order-detail-header">
                         <div>
                             <Typography.Title level={3} style={{ margin: 0, color: 'var(--primary-color)' }}>
                                 Đơn hàng #{order_id?.slice(-8).toUpperCase()}
@@ -159,7 +159,7 @@ export const OrderDetail = () => {
                         )}
                     </Flex>
 
-                    <div style={{ padding: '20px 40px', backgroundColor: '#f8fafc', borderRadius: '12px', marginBottom: '40px' }}>
+                    <div className="steps-wrapper" style={{ padding: '20px 40px', backgroundColor: '#f8fafc', borderRadius: '12px', marginBottom: '40px' }}>
                         <Steps
                             current={getStepCurrent(info?.orderStatus)}
                             status={info?.orderStatus === 'canceled' ? 'error' : 'process'}
@@ -204,13 +204,40 @@ export const OrderDetail = () => {
                     <Divider style={{ margin: '40px 0' }} />
 
                     <Typography.Title level={4} style={{ marginBottom: '20px' }}>Danh sách sản phẩm</Typography.Title>
-                    <Table
-                        columns={cartColumns}
-                        dataSource={products}
-                        pagination={false}
-                        rowKey="id"
-                        className="product-list-table"
-                    />
+
+                    {/* Desktop: table */}
+                    <div className="detail-products-desktop">
+                        <Table
+                            columns={cartColumns}
+                            dataSource={products}
+                            pagination={false}
+                            rowKey="id"
+                            className="product-list-table"
+                        />
+                    </div>
+
+                    {/* Mobile: product cards */}
+                    <div className="detail-products-mobile">
+                        {products.map(item => (
+                            <div key={item.id} className="detail-product-item">
+                                <img
+                                    src={item.image}
+                                    alt={item.name}
+                                    className="detail-product-img"
+                                />
+                                <div className="detail-product-info">
+                                    <div className="detail-product-name">{item.name}</div>
+                                    <div className="detail-product-meta">
+                                        <span>x{item.quantity}</span>
+                                        <span>{item.price?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+                                    </div>
+                                </div>
+                                <div className="detail-product-subtotal">
+                                    {item.subtotal?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
                     <Row justify="end" style={{ marginTop: '30px' }}>
                         <Col xs={24} sm={12} md={8}>

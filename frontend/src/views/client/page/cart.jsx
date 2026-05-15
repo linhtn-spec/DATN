@@ -1,6 +1,6 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Empty, Flex, InputNumber, Table, Typography } from 'antd';
-import { useContext, useEffect } from 'react';
+import { Breadcrumb, Button, Empty, Flex, InputNumber, Pagination, Table, Typography } from 'antd';
+import { useContext, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
 import Notification from '../../../utils/configToastify';
@@ -11,6 +11,8 @@ function Cart() {
     document.title = "Giỏ hàng";
     const navigate = useNavigate();
     const { state, dispatch } = useContext(CartContext)
+    const PAGE_SIZE = 6;
+    const [cartPage, setCartPage] = useState(1);
 
     // Helper: normalize quantity to a plain number regardless of backend shape
     const getMaxQty = (qty) => {
@@ -205,7 +207,7 @@ function Cart() {
 
                         {/* Mobile: Card List */}
                         <div className="cart-list-mobile">
-                            {products.map((row) => (
+                            {products.slice((cartPage - 1) * PAGE_SIZE, cartPage * PAGE_SIZE).map((row) => (
                                 <div key={row.id} className="cart-card-mobile">
                                     <Flex gap={12} align="flex-start" style={{ width: '100%', overflow: 'hidden' }}>
                                         {/* Image */}
@@ -265,6 +267,19 @@ function Cart() {
                                     </Flex>
                                 </div>
                             ))}
+                            {/* Pagination for mobile */}
+                            {products.length > PAGE_SIZE && (
+                                <Flex justify="center" style={{ paddingTop: 12 }}>
+                                    <Pagination
+                                        current={cartPage}
+                                        total={products.length}
+                                        pageSize={PAGE_SIZE}
+                                        onChange={(p) => { setCartPage(p); window.scrollTo(0, 0); }}
+                                        showSizeChanger={false}
+                                        size="small"
+                                    />
+                                </Flex>
+                            )}
                         </div>
 
                         {/* Total + Checkout – always visible */}
