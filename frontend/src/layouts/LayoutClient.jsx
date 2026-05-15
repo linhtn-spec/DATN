@@ -1,12 +1,12 @@
 import { Layout } from 'antd';
+import { useContext, useEffect } from 'react';
 import { Outlet } from 'react-router';
+import { UserContext } from '../store/user';
+import { avoidDoubleClick } from '../utils/avoidDoubleClick';
 import Copyright from '../views/client/layout/copyright';
 import Footers from '../views/client/layout/footer';
 import Headers from '../views/client/layout/header';
-import { avoidDoubleClick } from '../utils/avoidDoubleClick';
-import { useContext, useEffect } from 'react';
 import { ChatWidget } from '../views/client/page/ChatWidget/ChatWidget';
-import { UserContext } from '../store/user';
 
 export const LayoutClient = () => {
     const { Header, Content, Footer } = Layout;

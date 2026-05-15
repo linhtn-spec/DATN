@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Empty, Flex, Pagination } from "antd";
+import { Breadcrumb, Empty, Flex, Pagination, Typography, Row, Col } from "antd";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
@@ -67,43 +67,63 @@ function Category() {
 
     }, [categoryName])
     return (
-        <>
+        <div className="category-main-container">
             <Banner_Big info={categoryName?.toUpperCase()} image={categoryImage} />
-            <Flex className="category_page" vertical>
+            <div className="category_content_inner animate-fade-in">
                 <Breadcrumb
                     items={[
-                        {
-                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                        },
-                        {
-                            title: <NavLink to={`/client/category/${category_id}`}>{categoryName?.toUpperCase()}</NavLink>,
-                        },
+                        { title: <NavLink to={'/client'}>TRANG CHỦ</NavLink> },
+                        { title: <span className="active-breadcrumb">{categoryName?.toUpperCase()}</span> },
                     ]}
+                    className="custom-breadcrumb"
                 />
-                <Flex className="category_pagination" justify="center"><p className=" text-left">Hiển thị <b>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b>{Math.min(page * 8, total)}</b> trên tổng số <b>{total}</b> kết quả</p></Flex>
-                <Flex className="category_items" wrap="wrap" gap="24px" style={{ width: "100%" }}>
+
+                <div className="category_header_section animate-slide-up">
+                    <div className="category-title-area">
+                        <div className="category-badge">BỘ SƯU TẬP</div>
+                        <Typography.Title level={1} className="premium-gradient-text category-display-title">
+                            {categoryName || "DANH MỤC SẢN PHẨM"}
+                        </Typography.Title>
+                    </div>
+                    
+                    <div className="results-count-pill">
+                        Hiển thị <b>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b>{Math.min(page * 8, total)}</b> trên <b>{total}</b> sản phẩm
+                    </div>
+                </div>
+
+                <div className="category_products_grid animate-fade-in-delayed">
                     {products.length !== 0 ? (
-                        products.map((item) => {
-                            return <ProductGrid products={item} key={item.id} />
-                        })
+                        <>
+                            <Row gutter={[24, 32]}>
+                                {products.map((item) => (
+                                    <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
+                                        <ProductGrid products={item} />
+                                    </Col>
+                                ))}
+                            </Row>
+
+                            {total > 8 && (
+                                <Flex justify="center" className="pagination-wrapper">
+                                    <Pagination
+                                        total={total}
+                                        pageSize={8}
+                                        current={page}
+                                        showSizeChanger={false}
+                                        onChange={(p) => setPage(p)} 
+                                    />
+                                </Flex>
+                            )}
+                        </>
                     ) : (
-                        <Flex style={{ width: "100%" }} justify="center"> <Empty description={"Không có sản phẩm nào"} /></Flex>
+                        <div className="empty-state-wrapper">
+                            <Empty 
+                                description={<span className="empty-text">Hiện tại chưa có sản phẩm nào trong danh mục này.</span>} 
+                            />
+                        </div>
                     )}
-                </Flex>
-
-                <Flex justify="center">
-                    <Pagination
-                        total={total}
-                        pageSize={8}
-                        current={page}
-                        defaultCurrent={1}
-                        hideOnSinglePage
-                        showSizeChanger={false}
-                        onChange={(page) => setPage(page)} />
-
-                </Flex>
-            </Flex>
-        </>
+                </div>
+            </div>
+        </div>
     );
 }
 export default Category;

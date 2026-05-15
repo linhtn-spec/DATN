@@ -76,7 +76,7 @@ function Sale() {
     return (
         <div className="flash-sale-container">
             <Banner_Big info="SIÊU ƯU ĐÃI FLASH SALE" image={bannerImage} />
-            <div className="container sale_page_inner animate-fade-in">
+            <div className="sale_page_inner animate-fade-in">
                 <Breadcrumb
                     items={[
                         { title: <NavLink to={'/client'}>TRANG CHỦ</NavLink> },

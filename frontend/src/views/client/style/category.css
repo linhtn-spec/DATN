@@ -1,52 +1,137 @@
-.category_page {
-    margin-top: 50px;
-    margin-bottom: 100px;
-    padding: 50px;
-    background: linear-gradient(145deg, #ffffff 0%, #f6f9fc 100%);
-    border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.06), 0 5px 15px rgba(0,0,0,0.03);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+.category-main-container {
+    background: #ffffff !important;
+    min-height: 100vh;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important; /* Force 0 padding for edge-to-edge banner */
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.category_content_inner {
+    padding: 60px 5% 120px 5%; /* Percentage-based padding for better breathing room */
+    width: 100%;
+    max-width: 100% !important; /* Full width */
+    margin-left: 0;
+    margin-right: 0;
     position: relative;
-    z-index: 10;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-.category_page .breadcrumb-item+.breadcrumb-item::before {
-    content: "\2794" !important;
-    color: #444;
+.active-breadcrumb {
+    color: #334155;
+    font-weight: 700;
 }
 
-.category_page .breadcrumb-item a {
-    font-size: 16px;
-    text-decoration: none;
-    color: rgb(102, 101, 101);
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
+.custom-breadcrumb {
+    margin-bottom: 50px;
 }
 
-.category_page .breadcrumb-item.active a {
-    color: rgb(23, 23, 23);
+.pagination-wrapper {
+    margin-top: 60px;
 }
 
-.category_page .breadcrumb-item a:hover {
-    color: #ff4d4f;
-}
-
-.category_page nav {
+.category_header_section {
     display: flex;
-    justify-content: center;
-    margin-bottom: 80px;
-    margin-top: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+    gap: 30px;
 }
 
-.category_pagination {
-    margin-bottom: 40px;
-    font-size: 18px;
-    background: rgba(255, 255, 255, 0.8);
+.category-badge {
+    display: inline-block;
+    background: #334155;
+    color: white;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+}
+
+.category-display-title {
+    margin: 0 !important;
+    font-size: 56px !important;
+    font-weight: 900 !important;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #15803d 0%, #f97316 100%);
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    color: transparent !important;
+}
+
+.results-count-pill {
+    background: #f1f5f9;
     padding: 10px 24px;
     border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+}
+
+.results-count-pill b {
+    color: #0f172a;
+}
+
+.empty-state-wrapper {
+    padding: 100px 0;
+    text-align: center;
+}
+
+/* Animations */
+.animate-fade-in {
+    animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-fade-in-delayed {
+    animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .category_content_inner {
+        padding: 40px 10px 80px 10px;
+    }
+
+    .category_header_section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 40px;
+        gap: 20px;
+    }
+
+    .category-display-title {
+        font-size: 32px !important;
+    }
+
+    .results-count-pill {
+        font-size: 13px;
+        padding: 8px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-display-title {
+        font-size: 28px !important;
+    }
 }
