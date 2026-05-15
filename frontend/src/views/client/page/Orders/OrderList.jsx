@@ -35,7 +35,9 @@ export const OrderList = () => {
 
     useEffect(() => {
         if (!isSuccess) return
-        const rawData = data?.data?.docs
+        const responseData = data?.data
+        const rawData = responseData?.docs || []
+        
         setOrders(rawData?.map((item, index) => ({
             no: index + 1,
             id: item?._id,
@@ -45,9 +47,13 @@ export const OrderList = () => {
             total: item?.total,
             productsCount: item?.products?.length || 1
         })))
+        
+        // Cập nhật tổng số lượng đơn hàng để phân trang hoạt động
+        setTotal(responseData?.totalDocs || 0)
+        
         return () => {
             setOrders([])
-            setTotal(1)
+            setTotal(0)
         }
     }, [isSuccess, data])
 
