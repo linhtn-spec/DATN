@@ -1,6 +1,6 @@
-import { CloseOutlined, ShoppingOutlined, SortAscendingOutlined } from "@ant-design/icons";
+import { CloseOutlined, FilterOutlined, ShoppingOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Checkbox, Empty, Flex, Pagination, Radio, Rate, Select, Skeleton, Space, Tag, Typography } from "antd";
+import { Breadcrumb, Button, Checkbox, Col, Drawer, Empty, Flex, Pagination, Radio, Rate, Row, Select, Skeleton, Space, Tag, Typography } from "antd";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -29,6 +29,7 @@ function Shop() {
     const cart = useContext(CartContext)
     const user = useContext(UserContext)
     const info = user?.state?.currentUser
+    const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
     const addToCart = (product) => {
         if (info) {
             cart?.dispatch({ type: ACTION_CART.ADD_CART, payload: { ...product, quantityBuy: 1 } })
@@ -173,17 +174,232 @@ function Shop() {
                         title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
                     },
                 ]}
+                style={{ marginTop: '12px' }}
             />
-            <Flex className='products_filter' justify="space-between" wrap="nowrap" style={{ width: "100%" }}>
-                <Flex className="filterCAP">
-                    <Flex className='filterCate'>
-                        <Typography.Title level={5}>Danh mục</Typography.Title>
-                        <Checkbox.Group options={optionsCategory} value={categoryFilter} onChange={onChangeCategory} />
 
+            <Flex className="shop_header" justify="space-between" align="center" style={{ marginBottom: 24 }}>
+                <Typography.Title level={2} style={{ margin: 0 }}>Cửa hàng</Typography.Title>
+                <Button
+                    className="mobile-filter-btn"
+                    icon={<FilterOutlined />}
+                    onClick={() => setIsFilterDrawerOpen(true)}
+                    style={{ display: 'none' }}
+                >
+                    Bộ lọc
+                </Button>
+            </Flex>
+
+            <Row gutter={[32, 24]} className="shop_content_container">
+                <Col xs={0} lg={6}>
+                    <div className="filter-sidebar">
+                        <div className='filterCate'>
+                            <Typography.Title level={5}>Danh mục</Typography.Title>
+                            <Checkbox.Group options={optionsCategory} value={categoryFilter} onChange={onChangeCategory} />
+                        </div>
+                        <div className='filterPrice'>
+                            <Typography.Title level={5}>Khoảng giá</Typography.Title>
+                            <Radio.Group onChange={onChangePrice} value={priceFilter}>
+                                <Space direction="vertical">
+                                    <Radio value={'0 - 100000'}>0 - 100.000&nbsp;₫</Radio>
+                                    <Radio value={'100000 - 300000'}>100.000 - 300.000&nbsp;₫</Radio>
+                                    <Radio value={'300000 - 500000'}>300.000 - 500.000&nbsp;₫</Radio>
+                                    <Radio value={'500000 - '}>Trên 500.000&nbsp;₫</Radio>
+                                </Space>
+                            </Radio.Group>
+                        </div>
+                    </div>
+                </Col>
+
+                <Col xs={24} lg={18}>
+                    <Flex className="products_cate" vertical>
+                        <Flex justify='space-between' align="center" wrap="wrap" gap={12} style={{ marginBottom: "20px" }}>
+                            <Space className="filter_tag" wrap>
+                                {categoryFilter.length !== 0 && (
+                                    optionsCategory
+                                        .filter(opt => categoryFilter.includes(opt.value))
+                                        .map(category => (
+                                            <Tag
+                                                key={category.value}
+                                                closable
+                                                onClose={() => {
+                                                    const newFilters = categoryFilter.filter(id => id !== category.value);
+                                                    setCategoryFilter(newFilters);
+                                                }}
+                                                className="category-chip"
+                                            >
+                                                {category.label}
+                                            </Tag>
+                                        ))
+                                )}
+                                {priceFilter && (
+                                    <Tag
+                                        closable
+                                        onClose={() => setPriceFilter('')}
+                                        className="price-chip"
+                                    >
+                                        {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + '\u00A0₫' : 'Trên 500.000\u00A0₫'}
+                                    </Tag>
+                                )}
+                                {(categoryFilter.length !== 0 || priceFilter != '') &&
+                                    (<Typography.Link
+                                        className="clear-all-link"
+                                        onClick={() => {
+                                            setCategoryFilter([]);
+                                            setPriceFilter('');
+                                            setIsEmpty(false);
+                                        }}
+                                    >
+                                        Xóa tất cả
+                                    </Typography.Link>
+                                    )}
+                            </Space>
+                            <Select
+                                placeholder="Sắp xếp"
+                                removeIcon={<CloseOutlined />}
+                                suffixIcon={<SortAscendingOutlined />}
+                                labelInValue
+                                allowClear
+                                className="sort-select"
+                                onChange={handleChange}
+                                options={[
+                                    { value: 'sortPrice=ascend', label: 'Giá tăng dần' },
+                                    { value: 'sortPrice=descend', label: 'Giá giảm dần' },
+                                    { value: 'sortDate=ascend', label: 'Mới nhất' },
+                                    { value: 'sortDate=descend', label: 'Cũ nhất' },
+                                    { value: 'sortName=ascend', label: 'Tên: A-Z' },
+                                    { value: 'sortName=descend', label: 'Tên: Z-A' },
+                                ]}
+                            />
+                        </Flex>
+
+                        <div className="products_result">
+                            {(productShop.isLoading && products.length === 0) ? (
+                                <Row gutter={[16, 16]}>
+                                    {[...Array(6)].map((_, index) => (
+                                        <Col xs={24} sm={12} md={8} key={index}>
+                                            <div className="shop_item_skeleton">
+                                                <Skeleton.Image active className="skeleton-img" />
+                                                <Skeleton active paragraph={{ rows: 2 }} />
+                                            </div>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            ) : isEmpty ? (
+                                <Empty description="Không tìm thấy sản phẩm nào" />
+                            ) : (
+                                <>
+                                    <div className='result-summary'>
+                                        <Typography.Text type="secondary">
+                                            Hiển thị <strong>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</strong> trong số <strong>{total}</strong> kết quả
+                                        </Typography.Text>
+                                        {productShop.isFetching && <Skeleton.Button active size="small" style={{ marginLeft: 10, width: 20 }} />}
+                                    </div>
+
+                                    <Row gutter={[16, 24]} className="product-grid" style={{ opacity: productShop.isFetching ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
+                                        {products.map(item => (
+                                            <Col xs={24} sm={12} md={8} key={item?.id}>
+                                                <div className="shop_item">
+                                                    <div className="product-image-wrapper" onClick={() => navigate(`/client/product/${item?.id}`)}>
+                                                        <img src={item?.image} alt={item?.name} />
+                                                        {Number(item?.pricePromotion) > 0 && (
+                                                            <div className="sale-badge">-{item?.pricePromotion}%</div>
+                                                        )}
+                                                    </div>
+                                                    <div className="product-info">
+                                                        <Typography.Title level={5} ellipsis={{ rows: 2 }} onClick={() => navigate(`/client/product/${item?.id}`)} className="product-name">
+                                                            {item?.name}
+                                                        </Typography.Title>
+                                                        <div className="product-price-row">
+                                                            {Number(item?.pricePromotion) > 0 ? (
+                                                                <Flex vertical>
+                                                                    <span className="promotion">
+                                                                        {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
+                                                                    </span>
+                                                                    <span className="price-original">
+                                                                        {item.price?.toLocaleString('vi-VN')}&nbsp;₫
+                                                                    </span>
+                                                                </Flex>
+                                                            ) : (
+                                                                <span className="promotion">
+                                                                    {item.price?.toLocaleString('vi-VN')}&nbsp;₫
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <div className="product-rating">
+                                                            <Rate allowHalf disabled defaultValue={item?.stars} className="small-rate" />
+                                                        </div>
+                                                        <div className="product-actions">
+                                                            {!item?.status ? (
+                                                                <Button block onClick={() => navigate(`/client/product/${item?.id}`)}>Xem chi tiết</Button>
+                                                            ) : (
+                                                                <Button
+                                                                    block
+                                                                    type="primary"
+                                                                    icon={<ShoppingOutlined />}
+                                                                    disabled={item?.quantity === 0}
+                                                                    onClick={() => addToCart(item)}
+                                                                    className="add-to-cart-btn"
+                                                                >
+                                                                    {item?.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
+                                                                </Button>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </Col>
+                                        ))}
+                                    </Row>
+                                </>
+                            )}
+                            <Pagination
+                                style={{ textAlign: "center", marginTop: "48px" }}
+                                current={page}
+                                total={total}
+                                pageSize={6}
+                                hideOnSinglePage
+                                showSizeChanger={false}
+                                onChange={(p) => {
+                                    setPage(p);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                            />
+                        </div>
                     </Flex>
-                    <Flex className='filterPrice'>
+                </Col>
+            </Row>
+
+            <Drawer
+                title="Bộ lọc sản phẩm"
+                placement="right"
+                onClose={() => setIsFilterDrawerOpen(false)}
+                open={isFilterDrawerOpen}
+                width="100%"
+                footer={
+                    <Button type="primary" block size="large" onClick={() => setIsFilterDrawerOpen(false)}>
+                        Xem kết quả ({total} sản phẩm)
+                    </Button>
+                }
+            >
+                <div className="mobile-filter-content">
+                    <div className='filterCate'>
+                        <Typography.Title level={5}>Danh mục</Typography.Title>
+                        <Checkbox.Group
+                            options={optionsCategory}
+                            value={categoryFilter}
+                            onChange={(vals) => {
+                                onChangeCategory(vals);
+                            }}
+                            style={{ width: '100%' }}
+                        />
+                    </div>
+                    <div className='filterPrice' style={{ marginTop: 24 }}>
                         <Typography.Title level={5}>Khoảng giá</Typography.Title>
-                        <Radio.Group onChange={onChangePrice} value={priceFilter}>
+                        <Radio.Group
+                            onChange={(e) => {
+                                onChangePrice(e);
+                            }}
+                            value={priceFilter}
+                        >
                             <Space direction="vertical">
                                 <Radio value={'0 - 100000'}>0 - 100.000&nbsp;₫</Radio>
                                 <Radio value={'100000 - 300000'}>100.000 - 300.000&nbsp;₫</Radio>
@@ -191,152 +407,9 @@ function Shop() {
                                 <Radio value={'500000 - '}>Trên 500.000&nbsp;₫</Radio>
                             </Space>
                         </Radio.Group>
-                    </Flex>
-                </Flex>
-                <Flex className="products_cate" vertical>
-                    <Flex justify='space-between' align="center" style={{ marginBottom: "10px" }}>
-                        <Space className="filter_tag" wrap>
-                            {categoryFilter.length !== 0 && (
-                                optionsCategory
-                                    .filter(opt => categoryFilter.includes(opt.value))
-                                    .map(category => (
-                                        <Tag
-                                            key={category.value}
-                                            closable
-                                            onClose={() => {
-                                                const newFilters = categoryFilter.filter(id => id !== category.value);
-                                                setCategoryFilter(newFilters);
-                                            }}
-                                            className="category-chip"
-                                        >
-                                            {category.label}
-                                        </Tag>
-                                    ))
-                            )}
-                            {priceFilter && (
-                                <Tag
-                                    closable
-                                    onClose={() => setPriceFilter('')}
-                                    className="price-chip"
-                                >
-                                    {priceFilter !== '500000 - ' ? priceFilter.replace(' - ', ' - ') + '\u00A0₫' : 'Trên 500.000\u00A0₫'}
-                                </Tag>
-                            )}
-                            {(categoryFilter.length !== 0 || priceFilter != '') &&
-                                (<Typography.Link
-                                    className="clear-all-link"
-                                    onClick={() => {
-                                        setCategoryFilter([]);
-                                        setPriceFilter('');
-                                        setIsEmpty(false);
-                                    }}
-                                >
-                                    Xóa tất cả
-                                </Typography.Link>
-                                )}
-                        </Space>
-                        <Select
-                            placeholder="Sắp xếp"
-                            removeIcon={<CloseOutlined />}
-                            suffixIcon={<SortAscendingOutlined />}
-                            labelInValue
-                            allowClear
-                            style={{
-                                width: 150,
-                            }}
-                            onChange={handleChange}
-                            options={[
-                                {
-                                    value: 'sortPrice=ascend',
-                                    label: 'Giá tăng dần',
-                                },
-                                {
-                                    value: 'sortPrice=descend',
-                                    label: 'Giá giảm dần',
-                                },
-                                {
-                                    value: 'sortDate=ascend',
-                                    label: 'Mới nhất',
-                                },
-                                {
-                                    value: 'sortDate=descend',
-                                    label: 'Cũ nhất',
-                                },
-                                {
-                                    value: 'sortName=ascend',
-                                    label: 'Tên: A-Z',
-                                },
-                                {
-                                    value: 'sortName=descend',
-                                    label: 'Tên: Z-A',
-                                },
-                            ]}
-                        />
-                    </Flex>
-                    <Flex className="products_result" gap="16px" vertical>
-                        {(productShop.isLoading && products.length === 0) ? (
-                            <Flex gap={"16px"} wrap="wrap">
-                                {[...Array(6)].map((_, index) => (
-                                    <Flex className="shop_item col-4" vertical align="center" key={index} style={{ padding: '20px' }}>
-                                        <Skeleton.Image active style={{ width: 150, height: 150, marginBottom: 10 }} />
-                                        <Skeleton active paragraph={{ rows: 2 }} />
-                                    </Flex>
-                                ))}
-                            </Flex>
-                        ) : isEmpty ? (
-                            <Empty />
-                        ) : (
-                            <>
-                                <Flex className='result'>
-                                    <h3>Hiển thị <span>{total !== 0 ? (page - 1) * 6 + 1 : 0} - {Math.min(page * 6, total)}</span> trong số {total} kết quả {productShop.isFetching && <Skeleton.Button active size="small" style={{ marginLeft: 10, width: 20 }} />}</h3>
-                                </Flex>
-                                <div className="product-grid" style={{ opacity: productShop.isFetching ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
-                                    {products.map(item => (
-                                        <Flex className="shop_item" vertical align="center" key={item?.id}>
-                                            <img src={item?.image} alt={item?.name} width={60} style={{ cursor: "pointer" }} height={150} onClick={() => navigate(`/client/product/${item?.id}`)} />
-                                            <Typography.Title level={5} ellipsis={true}>{item?.name}</Typography.Title>
-                                            <Typography.Text className="price_promo">
-                                                {Number(item?.pricePromotion) > 0 ? (
-                                                    <Flex gap={8} align="center" justify="center" style={{ whiteSpace: 'nowrap' }}>
-                                                        <span className="promotion">
-                                                            {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
-                                                        </span>
-                                                        <span className="price">
-                                                            {item.price?.toLocaleString('vi-VN')}&nbsp;₫
-                                                        </span>
-                                                    </Flex>
-                                                ) : (
-                                                    <span className="promotion" style={{ whiteSpace: 'nowrap' }}>
-                                                        {item.price?.toLocaleString('vi-VN')}&nbsp;₫
-                                                    </span>
-                                                )}
-                                            </Typography.Text>
-                                            <Rate allowHalf disabled defaultValue={item?.stars} />
-                                            {!item?.status ? (
-                                                <Button onClick={() => navigate(`/client/product/${item?.id}`)}>xem chi tiết</Button>
-                                            ) : (
-                                                <Button icon={<ShoppingOutlined />} disabled={item?.quantity === 0} onClick={() => addToCart(item)}>thêm vào giỏ hàng</Button>
-                                            )}
-                                        </Flex>
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                        <Pagination
-                            style={{ textAlign: "center", padding: "70px 0" }}
-                            defaultCurrent={1}
-                            total={total}
-                            pageSize={6}
-                            hideOnSinglePage
-                            showSizeChanger={false}
-                            onChange={(p) => {
-                                setPage(p);
-                                window.scrollTo(0, 0);
-                            }}
-                        />
-                    </Flex>
-                </Flex>
-            </Flex>
+                    </div>
+                </div>
+            </Drawer>
         </Flex>
 
     );

@@ -21,6 +21,15 @@ function Headers() {
     const [searchView, setSearchView] = useState(false);
     const [category, setCategory] = useState([]);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const logGoogle = useContext(LogContext)
     const user = useContext(UserContext)
@@ -123,7 +132,7 @@ function Headers() {
     return (
         <>
             {!searchView && (
-                <header>
+                <header className={scrolled ? 'scrolled' : ''}>
                     <Flex style={{ height: "100%" }} justify="space-between" align="center">
                         {/* Logo */}
                         <Flex className="header-logo" align="center">
@@ -134,7 +143,7 @@ function Headers() {
 
                         {/* Desktop Nav Links */}
                         <Flex className="header-link" justify="space-between">
-                            <Link to={"home"}>Trang chủ</Link>
+                            <NavLink to={"home"}>Trang chủ</NavLink>
                             <div className="main_menu">
                                 <div className="categories">Danh mục</div>
                                 <div className="sub_menu">
@@ -143,9 +152,9 @@ function Headers() {
                                     ))}
                                 </div>
                             </div>
-                            <Link to={"sale"}>Flash Sale</Link>
-                            <Link to={"blog"}>Bài viết</Link>
-                            <Link to={"shop"}>Cửa hàng</Link>
+                            <NavLink to={"sale"}>Flash Sale</NavLink>
+                            <NavLink to={"blog"}>Bài viết</NavLink>
+                            <NavLink to={"shop"}>Cửa hàng</NavLink>
                         </Flex>
 
                         {/* Desktop Icons (right side) */}

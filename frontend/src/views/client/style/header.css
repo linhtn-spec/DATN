@@ -59,8 +59,13 @@ header a:hover::after {
 
 header a:hover,
 header .main_menu:hover .categories,
-.header-icon span:hover {
-    color: var(--primary-color);
+.header-icon span:hover,
+header a.active {
+    color: #15803d;
+}
+
+header a.active::after {
+    width: 100%;
 }
 
 header .icon {
@@ -268,6 +273,8 @@ header .main_menu:hover .user {
 @media (max-width: 768px) {
     header {
         padding: 0 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        background: #fff !important;
     }
 
     .header-logo {
