@@ -7,6 +7,8 @@
 
 .login_panel {
     width: 30vw;
+    min-width: 360px;
+    max-width: 480px;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
@@ -97,4 +99,35 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transform: translateY(-2px);
     border-color: #ccc;
+}
+
+/* ========================
+   RESPONSIVE - MOBILE
+   ======================== */
+@media (max-width: 768px) {
+    .login_wrap {
+        align-items: flex-start;
+        padding-top: 0;
+    }
+
+    .login_panel {
+        width: 100%;
+        min-width: unset;
+        max-width: 100%;
+        min-height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.97);
+    }
+
+    .wrap_logo {
+        height: 120px;
+        padding: 20px 0;
+    }
+
+    .wrap_logo img {
+        height: 60px;
+        width: auto;
+    }
 }

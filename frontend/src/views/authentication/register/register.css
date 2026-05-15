@@ -7,6 +7,8 @@
 
 .register_panel {
     width: 35vw;
+    min-width: 360px;
+    max-width: 520px;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
@@ -116,4 +118,41 @@
     -webkit-appearance: none;
     appearance: none;
     margin: 0;
+}
+
+/* ========================
+   RESPONSIVE - MOBILE
+   ======================== */
+@media (max-width: 768px) {
+    .register_wrap {
+        align-items: flex-start;
+    }
+
+    .register_panel {
+        width: 100%;
+        min-width: unset;
+        max-width: 100%;
+        max-height: 100dvh;
+        min-height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.97);
+    }
+
+    .register_panel h2 {
+        font-size: 20px;
+        padding-top: 14px;
+        padding-bottom: 6px;
+    }
+
+    .wrap_logo {
+        height: 100px;
+        padding: 16px 0;
+    }
+
+    .wrap_logo img {
+        height: 50px;
+        width: auto;
+    }
 }
