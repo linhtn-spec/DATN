@@ -11,8 +11,8 @@ function Footers() {
                 </div>
                 <div>
                     <h3>Về chúng tôi</h3>
-                    <p>Địa chỉ: Hoài Đức, Hà Nội</p>
-                    <p>Hotline: 0928713123</p>
+                    <p>Địa chỉ: Cầu Giấy, Hà Nội</p>
+                    <p>Hotline: 0362253173</p>
                     <p>Email: s-cart@ecommerce.com</p>
                 </div>
                 <div>

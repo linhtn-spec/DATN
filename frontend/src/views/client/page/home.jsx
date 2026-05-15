@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Button, Empty, Flex, Skeleton, Typography } from "antd";
+import { Empty, Flex, Skeleton, Typography } from "antd";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { listProduct } from "../../../services/product_service";
 import { latestSale } from "../../../services/sale_service";
 import { loginByGoogle } from "../../../services/user_service";
@@ -100,10 +100,14 @@ function Home() {
         }
     }, [getUser?.isSuccess, getUser?.data, getUser?.error, dispatch, logGoogle])
     return (
-        <Flex vertical>
+        <Flex vertical className="home-page">
             <Banner />
-            <div className="container fade-in-section" style={{ marginTop: "80px", marginBottom: "20px" }}>
-                <Typography.Title level={2} className="premium-gradient-text" style={{ textTransform: "uppercase", textAlign: "center", margin: "0 auto", display: "block", fontSize: "36px", fontWeight: "800", letterSpacing: "-0.5px" }}>Gợi ý cho bạn</Typography.Title>
+            <div className="container home-section-header fade-in-section">
+                <div className="decorative-header">
+                    <span className="header-leaf left">🍃</span>
+                    <Typography.Title level={2} className="premium-gradient-text home-section-title">Gợi ý cho bạn</Typography.Title>
+                    <span className="header-leaf right">🍃</span>
+                </div>
             </div>
             <div className="fade-in-section">
                 <RecommendedProduct />
@@ -113,11 +117,20 @@ function Home() {
                     <Countdown expires={expires} />
                 </div>
             )}
-            <Flex className="product_hot container text-center fade-in-section" vertical style={{ padding: "40px 50px" }}>
-                <Flex gap='large' wrap='wrap' justify='start'>
+            <Flex className="product_hot container text-center fade-in-section responsive-section" vertical>
+                <div className="section-title-wrap">
+                    <div className="decorative-header">
+                        <span className="header-leaf left">🌟</span>
+                        <Typography.Title level={2} className="premium-gradient-text home-section-title">Khuyến mãi cực hot</Typography.Title>
+                        <span className="header-leaf right">🌟</span>
+                    </div>
+                    <Typography.Text type="secondary" className="home-section-subtitle">Đừng bỏ lỡ những ưu đãi hấp dẫn dành riêng cho bạn</Typography.Text>
+                </div>
+                <Flex gap='large' wrap='wrap' justify='start' className="product-grid">
+
                     {querySale.isLoading ? (
                         [...Array(4)].map((_, index) => (
-                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
+                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} className="product-skeleton" />
                         ))
                     ) : productHot.length === 0 ? (
                         <Empty description={"Không có sản phẩm nào"} />
@@ -128,36 +141,23 @@ function Home() {
                     )}
                 </Flex>
                 {productHot.length > 4 && (
-                    <Flex justify="center" style={{ marginTop: "40px" }}>
-                        <Button
-                            type="primary"
-                            size="large"
-                            className="premium-button"
-                            onClick={() => navigate('/client/sale')}
-                            style={{
-                                height: "50px",
-                                padding: "0 40px",
-                                borderRadius: "25px",
-                                fontSize: "16px",
-                                fontWeight: "600",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "8px",
-                                textAlign: 'center'
-                            }}
-                        >
-                            XEM TẤT CẢ KHUYẾN MÃI
-                        </Button>
+                    <Flex justify="center" className="view-all-container" style={{ marginTop: "40px" }}>
+                        <Link to="/client/sale" className="premium-button-outline">
+                            Xem tất cả khuyến mãi <span>→</span>
+                        </Link>
                     </Flex>
                 )}
             </Flex>
-            <Flex className="product_list container fade-in-section" vertical style={{ padding: "40px 50px", marginBottom: "60px", backgroundColor: "#fafafb", borderRadius: "24px" }}>
-                <div style={{ textAlign: "center", marginBottom: "40px" }}>
-                    <Typography.Title level={2} className="premium-gradient-text" style={{ textTransform: "uppercase", margin: "0 auto", display: "block", fontSize: "36px", fontWeight: "800", letterSpacing: "-0.5px" }}>Sản phẩm mới</Typography.Title>
-                    <Typography.Text type="secondary" style={{ fontSize: "16px" }}>Khám phá những sản phẩm mới nhất từ cửa hàng</Typography.Text>
+            <Flex className="product_list container fade-in-section responsive-section" vertical style={{ marginBottom: "60px", backgroundColor: "#fafafb", borderRadius: "24px" }}>
+                <div className="section-title-wrap">
+                    <div className="decorative-header">
+                        <span className="header-leaf left">🌱</span>
+                        <Typography.Title level={2} className="premium-gradient-text home-section-title">Sản phẩm mới</Typography.Title>
+                        <span className="header-leaf right">🌱</span>
+                    </div>
+                    <Typography.Text type="secondary" className="home-section-subtitle">Khám phá những sản phẩm mới nhất từ cửa hàng</Typography.Text>
                 </div>
-                <Flex className="products" gap='large' wrap='wrap' justify='start'>
+                <Flex className="products product-grid" gap='large' wrap='wrap' justify='start'>
                     {data ? (
                         productNew.length === 0 ? (
                             <Empty description={"Không có sản phẩm nào"} />
@@ -168,33 +168,16 @@ function Home() {
                         )
                     ) : (
                         [...Array(4)].map((_, index) => (
-                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} style={{ width: 250 }} />
+                            <Skeleton key={index} active avatar={{ shape: 'square', size: 200 }} paragraph={{ rows: 2 }} className="product-skeleton" />
                         ))
                     )}
                 </Flex>
                 {productNew.length > 4 && (
-                    <Flex justify="center" style={{ marginTop: "40px" }}>
-                        <Button
-                            type="primary"
-                            size="large"
-                            className="premium-button"
-                            onClick={() => navigate('/client/shop')}
-                            style={{
-                                height: "50px",
-                                padding: "0 40px",
-                                borderRadius: "25px",
-                                fontSize: "16px",
-                                fontWeight: "600",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "8px",
-                                textAlign: 'center'
-                            }}
-                        >
-                            XEM TẤT CẢ SẢN PHẨM
-                        </Button>
-                    </Flex>
+                    <div className="view-all-container text-center" style={{ marginTop: "40px" }}>
+                        <Link to="/client/shop" className="premium-button-outline">
+                            Xem tất cả sản phẩm mới <span>→</span>
+                        </Link>
+                    </div>
                 )}
             </Flex>
         </Flex>
