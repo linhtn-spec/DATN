@@ -1,3 +1,4 @@
+import ProductItem from "../layout/product_grid";
 import { CloseOutlined, FilterOutlined, ShoppingOutlined, SortAscendingOutlined } from "@ant-design/icons";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Button, Checkbox, Col, Drawer, Empty, Flex, Pagination, Radio, Rate, Row, Select, Skeleton, Space, Tag, Typography } from "antd";
@@ -297,55 +298,8 @@ function Shop() {
 
                                     <Row gutter={[16, 24]} className="product-grid" style={{ opacity: productShop.isFetching ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
                                         {products.map(item => (
-                                            <Col xs={24} sm={12} md={8} key={item?.id}>
-                                                <div className="shop_item">
-                                                    <div className="product-image-wrapper" onClick={() => navigate(`/client/product/${item?.id}`)}>
-                                                        <img src={item?.image} alt={item?.name} />
-                                                        {Number(item?.pricePromotion) > 0 && (
-                                                            <div className="sale-badge">-{item?.pricePromotion}%</div>
-                                                        )}
-                                                    </div>
-                                                    <div className="product-info">
-                                                        <Typography.Title level={5} ellipsis={{ rows: 2 }} onClick={() => navigate(`/client/product/${item?.id}`)} className="product-name">
-                                                            {item?.name}
-                                                        </Typography.Title>
-                                                        <div className="product-price-row">
-                                                            {Number(item?.pricePromotion) > 0 ? (
-                                                                <Flex vertical>
-                                                                    <span className="promotion">
-                                                                        {(item.price * (1 - Number(item?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
-                                                                    </span>
-                                                                    <span className="price-original">
-                                                                        {item.price?.toLocaleString('vi-VN')}&nbsp;₫
-                                                                    </span>
-                                                                </Flex>
-                                                            ) : (
-                                                                <span className="promotion">
-                                                                    {item.price?.toLocaleString('vi-VN')}&nbsp;₫
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <div className="product-rating">
-                                                            <Rate allowHalf disabled defaultValue={item?.stars} className="small-rate" />
-                                                        </div>
-                                                        <div className="product-actions">
-                                                            {!item?.status ? (
-                                                                <Button block onClick={() => navigate(`/client/product/${item?.id}`)}>Xem chi tiết</Button>
-                                                            ) : (
-                                                                <Button
-                                                                    block
-                                                                    type="primary"
-                                                                    icon={<ShoppingOutlined />}
-                                                                    disabled={item?.quantity === 0}
-                                                                    onClick={() => addToCart(item)}
-                                                                    className="add-to-cart-btn"
-                                                                >
-                                                                    {item?.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
-                                                                </Button>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <Col xs={24} sm={12} md={8} lg={8} key={item?.id}>
+                                                <ProductItem products={item} />
                                             </Col>
                                         ))}
                                     </Row>

@@ -42,6 +42,32 @@ export const Countdown = (props) => {
         return () => clearInterval(interval)
     }, [props.expires])
 
+    if (props.minimal) {
+        return (
+            <div className="countdown-wrapper minimal-countdown">
+                <div className="countdown-item">
+                    <span className="countdown-value">{days}</span>
+                    <span className="countdown-label">Ngày</span>
+                </div>
+                <span className="countdown-separator">:</span>
+                <div className="countdown-item">
+                    <span className="countdown-value">{hours}</span>
+                    <span className="countdown-label">Giờ</span>
+                </div>
+                <span className="countdown-separator">:</span>
+                <div className="countdown-item">
+                    <span className="countdown-value">{minutes}</span>
+                    <span className="countdown-label">Phút</span>
+                </div>
+                <span className="countdown-separator">:</span>
+                <div className="countdown-item">
+                    <span className="countdown-value">{seconds}</span>
+                    <span className="countdown-label">Giây</span>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="flash-sale-container">
             <Flex className="flash-sale-header" align="center" gap={12}>

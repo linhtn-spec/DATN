@@ -162,3 +162,29 @@
         font-size: 18px;
     }
 }
+
+/* Minimal mode for home page integration */
+.minimal-countdown {
+    margin-left: 0;
+    gap: 12px;
+}
+
+.minimal-countdown .countdown-item {
+    width: 54px;
+    height: 54px;
+    box-shadow: 0 4px 10px rgba(238, 9, 121, 0.2);
+}
+
+.minimal-countdown .countdown-value {
+    font-size: 20px;
+}
+
+.minimal-countdown .countdown-label {
+    font-size: 8px;
+}
+
+.minimal-countdown .countdown-separator {
+    font-size: 20px;
+    color: #cbd5e1; /* Subtler separator in minimal mode */
+    animation: none; /* Less distracting */
+}

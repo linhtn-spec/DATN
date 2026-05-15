@@ -1,9 +1,9 @@
-import { CloseOutlined, DeleteOutlined, HeartFilled, HeartOutlined, ShoppingOutlined } from "@ant-design/icons";
+import { CloseOutlined, DeleteOutlined, HeartFilled, HeartOutlined, ShoppingOutlined, StarFilled } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
-import { Badge, Button, Flex, Typography } from "antd";
+import { Badge, Button, Flex, Rate, Typography } from "antd";
 import clsx from "clsx";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { queryClient } from "../../../main";
 import { addFavourite, deleteFavourite } from "../../../services/favourite_service";
 import { ACTION_CART, CartContext } from "../../../store/cart";
@@ -67,58 +67,94 @@ function ProductGrid(props) {
     }
 
     return (
-        <Flex className='item' key={product.id} vertical >
-            {type === 'wishlist' &&
-                <Button danger className="delete_favourite" icon={<DeleteOutlined />} onClick={() => handleDelete(product.id)} />}
-            {!type && (
+        <div className='shop_item' key={product.id}>
+            {type === 'wishlist' && (
                 <Button 
-                    className={clsx("favourite", { "is-favourite": isFavourite })} 
-                    onClick={() => addToFavourite()} 
-                    icon={isFavourite ? <HeartFilled /> : <HeartOutlined />} 
+                    danger 
+                    className="delete_favourite" 
+                    icon={<DeleteOutlined />} 
+                    onClick={() => handleDelete(product.id)} 
                 />
             )}
-            <Link to={`/client/product/${product.id}`} className="image-wrapper">
-                {!type && product.pricePromotion !== 0 ? (
-                    <Badge.Ribbon text={`-${product.pricePromotion}%`} color="red" placement="start">
-                        <img src={product.image} loading="lazy" alt={product.name} />
-                    </Badge.Ribbon>
-                ) : (
-                    <img src={product.image} loading="lazy" alt={product.name} />
+            {!type && (
+                <button 
+                    className={clsx("favourite-btn", { "is-favourite": isFavourite })} 
+                    onClick={(e) => {
+                        e.preventDefault();
+                        addToFavourite();
+                    }}
+                >
+                    {isFavourite ? <HeartFilled /> : <HeartOutlined />}
+                </button>
+            )}
+
+            <Link to={`/client/product/${product.id}`} className="product-image-wrapper">
+                <img src={product.image} loading="lazy" alt={product.name} />
+                {!type && Number(product.pricePromotion) > 0 && (
+                    <div className="sale-badge">-{product.pricePromotion}%</div>
                 )}
             </Link>
-            <Flex className="pt-4" vertical>
-                {(type !== 'wishlist') &&
-                    (<>
-                        <Typography.Title level={5} className="country">{product.origin}</Typography.Title>
-                    </>)}
-                <Typography.Title level={4} className="title">{product.name}</Typography.Title >
-                <Typography.Text className="price_promo">
+
+            <div className="product-info">
+                <div className="product-meta">
+                    <span className="product-origin">{product.origin}</span>
+                </div>
+                
+                <Typography.Title level={4} className="product-name">
+                    <Link to={`/client/product/${product.id}`}>{product.name}</Link>
+                </Typography.Title>
+
+                <div className="product-pricing">
                     {Number(product?.pricePromotion) > 0 ? (
                         <>
-                            <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
+                            <span className="price-current">
                                 {(product.price * (1 - Number(product?.pricePromotion) / 100)).toLocaleString('vi-VN')}&nbsp;₫
-                            </Typography.Text>
-                            <Typography.Text className="price" style={{ whiteSpace: 'nowrap' }}>
+                            </span>
+                            <span className="price-old">
                                 {product.price?.toLocaleString('vi-VN')}&nbsp;₫
-                            </Typography.Text>
+                            </span>
                         </>
                     ) : (
-                        <Typography.Text className="promotion" style={{ color: '#ff2c26', whiteSpace: 'nowrap' }}>
+                        <span className="price-current">
                             {product.price?.toLocaleString('vi-VN')}&nbsp;₫
-                        </Typography.Text>
+                        </span>
                     )}
-                </Typography.Text>
-            </Flex>
-            {(type !== 'wishlist') ?
-                ((!product?.status || (typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0) ?
-                    <Button className="buy" onClick={() => navigate(`/client/product/${product?.id}`)}>Xem chi tiết</Button> :
-                    <Button icon={<ShoppingOutlined />} className="buy" onClick={addToCart}>Thêm vào giỏ</Button>
-                ) : (
-                    <Button icon={<ShoppingOutlined />} className="buy_wishlist" disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} onClick={addToCart}>Thêm vào giỏ</Button>
-                )
-            }
+                </div>
 
-        </Flex >
+                <div className="product-rating">
+                    <Rate allowHalf disabled defaultValue={product?.stars || 5} className="small-rate" />
+                </div>
+
+                <div className="product-actions">
+                    {(type !== 'wishlist') ? (
+                        (!product?.status || (typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0) ? (
+                            <Button block onClick={() => navigate(`/client/product/${product?.id}`)}>Xem chi tiết</Button>
+                        ) : (
+                            <Button 
+                                type="primary"
+                                block
+                                icon={<ShoppingOutlined />} 
+                                className="add-to-cart-btn" 
+                                onClick={addToCart}
+                            >
+                                Thêm vào giỏ
+                            </Button>
+                        )
+                    ) : (
+                        <Button 
+                            type="primary"
+                            block
+                            icon={<ShoppingOutlined />} 
+                            className="add-to-cart-btn" 
+                            disabled={(typeof product?.quantity === 'object' ? product?.quantity?.inTrade : product?.quantity) === 0} 
+                            onClick={addToCart}
+                        >
+                            Thêm vào giỏ
+                        </Button>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }
 export default ProductGrid;
