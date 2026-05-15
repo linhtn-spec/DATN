@@ -1,70 +1,116 @@
 .overview {
     width: 100%;
-    background-color: #f0f2f5;
-    border-radius: 12px;
-    padding: 24px;
+    background: transparent; /* Changed from gray to transparent to fit admin layout */
+    padding: 0;
 }
 
-.overview .card {
-    width: 240px;
-    height: 90px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    border: 1px solid #f0f0f0;
-    gap: 30px;
+/* Glass Stat Cards */
+.glass-stat-card {
+    height: 110px;
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+    display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
+    gap: 20px;
     transition: all 0.3s ease;
 }
 
-.overview .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+.glass-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
-.overview .card .card_item {
+/* Stat Icons */
+.glass-stat-card .card_item {
     width: 60px;
     height: 60px;
-    border-radius: 12px;
+    border-radius: 16px;
+    display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
 }
 
-.overview .card .card_item.red {
-    background-color: rgb(221, 64, 64);
-}
-
-.overview .card .card_item.blue {
-    background-color: rgb(64, 140, 221);
-}
-
-.overview .card .card_item.green {
-    background-color: rgb(64, 221, 109);
-}
-
-.overview .card .card_item.yellow {
-    background-color: rgb(221, 221, 64);
-}
-
-.overview .card .card_item.red span,
-.overview .card .card_item.yellow span,
-.overview .card .card_item.blue span,
-.overview .card .card_item.green span {
+.glass-stat-card .card_item.red {
+    background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+    box-shadow: 0 4px 15px rgba(255, 77, 79, 0.3);
     color: white;
-    font-size: 25px;
 }
 
-.overview .card .ant-typography {
-    font-weight: 700;
+.glass-stat-card .card_item.blue {
+    background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+    box-shadow: 0 4px 15px rgba(24, 144, 255, 0.3);
+    color: white;
 }
 
-.overview .card button {
+.glass-stat-card .card_item.green {
+    background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+    box-shadow: 0 4px 15px rgba(82, 196, 26, 0.3);
+    color: white;
+}
+
+.glass-stat-card .card_item.yellow {
+    background: linear-gradient(135deg, #faad14 0%, #d48806 100%);
+    box-shadow: 0 4px 15px rgba(250, 173, 20, 0.3);
+    color: white;
+}
+
+/* Stat Text */
+.stat-number {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    color: #1f2937;
+}
+
+.glass-stat-card .ant-card-meta-title {
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px !important;
+}
+
+.glass-stat-card .ant-btn-link {
     padding-left: 0;
+    font-size: 13px;
+    height: auto;
+    color: #1890ff;
 }
 
-.overview .ant-card {
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    border: 1px solid #f0f0f0;
+/* Glass Chart Cards */
+.glass-chart-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden;
+    height: 100%;
+}
+
+.glass-chart-card .ant-card-head {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.glass-chart-card .ant-card-head-title {
+    font-weight: 700;
+    color: #374151;
+}
+
+.overview .category-preview-card {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.overview .category-preview-card .ant-card-cover img {
+    height: 200px;
+    object-fit: cover;
 }

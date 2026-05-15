@@ -1,6 +1,6 @@
 import { LoginOutlined, ProductOutlined, ShoppingCartOutlined, TagOutlined, UsergroupDeleteOutlined } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
-import { Button, Card, Flex, Image, Typography } from 'antd';
+import { Button, Card, Col, Flex, Image, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Bar, BarChart, CartesianGrid, ComposedChart, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Sector, Tooltip, XAxis, YAxis } from 'recharts';
@@ -9,8 +9,9 @@ import { detailCategory } from '../../../services/category_service';
 import { count_order, count_product_category, count_statitics, order_per_day, order_per_month, statiticsPerday, unsold } from '../../../services/statitics_service';
 import { getLabelByValue } from '../../../utils/getLabelByValue';
 import { transformData } from '../../../utils/megreArray';
-import randomHexColorCode from '../../../utils/randomColor';
 import './OverviewAdmin.css';
+
+const CHART_COLORS = ['#1890ff', '#52c41a', '#faad14', '#f5222d', '#722ed1', '#13c2c2', '#eb2f96', '#fa8c16', '#a0d911'];
 
 const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -240,11 +241,11 @@ export const Overview = () => {
         if (!queryProductCategory?.isSuccess) return
         const rawData = queryProductCategory?.data?.data?.countProductInEachCategory
         setProductCategory(
-            rawData.map(item => ({
+            rawData.map((item, index) => ({
                 categoryId: item?.categoryIds[0],
                 name: item?.categoryName,
                 value: item?.totalCount,
-                fill: randomHexColorCode()
+                fill: CHART_COLORS[index % CHART_COLORS.length]
             }))
         )
         return () => {
@@ -257,28 +258,28 @@ export const Overview = () => {
         if (!queryOrder?.isSuccess) return
         const rawData = queryOrder?.data?.data
         setOrderByShippingStatus(
-            rawData?.countOrderByShippingStatus.map(item => ({
+            rawData?.countOrderByShippingStatus.map((item, index) => ({
                 name: getLabelByValue(item?._id, shippingStatusOptions),
                 value: item?.totalCount,
-                fill: randomHexColorCode()
+                fill: CHART_COLORS[index % CHART_COLORS.length]
 
             }))
         )
 
         setOrderByPaymentStatus(
-            rawData?.countOrderByPaymentStatus.map(item => ({
+            rawData?.countOrderByPaymentStatus.map((item, index) => ({
                 name: getLabelByValue(item?._id, paymentStatusOptions),
                 value: item?.totalCount,
-                fill: randomHexColorCode()
+                fill: CHART_COLORS[(index + 2) % CHART_COLORS.length]
 
             }))
         )
 
         setOrderByOrderStatus(
-            rawData?.countOrderByOrderStatus.map(item => ({
+            rawData?.countOrderByOrderStatus.map((item, index) => ({
                 name: getLabelByValue(item?._id, orderStatusOptions),
                 value: item?.totalCount,
-                fill: randomHexColorCode()
+                fill: CHART_COLORS[(index + 4) % CHART_COLORS.length]
 
             }))
         )
@@ -293,210 +294,222 @@ export const Overview = () => {
     }, [])
 
     return (
-        <Flex vertical className='overview' gap={"20px"}>
-            <Flex justify='space-between'>
-                <Flex
+        <Flex vertical className='overview' gap="24px">
+            <Row gutter={[24, 24]}>
+                <Col xs={24} sm={12} lg={6}>
+                    <div className='glass-stat-card card'>
+                        <div className='card_item green'>
+                            <ProductOutlined />
+                        </div>
+                        <Card.Meta title="Tổng sản phẩm" description={
+                            <Flex vertical gap={4}>
+                                <Typography.Text className="stat-number">{products}</Typography.Text>
+                                <Button type='link' onClick={() => navigate('/admin/product')} icon={<LoginOutlined />}>Xem chi tiết</Button>
+                            </Flex>
+                        } />
+                    </div>
+                </Col>
+                <Col xs={24} sm={12} lg={6}>
+                    <div className='glass-stat-card card'>
+                        <div className='card_item blue'>
+                            <TagOutlined />
+                        </div>
+                        <Card.Meta title="Tổng danh mục" description={
+                            <Flex vertical gap={4}>
+                                <Typography.Text className="stat-number">{categories}</Typography.Text>
+                                <Button type='link' onClick={() => navigate('/admin/category')} icon={<LoginOutlined />}>Xem chi tiết</Button>
+                            </Flex>
+                        } />
+                    </div>
+                </Col>
+                <Col xs={24} sm={12} lg={6}>
+                    <div className='glass-stat-card card'>
+                        <div className='card_item yellow'>
+                            <ShoppingCartOutlined />
+                        </div>
+                        <Card.Meta title="Tổng đơn hàng" description={
+                            <Flex vertical gap={4}>
+                                <Typography.Text className="stat-number">{orders}</Typography.Text>
+                                <Button type='link' onClick={() => navigate('/admin/orders')} icon={<LoginOutlined />}>Xem chi tiết</Button>
+                            </Flex>
+                        } />
+                    </div>
+                </Col>
+                <Col xs={24} sm={12} lg={6}>
+                    <div className='glass-stat-card card'>
+                        <div className='card_item red'>
+                            <UsergroupDeleteOutlined />
+                        </div>
+                        <Card.Meta title="Tổng khách hàng" description={
+                            <Flex vertical gap={4}>
+                                <Typography.Text className="stat-number">{customers}</Typography.Text>
+                                <Button type='link' onClick={() => navigate('/admin/customers')} icon={<LoginOutlined />}>Xem chi tiết</Button>
+                            </Flex>
+                        } />
+                    </div>
+                </Col>
+            </Row>
 
-                    className='card'
-                >
-                    <Flex className='card_item green'>
-                        <ProductOutlined />
-                    </Flex>
-                    <Card.Meta title="Tổng sản phẩm" description={
-                        <Flex vertical>
-                            <Typography.Text>{products}</Typography.Text>
-                            <Button type='link' onClick={() => navigate('/admin/product', { replace: true })} icon={<LoginOutlined />}>Xem chi tiết</Button>
-                        </Flex>
-                    } />
-                </Flex>
-                <Flex
-                    className='card'
-                >
-                    <Flex className='card_item blue'>
-                        <TagOutlined />
-                    </Flex>
-                    <Card.Meta title="Tổng danh mục" description={<Flex vertical>
-                        <Typography.Text>{categories}</Typography.Text>
-                        <Button type='link' onClick={() => navigate('/admin/category', { replace: true })} icon={<LoginOutlined />}>Xem chi tiết</Button>
-                    </Flex>} />
-                </Flex>
-                <Flex
-
-                    className='card'
-                >
-                    <Flex className='card_item yellow'>
-                        <ShoppingCartOutlined />
-                    </Flex>
-                    <Card.Meta title="Tổng đơn hàng" description={<Flex vertical>
-                        <Typography.Text>{orders}</Typography.Text>
-                        <Button type='link' icon={<LoginOutlined />}>Xem chi tiết</Button>
-                    </Flex>} />
-                </Flex>
-                <Flex
-
-                    className='card'
-                >
-                    <Flex className='card_item red'>
-                        <UsergroupDeleteOutlined />
-                    </Flex>
-                    <Card.Meta title="Tổng khách hàng" description={<Flex vertical>
-                        <Typography.Text>{customers}</Typography.Text>
-                        <Button type='link' icon={<LoginOutlined />}>Xem chi tiết</Button>
-                    </Flex>} />
-                </Flex>
-            </Flex>
-            <Card title="Phân phối sản phẩm theo danh mục" style={{ height: 700 }}>
-                <Flex>
-                    <PieChart width={550} height={300}>
-                        <Pie
-                            activeIndex={state.activeIndex}
-                            data={productCategory}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%" cy="50%"
-                            innerRadius={75}
-                            outerRadius={100} fill="#8884d8"
-                            activeShape={renderActiveShape}
-                            onMouseEnter={onPieEnter}
-                        />
-                    </PieChart>
-                    <Card hoverable
-                        style={{
-                            width: 300,
-                        }}
-                        cover={<Image src={info?.image} preview={false} onClick={() => navigate(`/admin/category/${currentCategoryId}`)} />}>
-                        <Card.Meta title={info?.name} description={info?.description} />
+            <Row gutter={[24, 24]}>
+                <Col xs={24} xl={12}>
+                    <Card title="Phân phối sản phẩm theo danh mục" className="glass-chart-card">
+                        <Row align="middle" gutter={[16, 16]}>
+                            <Col span={24} md={12}>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <PieChart>
+                                        <Pie
+                                            activeIndex={state.activeIndex}
+                                            data={productCategory}
+                                            dataKey="value"
+                                            nameKey="name"
+                                            cx="50%" cy="50%"
+                                            innerRadius={60}
+                                            outerRadius={85}
+                                            fill="#8884d8"
+                                            activeShape={renderActiveShape}
+                                            onMouseEnter={onPieEnter}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </Col>
+                            <Col span={24} md={12}>
+                                {currentCategoryId && (
+                                    <Card hoverable className="category-preview-card"
+                                        cover={<Image src={info?.image} preview={false} onClick={() => navigate(`/admin/category/${currentCategoryId}`)} />}
+                                    >
+                                        <Card.Meta title={info?.name} description={info?.description} />
+                                    </Card>
+                                )}
+                            </Col>
+                        </Row>
                     </Card>
-                </Flex>
-            </Card>
-            <Card title="Đơn hàng">
+                </Col>
 
-                <Flex justify='space-between'>
-                    <Flex vertical align='center'>
-                        <PieChart width={250} height={250}>
-                            <Tooltip />
-                            <Pie
-                                data={orderByShippingStatus}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%" cy="50%"
+                <Col xs={24} xl={12}>
+                    <Card title="Đơn hàng" className="glass-chart-card">
+                        <Row gutter={[16, 16]}>
+                            <Col xs={24} sm={8}>
+                                <Flex vertical align='center' gap={8}>
+                                    <ResponsiveContainer width="100%" height={250}>
+                                        <PieChart>
+                                            <Tooltip />
+                                            <Pie
+                                                data={orderByShippingStatus}
+                                                dataKey="value"
+                                                nameKey="name"
+                                                cx="50%" cy="50%"
+                                                outerRadius={70} fill="#8884d8" />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                    <Typography.Title level={5} style={{ margin: 0, textAlign: 'center', fontSize: '14px' }}>Theo giao hàng</Typography.Title>
+                                </Flex>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                                <Flex vertical align='center' gap={8}>
+                                    <ResponsiveContainer width="100%" height={250}>
+                                        <PieChart>
+                                            <Tooltip />
+                                            <Pie
+                                                data={orderByPaymentStatus}
+                                                dataKey="value"
+                                                nameKey="name"
+                                                cx="50%" cy="50%"
+                                                outerRadius={70} fill="#8884d8" />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                    <Typography.Title level={5} style={{ margin: 0, textAlign: 'center', fontSize: '14px' }}>Theo thanh toán</Typography.Title>
+                                </Flex>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                                <Flex vertical align='center' gap={8}>
+                                    <ResponsiveContainer width="100%" height={250}>
+                                        <PieChart>
+                                            <Tooltip />
+                                            <Pie
+                                                data={orderByOrderStatus}
+                                                dataKey="value"
+                                                nameKey="name"
+                                                cx="50%" cy="50%"
+                                                outerRadius={70} fill="#8884d8" />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                    <Typography.Title level={5} style={{ margin: 0, textAlign: 'center', fontSize: '14px' }}>Theo trạng thái đơn</Typography.Title>
+                                </Flex>
+                            </Col>
+                        </Row>
+                    </Card>
+                </Col>
+            </Row>
 
-                                outerRadius={100} fill="#8884d8" />
-                        </PieChart>
-                        <Typography.Title level={5}>Theo trạng thái giao hàng</Typography.Title>
-                    </Flex>
-                    <Flex vertical align='center'>
-                        <PieChart width={250} height={250}>
-                            <Tooltip />
-                            <Pie
-                                data={orderByPaymentStatus}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%" cy="50%"
+            <Row gutter={[24, 24]}>
+                <Col span={24}>
+                    <Card title="Số lượng sản phẩm chưa bán được" className="glass-chart-card">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={unsoldProduct} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                <Tooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
+                                <XAxis dataKey="name" tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <YAxis domain={[5, "dataMax + 5"]} tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <Bar dataKey="quantity" name="Số lượng" fill="#1890ff" radius={[4, 4, 0, 0]} />
+                                <Legend />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+            </Row>
+            <Row gutter={[24, 24]}>
+                <Col xs={24} lg={12}>
+                    <Card title="Đơn hàng trong tháng" className="glass-chart-card inMonth">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <ComposedChart data={perDay} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                                <XAxis dataKey="date" tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
+                                <CartesianGrid stroke="#f5f5f5" vertical={false} />
+                                <Bar dataKey="revenue" name="Doanh thu" barSize={12} fill="#413ea0" yAxisId="left" radius={[4, 4, 0, 0]} />
+                                <Line type="monotone" dataKey="revenue" name="Doanh thu" stroke="#ff7300" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} yAxisId="left" />
+                                <YAxis orientation="left" yAxisId="left" tickLine={false} axisLine={false} tick={{ fill: '#6B7280' }} domain={[5, "dataMax + 5"]} tickCount={5} width={80} />
+                            </ComposedChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
 
-                                outerRadius={100} fill="#8884d8" />
-                        </PieChart>
-                        <Typography.Title level={5}>Theo trạng thái thanh toán</Typography.Title>
-                    </Flex>
-                    <Flex vertical align='center'>
+                <Col xs={24} lg={12}>
+                    <Card title="Đơn hàng trong năm" className="glass-chart-card">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <ComposedChart data={perMonth} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                                <XAxis dataKey="month" tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <YAxis orientation="right" yAxisId="right" tickLine={false} axisLine={false} tick={{ fill: '#6B7280' }} domain={[5, "dataMax +5000"]} tickCount={5} width={80} />
+                                <Tooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} />
+                                <Legend />
+                                <CartesianGrid stroke="#f5f5f5" vertical={false} />
+                                <Bar dataKey="Orders" name="Số đơn hàng" barSize={12} fill="#13c2c2" yAxisId="left" radius={[4, 4, 0, 0]} />
+                                <Line type="monotone" dataKey="Revenue" name="Doanh thu" stroke="#faad14" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} yAxisId="right" />
+                                <YAxis orientation="left" yAxisId="left" tickLine={false} axisLine={false} tick={{ fill: '#6B7280' }} domain={[5, "dataMax + 5"]} tickCount={5} width={40} />
+                            </ComposedChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+            </Row>
 
-                        <PieChart width={250} height={250}>
-                            <Tooltip />
-                            <Pie
-                                data={orderByOrderStatus}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%" cy="50%"
-
-                                outerRadius={100} fill="#8884d8" />
-                        </PieChart>
-                        <Typography.Title level={5}>Theo trạng thái đơn hàng</Typography.Title>
-                    </Flex>
-                </Flex>
-            </Card>
-            <Card title="Số lượng sản phẩm chưa bán được">
-                <BarChart width={950} height={250} data={unsoldProduct}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <Tooltip />
-                    <XAxis dataKey="name" />
-                    <YAxis domain={[5, "dataMax + 5"]} />
-                    <Bar dataKey="quantity" name="Số lượng" fill="#337fd6" />
-                    <Legend />
-                </BarChart>
-            </Card>
-            <Card title="Đơn hàng trong tháng" className='inMonth'>
-                <ResponsiveContainer width={'99%'} height={300}>
-                    <ComposedChart width={730} height={250} data={perDay}>
-                        <XAxis dataKey="date" />
-                        <Tooltip content={<CustomTooltip />} />
-                        <CartesianGrid stroke="#f5f5f5" />
-                        <Bar dataKey="revenue" name="Doanh thu" barSize={20} fill="#413ea0" yAxisId="left"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="revenue"
-                            name="Doanh thu"
-                            stroke="#ff7300"
-                            yAxisId="left"
-                        />
-                        <YAxis
-                            orientation="left"
-                            yAxisId="left"
-                            tickLine={false}
-                            domain={[5, "dataMax + 5"]}
-                            tickCount={5}
-                        />
-                    </ComposedChart>
-                </ResponsiveContainer>
-            </Card>
-            <Card title="Đơn hàng trong năm">
-                <ResponsiveContainer width={'99%'} height={300}>
-                    <ComposedChart width={730} height={250} data={perMonth}>
-                        <XAxis dataKey="month" />
-                        <YAxis
-                            orientation="right"
-                            yAxisId="right"
-                            tickLine={false}
-                            domain={[5, "dataMax +5000"]}
-                            tickCount={5}
-                        />
-
-                        <Tooltip />
-                        <Legend />
-                        <CartesianGrid stroke="#f5f5f5" />
-                        <Bar dataKey="Orders" name="Số đơn hàng" barSize={20} fill="#5fcfe3" yAxisId="left"
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="Revenue"
-                            name="Doanh thu"
-                            stroke="#ff7300"
-                            yAxisId="right"
-                        />
-                        <YAxis
-                            orientation="left"
-                            yAxisId="left"
-                            tickLine={false}
-                            domain={[5, "dataMax + 5"]}
-                            tickCount={5}
-                        />
-                    </ComposedChart>
-                </ResponsiveContainer>
-            </Card>
-            <Card title="Thống kê thêm mới mỗi ngày">
-                <LineChart width={950} height={250} data={transformData(statsPerday)}
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="Date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="Category" name="Danh mục" stroke="#8884d8" />
-                    <Line type="monotone" dataKey="Product" name="Sản phẩm" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="Order" name="Đơn hàng" stroke="#d6333c" />
-                    <Line type="monotone" dataKey="Customer" name="Khách hàng" stroke="#d6d333" />
-                </LineChart>
-            </Card>
+            <Row gutter={[24, 24]}>
+                <Col span={24}>
+                    <Card title="Thống kê thêm mới mỗi ngày" className="glass-chart-card">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <LineChart data={transformData(statsPerday)} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                <XAxis dataKey="Date" tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#6B7280' }} axisLine={false} tickLine={false} />
+                                <Tooltip />
+                                <Legend />
+                                <Line type="monotone" dataKey="Category" name="Danh mục" stroke="#722ed1" strokeWidth={3} dot={{ r: 2 }} activeDot={{ r: 5 }} />
+                                <Line type="monotone" dataKey="Product" name="Sản phẩm" stroke="#52c41a" strokeWidth={3} dot={{ r: 2 }} activeDot={{ r: 5 }} />
+                                <Line type="monotone" dataKey="Order" name="Đơn hàng" stroke="#f5222d" strokeWidth={3} dot={{ r: 2 }} activeDot={{ r: 5 }} />
+                                <Line type="monotone" dataKey="Customer" name="Khách hàng" stroke="#faad14" strokeWidth={3} dot={{ r: 2 }} activeDot={{ r: 5 }} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </Card>
+                </Col>
+            </Row>
         </Flex>
     )
 }
