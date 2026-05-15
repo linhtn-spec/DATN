@@ -1,5 +1,5 @@
-import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Flex, InputNumber, Table, Typography } from 'antd';
+import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Empty, Flex, InputNumber, Table, Typography } from 'antd';
 import { useContext, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
@@ -56,11 +56,14 @@ function Cart() {
         navigate("/client/checkout")
     }
 
+    const totalAmount = products.reduce((sum, item) => sum + item.price * item.quantityBuy, 0);
+
     const columns = [
         {
             title: 'STT',
             dataIndex: 'no',
             key: 'no',
+            width: 50,
         },
         {
             title: "Hình ảnh",
@@ -78,13 +81,13 @@ function Cart() {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
-            render: (text, row) => <Flex gap={10}>
-                <Typography.Text>{text}</Typography.Text>
+            render: (text, row) => <Flex gap={10} align="center">
                 {Array.isArray(row.image) ? (
-                    <img src={row.image.length > 0 ? row.image[0] : ''} width={60} height={60} />
+                    <img src={row.image.length > 0 ? row.image[0] : ''} width={60} height={60} style={{ objectFit: 'cover', borderRadius: 8 }} />
                 ) : (
-                    <img src={row.image} width={60} height={60} />
+                    <img src={row.image} width={60} height={60} style={{ objectFit: 'cover', borderRadius: 8 }} />
                 )}
+                <Typography.Text strong>{text}</Typography.Text>
             </Flex>
         },
         {
@@ -119,19 +122,16 @@ function Cart() {
             width: "200px",
             align: 'center',
             render: (text, row) =>
-                <Flex align='center' justify='center' vertical>
-                    <Flex align='center' justify='center'>
-                        <Button icon={<PlusOutlined />} onClick={() => plus(row.id)} />
-                        <InputNumber
-                            min={1}
-                            max={row.maxQuantity}
-                            value={text}
-                            onChange={(value) => onQuantityChange(row.id, value)}
-                            style={{ margin: "0 10px", width: "60px", textAlign: "center" }}
-                        />
-                        <Button icon={<MinusOutlined />} onClick={() => minus(row.id)} />
-                    </Flex>
-
+                <Flex align='center' justify='center'>
+                    <Button icon={<MinusOutlined />} onClick={() => minus(row.id)} />
+                    <InputNumber
+                        min={1}
+                        max={row.maxQuantity}
+                        value={text}
+                        onChange={(value) => onQuantityChange(row.id, value)}
+                        style={{ margin: "0 10px", width: "60px", textAlign: "center" }}
+                    />
+                    <Button icon={<PlusOutlined />} onClick={() => plus(row.id)} />
                 </Flex>
         },
         {
@@ -144,22 +144,22 @@ function Cart() {
             title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
-            width: "250px",
+            width: "180px",
             render: (text, row) => (
-                <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap', color: '#15803d' }}>
                     {(row.price * row.quantityBuy).toLocaleString('vi-VN')}&nbsp;₫
                 </Typography.Text>
             )
         },
         {
-            title: 'Hành động',
+            title: '',
             dataIndex: '',
             key: 'x',
-            render: (_text, row) => <Flex justify='center' className='delete'>
-                <Button icon={<DeleteOutlined />} onClick={() => deleteItem(row.id)} />
-            </Flex>,
+            width: 60,
+            render: (_text, row) => <Button danger icon={<DeleteOutlined />} onClick={() => deleteItem(row.id)} shape="circle" />,
         },
     ];
+
     useEffect(() => {
         window.scrollTo(0, 0)
         document.title = "Giỏ hàng"
@@ -167,38 +167,134 @@ function Cart() {
 
     return (
         <>
-            <Flex className='category_page' vertical>
+            <div className="cart-container">
                 <Breadcrumb
                     items={[
-                        {
-                            title: <NavLink to={'/client'}>TRANG CHỦ</NavLink>,
-                        },
-                        {
-                            title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink>,
-                        },
-                        {
-                            title: "GIỎ HÀNG",
-                        },
+                        { title: <NavLink to={'/client'}>TRANG CHỦ</NavLink> },
+                        { title: <NavLink to={'/client/shop'}>CỬA HÀNG</NavLink> },
+                        { title: "GIỎ HÀNG" },
                     ]}
                 />
-                <Table
-                    bordered
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={products}
-                    scroll={{ x: 'max-content' }}
-                    pagination={{ hideOnSinglePage: true, pageSize: 6, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
 
-                />
-                <Flex className='wrap_btn' justify='flex-end' style={{ marginTop: '20px' }}>
-                    <Button variant='warning' onClick={checkout} disabled={!state?.currentCart || state?.currentCart?.length < 1}>
-                        TIẾN HÀNH THANH TOÁN
-                    </Button>
-                </Flex>
-            </Flex>
+                {products.length === 0 ? (
+                    <div className="cart-empty">
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description={
+                                <span>Giỏ hàng của bạn đang trống</span>
+                            }
+                        >
+                            <Button type="primary" onClick={() => navigate('/client/shop')}>
+                                Tiếp tục mua sắm
+                            </Button>
+                        </Empty>
+                    </div>
+                ) : (
+                    <>
+                        {/* Desktop: Table */}
+                        <div className="cart-table-desktop">
+                            <Table
+                                bordered
+                                rowKey="id"
+                                columns={columns}
+                                dataSource={products}
+                                scroll={{ x: 'max-content' }}
+                                pagination={{ hideOnSinglePage: true, pageSize: 6, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
+                            />
+                        </div>
+
+                        {/* Mobile: Card List */}
+                        <div className="cart-list-mobile">
+                            {products.map((row) => (
+                                <div key={row.id} className="cart-card-mobile">
+                                    <Flex gap={12} align="flex-start" style={{ width: '100%', overflow: 'hidden' }}>
+                                        {/* Image */}
+                                        <div className="cart-card-img">
+                                            <img
+                                                src={Array.isArray(row.image) ? row.image[0] : row.image}
+                                                alt={row.name}
+                                            />
+                                        </div>
+
+                                        {/* Info */}
+                                        <Flex vertical flex={1} gap={6} style={{ minWidth: 0 }}>
+                                            <Typography.Text strong className="cart-card-name">{row.name}</Typography.Text>
+                                            <Typography.Text type="secondary" style={{ fontSize: 12 }}>{row.unit}</Typography.Text>
+
+                                            <Flex gap={8} align="center">
+                                                <Typography.Text className="cart-card-price promotion">
+                                                    {row.price.toLocaleString('vi-VN')}&nbsp;₫
+                                                </Typography.Text>
+                                                {row.pricePromotion > 0 && (
+                                                    <Typography.Text className="price" style={{ fontSize: 12 }}>
+                                                        {row.originalPrice.toLocaleString('vi-VN')}&nbsp;₫
+                                                    </Typography.Text>
+                                                )}
+                                            </Flex>
+
+                                            {/* Quantity Controls */}
+                                            <Flex align="center" gap={8} style={{ marginTop: 4, flexWrap: 'wrap' }}>
+                                                <div className="cart-qty-control" style={{ flexShrink: 0 }}>
+                                                    <Button size="small" icon={<MinusOutlined />} onClick={() => minus(row.id)} />
+                                                    <InputNumber
+                                                        min={1}
+                                                        max={row.maxQuantity}
+                                                        value={row.quantityBuy}
+                                                        onChange={(value) => onQuantityChange(row.id, value)}
+                                                        size="small"
+                                                        style={{ width: 50, textAlign: 'center', margin: '0 4px' }}
+                                                        controls={false}
+                                                    />
+                                                    <Button size="small" icon={<PlusOutlined />} onClick={() => plus(row.id)} />
+                                                </div>
+
+                                                <Typography.Text strong style={{ color: '#15803d', whiteSpace: 'nowrap', flexShrink: 0, marginLeft: 'auto' }}>
+                                                    {(row.price * row.quantityBuy).toLocaleString('vi-VN')}&nbsp;₫
+                                                </Typography.Text>
+                                            </Flex>
+                                        </Flex>
+
+                                        {/* Delete */}
+                                        <Button
+                                            danger
+                                            shape="circle"
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                            onClick={() => deleteItem(row.id)}
+                                        />
+                                    </Flex>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Total + Checkout – always visible */}
+                        <div className="cart-summary">
+                            <Flex justify="space-between" align="center" className="cart-total">
+                                <Typography.Text strong style={{ fontSize: 16 }}>Tổng cộng:</Typography.Text>
+                                <Typography.Text strong style={{ fontSize: 20, color: '#ff2c26' }}>
+                                    {totalAmount.toLocaleString('vi-VN')}&nbsp;₫
+                                </Typography.Text>
+                            </Flex>
+                            <Button
+                                type="primary"
+                                size="large"
+                                block
+                                icon={<ShoppingCartOutlined />}
+                                onClick={checkout}
+                                disabled={!state?.currentCart || state?.currentCart?.length < 1}
+                                className="cart-checkout-btn"
+                            >
+                                TIẾN HÀNH THANH TOÁN
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </div>
         </>
     );
 
 }
 
-export default Cart; 
+export default Cart;
+
+

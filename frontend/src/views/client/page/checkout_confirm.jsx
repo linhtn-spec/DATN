@@ -290,14 +290,12 @@ function CheckoutConfirm() {
             <Flex>
                 <Form
                     form={form}
-                    {...formItemLayout}
-                    style={{
-                        width: "100%"
-                    }}
+                    layout="vertical"
+                    style={{ width: "100%" }}
                     onFinish={onFinish}
                 >
-                    <Flex gap='large'>
-                        <Flex vertical style={{ width: "50%" }}>
+                    <Flex gap='large' wrap='wrap'>
+                        <Flex vertical style={{ flex: '1 1 300px', width: '100%' }}>
                             <Form.Item
                                 label="Họ"
                                 name="firstNameReceiver"
@@ -354,18 +352,36 @@ function CheckoutConfirm() {
                                 </Radio.Group>
                             </Form.Item>
                         </Flex>
-                        <Space direction="vertical" style={{ width: "50%" }}>
-                            <Table
-                                rowKey="id"
-                                columns={cartColumns}
-                                dataSource={products}
-                                pagination={{
-                                    hideOnSinglePage: true, pageSize: 3, total: cart?.state?.currentCart?.length, defaultCurrent: 1, showSizeChanger: false
-                                }}
-                            />
+                        <Space direction="vertical" style={{ flex: '1 1 300px', width: '100%' }}>
+                            {/* Desktop: table */}
+                            <div className="confirm-orders-desktop">
+                                <Table
+                                    rowKey="id"
+                                    columns={cartColumns}
+                                    dataSource={products}
+                                    scroll={{ x: 'max-content' }}
+                                    pagination={{
+                                        hideOnSinglePage: true, pageSize: 3, total: cart?.state?.currentCart?.length, defaultCurrent: 1, showSizeChanger: false
+                                    }}
+                                />
+                            </div>
+
+                            {/* Mobile: compact item list */}
+                            <div className="confirm-orders-mobile">
+                                {products?.map(item => (
+                                    <div key={item.id} className="confirm-order-item">
+                                        <span className="confirm-order-name">{item.name}</span>
+                                        <span className="confirm-order-qty">x{item.quantity} {item.unit}</span>
+                                        <span className="confirm-order-price">
+                                            {(item.price * item.quantity).toLocaleString('vi-VN')}&nbsp;₫
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
                             <Descriptions bordered items={items} className="sumary" />
                             <Flex gap="large" justify="center" className="wrap_btn">
-                                <Button type="primary" htmlType="button" onClick={navigateCheckout}>
+                                <Button type="default" htmlType="button" onClick={navigateCheckout}>
                                     Quay lại
                                 </Button>
                                 <Button type="primary" htmlType="submit" onClick={navigateEnd}>

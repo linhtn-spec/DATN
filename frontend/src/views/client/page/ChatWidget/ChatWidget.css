@@ -3,9 +3,9 @@
     position: absolute;
     bottom: 2rem;
     left: 2rem;
-    height: 32rem; /* Increased height */
-    width: 24rem;  /* Increased width */
-    background: rgba(255, 255, 255, 0.9);
+    height: 32rem;
+    width: 24rem;
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     z-index: 10000;
@@ -38,6 +38,7 @@
     align-items: center;
     position: relative;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 }
 
 .chatbox_header--text {
@@ -64,8 +65,10 @@
     background: #f8f9fb;
     width: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0;
     position: relative;
+    min-height: 0; /* important for flex children to shrink */
 }
 
 /* Custom Scrollbar for Body */
@@ -84,6 +87,7 @@
     background-color: white;
     border-top: 1px solid #f0f0f0;
     height: auto;
+    flex-shrink: 0;
 }
 
 .chatbox_footer--input {
@@ -107,4 +111,44 @@
 /* Adjust float button wrap */
 .ant-float-btn-group-wrap {
     margin: 0 !important;
+}
+
+/* =====================
+   Mobile Responsive Fix
+   ===================== */
+@media (max-width: 480px) {
+    .chatbox {
+        /* Switch from left-anchored to fixed, covering most of the screen */
+        position: fixed;
+        bottom: 80px; /* above the float button */
+        left: 12px;
+        right: 12px;
+        width: auto; /* fill available width between margins */
+        height: 70vh; /* tall enough to be usable, short enough to avoid keyboard */
+        max-height: calc(100dvh - 160px); /* dynamic viewport, respects keyboard */
+        border-radius: 16px;
+        animation: slideInUpMobile 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes slideInUpMobile {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .chatbox_header {
+        height: 4rem;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .chatbox_footer {
+        padding: 10px 12px;
+        /* Push above browser nav bar on mobile */
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
 }

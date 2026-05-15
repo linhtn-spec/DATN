@@ -258,11 +258,8 @@ function Checkout() {
                         paymentMethod: "cod",
                         shippingMethod: "free"
                     }}
-                    {...formItemLayout}
-                    labelWrap
-                    style={{
-                        width: "100%"
-                    }}
+                    layout="vertical"
+                    style={{ width: "100%" }}
                     onFinish={onFinish}
                 >
                     <Flex gap='large' wrap='wrap'>
@@ -420,30 +417,47 @@ function Checkout() {
                             </Form.Item>
                         </Flex>
                         <Space direction="vertical" style={{ flex: '1 1 300px', width: "100%" }}>
-                            <Table
-                                rowKey="id"
-                                columns={cartColumns}
-                                dataSource={products}
-                                scroll={{ x: 'max-content' }}
-                                pagination={{
-                                    hideOnSinglePage: true, pageSize: 3, total: cart?.state?.currentCart?.length, defaultCurrent: 1, showSizeChanger: false
-                                }}
-                            />
+                            {/* Desktop: table */}
+                            <div className="checkout-orders-desktop">
+                                <Table
+                                    rowKey="id"
+                                    columns={cartColumns}
+                                    dataSource={products}
+                                    scroll={{ x: 'max-content' }}
+                                    pagination={{
+                                        hideOnSinglePage: true, pageSize: 3, total: cart?.state?.currentCart?.length, defaultCurrent: 1, showSizeChanger: false
+                                    }}
+                                />
+                            </div>
+
+                            {/* Mobile: compact item list */}
+                            <div className="checkout-orders-mobile">
+                                {products?.map(item => (
+                                    <div key={item.id} className="checkout-order-item">
+                                        <span className="checkout-order-name">{item.name}</span>
+                                        <span className="checkout-order-qty">x{item.quantity} {item.unit}</span>
+                                        <span className="checkout-order-price">
+                                            {(item.price * item.quantity).toLocaleString('vi-VN')}&nbsp;₫
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+
                             <Descriptions bordered items={items} className="sumary" />
                             <Flex gap="large" justify="center" className="wrap_btn">
-                                <Button type="primary" htmlType="button" onClick={navigateCart}>
+                                <Button type="default" htmlType="button" onClick={navigateCart}>
                                     Quay lại giỏ hàng
                                 </Button>
-                                <Button type="primary" htmlType="submit" >
-                                    Thanh toán
+                                <Button type="primary" htmlType="submit">
+                                    Đặt hàng
                                 </Button>
                             </Flex>
                         </Space>
                     </Flex>
                 </Form>
-            </Flex >
+            </Flex>
 
-        </Flex >
+        </Flex>
     );
 }
 
