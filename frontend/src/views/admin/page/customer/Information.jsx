@@ -1,3 +1,4 @@
+import { InfoCircleOutlined, ShoppingCartOutlined, StarOutlined } from '@ant-design/icons';
 import { Flex } from 'antd';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -22,34 +23,31 @@ export const Infomation = () => {
     };
 
     return (
-        <Flex vertical>
-            <Flex justify='space-between' className='group_link'>
-                <Flex justify='center' align='center' className={clsx('link', activeLink === 'information' && 'active_link')} onClick={() => setActive('information')}>
-                    <NavLink
-                        to={''}
-                        className='information'
-                    >
-                        Information
-                    </NavLink>
-                </Flex>
-                <Flex justify='center' align='center' className={clsx('link', activeLink === 'orders' && 'active_link')} onClick={() => setActive('orders')} >
-                    <NavLink
-                        to={'orders'}
-                        className='variant'
-                    >
-                        Orders
-                    </NavLink>
-                </Flex>
-                <Flex justify='center' align='center' className={clsx('link', activeLink === 'ratings' && 'active_link')} onClick={() => setActive('ratings')} >
-                    <NavLink
-                        to={'ratings'}
-                        className='variant'
-                    >
-                        Đánh giá
-                    </NavLink>
-                </Flex>
+        <Flex vertical className="customer-info-wrapper">
+            <Flex justify='flex-start' gap={12} className='info-navigation-tabs'>
+                <NavLink
+                    to={''}
+                    end
+                    className={({ isActive }) => clsx('nav-tab', isActive && 'active')}
+                >
+                    <InfoCircleOutlined /> <span>Thông tin chi tiết</span>
+                </NavLink>
+                <NavLink
+                    to={'orders'}
+                    className={({ isActive }) => clsx('nav-tab', isActive && 'active')}
+                >
+                    <ShoppingCartOutlined /> <span>Lịch sử đơn hàng</span>
+                </NavLink>
+                <NavLink
+                    to={'ratings'}
+                    className={({ isActive }) => clsx('nav-tab', isActive && 'active')}
+                >
+                    <StarOutlined /> <span>Đánh giá & Phản hồi</span>
+                </NavLink>
             </Flex >
-            <Outlet />
+            <div className="tab-content-area">
+                <Outlet />
+            </div>
         </Flex >
     );
 };

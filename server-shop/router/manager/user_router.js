@@ -12,6 +12,8 @@ const router = Router();
 
 router.get('/users', paginate_user)
 router.get('/users/available/all', get_all_user_available)
+router.get('/users/:user_id', detailUser)
+router.put('/users/:user_id', auditLogger("UPDATE_USER", "User"), edit_validator, updateUser)
 router.delete('/users/delete/:user_id', auditLogger("DELETE_USER", "User"), deleteUser)
 router.post('/users', auditLogger("CREATE_USER", "User"), create_validator, create_user)
 

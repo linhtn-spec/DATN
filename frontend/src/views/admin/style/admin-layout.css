@@ -1,0 +1,27 @@
+.admin-main-layout {
+    transition: all 0.3s ease;
+    background: #f9fafb !important;
+}
+
+.admin-content-area {
+    margin-left: 260px; /* Match sidebar width */
+    padding: 24px;
+    min-height: calc(100vh - 64px);
+    transition: all 0.3s ease;
+}
+
+.content-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Adjust margin when sidebar is collapsed */
+.ant-layout-sider-collapsed + .admin-main-layout .admin-content-area {
+    margin-left: 80px;
+}
+
+/* Ant Layout override for sidebar collapsed state */
+.ant-layout:has(.ant-layout-sider-collapsed) .admin-content-area {
+    margin-left: 80px;
+}

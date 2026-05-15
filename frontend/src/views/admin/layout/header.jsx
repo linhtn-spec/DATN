@@ -2,7 +2,7 @@ import {
     UserOutlined
 } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
-import { Avatar, Flex, Layout, Popover } from "antd";
+import { Avatar, Flex, Layout, Popover, Space } from "antd";
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ROLE } from '../../../constants/roles';
@@ -50,17 +50,46 @@ function HeaderClient() {
         }
     }
     const content = (
-        <Flex vertical gap={5} style={{ textDecoration: 'none' }}>
-            {userRole >= ROLE.STAFF && < NavLink style={{ color: "#000" }} to={`/admin/users/${state?.currentUser?.user_id}`}>Thông tin cá nhân</NavLink>}
-            <NavLink style={{ color: "#000" }} onClick={handleLogout}>Đăng xuất</NavLink>
+        <Flex vertical gap={4} className="popover-content">
+            <div className="popover-header">
+                <div className="popover-user-name">{state?.currentUser?.firstName} {state?.currentUser?.lastName}</div>
+                <div className="popover-user-role">{userRole === ROLE.ADMIN ? 'Administrator' : 'Staff'}</div>
+            </div>
+            <hr className="popover-divider" />
+            {userRole >= ROLE.STAFF && (
+                <NavLink className="popover-item" to={`/admin/users/${state?.currentUser?.user_id || state?.currentUser?._id}`}>
+                    Thông tin cá nhân
+                </NavLink>
+            )}
+            <NavLink className="popover-item logout" onClick={handleLogout}>
+                Đăng xuất
+            </NavLink>
         </Flex >
     );
     return (
-        <Header className="header">
-            <Flex justify="flex-end" align="center" style={{ height: "100%" }}>
-                <Popover content={content} arrow={false}>
-                    <Avatar size='large' icon={<UserOutlined />} />
-                </Popover>
+        <Header className="admin-header-main">
+            <Flex justify="flex-end" align="center" className="header-content">
+                <Space size={24}>
+                    <Popover 
+                        content={content} 
+                        arrow={false} 
+                        trigger="click"
+                        placement="bottomRight"
+                        overlayClassName="user-popover"
+                    >
+                        <Flex align="center" gap={12} className="user-profile-trigger">
+                            <div className="user-info-text">
+                                <span className="user-name">{state?.currentUser?.username}</span>
+                            </div>
+                            <Avatar 
+                                size={40} 
+                                icon={<UserOutlined />} 
+                                src={state?.currentUser?.image}
+                                className="user-avatar"
+                            />
+                        </Flex>
+                    </Popover>
+                </Space>
             </Flex>
         </Header>
     );

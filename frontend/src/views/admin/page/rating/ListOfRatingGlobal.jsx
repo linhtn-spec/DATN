@@ -118,7 +118,7 @@ export const ListOfRatingGlobal = () => {
             width: 75,
             render: (_text, row) => (
                 <Flex justify='center' gap={5}>
-                    <Button icon={<EyeOutlined />} onClick={() => navigate(`${row.key}`)} />
+                    <Button icon={<EyeOutlined />} onClick={() => navigate(`/admin/ratings/${row.key}`)} />
                 </Flex>
             ),
         },

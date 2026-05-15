@@ -1,9 +1,131 @@
-.crud_user input::-webkit-outer-spin-button,
-.crud_user input::-webkit-inner-spin-button {
+.detail-customer-container {
+    padding: 24px;
+    background: #f0f2f5;
+    min-height: 100vh;
+}
+
+/* Glassmorphism Effect */
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Profile Card Styling */
+.profile-card {
+    height: 100%;
+}
+
+.avatar-upload-wrapper {
+    position: relative;
+    padding: 10px;
+}
+
+.avatar-upload .ant-upload-select {
+    width: 130px !important;
+    height: 130px !important;
+    border: 2px dashed #d9d9d9;
+    background: white;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.avatar-upload .ant-upload-select:hover {
+    border-color: #1890ff;
+}
+
+.avatar-preview {
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+.avatar-preview:hover .upload-overlay {
+    opacity: 1;
+}
+
+.avatar-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #8c8c8c;
+}
+
+/* Info Card Styling */
+.info-card {
+    padding: 12px;
+}
+
+.section-title {
+    margin-bottom: 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a3353 !important;
+}
+
+.section-title span {
+    color: #1890ff;
+}
+
+.text-muted {
+    color: rgba(0, 0, 0, 0.25);
+}
+
+/* Form Styles */
+.detail-customer-form .ant-form-item-label label {
+    font-weight: 600;
+    color: #595959;
+}
+
+.detail-customer-form .ant-input-large,
+.detail-customer-form .ant-select-large .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.glass-card {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Custom Number Input Fix */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
 }
 
-.crud_user input[type=number] {
+input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }

@@ -12,7 +12,7 @@ import Consignment from '../models/consignment_model.js';
 import Withdrawal from '../models/withdrawal_model.js';
 
 import { CONFIG, REVIEW_POOL } from './constants.js';
-import { randomInt, randomItem } from './utils.js';
+import { randomInt, randomItem, faker } from './utils.js';
 
 export const seedConfigs = async () => {
   console.log('⚙️  Seeding Configs...');
@@ -28,40 +28,40 @@ export const seedConfigs = async () => {
 export const seedBannersAndBlogs = async () => {
   console.log('📰 Seeding Banners & Blogs...');
 
-  // 5 banners với ảnh chất lượng cao từ Unsplash (stable, không bị block)
+  // 5 banners với ảnh chất lượng cao từ Unsplash (có crop chuẩn tỉ lệ banner web chuyên nghiệp)
   await Banner.insertMany([
     {
       title: 'Trái Cây Tươi Mỗi Ngày',
       description: 'Cam kết 100% trái cây tươi ngon, giao hàng nhanh trong 2-4 giờ. Đặt hàng ngay hôm nay!',
-      image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=1920&h=600&fit=crop&q=80',
       isActive: true,
       order: 1
     },
     {
       title: 'Mùa Hè - Hoa Quả Ngoại Nhập Siêu Ngon',
       description: 'Cherry Mỹ, Nho Nhật, Blueberry Peru — giảm đến 30% trong tháng này. Số lượng có hạn!',
-      image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=1920&h=600&fit=crop&q=80',
       isActive: true,
       order: 2
     },
     {
       title: 'Giỏ Quà Biếu Tết 2025',
       description: 'Gói quà sang trọng từ 650.000đ — Lựa chọn hoàn hảo cho đối tác, gia đình và người thân.',
-      image: 'https://images.unsplash.com/photo-1543158266-0066955047b1?w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1543158266-0066955047b1?w=1920&h=600&fit=crop&q=80',
       isActive: true,
       order: 3
     },
     {
       title: 'Organic & VietGAP — Sức Khỏe Từ Thiên Nhiên',
       description: 'Sản phẩm hữu cơ 100% không thuốc trừ sâu, được chứng nhận VietGAP. An toàn cho cả gia đình.',
-      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&h=600&fit=crop&q=80',
       isActive: true,
       order: 4
     },
     {
       title: 'Đặc Sản Miền Tây Chính Gốc',
       description: 'Xoài Cát Hòa Lộc, Sầu Riêng Ri6, Bưởi Da Xanh — thẳng từ vườn đến tay bạn.',
-      image: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=1920&h=600&fit=crop&q=80',
       isActive: true,
       order: 5
     }
@@ -139,7 +139,7 @@ export const seedRatings = async () => {
   for await (const order of cursor) {
     if (ratingCount >= CONFIG.REVIEWS) break;
     ratings.push({
-      stars:     Math.random() < 0.8 ? randomInt(4, 5) : randomInt(3, 4),
+      stars:     faker.datatype.boolean({ probability: 0.8 }) ? randomInt(4, 5) : randomInt(3, 4),
       userId:    randomItem(allCustomers)._id,
       productId: randomItem(allProducts)._id,
       content:   randomItem(REVIEW_POOL),

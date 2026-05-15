@@ -230,6 +230,18 @@ const adminRoutes = [
               },
             ],
           },
+          {
+            path: "ratings",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <ListOfRatingGlobal /> },
+              { path: ":rating_id", element: <DetailRating /> },
+            ],
+          },
+          {
+            path: "users/:user_id",
+            element: <CrudUser />,
+          },
         ]
       },
 
@@ -278,7 +290,6 @@ const adminRoutes = [
             children: [
               { index: true, element: <ListOfUser /> },
               { path: "create", element: <CrudUser /> },
-              { path: ":user_id", element: <CrudUser /> },
             ],
           },
           {

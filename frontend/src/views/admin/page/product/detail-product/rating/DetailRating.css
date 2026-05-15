@@ -1,18 +1,42 @@
-.crud_user input::-webkit-outer-spin-button,
-.crud_user input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.detail-rating-container {
+    padding: 24px;
+    background: #f0f2f5;
+    min-height: 100vh;
 }
 
-.crud_user input[type=number] {
-    -moz-appearance: textfield;
+.detail-rating-form .ant-form-item-label label {
+    font-weight: 600;
+    color: #595959;
 }
 
-.detail_rating form label {
-    font-weight: 600 !important;
-    font-size: 18px !important;
+.rating-content-box {
+    background: rgba(0, 0, 0, 0.02);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px dashed #d9d9d9;
+    min-height: 100px;
 }
 
-.detail_rating form .ant-typography {
-    font-size: 16px ;
+/* Reuse glass card styles from DetailCustomer or define here if global is not available */
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.section-title {
+    margin-bottom: 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a3353 !important;
+}
+
+.section-title span {
+    color: #1890ff;
 }

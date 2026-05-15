@@ -142,6 +142,11 @@ export const getNavbarItems = (userRole, getItem) => [
         ]
     ),
     userRole >= ROLE.STAFF && getItem(
+        <NavLink to="ratings">Quản lý đánh giá</NavLink>,
+        'ratings',
+        <StarOutlined />
+    ),
+    userRole >= ROLE.STAFF && getItem(
         <NavLink to="customer-support">Hỗ trợ khách hàng</NavLink>,
         'customer-support',
         <MessageOutlined />

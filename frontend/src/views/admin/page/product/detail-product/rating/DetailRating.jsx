@@ -1,5 +1,10 @@
 import {
-    PlusOutlined
+    StarOutlined,
+    ShopOutlined,
+    UserOutlined,
+    CalendarOutlined,
+    CommentOutlined,
+    MessageOutlined
 } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -10,7 +15,9 @@ import {
     Input,
     Rate,
     Switch,
-    Typography
+    Typography,
+    Row,
+    Col
 } from 'antd';
 import Card from "antd/es/card/Card";
 import { useEffect } from "react";
@@ -36,23 +43,15 @@ const formItemLayout = {
 export function DetailRating() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const productIdValue = Form.useWatch('productId', form)
-    const productNameValue = Form.useWatch('productName', form)
-    const imageValue = Form.useWatch('image', form)
-    const starsValue = Form.useWatch('stars', form)
-    const nameValue = Form.useWatch('name', form)
-    const createdAtValue = Form.useWatch('createdAt', form)
-    const contentValue = Form.useWatch('content', form)
-    const imagesValue = Form.useWatch('images', form)
-
     const { rating_id, product_id } = useParams()
-
-
     const { data, isSuccess } = useQuery({
         queryKey: ['detail_rating_admin', rating_id],
         queryFn: () => detailRating(rating_id),
         enabled: !!rating_id
     })
+
+    const rawData = isSuccess ? (data?.data?.data || data?.data) : null;
+    const isActiveValue = Form.useWatch('isActive', form)
 
     const { mutate } = useMutation({
         mutationFn: (data) => updateRating(data),
@@ -71,116 +70,133 @@ export function DetailRating() {
     })
 
     useEffect(() => {
-        if (!isSuccess) return
-        const rawData = data?.data?.data || data?.data;
-        console.log(rawData);
-        form.setFieldValue('productId', rawData?.productId?._id)
-        form.setFieldValue('stars', rawData?.stars)
-        form.setFieldValue('createdAt', rawData?.createdAt)
-        form.setFieldValue('name', rawData?.userId.firstName + " " + rawData?.userId.lastName)
-        form.setFieldValue('productName', rawData?.productId?.name)
-        form.setFieldValue('image', rawData?.productId?.images[0])
-        form.setFieldValue('isActive', rawData?.isActive)
-        form.setFieldValue('content', rawData?.content)
-        form.setFieldValue('images', rawData?.images || [])
-        form.setFieldValue('reply', rawData?.reply || '')
-    }, [isSuccess, data, form])
+        if (!isSuccess || !rawData) return
+        form.setFieldsValue({
+            name: (rawData?.userId?.firstName || '') + " " + (rawData?.userId?.lastName || ''),
+            stars: rawData?.stars,
+            createdAt: rawData?.createdAt,
+            isActive: rawData?.isActive,
+            reply: rawData?.reply || ''
+        })
+    }, [isSuccess, rawData, form]);
 
     return (
-        <Flex className="crud_user detail_rating container" vertical>
-            <AdminHeader title="Chi tiết đánh giá" icon={<PlusOutlined />} />
-            <Card
-                title={"Chi tiết đánh giá"}
-                bordered={false}
-                className="form"
+        <Flex className="detail-rating-container" vertical>
+            <AdminHeader title="Chi tiết đánh giá" icon={<StarOutlined />} />
+            
+            <Form 
+                form={form}
+                layout="vertical"
+                className="detail-rating-form"
             >
-                <Flex justify="center" >
-                    <Flex justify="center" >
-                        <Form {...formItemLayout} style={{ width: "100%" }}
-                            form={form}
-                        >
-                            <Flex vertical>
-                                <Flex gap={"80px"}>
+                <Row gutter={[24, 24]}>
+                    {/* Left Side: Interaction & Metadata */}
+                    <Col xs={24} lg={10}>
+                        <Card bordered={false} className="glass-card shadow-sm info-card">
+                            <Typography.Title level={5} className="section-title">
+                                <UserOutlined /> Thông tin khách hàng
+                            </Typography.Title>
+                            
+                            <Form.Item label="Khách hàng" name="name">
+                                <Input prefix={<UserOutlined />} readOnly variant="filled" />
+                            </Form.Item>
 
-                                    <Flex vertical>
-                                        <Form.Item label="Tên khách hàng"
-                                            hasFeedback
-                                            required
-                                            name="name"
-                                        >
-                                            <Typography.Text >{nameValue}</Typography.Text>
-                                        </Form.Item>
-                                        <Form.Item label="Số sao"
-                                            hasFeedback
-                                            required
-                                            name="stars"
-                                        >
-                                            <Rate disabled defaultValue={starsValue} />
-                                        </Form.Item>
-                                        <Form.Item label="Ngày tạo"
-                                            hasFeedback
-                                            required
-                                            name="createdAt"
-                                        >
-                                            <Typography.Text >{convertToDate(createdAtValue)}</Typography.Text>
-                                        </Form.Item>
-                                    </Flex>
-                                    <Flex vertical>
-                                        <Form.Item label="ID sản phẩm"
-                                            hasFeedback
-                                            required
-                                            name="productId"
-                                        >
-                                            <Typography.Text >{productIdValue}</Typography.Text>
-                                        </Form.Item>
-                                        <Form.Item label="Tên sản phẩm"
-                                            hasFeedback
-                                            required
-                                            name="productName"
-                                        >
-                                            <Typography.Text >{productNameValue}</Typography.Text>
-                                        </Form.Item>
-                                        <Form.Item label="Hình ảnh sản phẩm"
-                                            hasFeedback
-                                            required
-                                            name="image"
-                                        >
-                                            <Image src={imageValue} width="100px" height="100px" />
-                                        </Form.Item>
-                                    </Flex>
+                            <Form.Item label="Điểm đánh giá" name="stars">
+                                <Rate disabled />
+                            </Form.Item>
+
+                            <Form.Item label="Ngày đánh giá" name="createdAt">
+                                <Input prefix={<CalendarOutlined style={{color: '#1890ff'}} />} readOnly variant="filled" value={convertToDate(rawData?.createdAt)} />
+                            </Form.Item>
+
+                            <Typography.Title level={5} className="section-title" style={{ marginTop: 24 }}>
+                                <ShopOutlined /> Sản phẩm liên quan
+                            </Typography.Title>
+
+                            <Flex gap={16} align="center" style={{ background: 'rgba(0,0,0,0.02)', padding: 12, borderRadius: 12 }}>
+                                <Image src={rawData?.productId?.images?.[0]} width={80} height={80} style={{ borderRadius: 8, objectFit: 'cover' }} />
+                                <Flex vertical>
+                                    <Typography.Text strong>{rawData?.productId?.name}</Typography.Text>
+                                    <Typography.Text type="secondary" size="small">ID: {rawData?.productId?._id}</Typography.Text>
+                                    <Button type="link" size="small" style={{ padding: 0, textAlign: 'left' }} 
+                                        onClick={() => navigate(`/admin/product/${rawData?.productId?._id}`)}>
+                                        Xem chi tiết sản phẩm
+                                    </Button>
                                 </Flex>
-                                <Flex vertical gap={10} style={{ borderTop: '1px solid #f0f0f0', paddingTop: '20px', marginTop: '20px' }}>
-                                    <Form.Item label="Nội dung nhận xét" name="content">
-                                        <Typography.Paragraph>{contentValue || "Không có nội dung"}</Typography.Paragraph>
-                                    </Form.Item>
-                                    <Form.Item label="Hình ảnh khách hàng gửi" name="images">
-                                        <Flex gap={10} wrap="wrap">
-                                            {imagesValue?.length > 0 ? imagesValue.map((img, idx) => (
-                                                <Image key={idx} src={img} width={100} height={100} style={{ objectFit: 'cover', borderRadius: '4px' }} />
-                                            )) : <Typography.Text type="secondary">Không có hình ảnh</Typography.Text>}
-                                        </Flex>
-                                    </Form.Item>
-                                </Flex>
-                                <Flex vertical gap={10}>
-                                    <Form.Item name='isActive' label="Trạng thái" required>
-                                        <Switch checkedChildren='Hoạt động' unCheckedChildren="Ngưng hoạt động"
+                            </Flex>
+                        </Card>
+                    </Col>
+
+                    {/* Right Side: Content & Reply */}
+                    <Col xs={24} lg={14}>
+                        <Flex vertical gap={24}>
+                            <Card bordered={false} className="glass-card shadow-sm content-card">
+                                <Typography.Title level={5} className="section-title">
+                                    <CommentOutlined /> Nội dung đánh giá
+                                </Typography.Title>
+                                
+                                <div className="rating-content-box">
+                                    <Typography.Paragraph style={{ fontSize: 16 }}>
+                                        {rawData?.content || "Không có nội dung nhận xét."}
+                                    </Typography.Paragraph>
+                                </div>
+
+                                <div className="rating-images-section" style={{ marginTop: 20 }}>
+                                    <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 8 }}>Hình ảnh đính kèm:</Typography.Text>
+                                    <Flex gap={12} wrap="wrap">
+                                        {rawData?.images?.length > 0 ? rawData.images.map((img, idx) => (
+                                            <Image 
+                                                key={idx} 
+                                                src={img} 
+                                                width={100} 
+                                                height={100} 
+                                                style={{ objectFit: 'cover', borderRadius: '8px', border: '1px solid #f0f0f0' }} 
+                                            />
+                                        )) : <Typography.Text type="secondary" italic>Khách hàng không đính kèm hình ảnh</Typography.Text>}
+                                    </Flex>
+                                </div>
+                            </Card>
+
+                            <Card bordered={false} className="glass-card shadow-sm reply-card" style={{ borderLeft: '4px solid #1890ff' }}>
+                                <Typography.Title level={5} className="section-title" style={{ color: '#1890ff' }}>
+                                    <MessageOutlined /> Phản hồi của cửa hàng
+                                </Typography.Title>
+                                
+                                <Form.Item name="reply">
+                                    <Input.TextArea 
+                                        rows={6} 
+                                        placeholder="Nhập nội dung phản hồi chân thành đến khách hàng..." 
+                                        maxLength={1000}
+                                        showCount
+                                        style={{ borderRadius: 8 }}
+                                    />
+                                </Form.Item>
+
+                                <Flex gap={12} align="center">
+                                <Flex justify="space-between" align="center" className="status-item">
+                                    <Form.Item name="isActive" label="Hiển thị đánh giá" valuePropName="checked" style={{ marginBottom: 0 }}>
+                                        <Switch 
+                                            checkedChildren="Bật" 
+                                            unCheckedChildren="Tắt"
                                             onChange={(e) => mutate({ id: rating_id, isActive: e })}
                                         />
                                     </Form.Item>
-                                    <Form.Item label="Phản hồi của cửa hàng" name="reply">
-                                        <Input.TextArea rows={4} placeholder="Nhập nội dung phản hồi..." />
-                                    </Form.Item>
-                                    <Form.Item wrapperCol={{ offset: 6 }}>
-                                        <Button type="primary" onClick={() => mutate({ id: rating_id, reply: form.getFieldValue('reply') })}>
-                                            Lưu phản hồi
-                                        </Button>
-                                    </Form.Item>
                                 </Flex>
-                            </Flex>
-                        </Form>
-                    </Flex>
-                </Flex>
-            </Card>
-        </Flex >
+                                    <Button 
+                                        type="primary" 
+                                        icon={<MessageOutlined />}
+                                        size="large"
+                                        onClick={() => mutate({ id: rating_id, reply: form.getFieldValue('reply') })}
+                                        style={{ marginLeft: 'auto', borderRadius: 8 }}
+                                    >
+                                        Gửi phản hồi
+                                    </Button>
+                                </Flex>
+                            </Card>
+                        </Flex>
+                    </Col>
+                </Row>
+            </Form>
+        </Flex>
     );
 }

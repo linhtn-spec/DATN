@@ -1,9 +1,216 @@
+.crud_user {
+    padding: 24px;
+    background: transparent;
+}
+
+.crud_user .form-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Glass Card Style */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    height: 100%;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar Profile Card */
+.profile-sidebar-card {
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.avatar-upload-section {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+}
+
+.avatar-upload-section .ant-upload-list-item-container,
+.avatar-upload-section .ant-upload-select {
+    width: 160px !important;
+    height: 160px !important;
+}
+
+.avatar-upload-section .ant-upload-select {
+    background: #f8f9fa !important;
+    border: 2px dashed #d9d9d9 !important;
+    transition: all 0.3s ease;
+}
+
+.avatar-upload-section .ant-upload-select:hover {
+    border-color: #16a34a !important;
+    background: #f0fdf4 !important;
+}
+
+.profile-main-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-main-info h4 {
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+    font-weight: 700;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 4px 16px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: block;
+}
+
+.status-active .status-dot {
+    background: #52c41a;
+    box-shadow: 0 0 6px rgba(82, 196, 26, 0.6);
+}
+
+.status-locked .status-dot {
+    background: #ff4d4f;
+    box-shadow: 0 0 6px rgba(255, 77, 79, 0.6);
+}
+
+/* Form Content Card */
+.profile-form-card {
+    padding: 32px;
+}
+
+.crud_user .section-header {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.crud_user .section-header h5 {
+    margin: 0 !important;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.crud_user .section-header .anticon {
+    color: #16a34a;
+    font-size: 18px;
+}
+
+.crud_user .ant-form-item-label label {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.crud_user .ant-input,
+.crud_user .ant-input-password,
+.crud_user .ant-select-selector {
+    border-radius: 10px !important;
+    border-color: #e5e7eb !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    transition: all 0.2s ease;
+}
+
+.crud_user .ant-input:focus,
+.crud_user .ant-select-focused .ant-select-selector {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1) !important;
+    background: #fff !important;
+}
+
+.form-divider {
+    margin: 32px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Action Buttons */
+.button-group {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+}
+
+.btn-submit {
+    height: 48px;
+    min-width: 140px;
+    border-radius: 12px !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+}
+
+.btn-reset {
+    height: 48px;
+    min-width: 120px;
+    border-radius: 12px !important;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.crud_user .glass-card {
+    animation: slideInUp 0.5s ease-out forwards;
+}
+
+/* Spinners customization */
+.crud_user .ant-input-number-handler-wrap {
+    display: none;
+}
+
 .crud_user input::-webkit-outer-spin-button,
 .crud_user input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
 }
 
 .crud_user input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .crud_user .profile-sidebar-card {
+        margin-bottom: 24px;
+    }
 }

@@ -72,9 +72,12 @@ function Navbar() {
                 zIndex: 100,
             }}
         >
-            <Flex className="logo" justify="center">
-                <NavLink to="/admin">S-cart <span>admin</span></NavLink>
-            </Flex>
+            <div className="navbar-logo-container">
+                <NavLink to="/admin" className="logo-link">
+                    <span className="logo-main">S-cart</span>
+                    <span className="logo-sub">admin</span>
+                </NavLink>
+            </div>
             <Menu
                 mode="inline"
                 theme="light"

@@ -1,56 +1,100 @@
 .side_bar {
-    box-shadow: 0 14px 28px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22) !important;
-    z-index: 2;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    background: #fff !important;
+    z-index: 100;
 }
 
-.side_bar .logo {
-    font-size: 26px !important;
-    height: 10vh;
-    text-align: center;
-    line-height: 10vh;
-    background-color: rgb(199, 98, 108);
-    color: rgb(255, 255, 255);
+.navbar-logo-container {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #16a34a 0%, #059669 100%);
+    margin-bottom: 8px;
 }
 
-.side_bar .logo span {
-    font-weight: 300;
+.logo-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.ant-menu-it em-selected {
+.logo-main {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+}
+
+.logo-sub {
+    font-size: 12px;
     font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-aside:not(:is(.ant-layout-sider.ant-layout-sider-dark.side_bar.ant-layout-sider-collapsed)) {
-    min-width: 200px !important;
-    max-width: 200px !important;
-    width: 200px !important;
+.side_bar .ant-menu {
+    border-inline-end: none !important;
+    padding: 8px;
 }
 
-.side_bar .ant-menu-title-content a {
-    text-decoration: none;
+.side_bar .ant-menu-item {
+    height: 48px !important;
+    line-height: 48px !important;
+    border-radius: 10px !important;
+    margin: 4px 0 !important;
+    font-weight: 500;
+    color: #4b5563;
 }
 
-.side_bar .logo a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
+.side_bar .ant-menu-item-selected {
+    background-color: #f0fdf4 !important;
+    color: #16a34a !important;
+}
+
+.side_bar .ant-menu-item-selected .anticon {
+    color: #16a34a !important;
+}
+
+.side_bar .ant-menu-item:hover:not(.ant-menu-item-selected) {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
 }
 
 .side_bar .ant-layout-sider-children {
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
 }
 
-.side_bar .ant-layout-sider-children {
-    height: 120vh;
-    overflow: auto;
+.side_bar .ant-layout-sider-trigger {
+    background: #fff !important;
+    color: #4b5563 !important;
+    border-top: 1px solid #f3f4f6;
 }
 
-.side_bar .ant-layout-sider-children::-webkit-scrollbar,
-.side_bar .ant-layout-sider::-webkit-scrollbar {
-    display: none !important;
+/* Hide scrollbars but keep functionality */
+.side_bar .ant-layout-sider-children::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
 }
 
-.side_bar .ant-layout-sider-children,
-.side_bar .ant-layout-sider {
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
+aside:not(:is(.ant-layout-sider-collapsed)) {
+    min-width: 260px !important;
+    max-width: 260px !important;
+    width: 260px !important;
+}
+
+.ant-layout-sider-collapsed .logo-sub {
+    display: none;
+}
+
+.ant-layout-sider-collapsed .logo-main {
+    font-size: 18px;
 }

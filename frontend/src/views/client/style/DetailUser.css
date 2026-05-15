@@ -1,64 +1,176 @@
 .customer {
-    padding: 0 50px;
-}
-
-.customer .form_wrap {
-    width: 600px;
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
-}
-
-.customer .ant-upload-list {
-    justify-content: center;
-}
-
-.customer .ant-upload-list-item,
-.customer .ant-upload-select {
-    background-color: white !important;
-}
-
-.customer input[type=number] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-.customer input::-webkit-outer-spin-button,
-.customer input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    appearance: none;
-    margin: 0;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 100vh;
 }
 
 .customer .ant-breadcrumb {
-    margin: 60px 0 100px;
+    margin-bottom: 40px;
+    align-self: flex-start;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
-.customer .button_group {
-    margin: 10px 0 100px;
+.customer .form_wrap {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 }
 
-.customer .ant-upload-wrapper {
-    margin-bottom: 30px;
+/* Glass Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    overflow: hidden;
 }
 
-.customer h3 {
-    font-weight: 500;
-    font-size: 18px;
-    margin: 0 0 5px;
+/* Profile Sidebar Card */
+.profile-sidebar-card {
+    text-align: center;
+    padding: 32px 24px;
+    height: 100%;
 }
 
-.customer .button_group .ant-btn {
-    width: 200px;
-    height: 50px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
+.avatar-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+}
+
+.avatar-upload-wrapper .ant-upload-list-item-container {
+    width: 150px !important;
+    height: 150px !important;
+}
+
+.avatar-upload-wrapper .ant-upload-select {
+    width: 150px !important;
+    height: 150px !important;
+    background: #f8f9fa !important;
+    border: 2px dashed #d9d9d9 !important;
     transition: all 0.3s ease;
 }
-.customer .button_group .ant-btn:hover {
-    box-shadow: 0 4px 15px rgba(21, 128, 61, 0.2);
+
+.avatar-upload-wrapper .ant-upload-select:hover {
+    border-color: #16a34a !important;
+    background: #f0fdf4 !important;
+}
+
+.profile-name {
+    margin-top: 16px !important;
+    margin-bottom: 4px !important;
+}
+
+.profile-role-tag {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Form Content Card */
+.profile-content-card {
+    padding: 32px;
+}
+
+.section-divider {
+    margin: 32px 0 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.customer .ant-form-item-label label {
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.customer .ant-input, 
+.customer .ant-select-selector {
+    border-radius: 10px !important;
+    border-color: #e5e7eb !important;
+    padding: 8px 12px !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.customer .ant-input:focus, 
+.customer .ant-input-focused,
+.customer .ant-select-focused .ant-select-selector {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1) !important;
+    background: #fff !important;
+}
+
+/* Typography */
+.customer h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.customer h3 svg {
+    color: #16a34a;
+}
+
+/* Buttons */
+.customer .button_group {
+    margin-top: 40px;
+}
+
+.customer .ant-btn-primary.update {
+    min-width: 180px;
+    height: 48px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    background: #16a34a;
+    border: none;
+    box-shadow: 0 4px 14px 0 rgba(22, 163, 74, 0.39);
+    transition: all 0.3s ease;
+}
+
+.customer .ant-btn-primary.update:hover:not(:disabled) {
+    background: #15803d !important;
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(22, 163, 74, 0.23);
+}
+
+.customer .ant-btn-primary.update:active {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-sidebar-card, .profile-content-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .customer {
+        padding: 20px 15px;
+    }
+    .profile-sidebar-card {
+        margin-bottom: 24px;
+    }
 }
