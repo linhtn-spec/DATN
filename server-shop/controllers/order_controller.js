@@ -179,7 +179,7 @@ export const paginate_order = asyncHandler(async (req, res) => {
     if (conditions.length > 0) {
         finalQuery.$and = conditions;
     }
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortCreated) {
         if (sortCreated === 'ascend') {
             sortKind.createdAt = 1;
@@ -243,7 +243,7 @@ export const order_by_user = asyncHandler(async (req, res) => {
     const skip = page ? (page - 1) * limit : 0;
     const query = {};
     if (userId) query.userId = userId
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortCreated) {
         if (sortCreated === 'ascend') {
             sortKind.createdAt = 1;
@@ -276,7 +276,7 @@ export const paginate_order_user = asyncHandler(async (req, res) => {
     if (shippingStatus) query.shippingStatus = shippingStatus;
     query.userId = user_id
     if (orderStatus) query.orderStatus = orderStatus;
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortCreated) {
         if (sortCreated === 'ascend') {
             sortKind.createdAt = 1;

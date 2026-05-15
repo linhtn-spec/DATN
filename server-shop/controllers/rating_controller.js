@@ -79,7 +79,7 @@ export const paginate_rating = async (req, res) => {
     const { page, sortStar, sortDate, isActive, name } = req.query
     const limit = 6;
     const skip = (page - 1) * limit;
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortStar) {
         if (sortStar === 'ascend') {
             sortKind.stars = 1;
@@ -162,7 +162,7 @@ export const rating_product = async (req, res) => {
             query.isActive = isActive
         }
     }
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortStar) {
         if (sortStar === 'ascend') {
             sortKind.stars = 1;

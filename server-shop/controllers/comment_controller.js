@@ -71,7 +71,7 @@ export const paginate_comment = async (req, res) => {
     const skip = (page - 1) * limit;
     const query = {};
     if (isActive) query.isActive = isActive
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortDate) {
         if (sortDate === 'ascend') {
             sortKind.createdAt = 1;
@@ -126,7 +126,7 @@ export const comment_product_paginate = async (req, res) => {
     const query = {}
     query.productId = product_id
     if (isActive) query.isActive = isActive
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortDate) {
         if (sortDate === 'ascend') {
             sortKind.createdAt = 1;

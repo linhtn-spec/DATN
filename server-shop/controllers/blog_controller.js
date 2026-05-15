@@ -126,7 +126,7 @@ export const paginate_blog = async (req, res) => {
     const query = {};
     if (title) query.title = title;
     if (isActive) query.isActive = isActive;
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortOrder) {
         if (sortOrder === 'ascend') {
             sortKind.order = 1;

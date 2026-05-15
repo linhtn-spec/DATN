@@ -168,7 +168,7 @@ export const paginate_category = async (req, res) => {
     if (name) query.name = name;
     if (description) query.description = description;
     if (isActive) query.isActive = isActive;
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortOrder) {
         if (sortOrder === 'ascend') {
             sortKind.order = 1;

@@ -122,7 +122,7 @@ export const paginate_banner = async (req, res) => {
     if (title) query.title = { $regex: new RegExp(title, "iuy") };
     if (description) query.description = { $regex: new RegExp(description, "iuy") };
     if (isActive) query.isActive = isActive;
-    let sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortOrder) {
         if (sortOrder === 'ascend') {
             sortKind.order = 1;

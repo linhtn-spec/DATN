@@ -94,7 +94,7 @@ export const paginate_consignment = async (req, res) => {
     const { page, applyDate, dueDate, sortDate, sortMoney } = req.query;
     const limit = 6;
     const skip = (page - 1) * limit;
-    const sortKind = {};
+    let sortKind = { createdAt: -1 };
     if (sortDate) {
         sortKind.createdAt = sortDate === 'ascend' ? 1 : -1;
     }
