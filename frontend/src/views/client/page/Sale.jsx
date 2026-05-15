@@ -152,7 +152,7 @@ function Sale() {
                         <>
                             <Row gutter={[24, 32]}>
                                 {paginatedProducts.map((item, index) => (
-                                    <Col xs={24} sm={12} md={8} lg={6} key={item.id} className="product-col">
+                                    <Col xs={24} sm={12} md={8} lg={6} xl={6} key={item.id} className="product-col">
                                         <ProductGrid products={item} />
                                     </Col>
                                 ))}

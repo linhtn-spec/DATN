@@ -41,9 +41,9 @@ const client = new Client({
 });
 
 router.get('/search', async (req, res) => {
-    const { searchParam, page } = req.query;
-    const limit = 6;
-    const skip = page ? limit * (page - 1) : 0
+    const { searchParam, page, limit: queryLimit } = req.query;
+    const limit = parseInt(queryLimit) || 6;
+    const skip = page ? limit * (parseInt(page) - 1) : 0
     try {
         const productResult = await client.search({
             index: 'products',

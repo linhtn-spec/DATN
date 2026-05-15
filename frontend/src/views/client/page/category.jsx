@@ -96,7 +96,7 @@ function Category() {
                         <>
                             <Row gutter={[24, 32]}>
                                 {products.map((item) => (
-                                    <Col xs={24} sm={12} md={8} lg={6} key={item.id}>
+                                    <Col xs={24} sm={12} md={8} lg={6} xl={6} key={item.id} className="product-col">
                                         <ProductGrid products={item} />
                                     </Col>
                                 ))}

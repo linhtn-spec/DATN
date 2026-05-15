@@ -62,8 +62,8 @@ export const recommendProduct = (id) =>
 export const productAll = () => api.get(URL.PRODUCT.OPTIONS);
 
 /** Search products by search parameter */
-export const searchProduct = (searchParam, page) =>
-    api.get(URL.PRODUCT.SEARCH, { params: { searchParam, page } });
+export const searchProduct = (searchParam, page, limit = 8) =>
+    api.get(URL.PRODUCT.SEARCH, { params: { searchParam, page, limit } });
 
 /** Get product suggestions as user types */
 export const suggestProduct = (keyword) =>
