@@ -344,7 +344,7 @@ header .main_menu:hover .user {
     visibility: hidden;
     pointer-events: none;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0s linear 0.3s;
+        visibility 0s linear 0.3s;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -356,7 +356,7 @@ header .main_menu:hover .user {
     visibility: visible;
     pointer-events: auto;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0s linear 0s;
+        visibility 0s linear 0s;
 }
 
 /* Drawer header */
@@ -403,7 +403,6 @@ header .main_menu:hover .user {
     color: var(--text-color, #333);
     text-decoration: none;
     transition: all 0.2s ease;
-    border-bottom: none;
 }
 
 .mobile-nav-links a:hover,
@@ -495,6 +494,11 @@ header .main_menu:hover .user {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
