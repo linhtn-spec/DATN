@@ -163,8 +163,10 @@ function Headers() {
                                 <button onClick={toggleSearchView}><SearchOutlined style={{ fontSize: '18px', cursor: "pointer" }} /></button>
                             </div>
                             <div>
-                                <button className="cart" onClick={handleCart}><ShoppingCartOutlined style={{ fontSize: '18px' }} /></button>
-                                <div className="qty">{cart?.state?.currentCart?.length ?? 0}</div>
+                                <button className="cart" onClick={handleCart}>
+                                    <ShoppingCartOutlined style={{ fontSize: '18px' }} />
+                                    <div className="qty">{cart?.state?.currentCart?.length ?? 0}</div>
+                                </button>
                             </div>
                             <>
                                 <div className="main_menu">
