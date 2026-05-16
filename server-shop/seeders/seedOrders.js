@@ -75,11 +75,11 @@ export const seedOrders = async () => {
 
       batch.push({
         userId: user._id, 
-        firstNameReceiver: user.firstName, 
-        lastNameReceiver: user.lastName,
-        phoneReceiver: user.phone, 
+        firstNameReceiver: user.firstName || 'Khách', 
+        lastNameReceiver: user.lastName || 'Hàng',
+        phoneReceiver: user.phone || '0900000000', 
         emailReceiver: user.email, 
-        addressReceiver: user.address,
+        addressReceiver: user.address || '123 Đường Lê Lợi, TP. HCM',
         countryReceiver: 'Việt Nam', 
         paymentMethod: payMethod, 
         shippingMethod: shipMethod,

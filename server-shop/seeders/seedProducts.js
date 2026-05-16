@@ -43,6 +43,7 @@ export const seedProducts = async () => {
   ];
 
   const products = [];
+  let skuCounter = 1; // Sequential counter guarantees uniqueness
   
   outer: for (const base of PRODUCT_DATA) {
     const catId = catMap[base.cat];
@@ -56,7 +57,9 @@ export const seedProducts = async () => {
         if (products.length >= CONFIG.PRODUCTS_MAX) break outer;
         
         const name = `${base.name} ${q.label} ${w.wLabel}`;
-        const sku  = `${slugify(base.name).slice(0, 4).toUpperCase()}-${q.suffix}-${w.wSuffix}-${randomInt(10, 99)}`;
+        // Use sequential counter to guarantee globally unique SKUs
+        const prefix = slugify(base.name).replace(/-/g, '').slice(0, 4).toUpperCase() || 'PROD';
+        const sku  = `${prefix}-${q.suffix}-${w.wSuffix}-${String(skuCounter++).padStart(4, '0')}`;
         
         // Sinh mô tả sản phẩm hấp dẫn và thực tế hơn với Faker
         const fakeDesc = faker.lorem.paragraph(2) + " " + faker.commerce.productDescription();
@@ -100,8 +103,8 @@ export const seedProducts = async () => {
     }
   }
   
-  // Products insert doesn't strictly need batching if max is 800, but good to have
-  await Product.insertMany(products);
+  // ordered:false means if one doc fails validation, others still get inserted
+  await Product.insertMany(products, { ordered: false });
   console.log(`   └─ ${products.length} products created`);
 
   // Verify each category has products

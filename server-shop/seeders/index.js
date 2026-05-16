@@ -40,17 +40,26 @@ const run = async () => {
 
     await clearDB();
     
-    // Run sequentially to ensure dependencies exist (e.g. users for orders, products for orders)
-    await seedConfigs();
-    await seedUsers();
-    await seedCategories();
-    await seedProducts();
-    await seedBannersAndBlogs();
-    await seedOrders();
-    await seedRatings();
-    await seedInteractions();
-    await seedSalesAndStock();
-    await seedFinance();
+    // Run sequentially. Each step is wrapped individually so one failure
+    // does NOT abort all subsequent steps.
+    const runStep = async (name, fn) => {
+      try {
+        await fn();
+      } catch (err) {
+        console.error(`❌ Step [${name}] FAILED:`, err.message || err);
+      }
+    };
+
+    await runStep('seedConfigs',       seedConfigs);
+    await runStep('seedUsers',         seedUsers);
+    await runStep('seedCategories',    seedCategories);
+    await runStep('seedProducts',      seedProducts);
+    await runStep('seedBannersAndBlogs', seedBannersAndBlogs);
+    await runStep('seedOrders',        seedOrders);
+    await runStep('seedRatings',       seedRatings);
+    await runStep('seedInteractions',  seedInteractions);
+    await runStep('seedSalesAndStock', seedSalesAndStock);
+    await runStep('seedFinance',       seedFinance);
 
     console.log('✨ SUCCESS: Realistic Enterprise Seed V4 (Optimized Module) Completed!');
   } catch (error) {
