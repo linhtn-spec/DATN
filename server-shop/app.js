@@ -62,8 +62,7 @@ app.use(cors({
         console.warn(`[CORS Blocked] Origin: ${origin}`);
         return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true,
-    preflightContinue: true
+    credentials: true
 }));
 
 

@@ -1,14 +1,28 @@
 import { LineChartOutlined, MoneyCollectOutlined, PlusOutlined, SearchOutlined, WalletOutlined, WarningOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Descriptions, Flex, Form, Input, InputNumber, Modal, Row, Select, Statistic, Table, Tag, Typography } from "antd";
+import { Button, Card, Col, Descriptions, Flex, Form, Input, InputNumber, Modal, Row, Select, Skeleton, Statistic, Table, Tag, Typography } from "antd";
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import React, { useMemo, useState } from "react";
 import { createWithdrawal, getFinanceOverview, getWithdrawalsHistory, lookupBankAccount } from "../../../../services/finance_service";
 import Notification from "../../../../utils/configToastify";
 
 const { Title } = Typography;
 
 function FinanceDashboard() {
-    const [overview, setOverview] = useState({
+    const queryClient = useQueryClient();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [form] = Form.useForm();
+    const [isLookingUp, setIsLookingUp] = useState(false);
+
+    const { data: overviewData, isLoading: overviewLoading } = useQuery({
+        queryKey: ['financeOverview'],
+        queryFn: async () => {
+            const res = await getFinanceOverview();
+            return res.data;
+        }
+    });
+
+    const overview = overviewData || {
         totalRevenue: 0,
         totalProfit: 0,
         totalCOGS: 0,
@@ -16,53 +30,35 @@ function FinanceDashboard() {
         netProfit: 0,
         balance: 0,
         totalWithdrawal: 0
-    });
-    const [withdrawals, setWithdrawals] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [form] = Form.useForm();
-
-    const [banks, setBanks] = useState([]);
-    const memoizedBanks = useMemo(() => banks, [banks]);
-    const [isLookingUp, setIsLookingUp] = useState(false);
-
-    const fetchOverview = async () => {
-        try {
-            const res = await getFinanceOverview();
-            setOverview(res.data);
-        } catch (error) {
-            console.error("Failed to load finance overview");
-        }
     };
 
-    const fetchHistory = async () => {
-        try {
-            setLoading(true);
+    const { data: withdrawals = [], isLoading: loading } = useQuery({
+        queryKey: ['withdrawalsHistory'],
+        queryFn: async () => {
             const res = await getWithdrawalsHistory();
-            setWithdrawals(res.data);
-        } catch (error) {
-            console.error("Failed to load withdrawal history");
-        } finally {
-            setLoading(false);
+            return res.data;
         }
-    };
+    });
 
-    const fetchBanks = async () => {
-        try {
+    const { data: banks = [], isLoading: banksLoading } = useQuery({
+        queryKey: ['vietqrBanks'],
+        queryFn: async () => {
             const res = await axios.get("https://api.vietqr.io/v2/banks");
             if (res.data?.code === '00') {
-                setBanks(res.data.data.map(b => ({
+                return res.data.data.map(b => ({
                     value: b.bin,
                     label: `(${b.shortName}) ${b.name}`,
                     name: b.shortName,
                     fullName: b.name,
                     logo: b.logo
-                })));
+                }));
             }
-        } catch (error) {
-            console.error("Failed to fetch bank list");
-        }
-    };
+            return [];
+        },
+        staleTime: Infinity,
+    });
+
+    const memoizedBanks = useMemo(() => banks, [banks]);
 
     const lookupAccount = async () => {
         const bin = form.getFieldValue('bankBin');
@@ -102,11 +98,7 @@ function FinanceDashboard() {
         }
     };
 
-    useEffect(() => {
-        fetchOverview();
-        fetchHistory();
-        fetchBanks();
-    }, []);
+
 
     const handleCreateWithdrawal = async (values) => {
         if (values.amount > overview.balance) {
@@ -125,8 +117,8 @@ function FinanceDashboard() {
             Notification({ message: "Ghi nhận lệnh rút tiền thành công!", type: "success" });
             setIsModalOpen(false);
             form.resetFields();
-            fetchOverview();
-            fetchHistory();
+            queryClient.invalidateQueries({ queryKey: ['financeOverview'] });
+            queryClient.invalidateQueries({ queryKey: ['withdrawalsHistory'] });
         } catch (error) {
             Notification({ message: error.response?.data?.message || "Đã xảy ra lỗi khi tạo lệnh rút", type: "error" });
         }
@@ -201,27 +193,31 @@ function FinanceDashboard() {
 
             <Row gutter={[16, 16]} style={{ marginBottom: "24px" }} align="stretch">
                 <Col span={8}>
-                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                        <Statistic
-                            title="TỔNG DOANH THU"
-                            value={overview.totalRevenue}
-                            precision={0}
-                            valueStyle={{ color: "#1890ff", fontWeight: "bold" }}
-                            prefix={<MoneyCollectOutlined />}
-                            suffix="₫"
-                        />
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }} styles={{ body: { width: '100%' } }}>
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="TỔNG DOANH THU"
+                                value={overview.totalRevenue}
+                                precision={0}
+                                valueStyle={{ color: "#1890ff", fontWeight: "bold" }}
+                                prefix={<MoneyCollectOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                        <Statistic
-                            title="LỢI NHUẬN GỘP (Doanh thu - Giá vốn)"
-                            value={overview.totalProfit}
-                            precision={0}
-                            valueStyle={{ color: "#fa8c16", fontWeight: "bold" }}
-                            prefix={<LineChartOutlined />}
-                            suffix="₫"
-                        />
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }} styles={{ body: { width: '100%' } }}>
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="LỢI NHUẬN GỘP (Doanh thu - Giá vốn)"
+                                value={overview.totalProfit}
+                                precision={0}
+                                valueStyle={{ color: "#fa8c16", fontWeight: "bold" }}
+                                prefix={<LineChartOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
                 <Col span={8}>
@@ -230,54 +226,72 @@ function FinanceDashboard() {
                             height: '100%',
                             display: 'flex',
                             alignItems: 'center',
-                            background: overview.totalAdjustmentLoss > 0 ? '#fff2f0' : undefined,
-                            border: overview.totalAdjustmentLoss > 0 ? '1px solid #ffccc7' : undefined
+                            background: overview.totalAdjustmentLoss > 0 && !overviewLoading ? '#fff2f0' : undefined,
+                            border: overview.totalAdjustmentLoss > 0 && !overviewLoading ? '1px solid #ffccc7' : undefined
                         }}
+                        styles={{ body: { width: '100%' } }}
                     >
-                        <Statistic
-                            title="THIỆT HẠI HÀNG HỦY"
-                            value={overview.totalAdjustmentLoss}
-                            precision={0}
-                            valueStyle={{ color: overview.totalAdjustmentLoss > 0 ? "#cf1322" : "#8c8c8c", fontWeight: "bold" }}
-                            prefix={<WarningOutlined />}
-                            suffix="₫"
-                        />
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="THIỆT HẠI HÀNG HỦY"
+                                value={overview.totalAdjustmentLoss}
+                                precision={0}
+                                valueStyle={{ color: overview.totalAdjustmentLoss > 0 ? "#cf1322" : "#8c8c8c", fontWeight: "bold" }}
+                                prefix={<WarningOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                        <Statistic
-                            title="LỢI NHUẬN RÒNG (Sau khi trừ hàng hủy)"
-                            value={overview.netProfit}
-                            precision={0}
-                            valueStyle={{ color: overview.netProfit >= 0 ? "#fa8c16" : "#cf1322", fontWeight: "bold" }}
-                            prefix={<LineChartOutlined />}
-                            suffix="₫"
-                        />
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }} styles={{ body: { width: '100%' } }}>
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="LỢI NHUẬN RÒNG (Sau khi trừ hàng hủy)"
+                                value={overview.netProfit}
+                                precision={0}
+                                valueStyle={{ color: overview.netProfit >= 0 ? "#fa8c16" : "#cf1322", fontWeight: "bold" }}
+                                prefix={<LineChartOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }}>
-                        <Statistic
-                            title="ĐÃ RÚT TIỀN"
-                            value={overview.totalWithdrawal}
-                            precision={0}
-                            valueStyle={{ color: "#f5222d", fontWeight: "bold" }}
-                            prefix={<WalletOutlined />}
-                            suffix="₫"
-                        />
+                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center' }} styles={{ body: { width: '100%' } }}>
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="ĐÃ RÚT TIỀN"
+                                value={overview.totalWithdrawal}
+                                precision={0}
+                                valueStyle={{ color: "#f5222d", fontWeight: "bold" }}
+                                prefix={<WalletOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card style={{ height: '100%', display: 'flex', alignItems: 'center', backgroundColor: "#e6ffcc", border: "1px solid #b7eb8f" }}>
-                        <Statistic
-                            title="SỐ DƯ CÓ THẾ RÚT"
-                            value={overview.balance}
-                            precision={0}
-                            valueStyle={{ color: "#389e0d", fontWeight: "bold" }}
-                            prefix={<WalletOutlined />}
-                            suffix="₫"
-                        />
+                    <Card
+                        style={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: overviewLoading ? undefined : "#e6ffcc",
+                            border: overviewLoading ? undefined : "1px solid #b7eb8f"
+                        }}
+                        styles={{ body: { width: '100%' } }}
+                    >
+                        <Skeleton active loading={overviewLoading} paragraph={{ rows: 1 }} title={{ width: '80%' }}>
+                            <Statistic
+                                title="SỐ DƯ CÓ THẾ RÚT"
+                                value={overview.balance}
+                                precision={0}
+                                valueStyle={{ color: "#389e0d", fontWeight: "bold" }}
+                                prefix={<WalletOutlined />}
+                                suffix="₫"
+                            />
+                        </Skeleton>
                     </Card>
                 </Col>
             </Row>
@@ -334,7 +348,7 @@ function FinanceDashboard() {
                             showSearch
                             optionFilterProp="label"
                             options={memoizedBanks}
-                            loading={banks.length === 0}
+                            loading={banksLoading}
                             virtual={false}
                             filterOption={(input, option) => {
                                 const searchStr = input.toLowerCase();
