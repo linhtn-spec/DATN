@@ -63,18 +63,11 @@ function Login() {
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng nhập email!',
-                            }, {
-                                min: 6,
-                                message: "Tối thiểu 6 ký tự"
-                            },
-                            {
-                                type: 'email',
-                                message: 'Vui lòng nhập đúng định dạng email'
+                                message: 'Vui lòng nhập email hoặc tên đăng nhập!',
                             }
                         ]}
                     >
-                        <Input type="email" placeholder="Email" size="large" />
+                        <Input placeholder="Email hoặc Tên đăng nhập" size="large" />
                     </Form.Item>
                     <Form.Item
                         name="password"

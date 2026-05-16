@@ -33,9 +33,15 @@ const getVerificationTokenLifeMs = () => {
 export const login = async (req, res) => {
     try {
         const data = req.body;
-        const user = await user_model.findOne({ email: data.email });
+        const loginIdentifier = data.email || data.username;
+        const user = await user_model.findOne({ 
+            $or: [
+                { email: loginIdentifier }, 
+                { username: loginIdentifier }
+            ] 
+        });
         if (!user) {
-            return res.status(404).json({ message: "Email không tồn tại" });
+            return res.status(404).json({ message: "Email hoặc Tên đăng nhập không tồn tại" });
         }
         if (!user.isActive) {
             return res.status(401).json({ message: "Tài khoản đang bị khóa" });

@@ -126,9 +126,8 @@ export const send_email_validator = [
 
 export const login_validator = [
     body("email")
-        .notEmpty().withMessage("Email is required")
-        .isEmail().withMessage("Not email")
-        .isLength({ min: 6, max: 50 }).withMessage("Email has at least 6 characters and max 50 characters"),
+        .notEmpty().withMessage("Email or username is required")
+        .isLength({ min: 1, max: 50 }).withMessage("Email or username has at least 1 character and max 50 characters"),
     body("password")
         .notEmpty().withMessage("Password is required")
         .isLength({ min: 6, max: 50 }).withMessage("Password has at least 6 characters and max 50 characters"),
