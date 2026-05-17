@@ -26,6 +26,9 @@
 
 .product_detail-client nav {
     margin: 50px 0 100px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 
@@ -243,4 +246,94 @@
 
 .product_detail-client .submit_comment {
     margin-top: 40px;
+}
+
+/* Responsive fixes for mobile and tablet */
+@media (max-width: 992px) {
+    .product_detail-client {
+        padding: 0 16px;
+        margin-bottom: 40px;
+    }
+    .product_detail-client .detail {
+        flex-direction: column-reverse !important;
+        gap: 40px;
+    }
+    .view, .wrap_detail_sum {
+        width: 100%;
+    }
+    .view .img-group {
+        width: 100%;
+    }
+    .main-product-content {
+        flex-direction: column !important;
+    }
+    .main-product-details {
+        display: contents;
+    }
+    .img-product {
+        order: 1;
+    }
+    .image_group {
+        order: 2;
+        flex-direction: row !important;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    .product_detail-client .detail .info {
+        order: 3;
+        width: 100% !important;
+    }
+    .image_group .small_image {
+        width: 70px;
+        height: 70px;
+        flex-shrink: 0;
+    }
+    .detail .img-product img {
+        width: 100%;
+        height: auto;
+        max-width: 500px;
+        margin: 0 auto;
+        display: block;
+    }
+    .product_detail-client .info .title {
+        font-size: 24px !important;
+    }
+    .product_detail-client .detail .form-group {
+        flex-direction: column !important;
+        height: auto;
+        gap: 16px !important;
+    }
+    .product_detail-client .detail .form-group > .ant-input {
+        width: 100% !important;
+    }
+    .product_detail-client .detail .form-group > .ant-flex {
+        flex-direction: row !important;
+        gap: 10px;
+    }
+    .product_detail-client .detail .form-group > .ant-flex > button {
+        height: 44px !important;
+        flex: 1;
+    }
+    .product_detail-client .cart {
+        height: 48px;
+        margin-top: 16px;
+    }
+    .comment-form-container {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 20px !important;
+    }
+    .comment-form-container form {
+        width: 100% !important;
+    }
+    .comment-item {
+        flex-direction: column;
+        gap: 16px !important;
+    }
+    .product_relate-list .relate_list {
+        flex-direction: column !important;
+    }
+    .product_relate-list .relate_list > div {
+        width: 100%;
+    }
 }

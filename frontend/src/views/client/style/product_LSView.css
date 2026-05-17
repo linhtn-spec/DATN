@@ -91,4 +91,46 @@
 
 .product_relate-list .item_related .title {
     font-weight: 400;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Responsive for mobile and tablet */
+@media (max-width: 992px) {
+    .product_relate-list {
+        height: auto !important;
+    }
+    .product_relate-list .item_related {
+        width: 100% !important;
+        height: auto !important;
+        padding-bottom: 24px;
+        margin-bottom: 20px;
+    }
+    .product_relate-list .item_related:hover {
+        transform: none !important;
+        height: auto !important;
+    }
+    .product_relate-list img {
+        height: auto;
+        aspect-ratio: 1/1;
+        object-fit: cover;
+    }
+    .product_relate-list .item_related button {
+        opacity: 1 !important; /* Always visible on mobile since there is no hover */
+    }
+    .product_relate-list .button_group {
+        margin-top: 16px;
+    }
+    .product_relate-list .button_group button {
+        width: 45px !important;
+        height: 45px !important;
+    }
+    .product_relate-list .button_group button span {
+        font-size: 20px !important;
+    }
+    .product_relate-list .item_related .title {
+        max-width: 90% !important;
+        font-size: 18px !important;
+    }
 }

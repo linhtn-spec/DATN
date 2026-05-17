@@ -327,7 +327,7 @@ function ProductDetail() {
                     {info && !hasReviewed ? (
                         <Flex gap={30} style={{ width: "100%", paddingBottom: '24px', borderBottom: '1px solid #f0f0f0' }} vertical className="submit_comment">
                             <Typography.Title level={2}>Gửi nhận xét của bạn</Typography.Title>
-                            <Flex style={{ width: "100%" }} align="center" gap={50}>
+                            <Flex style={{ width: "100%" }} align="center" gap={50} className="comment-form-container">
                                 <Avatar size={50} src={info?.image} icon={<UserOutlined />} />
                                 <Form form={form} layout="vertical" onFinish={onFinish} style={{ width: "60%" }}>
                                     <Form.Item name="stars" label="Đánh giá" rules={[{ required: true, message: 'Vui lòng chọn số sao!' }]}>
@@ -455,7 +455,7 @@ function ProductDetail() {
                                 <Skeleton active paragraph={{ rows: 10 }} style={{ width: 400 }} />
                             </Flex>
                         ) : (
-                            <Flex className="d-flex" gap={'large'}>
+                            <Flex className="d-flex main-product-content" gap={'large'}>
                                 {/* Thumbnails */}
                                 <Flex vertical gap={'small'} className="image_group">
                                     {product?.images?.map((item, index) => (
@@ -470,7 +470,7 @@ function ProductDetail() {
                                     ))}
                                 </Flex>
 
-                                <Flex gap={40}>
+                                <Flex gap={40} className="main-product-details">
                                     {/* Main Image */}
                                     <div className="img-product">
                                         <Image src={mainImage} loading="lazy" className="main_image" />
