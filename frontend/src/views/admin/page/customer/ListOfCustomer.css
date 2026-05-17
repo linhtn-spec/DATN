@@ -1,3 +1,37 @@
-.category_list .ant-form-item {
-    margin-bottom: 0;
+.banner_list.customer_list_container {
+    padding-bottom: 40px;
+    width: 100%;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Premium Filter Layout */
+.filter-card {
+    padding: 16px 20px !important;
+    margin-bottom: 24px;
+}
+
+.premium-input, .premium-select .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+.customer-avatar-badge {
+    background: #e6f7ff;
+    color: #1890ff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
