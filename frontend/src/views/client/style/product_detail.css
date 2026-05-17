@@ -94,7 +94,9 @@
 .product_detail-client .ant-tabs-content.ant-tabs-content-top {
     font-size: 16px;
     color: rgb(102, 101, 101);
-
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .view h5 {
