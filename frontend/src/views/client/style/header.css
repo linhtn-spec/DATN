@@ -514,8 +514,10 @@ header .main_menu:hover .user {
     color: #fff !important;
 }
 
-.mobile-login-btn:hover {
+.mobile-nav-links a.mobile-login-btn:hover {
     opacity: 0.85;
+    background: var(--primary-color);
+    padding-left: 12px;
 }
 
 .mobile-register-btn {
@@ -524,8 +526,9 @@ header .main_menu:hover .user {
     background: transparent;
 }
 
-.mobile-register-btn:hover {
+.mobile-nav-links a.mobile-register-btn:hover {
     background: rgba(21, 128, 61, 0.06);
+    padding-left: 12px;
 }
 
 @keyframes fadeIn {
