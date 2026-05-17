@@ -1,17 +1,19 @@
-import { MinusCircleOutlined, PlusOutlined, ToolOutlined } from '@ant-design/icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { 
+    PlusOutlined, 
+    ToolOutlined,
+    FilterOutlined,
+    EyeOutlined
+} from '@ant-design/icons';
+import { useQuery } from '@tanstack/react-query';
 import {
-    Badge, Button, Card, Col, DatePicker, Flex, Form, InputNumber,
-    Modal, Row, Select, Space, Table, Tag, Typography
+    Button, Col, Flex, Row, Select, Space, Table, Tag, Typography
 } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
-import locale from 'antd/es/date-picker/locale/vi_VN';
 import { useState } from 'react';
-import { queryClient } from '../../../../main';
-import { productAll } from '../../../../services/product_service';
-import { createAdjustment, listAdjustments } from '../../../../services/stock_adjustment_service';
-import Notification from '../../../../utils/configToastify';
+import { useNavigate } from 'react-router';
+import { listAdjustments } from '../../../../services/stock_adjustment_service';
+import './StockAdjustment.css';
 
 dayjs.locale('vi');
 
@@ -26,13 +28,12 @@ const REASON_OPTIONS = [
 
 const reasonTag = (r) => {
     const opt = REASON_OPTIONS.find(o => o.value === r);
-    return opt ? <Tag color={opt.color}>{opt.label}</Tag> : <Tag>{r}</Tag>;
+    return opt ? <Tag color={opt.color} style={{ fontSize: 12, padding: '2px 8px', borderRadius: 4 }}>{opt.label}</Tag> : <Tag>{r}</Tag>;
 };
 
 export const StockAdjustment = () => {
-    const [form] = Form.useForm();
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [reasonFilter, setReasonFilter] = useState('');
 
     const { data, isLoading } = useQuery({
@@ -43,61 +44,31 @@ export const StockAdjustment = () => {
     const docs = data?.data?.docs || [];
     const total = data?.data?.totalDocs || 0;
 
-    const { data: productData } = useQuery({
-        queryKey: ['products_option_adj'],
-        queryFn: () => productAll(),
-    });
-    const productOptions = (productData?.data?.data || []).map(p => ({
-        value: p._id,
-        label: `${p.name} (${p.unit || 'sản phẩm'}) — Tồn: ${p.quantity?.inTrade ?? 0}`,
-    }));
-
-    const { mutate, isPending } = useMutation({
-        mutationFn: createAdjustment,
-        onSuccess: () => {
-            Notification({ message: 'Tạo phiếu kiểm kê thành công!', type: 'success' });
-            queryClient.invalidateQueries({ queryKey: ['stock_adjustments'] });
-            queryClient.invalidateQueries({ queryKey: ['products_admin'] });
-            setIsModalOpen(false);
-            form.resetFields();
-        },
-        onError: (err) => {
-            Notification({ message: err?.response?.data?.message || 'Tạo phiếu thất bại!', type: 'error' });
-        }
-    });
-
-    const onFinish = (values) => {
-        mutate({
-            products: values.products,
-            adjustmentDate: values.adjustmentDate ? values.adjustmentDate.toISOString() : new Date().toISOString()
-        });
-    };
-
     const columns = [
         {
             title: '#',
             align: 'center',
-            width: 50,
+            width: 60,
             render: (_, __, idx) => (page - 1) * 8 + idx + 1
         },
         {
             title: 'Ngày kiểm kê',
             dataIndex: 'adjustmentDate',
-            width: 130,
+            width: 140,
             align: 'center',
-            render: (d) => dayjs(d).format('DD/MM/YYYY')
+            render: (d) => <Text strong>{dayjs(d).format('DD/MM/YYYY')}</Text>
         },
         {
             title: 'Sản phẩm hủy',
             dataIndex: 'products',
             render: (products) => (
-                <Space direction="vertical" size={2}>
+                <Space direction="vertical" size={6} style={{ width: '100%' }}>
                     {products?.map((p, i) => (
-                        <Space key={i} size={4}>
-                            <Text>{p.productId?.name}</Text>
-                            <Tag color="volcano">-{p.quantity} {p.productId?.unit}</Tag>
+                        <Flex key={i} align="center" gap={8}>
+                            <Text strong style={{ color: '#1a3353' }}>{p.productId?.name || 'Sản phẩm đã bị xóa'}</Text>
+                            <Tag color="volcano" style={{ fontWeight: 600 }}>-{p.quantity} {p.productId?.unit}</Tag>
                             {reasonTag(p.reason)}
-                        </Space>
+                        </Flex>
                     ))}
                 </Space>
             )
@@ -105,45 +76,74 @@ export const StockAdjustment = () => {
         {
             title: 'Ước tính thiệt hại',
             dataIndex: 'totalLoss',
-            width: 160,
+            width: 180,
             align: 'right',
-            render: (v) => <Text type="danger" strong>{v?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+            render: (v) => <Text type="danger" strong style={{ fontSize: 15 }}>{v?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
         },
         {
             title: 'Người lập',
             dataIndex: 'userId',
-            width: 140,
-            render: (u) => u ? `${u.firstName} ${u.lastName}` : '—'
+            width: 160,
+            render: (u) => u ? <Text style={{ color: '#595959' }}>{`${u.firstName} ${u.lastName}`}</Text> : '—'
         },
+        {
+            title: 'Thao tác',
+            align: 'center',
+            width: 130,
+            render: (_, record) => (
+                <Button 
+                    type="link" 
+                    icon={<EyeOutlined />} 
+                    onClick={() => navigate(`/admin/inventory/adjustment/${record._id}`)}
+                    style={{ fontWeight: 600 }}
+                >
+                    Chi tiết
+                </Button>
+            )
+        }
     ];
 
     return (
-        <Flex vertical gap={16}>
-            <Flex justify="space-between" align="center">
-                <Space align="center">
-                    <ToolOutlined style={{ fontSize: 20, color: '#722ed1' }} />
-                    <Title level={4} style={{ margin: 0 }}>Phiếu kiểm kê / Hủy hàng</Title>
+        <Flex vertical gap={24} className="stock-adjustment-container">
+            {/* Header section */}
+            <Flex justify="space-between" align="center" style={{ borderBottom: '1px solid #f0f0f0', paddingBottom: 16 }}>
+                <Space align="center" size={12}>
+                    <div style={{ background: '#f9f0ff', padding: '8px 12px', borderRadius: 8 }}>
+                        <ToolOutlined style={{ fontSize: 22, color: '#722ed1' }} />
+                    </div>
+                    <Flex vertical>
+                        <Title level={4} style={{ margin: 0, color: '#1a3353' }}>Phiếu kiểm kê & Hủy hàng</Title>
+                        <Text type="secondary" style={{ fontSize: 13 }}>Quản lý thất thoát, hư hỏng và điều chỉnh số lượng tồn kho</Text>
+                    </Flex>
                 </Space>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsModalOpen(true)}>
+                <Button 
+                    type="primary" 
+                    icon={<PlusOutlined />} 
+                    onClick={() => navigate('/admin/inventory/adjustment/create')} 
+                    size="large" 
+                    style={{ borderRadius: 8, background: '#722ed1', borderColor: '#722ed1' }}
+                >
                     Tạo phiếu hủy hàng
                 </Button>
             </Flex>
 
-            <Row gutter={[16, 0]}>
-                <Col>
-                    <Text>Lọc theo lý do:</Text>
-                </Col>
-                <Col>
-                    <Select
-                        allowClear
-                        placeholder="Tất cả lý do"
-                        style={{ width: 220 }}
-                        options={REASON_OPTIONS}
-                        onChange={(v) => { setReasonFilter(v || ''); setPage(1); }}
-                    />
-                </Col>
-            </Row>
+            {/* Filter section */}
+            <Flex align="center" gap={12} style={{ background: '#fafafa', padding: 12, borderRadius: 8 }}>
+                <Space>
+                    <FilterOutlined style={{ color: '#8c8c8c' }} />
+                    <Text strong>Bộ lọc lý do:</Text>
+                </Space>
+                <Select
+                    allowClear
+                    placeholder="Tất cả lý do hủy"
+                    style={{ width: 240 }}
+                    size="large"
+                    options={REASON_OPTIONS}
+                    onChange={(v) => { setReasonFilter(v || ''); setPage(1); }}
+                />
+            </Flex>
 
+            {/* Table section */}
             <Table
                 bordered
                 rowKey="_id"
@@ -153,93 +153,6 @@ export const StockAdjustment = () => {
                 pagination={{ current: page, total, pageSize: 8, onChange: setPage, hideOnSinglePage: true }}
                 locale={{ emptyText: <Text type="secondary">Chưa có phiếu kiểm kê nào.</Text> }}
             />
-
-            {/* Create Modal */}
-            <Modal
-                open={isModalOpen}
-                onCancel={() => { setIsModalOpen(false); form.resetFields(); }}
-                title={<Space><ToolOutlined style={{ color: '#722ed1' }} /><span>Tạo phiếu kiểm kê / Hủy hàng</span></Space>}
-                footer={null}
-                width={720}
-                destroyOnClose
-            >
-                <Form form={form} layout="vertical" onFinish={onFinish}>
-                    <Form.Item name="adjustmentDate" label="Ngày kiểm kê">
-                        <DatePicker locale={locale} style={{ width: '100%' }} defaultValue={dayjs()} />
-                    </Form.Item>
-
-                    <Form.List name="products" initialValue={[{}]}>
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name }) => (
-                                    <Card
-                                        key={key}
-                                        size="small"
-                                        style={{ marginBottom: 12, background: '#fafafa' }}
-                                        extra={fields.length > 1 && (
-                                            <MinusCircleOutlined
-                                                style={{ color: '#ff4d4f', cursor: 'pointer' }}
-                                                onClick={() => remove(name)}
-                                            />
-                                        )}
-                                    >
-                                        <Row gutter={12}>
-                                            <Col span={10}>
-                                                <Form.Item name={[name, 'productId']} label="Sản phẩm"
-                                                    rules={[{ required: true, message: 'Chọn sản phẩm' }]}>
-                                                    <Select
-                                                        showSearch
-                                                        placeholder="Chọn sản phẩm"
-                                                        options={productOptions}
-                                                        optionFilterProp="label"
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={5}>
-                                                <Form.Item name={[name, 'quantity']} label="Số lượng hủy"
-                                                    rules={[{ required: true, message: 'Nhập số lượng' }]}>
-                                                    <InputNumber min={1} style={{ width: '100%' }} placeholder="SL" />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={9}>
-                                                <Form.Item name={[name, 'reason']} label="Lý do"
-                                                    rules={[{ required: true, message: 'Chọn lý do' }]}>
-                                                    <Select placeholder="Chọn lý do" options={REASON_OPTIONS} />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Form.Item name={[name, 'note']} label="Ghi chú (tùy chọn)">
-                                            <Select
-                                                mode="tags"
-                                                placeholder="Nhập ghi chú..."
-                                                style={{ width: '100%' }}
-                                                open={false}
-                                                tokenSeparators={[',']}
-                                            />
-                                        </Form.Item>
-                                    </Card>
-                                ))}
-                                <Button
-                                    type="dashed"
-                                    icon={<PlusOutlined />}
-                                    block
-                                    onClick={() => add()}
-                                    style={{ marginBottom: 16 }}
-                                >
-                                    Thêm sản phẩm
-                                </Button>
-                            </>
-                        )}
-                    </Form.List>
-
-                    <Flex justify="flex-end" gap={8}>
-                        <Button onClick={() => { setIsModalOpen(false); form.resetFields(); }}>Hủy</Button>
-                        <Button type="primary" htmlType="submit" loading={isPending} danger>
-                            Xác nhận hủy hàng
-                        </Button>
-                    </Flex>
-                </Form>
-            </Modal>
         </Flex>
     );
 };

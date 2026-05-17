@@ -53,6 +53,8 @@ import FinanceDashboard from "../views/admin/page/finance/FinanceDashboard";
 import { TaxConfig } from "../views/admin/page/tax/TaxConfig";
 import ExpiryAlert from "../views/admin/page/inventory/ExpiryAlert";
 import StockAdjustment from "../views/admin/page/inventory/StockAdjustment";
+import CreateAdjustment from "../views/admin/page/inventory/CreateAdjustment";
+import DetailAdjustment from "../views/admin/page/inventory/DetailAdjustment";
 
 // Auth pages
 import Forget from "../views/authentication/forget/forget";
@@ -281,7 +283,15 @@ const adminRoutes = [
             element: <Outlet />,
             children: [
               { path: "expiry", element: <ExpiryAlert /> },
-              { path: "adjustment", element: <StockAdjustment /> },
+              {
+                path: "adjustment",
+                element: <Outlet />,
+                children: [
+                  { index: true, element: <StockAdjustment /> },
+                  { path: "create", element: <CreateAdjustment /> },
+                  { path: ":adjustment_id", element: <DetailAdjustment /> },
+                ]
+              },
             ],
           },
           {

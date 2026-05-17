@@ -1,0 +1,97 @@
+.crud_user {
+    padding-bottom: 40px;
+    width: 100%;
+}
+
+.section-title {
+    margin-bottom: 24px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1a3353 !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.premium-form .ant-form-item-label label {
+    font-weight: 600;
+    color: #595959;
+}
+
+.premium-form .ant-input-lg, 
+.premium-form .ant-select-lg .ant-select-selector,
+.premium-form .ant-input-number-lg {
+    border-radius: 8px !important;
+}
+
+/* Computed Total Widget on the Left */
+.computed-total-widget {
+    background: linear-gradient(135deg, #fff2e8 0%, #ffd591 100%);
+    border: 1px solid #ffa940;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.computed-total-widget .total-title {
+    font-size: 13px;
+    color: #d46b08;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.computed-total-widget .total-val {
+    font-size: 26px;
+    color: #ad4e00;
+    font-weight: 800;
+    margin-top: 4px;
+}
+
+/* Adjustment Item Card on the Right */
+.adjustment-item {
+    background: rgba(245, 247, 250, 0.6);
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.adjustment-item:hover {
+    background: rgba(253, 246, 246, 0.8);
+    border-color: #ffccc7;
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.08);
+}
+
+.adjustment-item-header {
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a3353;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-btn-container {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+.btn-add-adjustment {
+    border-dashed: true;
+    border-radius: 8px;
+    font-weight: 600;
+}
