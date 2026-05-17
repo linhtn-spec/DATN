@@ -1,51 +1,59 @@
-import { CreditCardOutlined, EyeOutlined, MoneyCollectOutlined, ShoppingCartOutlined, TagOutlined, TruckOutlined } from '@ant-design/icons';
+import { 
+    CreditCardOutlined, 
+    EyeOutlined, 
+    MoneyCollectOutlined, 
+    ShoppingCartOutlined, 
+    TagOutlined, 
+    TruckOutlined,
+    ShoppingOutlined,
+    SearchOutlined
+} from '@ant-design/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Flex, Form, Input, Select, Table, Tooltip, Typography } from 'antd';
+import { Button, Flex, Form, Input, Select, Table, Tooltip, Typography, Card, Row, Col, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-// import { updateProduct } from '../../../../../services/product_service';
 import { orderStatusOptions, paymentStatusOptions, shippingStatusOptions } from '../../../../constants/orderOptions';
 import convertToDate from '../../../../functions/convertDate';
 import { queryClient } from '../../../../main';
 import { editOrder, listOrder } from '../../../../services/order_service';
 import Notification from '../../../../utils/configToastify';
 import useDebounce from '../../../../utils/useDebounce';
+import AdminHeader from "../../components/AdminHeader";
 import './ListOfOrder.css';
 
-
+const { Text } = Typography;
 
 export const ListOfOrder = () => {
-
-    const [form] = Form.useForm()
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
     const [page, setPage] = useState(1);
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
     const [orderStatus, setOrderStatus] = useState("");
-    const [paymentStatus, setPaymentStatus] = useState('')
-    const [shippingStatus, setShippingStatus] = useState('')
-    const [sortDate, setSortDate] = useState('')
+    const [paymentStatus, setPaymentStatus] = useState('');
+    const [shippingStatus, setShippingStatus] = useState('');
+    const [sortDate, setSortDate] = useState('');
 
-    const searchName = useDebounce(name, 500)
-    const searchOrderStatus = useDebounce(orderStatus, 500)
-    const searchPaymentStatus = useDebounce(paymentStatus, 500)
-    const searchShippingStatus = useDebounce(shippingStatus, 500)
-    const searchSortDate = useDebounce(sortDate, 500)
+    const searchName = useDebounce(name, 500);
+    const searchOrderStatus = useDebounce(orderStatus, 500);
+    const searchPaymentStatus = useDebounce(paymentStatus, 500);
+    const searchShippingStatus = useDebounce(shippingStatus, 500);
+    const searchSortDate = useDebounce(sortDate, 500);
 
     const [total, setTotal] = useState(0);
-    const [items, setItems] = useState([])
-
+    const [items, setItems] = useState([]);
 
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
             Notification({ message: "Cập nhật trạng thái đơn hàng thành công", type: 'success' });
-            queryClient.invalidateQueries({ queryKey: ['orders_admin_list'] })
+            queryClient.invalidateQueries({ queryKey: ['orders_admin_list'] });
         },
         onError: () => {
-            Notification({ message: "Cập nhật trạng thái đơn hàng thất bại", type: "error" })
+            Notification({ message: "Cập nhật trạng thái đơn hàng thất bại", type: "error" });
         }
-    })
+    });
 
-    const { data, isSuccess } = useQuery({
+    const { data, isSuccess, isLoading } = useQuery({
         queryKey: ['orders_admin_list', page, searchOrderStatus, searchName, searchPaymentStatus, searchShippingStatus, searchSortDate],
         queryFn: () => listOrder(page,
             searchName !== undefined ? searchName : '',
@@ -53,25 +61,16 @@ export const ListOfOrder = () => {
             searchPaymentStatus !== undefined ? searchPaymentStatus : '',
             searchShippingStatus !== undefined ? searchShippingStatus : '',
             searchSortDate !== undefined ? searchSortDate : ''),
-        enabled: !!searchShippingStatus || !!searchName || !!page || !!searchOrderStatus || !!searchPaymentStatus || !!searchSortDate
-    })
-
-
+        enabled: true
+    });
 
     useEffect(() => {
-        setPage(1)
-
-        return () => {
-            setPage(1)
-        }
-    }, [searchShippingStatus, searchOrderStatus, searchPaymentStatus, searchSortDate, searchName])
-
-    console.log(searchSortDate);
+        setPage(1);
+    }, [searchShippingStatus, searchOrderStatus, searchPaymentStatus, searchSortDate, searchName]);
 
     useEffect(() => {
-        if (!isSuccess) return
+        if (!isSuccess) return;
         const rawData = data?.data;
-        console.log(rawData);
         setItems(
             rawData?.paginatedResults?.map((item) => ({
                 key: item?._id,
@@ -85,109 +84,117 @@ export const ListOfOrder = () => {
                 createdAt: item?.createdAt
             }))
         );
-
-        setTotal(rawData?.total)
-
-        return () => {
-            setItems([])
-        }
-
+        setTotal(rawData?.total);
     }, [data, isSuccess]);
 
-
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'new': return 'status-new';
+            case 'processing': return 'status-processing';
+            case 'hold': return 'status-hold';
+            case 'canceled': return 'status-canceled';
+            case 'done': return 'status-done';
+            default: return '';
+        }
+    };
 
     const columns = [
         {
-            title: "Họ tên",
+            title: "Họ tên người nhận",
             dataIndex: 'name',
+            render: (text) => <Text strong style={{ color: '#1a3353' }}>{text}</Text>
         },
         {
-            title: < Tooltip title={"Tạm tính"} > < TagOutlined /></Tooltip >,
+            title: <Tooltip title={"Tạm tính"}><TagOutlined /></Tooltip>,
             dataIndex: 'subTotal',
-            ellipsis: true,
             width: 120,
-            align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
-
+            align: "right",
+            render: (value) => <Text>{Number(value || 0).toLocaleString('vi-VN')} ₫</Text>
         },
         {
-            title: <Tooltip title={"Thuế"}> <ShoppingCartOutlined /></Tooltip>,
+            title: <Tooltip title={"Thuế"}><ShoppingCartOutlined /></Tooltip>,
             dataIndex: 'tax',
-            ellipsis: true,
             width: 100,
-            align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
-
+            align: "right",
+            render: (value) => <Text>{Number(value || 0).toLocaleString('vi-VN')} ₫</Text>
         },
         {
-            title: <Tooltip title={"Phí vận chuyển"}> <TruckOutlined /></Tooltip>,
+            title: <Tooltip title={"Phí vận chuyển"}><TruckOutlined /></Tooltip>,
             dataIndex: 'shippingCost',
             width: 120,
-            align: "center",
-            ellipsis: true,
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
-
+            align: "right",
+            render: (value) => <Text>{Number(value || 0).toLocaleString('vi-VN')} ₫</Text>
         },
         {
             title: <Tooltip title={"Tổng cộng"}><MoneyCollectOutlined /></Tooltip>,
             dataIndex: 'total',
-            ellipsis: true,
-            width: 120,
-            align: "center",
-            render: (value) => <Typography.Text>{Number(value).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Typography.Text>
-
+            width: 130,
+            align: "right",
+            render: (value) => <Text type="danger" strong style={{ fontSize: 14 }}>{Number(value || 0).toLocaleString('vi-VN')} ₫</Text>
         },
         {
-            title: <Tooltip title={'Phương thức thanh toán'}>< CreditCardOutlined /></Tooltip>,
+            title: <Tooltip title={'Phương thức thanh toán'}><CreditCardOutlined /></Tooltip>,
             dataIndex: 'paymentMethod',
-            ellipsis: true,
             width: 100,
             align: "center",
-            render: (value) => <Typography.Text>{String(value).toUpperCase()}</Typography.Text>
+            render: (value) => (
+                <Tag color={value === 'cod' ? 'orange' : 'blue'} style={{ fontWeight: 600 }}>
+                    {String(value).toUpperCase()}
+                </Tag>
+            )
         },
         {
-            title: 'Trạng thái',
+            title: 'Trạng thái đơn hàng',
             dataIndex: 'orderStatus',
-            width: 150,
-            render: (text, row) => <Select placeholder="Trạng thái đơn hàng" size='middle' style={{ width: "100%" }} options={orderStatusOptions}
-                value={text} onChange={(e) => mutate({ id: row.key, orderStatus: e })} />
-
+            width: 180,
+            render: (text, row) => (
+                <Select 
+                    placeholder="Trạng thái đơn hàng" 
+                    size='middle' 
+                    className={`status-select-pill ${getStatusClass(text)}`}
+                    style={{ width: "100%" }} 
+                    options={orderStatusOptions}
+                    value={text} 
+                    onChange={(e) => mutate({ id: row.key, orderStatus: e })} 
+                />
+            )
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'createdAt',
+            width: 140,
+            align: 'center',
             sorter: true,
-            render: (value) => <Typography.Text>{convertToDate(value)}</Typography.Text>
+            render: (value) => <Text type="secondary">{convertToDate(value)}</Text>
         },
         {
             title: 'Hành động',
             align: "center",
-            key: 'x',
-            width: 75,
-            render: (text, row) => <Flex justify='center' className='delete' gap={5}>
-                <Button icon={<EyeOutlined />} onClick={() => onEdit(row.key)} />
-            </Flex>,
+            width: 90,
+            render: (_, row) => (
+                <Button 
+                    type="primary" 
+                    ghost
+                    icon={<EyeOutlined />} 
+                    onClick={() => navigate(`/admin/orders/${row.key}`)} 
+                    style={{ borderRadius: 6 }}
+                />
+            ),
         },
     ];
-
-    const navigate = useNavigate()
-
-    const onEdit = (id) => {
-        navigate(`/admin/orders/${id}`)
-    }
-
 
     const onFieldsChange = (_, fields) => {
         const mappedFields = fields.reduce((acc, item) => {
             acc[item.name[0]] = item.value;
             return acc;
         }, {});
-        setName(mappedFields['name'])
-        setOrderStatus(mappedFields['orderStatus'])
-        setPaymentStatus(mappedFields['paymentStatus'])
-        setShippingStatus(mappedFields['shippingStatus'])
+        setName(mappedFields['name'] || '');
+        setOrderStatus(mappedFields['orderStatus'] || '');
+        setPaymentStatus(mappedFields['paymentStatus'] || '');
+        setShippingStatus(mappedFields['shippingStatus'] || '');
     };
-    const onChange = (_pagination, _filters, sorter, _extra) => {
+
+    const onChange = (_pagination, _filters, sorter) => {
         const { field, order } = sorter;
         let newSortDate = '';
         if (order !== undefined) {
@@ -197,49 +204,85 @@ export const ListOfOrder = () => {
         }
         setSortDate(newSortDate);
     };
-    return (
-        <Flex vertical gap={"middle"} className='banner_list'>
-            <Flex>
-                <Form form={form} onFieldsChange={onFieldsChange} style={{ width: "100%" }}>
-                    <Flex gap={'middle'} width="100%">
-                        <Form.Item
-                            name="name"
-                            style={{ width: "33%" }}
-                        >
-                            <Input type="text" placeholder="Họ tên" />
-                        </Form.Item>
-                        <Form.Item
-                            style={{ width: "51%" }}
-                            name="orderStatus"
-                        >
-                            <Select placeholder="Trạng thái đơn hàng" options={orderStatusOptions} allowClear />
-                        </Form.Item>
-                        <Form.Item
-                            style={{ width: "51%" }}
-                            name="paymentStatus"
-                        >
-                            <Select placeholder="Trạng thái thanh toán" options={paymentStatusOptions} allowClear />
-                        </Form.Item>
-                        <Form.Item
-                            style={{ width: "51%" }}
-                            name="shippingStatus"
-                        >
-                            <Select placeholder="Trạng thái giao hàng" options={shippingStatusOptions} allowClear />
-                        </Form.Item>
-                    </Flex>
 
+    return (
+        <Flex vertical gap={"middle"} className='banner_list order_list_container'>
+            <AdminHeader title="Quản lý đơn hàng" icon={<ShoppingOutlined />} />
+
+            {/* Filter section */}
+            <Card bordered={false} className="glass-card shadow-sm filter-card">
+                <Form form={form} onFieldsChange={onFieldsChange} style={{ width: "100%" }}>
+                    <Row gutter={[16, 16]} align="middle">
+                        <Col xs={24} sm={12} lg={6}>
+                            <Form.Item name="name" style={{ marginBottom: 0 }}>
+                                <Input 
+                                    prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />} 
+                                    placeholder="Tìm tên khách hàng..." 
+                                    size="large"
+                                    className="premium-input"
+                                />
+                            </Form.Item>
+                        </Col>
+                        
+                        <Col xs={24} sm={12} lg={6}>
+                            <Form.Item name="orderStatus" style={{ marginBottom: 0 }}>
+                                <Select 
+                                    placeholder="Trạng thái đơn hàng" 
+                                    options={orderStatusOptions} 
+                                    allowClear 
+                                    size="large"
+                                    className="premium-select"
+                                />
+                            </Form.Item>
+                        </Col>
+                        
+                        <Col xs={24} sm={12} lg={6}>
+                            <Form.Item name="paymentStatus" style={{ marginBottom: 0 }}>
+                                <Select 
+                                    placeholder="Trạng thái thanh toán" 
+                                    options={paymentStatusOptions} 
+                                    allowClear 
+                                    size="large"
+                                    className="premium-select"
+                                />
+                            </Form.Item>
+                        </Col>
+
+                        <Col xs={24} sm={12} lg={6}>
+                            <Form.Item name="shippingStatus" style={{ marginBottom: 0 }}>
+                                <Select 
+                                    placeholder="Trạng thái giao hàng" 
+                                    options={shippingStatusOptions} 
+                                    allowClear 
+                                    size="large"
+                                    className="premium-select"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
                 </Form>
-            </Flex>
+            </Card>
+
+            {/* Table section */}
             <Table
                 bordered
                 columns={columns}
                 dataSource={items}
-                loading={!isSuccess}
+                loading={isLoading}
                 rowHoverable
                 onChange={onChange}
-                pagination={{ hideOnSinglePage: true, pageSize: 6, total: total, defaultCurrent: 1, current: page, showSizeChanger: false, onChange: setPage }}
+                className="premium-table"
+                pagination={{ 
+                    hideOnSinglePage: true, 
+                    pageSize: 6, 
+                    total: total, 
+                    current: page, 
+                    onChange: setPage,
+                    showSizeChanger: false
+                }}
             />
-
         </Flex>
-    )
-}
+    );
+};
+
+export default ListOfOrder;

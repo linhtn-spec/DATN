@@ -1,9 +1,87 @@
-.crud_user input::-webkit-outer-spin-button,
-.crud_user input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.crud_user.order_detail_panel {
+    padding-bottom: 40px;
+    width: 100%;
 }
 
-.crud_user input[type=number] {
-    -moz-appearance: textfield;
+.section-title {
+    margin-bottom: 24px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1a3353 !important;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.premium-form .ant-form-item-label label {
+    font-weight: 600;
+    color: #595959;
+}
+
+.premium-form .ant-input-lg, 
+.premium-form .ant-select-lg .ant-select-selector,
+.premium-form .ant-input-number-lg {
+    border-radius: 8px !important;
+}
+
+.premium-form .ant-input-disabled,
+.premium-form .ant-select-disabled .ant-select-selector {
+    background: rgba(245, 245, 245, 0.8) !important;
+    color: #262626 !important;
+    border-color: #d9d9d9 !important;
+}
+
+/* Computed Order Totals */
+.order-totals-card {
+    background: #fafafa !important;
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+}
+
+.total-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.total-summary-row:last-child {
+    margin-bottom: 0;
+    padding-top: 12px;
+    border-top: 1px dashed #e8e8e8;
+}
+
+.total-summary-label {
+    font-weight: 600;
+    color: #8c8c8c;
+    font-size: 13px;
+}
+
+.total-summary-value {
+    font-weight: 700;
+    color: #1a3353;
+    font-size: 15px;
+}
+
+.total-summary-value.grand-total {
+    font-size: 20px;
+    color: #cf1322;
+}
+
+/* Steps and Timeline decorations */
+.order-badge-tag {
+    font-weight: 700;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 6px;
 }

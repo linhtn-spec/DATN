@@ -1,7 +1,66 @@
-.order_list .ant-form-item {
-    margin-bottom: 0;
+.banner_list.order_list_container {
+    padding-bottom: 40px;
+    width: 100%;
 }
 
-.banner_list .anticon {
-    font-size: 18px;
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Premium Filter Layout */
+.filter-card {
+    padding: 16px 20px !important;
+    margin-bottom: 24px;
+}
+
+.premium-form-row {
+    margin-bottom: 0 !important;
+}
+
+.premium-input, .premium-select .ant-select-selector {
+    border-radius: 8px !important;
+}
+
+/* Elegant Order Status Badges & Selects inside Grid */
+.status-select-pill .ant-select-selector {
+    border-radius: 20px !important;
+    font-weight: 600 !important;
+    padding: 0 16px !important;
+}
+
+.status-select-pill.status-new .ant-select-selector {
+    background-color: #e6f7ff !important;
+    border-color: #91d5ff !important;
+    color: #1890ff !important;
+}
+
+.status-select-pill.status-processing .ant-select-selector {
+    background-color: #f0f5ff !important;
+    border-color: #adc6ff !important;
+    color: #2f54eb !important;
+}
+
+.status-select-pill.status-hold .ant-select-selector {
+    background-color: #fffbe6 !important;
+    border-color: #ffe58f !important;
+    color: #faad14 !important;
+}
+
+.status-select-pill.status-canceled .ant-select-selector {
+    background-color: #fff1f0 !important;
+    border-color: #ffa39e !important;
+    color: #f5222d !important;
+}
+
+.status-select-pill.status-done .ant-select-selector {
+    background-color: #f6ffed !important;
+    border-color: #b7eb8f !important;
+    color: #52c41a !important;
 }
