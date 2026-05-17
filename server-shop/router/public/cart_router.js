@@ -3,6 +3,7 @@ import {
     clear_cart,
     get_cart,
     remove_item,
+    remove_many_items,
     sync_cart,
     update_cart
 } from "../../controllers/cart_controller.js";
@@ -14,6 +15,7 @@ const router = Router();
 router.get("/cart", get_cart);
 router.post("/cart/sync", sync_cart);
 router.put("/cart", update_cart);
+router.delete("/cart/many", remove_many_items);
 router.delete("/cart/:productId", remove_item);
 router.delete("/cart", clear_cart);
 

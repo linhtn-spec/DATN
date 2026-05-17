@@ -352,3 +352,12 @@
         font-size: 15px !important;
     }
 }
+
+/* Remove table row selection highlight */
+.cart-table-desktop .ant-table-tbody > tr.ant-table-row-selected > td {
+    background: inherit !important;
+}
+
+.cart-table-desktop .ant-table-tbody > tr.ant-table-row-selected:hover > td {
+    background: #fafafa !important; /* Keep a subtle hover effect if needed, or set to inherit */
+}

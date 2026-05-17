@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Descriptions, Flex, Form, Input, Radio, Select, Space, Table, Typography } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "../style/checkout.css";
 
 import { CreditCardOutlined, DisconnectOutlined, MoneyCollectOutlined, SendOutlined, TruckOutlined } from "@ant-design/icons";
@@ -31,6 +31,9 @@ function Checkout() {
     const cart = useContext(CartContext)
     const order = useContext(OrderContext)
     const { state: userState } = useContext(UserContext)
+    const location = useLocation()
+    // selectedItems: passed from cart page; fallback to full cart
+    const selectedItems = location.state?.selectedItems ?? null;
 
     const [subTotal, setSubtotal] = useState(0)
     const [options, setOptions] = useState([])
@@ -102,7 +105,8 @@ function Checkout() {
 
     const navigate = useNavigate();
     useEffect(() => {
-        setProducts(cart?.state?.currentCart?.map(item => ({
+        const source = selectedItems ?? cart?.state?.currentCart ?? [];
+        setProducts(source.map(item => ({
             id: item?.id,
             name: item?.name,
             originalPrice: item?.price,
@@ -115,7 +119,7 @@ function Checkout() {
         return () => {
             setProducts([])
         }
-    }, [setProducts, cart])
+    }, [setProducts, cart, selectedItems])
 
     useEffect(() => {
         if (products) {
@@ -134,11 +138,13 @@ function Checkout() {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
             key: 'name',
+            width: 250,
         },
         {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
+            width: 150,
             render: (text, row) => (
                 <Flex vertical>
                     <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
@@ -157,16 +163,20 @@ function Checkout() {
             dataIndex: 'unit',
             key: 'unit',
             align: 'center',
+            width: 100,
         },
         {
             title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 100,
+            align: 'center',
         },
         {
             title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
+            width: 150,
             render: (text, row) => (
                 <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
                     {(row.price * row.quantity).toLocaleString('vi-VN')}&nbsp;₫
@@ -230,7 +240,8 @@ function Checkout() {
     };
     const onFinish = (value) => {
         order?.dispatch({ type: ACTION_ORDER.ADD_ORDER, payload: value })
-        navigateConfirm()
+        // Forward selectedItems to confirm page
+        navigate('/client/checkout/confirm', { state: { selectedItems } })
     }
     useEffect(() => {
         window.scrollTo(0, 0)

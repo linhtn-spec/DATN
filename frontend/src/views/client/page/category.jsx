@@ -85,9 +85,9 @@ function Category() {
                             {categoryName || "DANH MỤC SẢN PHẨM"}
                         </Typography.Title>
                     </div>
-                    
+
                     <div className="results-count-pill">
-                        Hiển thị <b>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b>{Math.min(page * 8, total)}</b> trên <b>{total}</b> sản phẩm
+                        Hiển thị <b style={{ padding: '0px 2px' }}>{total !== 0 ? (page - 1) * 8 + 1 : 0}</b> - <b style={{ padding: '0px 2px' }}>{Math.min(page * 8, total)}</b> trên <b style={{ padding: '0px 2px' }}>{total}</b> sản phẩm
                     </div>
                 </div>
 
@@ -109,15 +109,15 @@ function Category() {
                                         pageSize={8}
                                         current={page}
                                         showSizeChanger={false}
-                                        onChange={(p) => setPage(p)} 
+                                        onChange={(p) => setPage(p)}
                                     />
                                 </Flex>
                             )}
                         </>
                     ) : (
                         <div className="empty-state-wrapper">
-                            <Empty 
-                                description={<span className="empty-text">Hiện tại chưa có sản phẩm nào trong danh mục này.</span>} 
+                            <Empty
+                                description={<span className="empty-text">Hiện tại chưa có sản phẩm nào trong danh mục này.</span>}
                             />
                         </div>
                     )}

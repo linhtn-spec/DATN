@@ -1,6 +1,6 @@
 import { updateLocalStorage } from "../../utils/updateLocalStorage";
 import { ACTION_CART } from "./action";
-import { syncCart, updateCartItem, removeCartItem, clearCart } from "../../services/cart_service";
+import { syncCart, updateCartItem, removeCartItem, clearCart, removeManyCartItems } from "../../services/cart_service";
 
 const initialCartState = {
     currentCart: JSON.parse(localStorage.getItem("cart"))?.currentCart ?? [],
@@ -154,6 +154,22 @@ export const cartReducer = (state = initialCartState, action) => {
                if(changedItem) updateCartItem(targetId, changedItem.quantityBuy).catch(e => console.error(e));
             }
 
+            return newState;
+        }
+
+        case ACTION_CART.REMOVE_CHECKED_OUT_ITEMS: {
+            // payload: string[] — array of productIds that were just checked out
+            const ids = action.payload;
+            const filtered = state.currentCart.filter(
+                (item) => !ids.includes(getItemId(item))
+            );
+            const newState = { ...state, currentCart: filtered };
+            updateLocalStorage(newState, "cart");
+
+            const user = JSON.parse(localStorage.getItem("user"))?.currentUser;
+            if (user) {
+                removeManyCartItems(ids).catch(e => console.error("Failed to batch-remove cart items", e));
+            }
             return newState;
         }
 

@@ -7,4 +7,5 @@ export const ACTION_CART = {
     MINUS_ITEM: "minusItem",
     SET_CART: "setCart",
     CLEAR_CART_LOCAL: "clearCartLocal",
+    REMOVE_CHECKED_OUT_ITEMS: "removeCheckedOutItems",
 }

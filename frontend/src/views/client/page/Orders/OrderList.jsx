@@ -1,6 +1,6 @@
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Breadcrumb, Button, Card, Empty, Flex, Pagination, Popconfirm, Table, Tag, Tooltip, Typography } from "antd";
+import { Breadcrumb, Button, Card, Empty, Flex, Modal, Pagination, Table, Tag, Tooltip, Typography } from "antd";
 import dayjs from "dayjs";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -27,11 +27,25 @@ export const OrderList = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Thao tác thành công", type: "success" })
+            Notification({ message: "Hủy đơn hàng thành công", type: "success" })
             queryClient.invalidateQueries({ queryKey: ['order_list_user'] })
         },
         onError: () => Notification({ message: "Đã có lỗi xảy ra", type: "error" })
     })
+
+    const showCancelConfirm = (orderId) => {
+        Modal.confirm({
+            title: 'Xác nhận hủy đơn hàng',
+            content: 'Bạn có chắc chắn muốn hủy đơn hàng này không? Hành động này không thể hoàn tác.',
+            centered: true,
+            okText: 'Có, hủy đơn',
+            cancelText: 'Không',
+            okButtonProps: { danger: true },
+            onOk() {
+                mutate({ id: orderId, orderStatus: 'canceled' })
+            }
+        });
+    }
 
     useEffect(() => {
         if (!isSuccess) return
@@ -108,19 +122,9 @@ export const OrderList = () => {
                         />
                     </Tooltip>
                     {record.orderStatus === 'new' ? (
-                        <Popconfirm
-                            title="Xác nhận hủy đơn"
-                            description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
-                            onConfirm={() => mutate({ id: record.id, orderStatus: 'canceled' })}
-                            okText="Có"
-                            cancelText="Không"
-                            placement="left"
-                            overlayStyle={{ width: "fit-content", minWidth: "250px" }}
-                        >
-                            <Tooltip title="Hủy đơn">
-                                <Button danger icon={<DeleteOutlined />} style={{ borderRadius: '6px' }} />
-                            </Tooltip>
-                        </Popconfirm>
+                        <Tooltip title="Hủy đơn">
+                            <Button danger icon={<DeleteOutlined />} style={{ borderRadius: '6px' }} onClick={() => showCancelConfirm(record.id)} />
+                        </Tooltip>
                     ) : (
                         <Button style={{ visibility: 'hidden' }} icon={<DeleteOutlined />} />
                     )}
@@ -206,18 +210,9 @@ export const OrderList = () => {
                                             Chi tiết
                                         </Button>
                                         {record.orderStatus === 'new' && (
-                                            <Popconfirm
-                                                title="Xác nhận hủy đơn"
-                                                description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
-                                                onConfirm={() => mutate({ id: record.id, orderStatus: 'canceled' })}
-                                                okText="Có" cancelText="Không"
-                                                placement="topRight"
-                                                overlayStyle={{ minWidth: '250px' }}
-                                            >
-                                                <Button danger size="small" icon={<DeleteOutlined />}>
-                                                    Hủy đơn
-                                                </Button>
-                                            </Popconfirm>
+                                            <Button danger size="small" icon={<DeleteOutlined />} onClick={() => showCancelConfirm(record.id)}>
+                                                Hủy đơn
+                                            </Button>
                                         )}
                                     </div>
                                 </div>

@@ -3,7 +3,7 @@ import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { Breadcrumb, Button, Descriptions, Flex, Form, Input, Radio, Select, Space, Table, Typography } from "antd";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { createBill } from "../../../services/payment_service";
 import { ACTION_CART, CartContext } from "../../../store/cart";
 import { ACTION_ORDER } from "../../../store/order";
@@ -31,6 +31,9 @@ function CheckoutConfirm() {
     const user = useContext(UserContext)
     const cart = useContext(CartContext)
     const order = useContext(OrderContext)
+    const location = useLocation()
+    // selectedItems passed from checkout page (originally selected in cart)
+    const selectedItems = location.state?.selectedItems ?? null;
 
     const [options, setOptions] = useState([])
     useEffect(() => {
@@ -46,7 +49,7 @@ function CheckoutConfirm() {
     }, [order, form])
     const navigate = useNavigate();
     const navigateCheckout = () => {
-        navigate('/client/checkout')
+        navigate('/client/checkout', { state: { selectedItems } })
     }
 
     const { data, isError } = useQuery({
@@ -71,37 +74,52 @@ function CheckoutConfirm() {
     })
 
     const navigateEnd = async () => {
+        // Build the products payload from selectedItems (or fall back to full cart)
+        const itemsToOrder = (selectedItems ?? cart?.state?.currentCart ?? []).map(item => ({
+            productId: item?.id,
+            subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price),
+            quantity: item?.quantityBuy
+        }));
+        // IDs to remove from cart after success
+        const checkedOutIds = (selectedItems ?? cart?.state?.currentCart ?? []).map(item => item?.id);
+        const isAllItems = !selectedItems || selectedItems.length === (cart?.state?.currentCart?.length ?? 0);
+
+        const removeFromCart = () => {
+            if (isAllItems) {
+                cart?.dispatch({ type: ACTION_CART.REMOVE_CART })
+            } else {
+                cart?.dispatch({ type: ACTION_CART.REMOVE_CHECKED_OUT_ITEMS, payload: checkedOutIds })
+            }
+        }
+
         if (order?.state?.currentOrder?.paymentMethod === 'vnpay') {
             notVnpay.mutate({
                 ...order?.state?.currentOrder,
-                products: cart?.state?.currentCart.map(item => ({
-                    productId: item?.id,
-                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price),
-                    quantity: item?.quantityBuy
-                })),
+                products: itemsToOrder,
                 userId: user?.state?.currentUser?.user_id,
                 tax: (subTotal * taxConfig.rate).toFixed(2)
             }, {
-                onSuccess: (res) => isVnpay.mutate({ amount: res?.data?.order?.total, language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note }),
+                onSuccess: (res) => {
+                    order?.dispatch({ type: ACTION_ORDER.REMOVE_ORDER })
+                    removeFromCart()
+                    isVnpay.mutate({ amount: res?.data?.order?.total, language: 'vn', bankCode: "VNBANK", orderId: res?.data?.order?._id, note: res?.data?.order?.note })
+                },
             })
         }
         else {
             notVnpay.mutate({
                 ...order?.state?.currentOrder,
-                products: cart?.state?.currentCart.map(item => ({
-                    productId: item?.id,
-                    subPrice: item?.quantityBuy * (item?.pricePromotion ? item?.price * (1 - parseFloat(item?.pricePromotion) / 100) : item?.price),
-                    quantity: item?.quantityBuy
-                })),
+                products: itemsToOrder,
                 userId: user?.state?.currentUser?.user_id,
                 tax: (subTotal * taxConfig.rate).toFixed(2)
             }, {
                 onSuccess: () => {
+                    order?.dispatch({ type: ACTION_ORDER.REMOVE_ORDER })
+                    removeFromCart()
                     Notification({ message: `Đặt hàng thành công!`, type: "success" })
                     navigate('/client/checkout/success')
                 }
-            }
-            )
+            })
         }
     }
 
@@ -140,7 +158,8 @@ function CheckoutConfirm() {
     const currentShippingFee = shippingFees[order?.state?.currentOrder?.shippingMethod] || 0;
 
     useEffect(() => {
-        setProducts(cart?.state?.currentCart?.map(item => ({
+        const source = selectedItems ?? cart?.state?.currentCart ?? [];
+        setProducts(source.map(item => ({
             id: item?.id,
             name: item?.name,
             originalPrice: item?.price,
@@ -153,7 +172,7 @@ function CheckoutConfirm() {
         return () => {
             setProducts([])
         }
-    }, [setProducts, cart])
+    }, [setProducts, cart, selectedItems])
 
     useEffect(() => {
         if (products) {
@@ -178,11 +197,13 @@ function CheckoutConfirm() {
             title: 'Sản phẩm',
             dataIndex: 'name',
             key: 'name',
+            width: 250,
         },
         {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
+            width: 150,
             render: (text, row) => (
                 <Flex vertical>
                     <Typography.Text className="promotion" style={{ whiteSpace: 'nowrap' }}>
@@ -201,16 +222,20 @@ function CheckoutConfirm() {
             dataIndex: 'unit',
             key: 'unit',
             align: 'center',
+            width: 100,
         },
         {
             title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 100,
+            align: 'center',
         },
         {
             title: 'Thành tiền',
             dataIndex: 'subtotal',
             key: 'subtotal',
+            width: 150,
             render: (text, row) => (
                 <Typography.Text style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
                     {(row.price * row.quantity).toLocaleString('vi-VN')}&nbsp;₫
@@ -266,10 +291,7 @@ function CheckoutConfirm() {
             },
         },
     };
-    const onFinish = () => {
-        order?.dispatch({ type: ACTION_ORDER.REMOVE_ORDER })
-        cart?.dispatch({ type: ACTION_CART.REMOVE_CART })
-    }
+    // Removed onFinish function since logic is moved to navigateEnd
 
 
     useEffect(() => {
@@ -292,7 +314,7 @@ function CheckoutConfirm() {
                     form={form}
                     layout="vertical"
                     style={{ width: "100%" }}
-                    onFinish={onFinish}
+                    onFinish={navigateEnd}
                 >
                     <Flex gap='large' wrap='wrap'>
                         <Flex vertical style={{ flex: '1 1 300px', width: '100%' }}>
@@ -384,7 +406,7 @@ function CheckoutConfirm() {
                                 <Button type="default" htmlType="button" onClick={navigateCheckout}>
                                     Quay lại
                                 </Button>
-                                <Button type="primary" htmlType="submit" onClick={navigateEnd}>
+                                <Button type="primary" htmlType="submit" loading={notVnpay.isPending || isVnpay.isPending}>
                                     Đặt hàng
                                 </Button>
                             </Flex>

@@ -221,6 +221,26 @@ export const remove_item = asyncHandler(async (req, res) => {
     return res.status(200).json(cart);
 });
 
+// Remove multiple items from cart at once
+export const remove_many_items = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const { productIds } = req.body; // Array of productId strings
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+        return res.status(400).json({ message: "Danh sách sản phẩm không hợp lệ" });
+    }
+
+    let cart = await cart_model.findOne({ userId });
+    if (cart) {
+        cart.products = cart.products.filter(
+            p => !productIds.includes(p.productId.toString())
+        );
+        await cart.save();
+    }
+
+    return res.status(200).json({ message: "Đã xóa các sản phẩm khỏi giỏ hàng", cart });
+});
+
 // Clear cart
 export const clear_cart = asyncHandler(async (req, res) => {
     const userId = req.user._id;

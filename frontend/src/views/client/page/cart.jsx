@@ -1,5 +1,5 @@
 import { DeleteOutlined, MinusOutlined, PlusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Empty, Flex, InputNumber, Pagination, Table, Typography } from 'antd';
+import { Breadcrumb, Button, Checkbox, Empty, Flex, InputNumber, Pagination, Table, Typography, Modal } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ACTION_CART, CartContext } from '../../../store/cart';
@@ -13,6 +13,20 @@ function Cart() {
     const { state, dispatch } = useContext(CartContext)
     const PAGE_SIZE = 6;
     const [cartPage, setCartPage] = useState(1);
+
+    // -- Persist selection in localStorage so it survives navigation & reload --
+    const SELECTION_KEY = 'cart_selected_ids';
+    const [selectedRowKeys, setSelectedRowKeys] = useState(() => {
+        try {
+            const saved = localStorage.getItem(SELECTION_KEY);
+            return saved ? JSON.parse(saved) : null; // null = "not initialised yet"
+        } catch {
+            return null;
+        }
+    });
+
+    // -- Helper: safe selected keys (treat null as []) --
+    const safeSelected = selectedRowKeys ?? [];
 
     // Helper: normalize quantity to a plain number regardless of backend shape
     const getMaxQty = (qty) => {
@@ -45,8 +59,18 @@ function Cart() {
     };
 
     const deleteItem = (id) => {
-        dispatch({ type: ACTION_CART.DELETE_ITEM, payload: id })
-        Notification({ message: "Xóa sản phẩm thành công!", type: "success" })
+        Modal.confirm({
+            title: 'Xác nhận xóa',
+            content: 'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            centered: true,
+            onOk() {
+                dispatch({ type: ACTION_CART.DELETE_ITEM, payload: id });
+                Notification({ message: "Xóa sản phẩm thành công!", type: "success" });
+            },
+        });
     }
 
     const onQuantityChange = (id, value) => {
@@ -55,10 +79,37 @@ function Cart() {
     };
 
     const checkout = () => {
-        navigate("/client/checkout")
+        const selectedItems = products.filter(p => safeSelected.includes(p.id));
+        navigate("/client/checkout", { state: { selectedItems } });
     }
 
-    const totalAmount = products.reduce((sum, item) => sum + item.price * item.quantityBuy, 0);
+    const totalAmount = products
+        .filter(p => safeSelected.includes(p.id))
+        .reduce((sum, item) => sum + item.price * item.quantityBuy, 0);
+
+    // -- Initialise to "select all" on first visit (selectedRowKeys === null) --
+    useEffect(() => {
+        if (selectedRowKeys === null && products.length > 0) {
+            const allIds = products.map(p => p.id);
+            setSelectedRowKeys(allIds);
+            localStorage.setItem(SELECTION_KEY, JSON.stringify(allIds));
+        }
+    }, [products.length, selectedRowKeys]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // -- Persist to localStorage whenever selection changes --
+    useEffect(() => {
+        if (selectedRowKeys !== null) {
+            localStorage.setItem(SELECTION_KEY, JSON.stringify(selectedRowKeys));
+        }
+    }, [selectedRowKeys]);
+
+    // -- Keep selection valid when items are deleted from cart --
+    useEffect(() => {
+        if (selectedRowKeys === null) return;
+        setSelectedRowKeys(prev => (prev ?? []).filter(key => products.some(p => p.id === key)));
+    }, [products.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
 
     const columns = [
         {
@@ -162,6 +213,19 @@ function Cart() {
         },
     ];
 
+    // Row selection config for the table
+    const rowSelection = {
+        selectedRowKeys: safeSelected,
+        onChange: (keys) => setSelectedRowKeys(keys),
+        columnTitle: (
+            <Checkbox
+                indeterminate={safeSelected.length > 0 && safeSelected.length < products.length}
+                checked={products.length > 0 && safeSelected.length === products.length}
+                onChange={(e) => setSelectedRowKeys(e.target.checked ? products.map(p => p.id) : [])}
+            />
+        ),
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0)
         document.title = "Giỏ hàng"
@@ -201,15 +265,36 @@ function Cart() {
                                 columns={columns}
                                 dataSource={products}
                                 scroll={{ x: 'max-content' }}
+                                rowSelection={rowSelection}
                                 pagination={{ hideOnSinglePage: true, pageSize: 6, total: state?.currentCart?.length ?? 0, defaultCurrent: 1, showSizeChanger: false }}
                             />
                         </div>
 
                         {/* Mobile: Card List */}
                         <div className="cart-list-mobile">
+                            {/* Select All checkbox for mobile */}
+                            <Flex align="center" style={{ padding: '8px 0 12px', borderBottom: '1px solid #f0f0f0', marginBottom: 12 }}>
+                                <Checkbox
+                                    indeterminate={safeSelected.length > 0 && safeSelected.length < products.length}
+                                    checked={products.length > 0 && safeSelected.length === products.length}
+                                    onChange={(e) => setSelectedRowKeys(e.target.checked ? products.map(p => p.id) : [])}
+                                >
+                                    Chọn tất cả ({safeSelected.length}/{products.length})
+                                </Checkbox>
+                            </Flex>
                             {products.slice((cartPage - 1) * PAGE_SIZE, cartPage * PAGE_SIZE).map((row) => (
                                 <div key={row.id} className="cart-card-mobile">
                                     <Flex gap={12} align="flex-start" style={{ width: '100%', overflow: 'hidden' }}>
+                                        {/* Checkbox for mobile */}
+                                        <Checkbox
+                                            checked={safeSelected.includes(row.id)}
+                                            onChange={(e) => {
+                                                setSelectedRowKeys(prev =>
+                                                    e.target.checked ? [...(prev ?? []), row.id] : (prev ?? []).filter(k => k !== row.id)
+                                                );
+                                            }}
+                                            style={{ marginTop: 4, flexShrink: 0 }}
+                                        />
                                         {/* Image */}
                                         <div className="cart-card-img">
                                             <img
@@ -285,7 +370,9 @@ function Cart() {
                         {/* Total + Checkout – always visible */}
                         <div className="cart-summary">
                             <Flex justify="space-between" align="center" className="cart-total">
-                                <Typography.Text strong style={{ fontSize: 16 }}>Tổng cộng:</Typography.Text>
+                                <Typography.Text strong style={{ fontSize: 16 }}>
+                                    Tổng cộng ({safeSelected.length} sản phẩm):
+                                </Typography.Text>
                                 <Typography.Text strong style={{ fontSize: 20, color: '#ff2c26' }}>
                                     {totalAmount.toLocaleString('vi-VN')}&nbsp;₫
                                 </Typography.Text>
@@ -296,10 +383,10 @@ function Cart() {
                                 block
                                 icon={<ShoppingCartOutlined />}
                                 onClick={checkout}
-                                disabled={!state?.currentCart || state?.currentCart?.length < 1}
+                                disabled={safeSelected.length === 0}
                                 className="cart-checkout-btn"
                             >
-                                TIẾN HÀNH THANH TOÁN
+                                TIẾN HÀNH THANH TOÁN ({safeSelected.length})
                             </Button>
                         </div>
                     </>

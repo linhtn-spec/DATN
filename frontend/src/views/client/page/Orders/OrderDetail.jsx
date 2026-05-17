@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Breadcrumb, Button, Card, Col, Divider, Flex, Image, Popconfirm, Row, Steps, Table, Tag, Typography } from 'antd'
+import { Breadcrumb, Button, Card, Col, Divider, Flex, Image, Modal, Row, Steps, Table, Tag, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
@@ -21,11 +21,26 @@ export const OrderDetail = () => {
     const { mutate } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
-            Notification({ message: "Cảm ơn bạn đã thao tác", type: "success" })
-            queryClient.invalidateQueries({ queryKey: ['order_list_user', 'detail_order_client'] })
+            Notification({ message: "Hủy đơn hàng thành công", type: "success" })
+            queryClient.invalidateQueries({ queryKey: ['detail_order_client'] })
+            queryClient.invalidateQueries({ queryKey: ['order_list_user'] })
         },
         onError: () => Notification({ message: "Đã có lỗi xảy ra", type: "error" })
     })
+
+    const showCancelConfirm = () => {
+        Modal.confirm({
+            title: 'Xác nhận hủy đơn hàng',
+            content: 'Bạn có chắc chắn muốn hủy đơn hàng này không? Hành động này không thể hoàn tác.',
+            centered: true,
+            okText: 'Có, hủy đơn',
+            cancelText: 'Không',
+            okButtonProps: { danger: true },
+            onOk() {
+                mutate({ id: order_id, orderStatus: 'canceled' })
+            }
+        });
+    }
 
     useEffect(() => {
         if (!isSuccess) return
@@ -143,19 +158,9 @@ export const OrderDetail = () => {
                         </div>
 
                         {info?.orderStatus === 'new' && (
-                            <Popconfirm
-                                title="Xác nhận hủy đơn"
-                                description="Bạn có chắc chắn muốn hủy đơn hàng này không?"
-                                onConfirm={() => mutate({ id: order_id, orderStatus: 'canceled' })}
-                                okText="Có"
-                                cancelText="Không"
-                                placement="bottomRight"
-                                overlayStyle={{ width: "fit-content", minWidth: "250px" }}
-                            >
-                                <Button danger size="large" style={{ borderRadius: '6px', fontWeight: 500 }}>
-                                    Hủy đơn hàng
-                                </Button>
-                            </Popconfirm>
+                            <Button danger size="large" style={{ borderRadius: '6px', fontWeight: 500 }} onClick={showCancelConfirm}>
+                                Hủy đơn hàng
+                            </Button>
                         )}
                     </Flex>
 

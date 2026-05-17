@@ -19,3 +19,7 @@ export const removeCartItem = async (productId) => {
 export const clearCart = async () => {
     return await api.delete("/cart");
 };
+
+export const removeManyCartItems = async (productIds) => {
+    return await api.delete("/cart/many", { data: { productIds } });
+};
