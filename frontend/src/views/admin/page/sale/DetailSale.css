@@ -1,18 +1,71 @@
-.crud_user input::-webkit-outer-spin-button,
-.crud_user input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.crud_user {
+    padding-bottom: 40px;
+    width: 100%;
 }
 
-.crud_user input[type=number] {
-    -moz-appearance: textfield;
+.section-title {
+    margin-bottom: 24px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1a3353 !important;
 }
 
-.detail_rating form label {
-    font-weight: 600 !important;
-    font-size: 18px !important;
+.glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 16px !important;
 }
 
-.detail_rating form .ant-typography {
-    font-size: 16px ;
+.shadow-sm {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.status-item {
+    padding: 4px 0;
+}
+
+.premium-form .ant-form-item-label label {
+    font-weight: 600;
+    color: #595959;
+}
+
+.premium-form .ant-input-lg, 
+.premium-form .ant-select-lg .ant-select-selector,
+.premium-form .ant-input-number-lg {
+    border-radius: 8px !important;
+}
+
+.promotion-item {
+    background: rgba(245, 247, 250, 0.6);
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.promotion-item:hover {
+    background: rgba(240, 245, 255, 0.8);
+    border-color: #adc6ff;
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.08);
+}
+
+.promotion-item-header {
+    font-weight: 600;
+    font-size: 15px;
+    color: #1a3353;
+}
+
+.delete-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-add-product {
+    border-dashed: true;
+    border-radius: 8px;
+    font-weight: 600;
 }

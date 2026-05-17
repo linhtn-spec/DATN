@@ -1,6 +1,11 @@
 import {
     MinusCircleOutlined,
-    PlusOutlined
+    PlusOutlined,
+    CalendarOutlined,
+    CheckCircleOutlined,
+    GiftOutlined,
+    ShoppingOutlined,
+    PercentageOutlined
 } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -12,7 +17,10 @@ import {
     InputNumber,
     Select,
     Switch,
-    Typography
+    Typography,
+    Col,
+    Row,
+    Divider
 } from 'antd';
 import Card from "antd/es/card/Card";
 import { useEffect, useState } from "react";
@@ -28,32 +36,19 @@ import { productAll } from "../../../../services/product_service";
 import { addSale, detailSale, updateSale } from "../../../../services/sale_service";
 import { queryClient } from "../../../../main";
 import Notification from "../../../../utils/configToastify";
+import SaleFormSkeleton from "./SaleFormSkeleton";
 dayjs.locale('vi')
-
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 100 },
-        sm: { span: 60 },
-    },
-    wrapperCol: {
-        xs: { span: 90 },
-        sm: { span: 40 },
-    },
-};
 
 export function DetailSale() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-
-    const [products, setProducts] = useState([])
-
-    const [condition, setCondition] = useState(false)
-    const applyDateValue = Form.useWatch('applyDate', form)
-    const dueDateValue = Form.useWatch('dueDate', form)
-    const productValues = Form.useWatch('products', form)
-    console.log(productValues);
-
-    const { sale_id } = useParams()
+    const [products, setProducts] = useState([]);
+    const [condition, setCondition] = useState(false);
+    
+    const applyDateValue = Form.useWatch('applyDate', form);
+    const dueDateValue = Form.useWatch('dueDate', form);
+    
+    const { sale_id } = useParams();
 
     const createSaleRequest = useMutation({
         mutationFn: (data) => condition ? updateSale(data) : addSale(data),
@@ -72,18 +67,15 @@ export function DetailSale() {
         queryFn: () => productAll()
     })
 
-
     const querySaleDetail = useQuery({
         queryKey: ['sale_detail_admin', sale_id],
         queryFn: () => detailSale(sale_id),
         enabled: !!sale_id
     })
 
-
     useEffect(() => {
         if (!querySaleDetail.isSuccess) return
         const rawData = querySaleDetail.data?.data
-        console.log(rawData);
         form.setFieldValue('applyDate', dayjs(rawData?.applyDate))
         form.setFieldValue('dueDate', dayjs(rawData?.dueDate))
         form.setFieldValue('isActive', rawData?.isActive)
@@ -111,141 +103,197 @@ export function DetailSale() {
         })))
     }, [queryAllProduct.data, queryAllProduct.isSuccess])
 
+    const showSkeleton = querySaleDetail.isFetching || queryAllProduct.isLoading || createSaleRequest.isPending;
+
     return (
-        <Flex className="crud_user  container" vertical>
+        <Flex className="crud_user container" vertical>
             <AdminHeader 
                 title={condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"} 
                 icon={<PlusOutlined />} 
             />
-            <Card
-                title={condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}
-                bordered={false}
-                className="form"
-            >
-                <Flex justify="center" >
-                    <Form {...formItemLayout} style={{ width: "100%" }}
-                        form={form}
-                        onFinish={onFinish}
-                    >
-                        <Flex vertical>
-                            <Flex gap={"80px"}>
-                                <ConfigProvider locale={locale} width={"70%"}>
-                                    <Form.Item
-                                        label={"Ngày áp dụng"}
-                                        name="applyDate"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Vui lòng nhập ngày áp dụng"
-                                            }
-                                        ]}
-                                        style={{ width: "100%" }} required
-                                    >
-                                        <DatePicker placeholder='Ngày áp dụng'
-                                            style={{ width: "100%" }}
-                                            maxDate={dueDateValue ? dayjs(dueDateValue).subtract(1, 'day') : ''} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label={"Ngày kết thúc"}
-                                        name="dueDate"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Vui lòng nhập ngày kết thúc"
-                                            }
-                                        ]}
-                                        style={{ width: "100%" }} required
-                                    >
-                                        <DatePicker
-                                            style={{ width: "100%" }}
+            
+            {showSkeleton ? (
+                <SaleFormSkeleton />
+            ) : (
+                <Form 
+                    style={{ width: "100%" }}
+                    form={form}
+                    onFinish={onFinish}
+                    layout="vertical"
+                    className="premium-form"
+                    initialValues={{ isActive: true }}
+                >
+                    <Row gutter={[24, 24]}>
+                        {/* Left Column: Schedule & Status */}
+                        <Col xs={24} lg={9}>
+                            <Flex vertical gap={24}>
+                                <Card bordered={false} className="glass-card shadow-sm schedule-card">
+                                    <Typography.Title level={5} className="section-title">
+                                        <CalendarOutlined /> Thời gian áp dụng
+                                    </Typography.Title>
+                                    
+                                    <ConfigProvider locale={locale}>
+                                        <Form.Item
+                                            label="Ngày bắt đầu"
+                                            name="applyDate"
+                                            rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu" }]}
+                                        >
+                                            <DatePicker 
+                                                placeholder="Ngày áp dụng"
+                                                size="large"
+                                                style={{ width: "100%" }}
+                                                maxDate={dueDateValue ? dayjs(dueDateValue).subtract(1, 'day') : ''} 
+                                            />
+                                        </Form.Item>
+                                        
+                                        <Form.Item
+                                            label="Ngày kết thúc"
+                                            name="dueDate"
+                                            rules={[{ required: true, message: "Vui lòng chọn ngày kết thúc" }]}
+                                        >
+                                            <DatePicker
+                                                placeholder="Ngày kết thúc" 
+                                                size="large"
+                                                style={{ width: "100%" }}
+                                                minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} 
+                                            />
+                                        </Form.Item>
+                                    </ConfigProvider>
+                                </Card>
 
-                                            placeholder='Ngày kết thúc' minDate={applyDateValue ? dayjs(applyDateValue).add(1, 'day') : ''} />
-                                    </Form.Item>
-                                </ConfigProvider>
-                            </Flex>
-
-                            <Flex gap={10}>
-                                <Form.Item name='isActive' label="Trạng thái" required>
-                                    <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
-                                </Form.Item>
-                            </Flex>
-                        </Flex>
-                        <Flex>
-                            <Form.List name="products" rules={[
-                                {
-                                    required: true,
-                                    message: "Vui lòng chọn ít nhất một sản phẩm"
-                                }
-                            ]}>
-                                {(fields, { add, remove }) =>
-                                (<Flex vertical gap={'20px'} style={{ width: "100%" }}>
-                                    {fields.map((field, index) => (
-                                        <Flex key={field.key} align="center" gap={'20px'}>
-                                            <Typography.Title style={{ marginBottom: 0, fontWeight: 600, fontSize: '18px' }}>{`Sản phẩm ${index + 1}`}</Typography.Title>
-                                            <Form.Item
-                                                name={[field.name, "productId"]}
-                                                fieldId={[field.key, "productId"]}
-                                                label="Tên sản phẩm"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: "Vui lòng chọn sản phẩm"
-                                                    }
-                                                ]}
-                                                style={{ marginBottom: 0, width: "40%" }}
-                                            >
-                                                <Select
-                                                    virtual={false}
-
-                                                    options={products}
-                                                    showSearch
-                                                    optionFilterProp="children"
-                                                    filterOption={(input, option) => (option?.text ?? '').includes(input)}
-                                                    filterSort={(optionA, optionB) =>
-                                                        (optionA?.text ?? '').toLowerCase().localeCompare((optionB?.text ?? '').toLowerCase())
-                                                    }
-                                                    placeholder={'Tên sản phẩm'}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                name={[field.name, "pricePromotion"]}
-                                                fieldId={[field.key, "pricePromotion"]}
-                                                label="Giảm giá (%)"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: "Vui lòng nhập phần trăm giảm giá (0-100)"
-                                                    },
-                                                ]}
-                                                style={{ marginBottom: 0, width: "20%" }}
-
-                                            >
-                                                <InputNumber min={0} max={100} placeholder="Giảm giá (0-100)" step={1} />
-                                            </Form.Item>
-                                            <Flex style={{ width: "10%", marginLeft: "70px" }}>
-                                                <MinusCircleOutlined style={{ color: 'red' }} onClick={() => remove(field.name)} />
-                                            </Flex>
-                                        </Flex>
-                                    ))}
-                                    <Flex>
-                                        <Form.Item>
-                                            <Button onClick={() => add()}>Thêm sản phẩm </Button>
+                                <Card bordered={false} className="glass-card shadow-sm status-card">
+                                    <Typography.Title level={5} className="section-title">
+                                        <CheckCircleOutlined /> Trạng thái kích hoạt
+                                    </Typography.Title>
+                                    <Flex justify="space-between" align="center" className="status-item">
+                                        <Typography.Text strong>Kích hoạt khuyến mãi</Typography.Text>
+                                        <Form.Item name='isActive' valuePropName="checked" style={{ marginBottom: 0 }}>
+                                            <Switch checkedChildren='Bật' unCheckedChildren="Khóa" />
                                         </Form.Item>
                                     </Flex>
-                                </Flex>)
-                                }
-                            </Form.List>
-                        </Flex>
-                        <Form.Item>
-                            <Flex justify="center" gap={20} className="group_btn">
-                                <Button type="primary" htmlType="submit" >
-                                    {condition ? "Cập nhật" : "Thêm mới"}
-                                </Button>
+                                    <Divider style={{ margin: '16px 0' }} />
+                                    <Typography.Paragraph type="secondary" style={{ fontSize: 13, marginBottom: 0 }}>
+                                        Khi tắt trạng thái, tất cả sản phẩm thuộc đợt khuyến mãi này sẽ trở lại giá gốc ngay lập tức.
+                                    </Typography.Paragraph>
+                                </Card>
                             </Flex>
-                        </Form.Item>
-                    </Form>
-                </Flex>
-            </Card>
+                        </Col>
+
+                        {/* Right Column: Products List */}
+                        <Col xs={24} lg={15}>
+                            <Card bordered={false} className="glass-card shadow-sm details-card">
+                                <Typography.Title level={5} className="section-title">
+                                    <GiftOutlined /> Danh sách sản phẩm áp dụng
+                                </Typography.Title>
+                                
+                                <Form.List name="products" rules={[
+                                    {
+                                        validator: async (_, value) => {
+                                            if (!value || value.length < 1) {
+                                                return Promise.reject(new Error("Vui lòng thêm ít nhất một sản phẩm"));
+                                            }
+                                        }
+                                    }
+                                ]}>
+                                    {(fields, { add, remove }) => (
+                                        <Flex vertical style={{ width: "100%" }}>
+                                            {fields.map((field, index) => (
+                                                <div key={field.key} className="promotion-item">
+                                                    <Row gutter={16} align="middle">
+                                                        <Col xs={24} sm={2} style={{ marginBottom: { xs: 8, sm: 0 } }}>
+                                                            <Typography.Text className="promotion-item-header">
+                                                                #{index + 1}
+                                                            </Typography.Text>
+                                                        </Col>
+                                                        
+                                                        <Col xs={24} sm={13}>
+                                                            <Form.Item
+                                                                name={[field.name, "productId"]}
+                                                                fieldId={[field.key, "productId"]}
+                                                                label="Sản phẩm"
+                                                                rules={[{ required: true, message: "Chọn sản phẩm" }]}
+                                                                style={{ marginBottom: 0 }}
+                                                            >
+                                                                <Select
+                                                                    virtual={false}
+                                                                    options={products}
+                                                                    showSearch
+                                                                    optionFilterProp="label"
+                                                                    placeholder="Chọn sản phẩm áp dụng..."
+                                                                    size="large"
+                                                                    suffixIcon={<ShoppingOutlined />}
+                                                                />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        
+                                                        <Col xs={20} sm={7}>
+                                                            <Form.Item
+                                                                name={[field.name, "pricePromotion"]}
+                                                                fieldId={[field.key, "pricePromotion"]}
+                                                                label="Giảm giá (%)"
+                                                                rules={[{ required: true, message: "Nhập % giảm" }]}
+                                                                style={{ marginBottom: 0 }}
+                                                            >
+                                                                <InputNumber 
+                                                                    min={0} 
+                                                                    max={100} 
+                                                                    placeholder="0 - 100" 
+                                                                    step={1} 
+                                                                    size="large" 
+                                                                    style={{ width: "100%" }}
+                                                                    prefix={<PercentageOutlined />}
+                                                                />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        
+                                                        <Col xs={4} sm={2} className="delete-btn-container" style={{ marginTop: 28 }}>
+                                                            <Button 
+                                                                type="text"
+                                                                danger
+                                                                shape="circle"
+                                                                icon={<MinusCircleOutlined style={{ fontSize: 20 }} />} 
+                                                                onClick={() => remove(field.name)} 
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            ))}
+                                            
+                                            <Form.Item style={{ marginTop: 8 }}>
+                                                <Button 
+                                                    type="dashed" 
+                                                    onClick={() => add()} 
+                                                    block 
+                                                    size="large"
+                                                    icon={<PlusOutlined />}
+                                                    className="btn-add-product"
+                                                >
+                                                    Thêm sản phẩm khuyến mãi
+                                                </Button>
+                                            </Form.Item>
+                                        </Flex>
+                                    )}
+                                </Form.List>
+
+                                <Flex justify="flex-end" gap={12} style={{ marginTop: 32 }}>
+                                    <Button size="large" onClick={() => navigate('/admin/sales')}>
+                                        Hủy bỏ
+                                    </Button>
+                                    <Button 
+                                        type="primary" 
+                                        htmlType="submit" 
+                                        size="large" 
+                                        loading={createSaleRequest.isPending}
+                                        style={{ paddingLeft: 40, paddingRight: 40, borderRadius: 8 }}
+                                    >
+                                        {condition ? "Cập nhật khuyến mãi" : "Tạo khuyến mãi"}
+                                    </Button>
+                                </Flex>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Form>
+            )}
         </Flex >
     );
 }
