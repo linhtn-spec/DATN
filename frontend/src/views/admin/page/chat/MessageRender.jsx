@@ -2,6 +2,7 @@ import { Flex } from 'antd'
 import React from 'react'
 import './MessageRender.css'
 import Typography from 'antd/es/typography/Typography'
+import { CheckCircleOutlined, EyeOutlined } from '@ant-design/icons'
 export const MessageRender = ({ message, append, currentUserId }) => {
     const formatTime = (time) => {
         if (!time) return "";
@@ -14,10 +15,12 @@ export const MessageRender = ({ message, append, currentUserId }) => {
 
     return (
         <Flex vertical className='message_render' gap={'12px'} style={{ padding: "0 10px" }}>
-            {uniqueMessages.map((item) => {
+            {uniqueMessages.map((item, index) => {
                 const isMe = item?.userId === currentUserId;
+                const isLastMyMessage = isMe && uniqueMessages.slice(index + 1).findIndex(m => m.userId === currentUserId) === -1;
+                
                 return (
-                    <Flex justify={isMe ? 'flex-end' : 'flex-start'} key={item?.id}>
+                    <Flex vertical align={isMe ? 'flex-end' : 'flex-start'} key={item?.id}>
                         <div className={isMe ? 'message-bubble-admin' : 'message-bubble-user'}>
                             <Typography.Text className="message-content">{item?.content}</Typography.Text>
                             {item?.day && (
@@ -26,6 +29,21 @@ export const MessageRender = ({ message, append, currentUserId }) => {
                                 </div>
                             )}
                         </div>
+                        {isLastMyMessage && (
+                            <div style={{ fontSize: '11px', color: '#8c8c8c', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                {item?.isRead ? (
+                                    <>
+                                        <EyeOutlined style={{ fontSize: '12px' }} />
+                                        <span>Đã xem</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <CheckCircleOutlined style={{ fontSize: '11px' }} />
+                                        <span>Đã gửi</span>
+                                    </>
+                                )}
+                            </div>
+                        )}
                     </Flex>
                 )
             })}

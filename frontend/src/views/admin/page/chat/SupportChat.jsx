@@ -1,5 +1,5 @@
 import { SendOutlined, UserOutlined } from '@ant-design/icons'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Avatar, Button, Flex, Form, Input, Layout, Result, Typography } from 'antd'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router'
@@ -31,23 +31,28 @@ export const SupportChat = () => {
     const { state } = useContext(UserContext)
     const [form] = Form.useForm()
     const contentRef = useRef(null);
+    const queryClient = useQueryClient();
     const socket = useMemo(() => io(END_POINT), [chat_id]);
 
-    const { data, isSuccess, isLoading } = useQuery({
+    const { data, isSuccess, isLoading, refetch } = useQuery({
         queryKey: ['chat_support_admin_detail', chat_id],
-        queryFn: () => detail_room(chat_id),
+        queryFn: () => detail_room(chat_id, true),
         enabled: !!chat_id
     })
 
     useEffect(() => {
         if (!isSuccess || !data) return;
 
+        // Invalidate list chat query to instantly update the sidebar unread count
+        queryClient.invalidateQueries({ queryKey: ['list_chat_admin'] });
+
         setMessage(data?.data?.message.map(item => ({
             content: item?.content,
             role: item?.userId?.role,
             userId: item?.userId?._id,
             id: item?._id,
-            day: item?.day
+            day: item?.day,
+            isRead: item?.isRead
         })))
 
         setInfo({
@@ -73,7 +78,8 @@ export const SupportChat = () => {
                 id: newMsg._id,
                 userId: newMsg.userId?._id || state?.currentUser?.user_id,
                 role: newMsg.userId?.role || state?.currentUser?.role,
-                day: newMsg.day
+                day: newMsg.day,
+                isRead: false
             };
             setUni(prev => [...prev, mappedMsg]);
         },
@@ -135,18 +141,29 @@ export const SupportChat = () => {
     useEffect(() => {
         socket.on("message recieved", (newMessageReceived) => {
             if (newMessageReceived) {
+                refetch();
                 const rawData = newMessageReceived?.message.map(item => ({
                     content: item?.content,
                     id: item?._id,
                     userId: item?.userId?._id,
                     role: item?.userId?.role,
-                    day: item?.day
+                    day: item?.day,
+                    isRead: item?.isRead
                 }))
                 const filteredArr1 = rawData.filter(item => !message.some(m => m.id === item.id));
                 setUni(filteredArr1)
             }
         });
-        return () => socket.off("message recieved");
+
+        socket.on("messages read", () => {
+            setMessage(prev => prev.map(m => ({ ...m, isRead: true })));
+            setUni(prev => prev.map(m => ({ ...m, isRead: true })));
+        });
+
+        return () => {
+            socket.off("message recieved");
+            socket.off("messages read");
+        };
     }, [socket, message]);
 
     if (!chat_id) {

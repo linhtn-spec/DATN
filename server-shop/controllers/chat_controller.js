@@ -26,6 +26,25 @@ const getChatroomDetail = async (req, res) => {
         if (!chatroom)
             return res.status(200).json({ roomId: roomId, message: [] });
 
+        // Mark messages from others as read
+        let hasChanges = false;
+        if (req.query.markRead === 'true') {
+            chatroom.message.forEach((msg) => {
+                const senderId = msg.userId && msg.userId._id ? msg.userId._id.toString() : msg.userId?.toString();
+                if (senderId && senderId !== _id.toString() && !msg.isRead) {
+                    msg.isRead = true;
+                    hasChanges = true;
+                }
+            });
+            if (hasChanges) {
+                await chatroom.save();
+                const io = req.app.get('socketio');
+                if (io) {
+                    io.to(roomId.toString()).emit("messages read");
+                }
+            }
+        }
+
         const sortedMessages = chatroom.message.sort((a, b) => a.day - b.day);
 
         return res.status(200).json({ ...chatroom.toObject(), message: sortedMessages });

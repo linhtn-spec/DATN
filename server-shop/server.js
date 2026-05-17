@@ -69,6 +69,7 @@ socketIO.on('connection', (socket) => {
 
         // Broadcast to the room (both customer and staff should be in this room)
         socket.to(roomId).emit("message recieved", newMessageReceived);
+        socket.broadcast.emit("chat list update");
     });
 
     socket.on("typing", (room) => socket.in(room).emit("typing"));

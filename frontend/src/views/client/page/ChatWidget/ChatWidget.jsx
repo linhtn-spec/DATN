@@ -36,9 +36,11 @@ export const ChatWidget = () => {
     const [istyping, setIsTyping] = useState(false);
     const [dataReceive, setDataReceive] = useState({})
     const [message, setMessage] = useState([])
+    const [isOpen, setIsOpen] = useState(false);
+    
     const { data, refetch, isSuccess } = useQuery({
-        queryKey: ['chat_user', userId],
-        queryFn: () => detail_room(userId),
+        queryKey: ['chat_user', userId, isOpen],
+        queryFn: () => detail_room(userId, isOpen),
         enabled: !!userId,
         refetchOnWindowFocus: false
     })
@@ -53,7 +55,9 @@ export const ChatWidget = () => {
                 content: item?.content,
                 userId: item?.userId?._id,
                 role: item?.userId?.role,
-                id: item?._id
+                id: item?._id,
+                day: item?.day,
+                isRead: item?.isRead
             })))
             setLoading(false);
             socket.emit("join chat", userId);
@@ -73,7 +77,8 @@ export const ChatWidget = () => {
                 id: newMsg._id,
                 userId: newMsg.userId?._id || userId,
                 role: newMsg.userId?.role || state?.currentUser?.role,
-                day: newMsg.day
+                day: newMsg.day,
+                isRead: false
             };
             setUni(prev => [...prev, mappedMsg]);
         },
@@ -123,10 +128,16 @@ export const ChatWidget = () => {
     }, [socket, userId]);
     const [uni, setUni] = useState([])
 
+    const unreadCount = useMemo(() => {
+        if (!isSuccess || !data?.data?.message) return 0;
+        return data.data.message.filter(msg => {
+            const senderId = msg.userId && msg.userId._id ? msg.userId._id.toString() : msg.userId?.toString();
+            return !msg.isRead && senderId !== userId;
+        }).length;
+    }, [data, isSuccess, userId]);
 
     useEffect(() => {
         if (contentRef.current) {
-            // Increased delay to 300ms to ensure all UI animations/renders are complete
             const timer = setTimeout(() => {
                 if (contentRef.current) {
                     contentRef.current.scrollTop = contentRef.current.scrollHeight;
@@ -135,29 +146,41 @@ export const ChatWidget = () => {
             return () => clearTimeout(timer);
         }
     }, [message, uni, istyping]);
+
     useEffect(() => {
         socket.on("message recieved", (newMessageReceived) => {
             if (newMessageReceived) {
+                refetch();
                 const rawData = newMessageReceived?.message.map(item => ({ 
                     content: item?.content, 
                     id: item?._id, 
                     userId: item?.userId?._id,
                     role: item?.userId?.role,
-                    day: item?.day
+                    day: item?.day,
+                    isRead: item?.isRead
                 }))
                 const filteredArr1 = rawData.filter(item => !message.some(m => m.id === item.id));
                 setUni(filteredArr1)
             }
         });
-        return () => socket.off("message recieved");
-    }, [socket, message]);
 
-    const [isOpen, setIsOpen] = useState(false);
+        socket.on("messages read", () => {
+            setMessage(prev => prev.map(m => ({ ...m, isRead: true })));
+            setUni(prev => prev.map(m => ({ ...m, isRead: true })));
+        });
+
+        return () => {
+            socket.off("message recieved");
+            socket.off("messages read");
+        };
+    }, [socket, message, refetch]);
+
+
 
     const handleOpenChange = (open) => {
         setIsOpen(open);
         if (open) {
-            // Force scroll when widget opens
+            refetch();
             setTimeout(() => {
                 if (contentRef.current) {
                     contentRef.current.scrollTop = contentRef.current.scrollHeight;
@@ -174,6 +197,7 @@ export const ChatWidget = () => {
             style={{ left: "40px", bottom: "20px", margin: 0 }}
             type="primary" 
             icon={<CommentOutlined />}
+            badge={{ count: !isOpen ? unreadCount : 0 }}
         >
             <Layout className='chatbox'>
                 <div className='chatbox_header'>
