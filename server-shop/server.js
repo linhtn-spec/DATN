@@ -71,6 +71,9 @@ socketIO.on('connection', (socket) => {
         socket.to(roomId).emit("message recieved", newMessageReceived);
     });
 
+    socket.on("typing", (room) => socket.in(room).emit("typing"));
+    socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
     socket.off("setup", (userData) => {
         console.log("USER DISCONNECTED");
         socket.leave(userData);

@@ -8,10 +8,21 @@ import { detail_room, send_message } from '../../../../services/chat_service'
 import { UserContext } from '../../../../store/user'
 import Notification from '../../../../utils/configToastify'
 import { MessageRender } from './MessageRender'
+import Lottie from 'react-lottie'
+import animationData from '../../../../utils/animation.json'
 import './SupportChat.css'
 
 const { Header, Footer, Content } = Layout;
 const END_POINT = import.meta.env.VITE_SOCKET_ENDPOINT || "http://localhost:5000";
+
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+        preserveAspectRatio: "xMidYMid slice",
+    },
+};
 
 export const SupportChat = () => {
     const { chat_id } = useParams()
@@ -69,15 +80,43 @@ export const SupportChat = () => {
         onError: () => Notification({ message: "Gửi tin nhắn thất bại", type: "error" })
     })
 
+    const [istyping, setIsTyping] = useState(false);
+    const [typing, setTyping] = useState(false);
+    const typingTimeoutRef = useRef(null);
+
+    const typingHandler = () => {
+        if (!typing) {
+            setTyping(true);
+            socket.emit("typing", chat_id);
+        }
+
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+
+        typingTimeoutRef.current = setTimeout(() => {
+            socket.emit("stop typing", chat_id);
+            setTyping(false);
+        }, 2000);
+    };
+
     const onFinish = (e) => {
         if (!e.content?.trim()) return;
+        
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        socket.emit("stop typing", chat_id);
+        setTyping(false);
+
         mutate({ ...e, roomId: chat_id })
         form.resetFields()
     }
 
     useEffect(() => {
         socket.emit("setup", state?.currentUser?.user_id);
-        return () => socket.off();
+        socket.on("typing", () => setIsTyping(true));
+        socket.on("stop typing", () => setIsTyping(false));
+        return () => {
+            socket.off('typing');
+            socket.off('stop typing');
+        }
     }, [state, socket]);
 
     const [uni, setUni] = useState([])
@@ -91,7 +130,7 @@ export const SupportChat = () => {
             }, 300);
             return () => clearTimeout(timer);
         }
-    }, [message, uni]);
+    }, [message, uni, istyping]);
 
     useEffect(() => {
         socket.on("message recieved", (newMessageReceived) => {
@@ -146,7 +185,7 @@ export const SupportChat = () => {
                 </Flex>
             </Header>
 
-            <Content
+                <Content
                 ref={contentRef}
                 style={{
                     padding: "24px",
@@ -157,6 +196,18 @@ export const SupportChat = () => {
                 }}
             >
                 <MessageRender message={message} append={uni} currentUserId={state?.currentUser?.user_id} />
+                {istyping && (
+                    <Flex justify="flex-start" style={{ padding: "0 10px", marginTop: "8px", marginBottom: "15px" }}>
+                        <div className="message-bubble-user" style={{ padding: "4px 14px", display: "flex", alignItems: "center", margin: 0 }}>
+                            <Lottie
+                                options={defaultOptions}
+                                width={40}
+                                height={24}
+                                style={{ margin: 0, opacity: 0.6 }}
+                            />
+                        </div>
+                    </Flex>
+                )}
             </Content>
 
             <Footer style={{ background: "#fff", padding: "16px 24px", borderTop: "1px solid #f0f0f0" }}>
@@ -167,6 +218,7 @@ export const SupportChat = () => {
                                 placeholder='Type a message...'
                                 size="large"
                                 style={{ borderRadius: "24px" }}
+                                onChange={typingHandler}
                             />
                         </Form.Item>
                         <Button

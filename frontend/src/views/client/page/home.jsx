@@ -62,7 +62,7 @@ function Home() {
             const latestSaleItem = item?.saleId?.[item?.saleId?.length - 1];
             const isSaleActive = latestSaleItem && new Date(dayjs(latestSaleItem?.dueDate)).getTime() > new Date().getTime();
             const pricePromotion = isSaleActive ? (latestSaleItem?.products?.find(p => p.productId === item?._id)?.pricePromotion || 0) : 0;
-            
+
             return {
                 name: item?.name,
                 price: item?.price,
@@ -107,7 +107,7 @@ function Home() {
     return (
         <Flex vertical className="home-page">
             <Banner />
-            
+
             <div className="container home-section-header fade-in-section">
                 <div className="decorative-header">
                     <span className="header-leaf left">🍃</span>
@@ -190,11 +190,11 @@ function Home() {
                 </div>
 
                 {productNew.length > 4 && (
-                    <div className="view-all-container text-center" style={{ marginTop: "40px" }}>
+                    <Flex justify="center" className="view-all-container" style={{ marginTop: "40px" }}>
                         <Link to="/client/shop" className="premium-button-outline">
                             Xem tất cả sản phẩm mới <span>→</span>
                         </Link>
-                    </div>
+                    </Flex>
                 )}
             </Flex>
         </Flex>

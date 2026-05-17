@@ -11,7 +11,8 @@ import {
     InputNumber,
     Switch,
     Typography,
-    Upload
+    Upload,
+    Skeleton
 } from 'antd';
 import Card from "antd/es/card/Card";
 import { useEffect, useState } from "react";
@@ -33,7 +34,7 @@ function UpdateCategory() {
     const handleChange = (e) => {
         setFileList(e.fileList);
     }
-    const { isSuccess, data } = useQuery({
+    const { isSuccess, data, isLoading: isFetching } = useQuery({
         queryKey: ['category_detail', category_id],
         queryFn: () => detailCategory(category_id)
     })
@@ -81,7 +82,7 @@ function UpdateCategory() {
         try {
             const formData = new FormData();
             let existingUrl = '';
-            
+
             fileList.forEach((file) => {
                 if (file.originFileObj) {
                     formData.append('images', file.originFileObj);
@@ -113,133 +114,166 @@ function UpdateCategory() {
                 title="Cập nhật danh mục"
                 bordered={false}
             >
-                <Flex justify="center">
-                    <Form style={{ width: 450 }} onFinish={handleSubmit}
-                        form={form}
-                    >
-                        <Flex vertical align="center" style={{ width: "100%" }}>
-
-                            <Form.Item
-                                name="image"
-                                hasFeedback
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Vui lòng tải lên hình ảnh"
-                                    }
-                                ]}
-                                style={{ width: "auto" }}
-                            >
-                                <Upload
-                                    beforeUpload={() => false}
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onChange={handleChange}
-                                    style={{
-                                        justifyContent: "center"
-                                    }}
-                                    maxCount={1}
-                                    accept='image/*'
-                                >
-                                    <button
-                                        style={{
-                                            border: 0,
-                                            background: 'none',
-                                        }}
-                                        type="button"
-                                    >
-                                        <CameraOutlined style={{ fontSize: "40px", color: 'grey' }} />
-                                    </button>
-                                </Upload>
-                            </Form.Item>
-                            <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Tên danh mục</Typography.Title>
-                                <Form.Item
-                                    name="name"
-                                    hasFeedback
-                                    validateDebounce={1500}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Tên không được để trống"
-
-                                        },
-                                        {
-                                            min: 1,
-                                            message: "Minimum 3 character"
-                                        },
-                                        {
-                                            max: 50,
-                                            message: "Maximum 50 character"
-                                        }
-                                    ]}
-                                >
-                                    <Input name="name" placeholder="Tên danh mục" />
-                                </Form.Item>
+                {isFetching || isLoading ? (
+                    <Flex justify="center">
+                        <Flex vertical align="center" style={{ width: 450 }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <Skeleton.Node active style={{ width: 104, height: 104 }}>
+                                    <CameraOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                            </div>
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 120, marginBottom: 8 }} />
+                                <Skeleton.Input active block />
                             </Flex>
-                            <Flex vertical style={{ width: "100%" }}>
-                                <Typography.Title level={5}>Mô tả</Typography.Title>
-                                <Form.Item
-                                    name="description"
-                                    validateDebounce={1500}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Mô tả không được để trống"
-                                        },
-                                        {
-                                            min: 1,
-                                            message: "Minimum 3 character"
-                                        },
-                                        {
-                                            max: 300,
-                                            message: "Maximum 300 character"
-                                        }
-                                    ]}
-                                    hasFeedback >
-                                    <Input.TextArea allowClear placeholder="Mô tả" style={{
-                                        height: 120,
-                                    }} />
-                                </Form.Item>
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 60, marginBottom: 8 }} />
+                                <Skeleton.Node active style={{ width: '100%', height: 120 }} />
                             </Flex>
-                            <Flex vertical style={{ width: "100%" }}>
-
-                                <Typography.Title level={5}>Thứ tự</Typography.Title>
-                                <Flex style={{ width: "100%" }} gap={50}>
-                                    <Form.Item
-                                        hasFeedback
-                                        validateDebounce={1500}
-                                        name="order"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: "Thứ tự không được để trống hoặc là số âm",
-                                                pattern: new RegExp(/^[0-9]+$/)
-
-                                            }
-                                        ]}
-                                    >
-                                        <InputNumber placeholder="Thứ tự" />
-                                    </Form.Item>
-                                    <Flex gap={10}>
-                                        <Form.Item name='isActive'>
-                                            <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
-                                        </Form.Item>
-                                        <Typography.Title level={5}>Trạng thái</Typography.Title>
-
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 120, marginBottom: 8 }} />
+                                <Flex style={{ width: "100%" }} gap={50} align="center">
+                                    <Skeleton.Input active style={{ width: 90 }} />
+                                    <Flex gap={10} align="center">
+                                        <Skeleton.Button active size="small" shape="round" style={{ width: 44 }} />
+                                        <Skeleton.Input active size="small" style={{ width: 80 }} />
                                     </Flex>
                                 </Flex>
                             </Flex>
-                            <Form.Item>
-                                <Flex justify="center" gap={10} className="group_btn">
-                                    <Button type="primary" htmlType="submit" disabled={isLoading}>
-                                        Cập nhật
-                                    </Button>
-                                </Flex>
-                            </Form.Item>
+                            <Flex justify="center" gap={10} style={{ width: '100%', marginTop: 24 }}>
+                                <Skeleton.Button active size="large" style={{ width: 90 }} />
+                            </Flex>
                         </Flex>
-                    </Form>
-                </Flex>
+                    </Flex>
+                ) : (
+                    <Flex justify="center">
+                        <Form style={{ width: 450 }} onFinish={handleSubmit}
+                            form={form}
+                        >
+                            <Flex vertical align="center" style={{ width: "100%" }}>
+
+                                <Form.Item
+                                    name="image"
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: "Vui lòng tải lên hình ảnh"
+                                        }
+                                    ]}
+                                    style={{ width: "auto" }}
+                                >
+                                    <Upload
+                                        beforeUpload={() => false}
+                                        listType="picture-card"
+                                        fileList={fileList}
+                                        onChange={handleChange}
+                                        style={{
+                                            justifyContent: "center"
+                                        }}
+                                        maxCount={1}
+                                        accept='image/*'
+                                    >
+                                        <button
+                                            style={{
+                                                border: 0,
+                                                background: 'none',
+                                            }}
+                                            type="button"
+                                        >
+                                            <CameraOutlined style={{ fontSize: "40px", color: 'grey' }} />
+                                        </button>
+                                    </Upload>
+                                </Form.Item>
+                                <Flex vertical style={{ width: "100%" }}>
+                                    <Typography.Title level={5}>Tên danh mục</Typography.Title>
+                                    <Form.Item
+                                        name="name"
+                                        hasFeedback
+                                        validateDebounce={1500}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Tên không được để trống"
+
+                                            },
+                                            {
+                                                min: 1,
+                                                message: "Minimum 3 character"
+                                            },
+                                            {
+                                                max: 50,
+                                                message: "Maximum 50 character"
+                                            }
+                                        ]}
+                                    >
+                                        <Input name="name" placeholder="Tên danh mục" />
+                                    </Form.Item>
+                                </Flex>
+                                <Flex vertical style={{ width: "100%" }}>
+                                    <Typography.Title level={5}>Mô tả</Typography.Title>
+                                    <Form.Item
+                                        name="description"
+                                        validateDebounce={1500}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Mô tả không được để trống"
+                                            },
+                                            {
+                                                min: 1,
+                                                message: "Minimum 3 character"
+                                            },
+                                            {
+                                                max: 300,
+                                                message: "Maximum 300 character"
+                                            }
+                                        ]}
+                                        hasFeedback >
+                                        <Input.TextArea allowClear placeholder="Mô tả" style={{
+                                            height: 120,
+                                        }} />
+                                    </Form.Item>
+                                </Flex>
+                                <Flex vertical style={{ width: "100%" }}>
+
+                                    <Typography.Title level={5}>Thứ tự</Typography.Title>
+                                    <Flex style={{ width: "100%" }} gap={50}>
+                                        <Form.Item
+                                            hasFeedback
+                                            validateDebounce={1500}
+                                            name="order"
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message: "Thứ tự không được để trống hoặc là số âm",
+                                                    pattern: new RegExp(/^[0-9]+$/)
+
+                                                }
+                                            ]}
+                                        >
+                                            <InputNumber placeholder="Thứ tự" />
+                                        </Form.Item>
+                                        <Flex gap={10}>
+                                            <Form.Item name='isActive' valuePropName="checked">
+                                                <Switch checkedChildren='Hoạt động' unCheckedChildren="Khóa" />
+                                            </Form.Item>
+                                            <Typography.Title level={5}>Trạng thái</Typography.Title>
+
+                                        </Flex>
+                                    </Flex>
+                                </Flex>
+                                <Form.Item>
+                                    <Flex justify="center" gap={10} className="group_btn">
+                                        <Button type="primary" htmlType="submit" disabled={isLoading} loading={isLoading}>
+                                            Cập nhật
+                                        </Button>
+                                    </Flex>
+                                </Form.Item>
+                            </Flex>
+                        </Form>
+                    </Flex>
+                )}
             </Card>
         </Flex >
     );

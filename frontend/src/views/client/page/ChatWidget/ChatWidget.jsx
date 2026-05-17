@@ -7,6 +7,7 @@ import { detail_room, send_message } from '../../../../services/chat_service'
 import { UserContext } from '../../../../store/user'
 import animationData from '../../../../utils/animation.json'
 import Notification from '../../../../utils/configToastify'
+import Lottie from 'react-lottie'
 import './ChatWidget.css'
 import { Message } from './Message'
 const END_POINT = import.meta.env.VITE_SOCKET_ENDPOINT || "http://localhost:5000";
@@ -79,7 +80,31 @@ export const ChatWidget = () => {
         onError: () => Notification({ message: "Gửi tin nhắn thất bại!", type: "error" })
     })
 
+    const typingTimeoutRef = useRef(null);
+
+    const typingHandler = () => {
+        if (!socketConnected) return;
+
+        if (!typing) {
+            setTyping(true);
+            socket.emit("typing", userId);
+        }
+
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+
+        typingTimeoutRef.current = setTimeout(() => {
+            socket.emit("stop typing", userId);
+            setTyping(false);
+        }, 2000);
+    };
+
     const onFinish = (e) => {
+        if (!e.content?.trim()) return;
+        
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        socket.emit("stop typing", userId);
+        setTyping(false);
+
         mutate({ ...e, roomId: userId })
         form.setFieldValue('content', '')
     }
@@ -88,8 +113,13 @@ export const ChatWidget = () => {
     useEffect(() => {
         socket.emit("setup", userId);
         socket.on("connected", () => setSocketConnected(true));
-        return () => socket.off('connected');
-
+        socket.on("typing", () => setIsTyping(true));
+        socket.on("stop typing", () => setIsTyping(false));
+        return () => {
+            socket.off('connected');
+            socket.off('typing');
+            socket.off('stop typing');
+        }
     }, [socket, userId]);
     const [uni, setUni] = useState([])
 
@@ -104,7 +134,7 @@ export const ChatWidget = () => {
             }, 300);
             return () => clearTimeout(timer);
         }
-    }, [message, uni]);
+    }, [message, uni, istyping]);
     useEffect(() => {
         socket.on("message recieved", (newMessageReceived) => {
             if (newMessageReceived) {
@@ -162,6 +192,18 @@ export const ChatWidget = () => {
                 
                 <Content className='chatbox_body' ref={contentRef}>
                     <Message message={message} append={uni} currentUserId={userId} />
+                    {istyping && (
+                        <Flex justify="flex-start" style={{ padding: "0 10px", marginTop: "8px", marginBottom: "15px" }}>
+                            <div className="message-bubble-them" style={{ padding: "4px 14px", display: "flex", alignItems: "center", margin: 0 }}>
+                                <Lottie
+                                    options={defaultOptions}
+                                    width={40}
+                                    height={24}
+                                    style={{ margin: 0, opacity: 0.6 }}
+                                />
+                            </div>
+                        </Flex>
+                    )}
                 </Content>
                 
                 <Footer className='chatbox_footer'>
@@ -172,6 +214,7 @@ export const ChatWidget = () => {
                                     className='chatbox_footer--input' 
                                     placeholder='Type your message...' 
                                     size="large"
+                                    onChange={typingHandler}
                                 />
                             </Form.Item>
                             <Button 

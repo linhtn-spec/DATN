@@ -9,9 +9,12 @@ export const Message = ({ message, append, currentUserId }) => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    const combinedMessages = (message || []).concat(append || []);
+    const uniqueMessages = Array.from(new Map(combinedMessages.filter(item => item && item.id).map(item => [item.id, item])).values());
+
     return (
         <Flex vertical className='message-list' gap={'12px'} style={{ padding: "0 10px" }}>
-            {message?.concat(append || [])?.map((item) => {
+            {uniqueMessages.map((item) => {
                 const isMe = item?.userId === currentUserId;
                 return (
                     <Flex justify={isMe ? 'flex-end' : 'flex-start'} key={item?.id}>

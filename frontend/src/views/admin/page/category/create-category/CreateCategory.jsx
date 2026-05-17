@@ -10,7 +10,8 @@ import {
     InputNumber,
     Switch,
     Typography,
-    Upload
+    Upload,
+    Skeleton
 } from 'antd';
 import Card from "antd/es/card/Card";
 import { useEffect, useState } from "react";
@@ -82,9 +83,43 @@ function CreateCategory() {
                 bordered={false}
                 className="form"
             >
-                <Flex justify="center" >
+                {isLoading ? (
+                    <Flex justify="center">
+                        <Flex vertical align="center" style={{ width: 450 }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <Skeleton.Node active style={{ width: 104, height: 104 }}>
+                                    <CameraOutlined style={{ fontSize: 40, color: '#bfbfbf' }} />
+                                </Skeleton.Node>
+                            </div>
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 120, marginBottom: 8 }} />
+                                <Skeleton.Input active block />
+                            </Flex>
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 60, marginBottom: 8 }} />
+                                <Skeleton.Node active style={{ width: '100%', height: 120 }} />
+                            </Flex>
+                            <Flex vertical style={{ width: "100%", marginBottom: 24 }}>
+                                <Skeleton.Input active size="small" style={{ width: 120, marginBottom: 8 }} />
+                                <Flex style={{ width: "100%" }} gap={50} align="center">
+                                    <Skeleton.Input active style={{ width: 90 }} />
+                                    <Flex gap={10} align="center">
+                                        <Skeleton.Button active size="small" shape="round" style={{ width: 44 }} />
+                                        <Skeleton.Input active size="small" style={{ width: 80 }} />
+                                    </Flex>
+                                </Flex>
+                            </Flex>
+                            <Flex justify="center" gap={20} style={{ width: '100%', marginTop: 24 }}>
+                                <Skeleton.Button active size="large" style={{ width: 120 }} />
+                                <Skeleton.Button active size="large" style={{ width: 120 }} />
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                ) : (
+                    <Flex justify="center" >
                     <Form style={{ width: 450 }} onFinish={handleSubmit}
                         form={form}
+                        initialValues={{ isActive: true }}
                     >
                         <Flex vertical align="center" style={{ width: "100%" }}>
                             <Form.Item
@@ -192,7 +227,7 @@ function CreateCategory() {
                             </Flex>
                             <Form.Item style={{ marginTop: 24, width: '100%' }}>
                                 <Flex justify="center" gap={20} className="group_btn">
-                                    <Button type="primary" htmlType="submit" disabled={isLoading} size="large" style={{ minWidth: 120 }}>
+                                    <Button type="primary" htmlType="submit" disabled={isLoading} loading={isLoading} size="large" style={{ minWidth: 120 }}>
                                         Thêm mới
                                     </Button>
                                     <Button htmlType="reset" size="large" style={{ minWidth: 120 }}>Nhập lại</Button>
@@ -201,6 +236,7 @@ function CreateCategory() {
                         </Flex>
                     </Form>
                 </Flex>
+                )}
             </Card>
         </Flex >
     );

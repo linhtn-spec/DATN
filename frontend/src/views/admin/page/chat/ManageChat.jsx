@@ -20,13 +20,26 @@ export const ManageChat = ({ isSidebar = false }) => {
     }
 
     useEffect(() => {
-        if (!isSuccess) return
-        setItems(data?.data.map(item => ({
-            key: item?._id,
-            roomId: item?.roomId?._id,
-            customer: item?.roomId?.firstName + " " + item?.roomId?.lastName,
-            lastMessage: item?.message[item?.message.length - 1]?.content || "No messages yet"
-        })))
+        if (!isSuccess || !data?.data) return
+        
+        const mappedItems = data.data.map(item => {
+            const messages = item?.message || [];
+            const lastMsgObj = messages[messages.length - 1];
+            
+            return {
+                key: item?._id,
+                roomId: item?.roomId?._id,
+                customer: item?.roomId?.firstName + " " + item?.roomId?.lastName,
+                lastMessage: lastMsgObj?.content || "No messages yet",
+                lastMessageTime: (lastMsgObj?.createdAt || lastMsgObj?.day) 
+                                    ? new Date(lastMsgObj.createdAt || lastMsgObj.day).getTime() 
+                                    : 0
+            };
+        });
+
+        const sortedItems = mappedItems.sort((a, b) => b.lastMessageTime - a.lastMessageTime);
+        
+        setItems(sortedItems);
     }, [isSuccess, data])
 
     const filteredItems = useMemo(() => {
