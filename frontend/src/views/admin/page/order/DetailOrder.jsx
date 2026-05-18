@@ -48,8 +48,7 @@ export function DetailOrder() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const subTotalValue = Form.useWatch('subTotal', form);
-    const taxValue = Form.useWatch('tax', form);
-    const shippingCostValue = Form.useWatch('shippingCost', form);
+
 
     const [options, setOptions] = useState([]);
     const [products, setProducts] = useState([]);
@@ -71,6 +70,9 @@ export function DetailOrder() {
         enabled: !!order_id
     });
 
+    const tax = data?.data?.tax || 0;
+    const shippingCost = data?.data?.shippingCost || 0;
+
     const { mutate, isPending } = useMutation({
         mutationFn: (data) => editOrder(data),
         onSuccess: () => {
@@ -82,6 +84,49 @@ export function DetailOrder() {
             Notification({ message: "Cập nhật đơn hàng thất bại!", type: "error" });
         }
     });
+
+    const handleValuesChange = (changedValues, allValues) => {
+        let updates = {};
+
+        // 1. Order Status changed
+        if (changedValues.orderStatus) {
+            if (changedValues.orderStatus === 'done') {
+                updates.shippingStatus = 'sent';
+                updates.paymentStatus = 'paid';
+                Notification({ message: 'Tự động cập nhật Đã vận chuyển & Đã thanh toán để khớp trạng thái Hoàn thành', type: 'info' });
+            } else if (changedValues.orderStatus === 'canceled') {
+                if (allValues.shippingStatus !== 'sent') {
+                    updates.shippingStatus = 'not_sent';
+                }
+            } else if (changedValues.orderStatus === 'processing') {
+                if (allValues.shippingStatus === 'not_sent') {
+                    updates.shippingStatus = 'sending';
+                }
+            }
+        }
+
+        // 2. Shipping Status changed
+        if (changedValues.shippingStatus) {
+            if (changedValues.shippingStatus === 'sent') {
+                if (data?.data?.paymentMethod === 'cod' && allValues.paymentStatus !== 'paid') {
+                    updates.paymentStatus = 'paid';
+                    Notification({ message: 'Đơn hàng COD giao thành công, tự động ghi nhận Đã thanh toán', type: 'info' });
+                }
+                const isPaid = updates.paymentStatus === 'paid' || allValues.paymentStatus === 'paid';
+                if (isPaid && allValues.orderStatus !== 'done') {
+                    updates.orderStatus = 'done';
+                    Notification({ message: 'Đã nhận hàng thành công, tự động đổi trạng thái đơn thành Hoàn Thành!', type: 'success' });
+                }
+            } else if (changedValues.shippingStatus === 'sending' && allValues.orderStatus === 'new') {
+                updates.orderStatus = 'processing';
+            }
+        }
+
+        // Apply updates if there are any
+        if (Object.keys(updates).length > 0) {
+            form.setFieldsValue(updates);
+        }
+    };
 
     const handleSubmit = (value) => {
         mutate({
@@ -185,14 +230,22 @@ export function DetailOrder() {
         setOptions(rawData?.map(item => ({ value: item?.name, text: item?.name })));
     }, [queryCountry?.isSuccess, queryCountry?.data]);
 
-    useEffect(() => {
-        const sub = form.getFieldValue('subTotal') || 0;
-        const ship = form.getFieldValue('shippingCost') || 0;
-        const tx = form.getFieldValue('tax') || 0;
-        form.setFieldValue('total', sub + ship + tx);
-    }, [subTotalValue, taxValue, shippingCostValue, form]);
+    const orderStatusValue = Form.useWatch('orderStatus', form);
+    const shippingStatusValue = Form.useWatch('shippingStatus', form);
+    const paymentStatusValue = Form.useWatch('paymentStatus', form);
 
-    const isOrderDisabled = data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done';
+    // Is disabled because it was already saved as terminal in database
+    const isOrderSavedAsTerminal = data?.data?.orderStatus === 'canceled' || data?.data?.orderStatus === 'done';
+    
+    // Is disabled because user currently selected a terminal state in the UI (but hasn't saved yet)
+    const isFormVisuallyTerminal = orderStatusValue === 'canceled' || orderStatusValue === 'done';
+
+    // The order status dropdown itself only locks if it's ALREADY saved as terminal. 
+    // This allows undoing a misclick before saving.
+    const isOrderStatusDisabled = isOrderSavedAsTerminal;
+
+    // The other fields lock instantly if the form says done/canceled, so users don't manually edit them against logic
+    const areOtherFieldsDisabled = isOrderSavedAsTerminal || isFormVisuallyTerminal;
 
     return (
         <Flex className="crud_user order_detail_panel container" vertical gap={24}>
@@ -201,6 +254,7 @@ export function DetailOrder() {
             <Form 
                 form={form}
                 onFinish={handleSubmit}
+                onValuesChange={handleValuesChange}
                 layout="vertical"
                 className="premium-form"
                 style={{ width: "100%" }}
@@ -215,46 +269,42 @@ export function DetailOrder() {
                                     <UserOutlined /> Thông tin khách hàng & Giao nhận
                                 </Title>
                                 
-                                <Row gutter={[16, 16]}>
+                                <Row gutter={[16, 24]}>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="firstNameReceiver" label="Họ khách hàng" required>
-                                            <Input size="large" disabled prefix={<UserOutlined style={{ color: '#bfbfbf' }} />} />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Họ khách hàng</Text>
+                                            <Text strong style={{ fontSize: 16 }}><UserOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.firstNameReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="lastNameReceiver" label="Tên khách hàng" required>
-                                            <Input size="large" disabled prefix={<UserOutlined style={{ color: '#bfbfbf' }} />} />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Tên khách hàng</Text>
+                                            <Text strong style={{ fontSize: 16 }}><UserOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.lastNameReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="phoneReceiver" label="Số điện thoại" required>
-                                            <Input size="large" disabled prefix={<PhoneOutlined style={{ color: '#bfbfbf' }} />} />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Số điện thoại</Text>
+                                            <Text strong style={{ fontSize: 16 }}><PhoneOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.phoneReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="emailReceiver" label="Địa chỉ Email" required>
-                                            <Input size="large" disabled prefix={<MailOutlined style={{ color: '#bfbfbf' }} />} />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Địa chỉ Email</Text>
+                                            <Text strong style={{ fontSize: 16 }}><MailOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.emailReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="countryReceiver" label="Quốc gia" required>
-                                            <Select 
-                                                placeholder="Quốc gia" 
-                                                size="large" 
-                                                options={options}
-                                                showSearch
-                                                virtual={false}
-                                                optionFilterProp="children"
-                                                filterOption={(input, option) => (option?.text ?? '').includes(input)}
-                                                disabled
-                                                suffixIcon={<GlobalOutlined />}
-                                            />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Quốc gia</Text>
+                                            <Text strong style={{ fontSize: 16 }}><GlobalOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.countryReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                     <Col xs={24} sm={12}>
-                                        <Form.Item name="addressReceiver" label="Địa chỉ cụ thể" required>
-                                            <Input size="large" disabled prefix={<EnvironmentOutlined style={{ color: '#bfbfbf' }} />} />
-                                        </Form.Item>
+                                        <Flex vertical gap={4}>
+                                            <Text type="secondary">Địa chỉ cụ thể</Text>
+                                            <Text strong style={{ fontSize: 16 }}><EnvironmentOutlined style={{ marginRight: 8, color: '#bfbfbf' }} /> {data?.data?.addressReceiver || '---'}</Text>
+                                        </Flex>
                                     </Col>
                                 </Row>
                             </Card>
@@ -296,8 +346,12 @@ export function DetailOrder() {
                                     <Select 
                                         placeholder="Chọn trạng thái đơn" 
                                         size="large" 
-                                        options={orderStatusOptions} 
-                                        disabled={isOrderDisabled}
+                                        options={orderStatusOptions.map(opt => ({
+                                            ...opt,
+                                            // Optional: Disable going backward from 'processing' to 'new'
+                                            disabled: (data?.data?.orderStatus === 'processing' && opt.value === 'new')
+                                        }))} 
+                                        disabled={isOrderStatusDisabled}
                                     />
                                 </Form.Item>
 
@@ -305,8 +359,12 @@ export function DetailOrder() {
                                     <Select 
                                         placeholder="Chọn trạng thái giao" 
                                         size="large" 
-                                        options={shippingStatusOptions} 
-                                        disabled={isOrderDisabled}
+                                        options={shippingStatusOptions.map(opt => ({
+                                            ...opt,
+                                            // Can't revert sent to not_sent/sending
+                                            disabled: (data?.data?.shippingStatus === 'sent' && opt.value !== 'sent')
+                                        }))} 
+                                        disabled={areOtherFieldsDisabled}
                                     />
                                 </Form.Item>
 
@@ -314,21 +372,31 @@ export function DetailOrder() {
                                     <Select 
                                         placeholder="Chọn trạng thái thanh toán" 
                                         size="large" 
-                                        options={paymentStatusOptions} 
-                                        disabled={isOrderDisabled}
+                                        options={paymentStatusOptions.map(opt => ({
+                                            ...opt,
+                                            // Can't revert paid to unpaid
+                                            disabled: (data?.data?.paymentStatus === 'paid' && opt.value !== 'paid')
+                                        }))} 
+                                        disabled={areOtherFieldsDisabled}
                                     />
                                 </Form.Item>
 
                                 <Row gutter={16}>
                                     <Col span={12}>
-                                        <Form.Item name="shippingMethod" label="P.Thức vận chuyển" required>
-                                            <Select placeholder="Chọn p.thức" options={shippingMethodOptions} size="large" disabled />
-                                        </Form.Item>
+                                        <Flex vertical gap={4} style={{ marginBottom: 16 }}>
+                                            <Text type="secondary">P.Thức vận chuyển</Text>
+                                            <Text strong style={{ fontSize: 15, padding: '8px 12px', background: '#f5f5f5', borderRadius: 6, border: '1px solid #d9d9d9', color: '#1a3353' }}>
+                                                {getLabelByValue(data?.data?.shippingMethod, shippingMethodOptions) || '---'}
+                                            </Text>
+                                        </Flex>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name="paymentMethod" label="P.Thức thanh toán" required>
-                                            <Select placeholder="Chọn p.thức" options={paymentMethodOptions} size="large" disabled />
-                                        </Form.Item>
+                                        <Flex vertical gap={4} style={{ marginBottom: 16 }}>
+                                            <Text type="secondary">P.Thức thanh toán</Text>
+                                            <Text strong style={{ fontSize: 15, padding: '8px 12px', background: '#f5f5f5', borderRadius: 6, border: '1px solid #d9d9d9', color: '#1a3353' }}>
+                                                {getLabelByValue(data?.data?.paymentMethod, paymentMethodOptions) || '---'}
+                                            </Text>
+                                        </Flex>
                                     </Col>
                                 </Row>
 
@@ -348,28 +416,16 @@ export function DetailOrder() {
 
                                 <Row gutter={16}>
                                     <Col span={12}>
-                                        <Form.Item name="tax" label="Thuế giá trị" required>
-                                            <InputNumber 
-                                                size="large"
-                                                min={0} 
-                                                style={{ width: "100%" }}
-                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                disabled={isOrderDisabled}
-                                                addonAfter="₫"
-                                            />
-                                        </Form.Item>
+                                        <Flex vertical gap={4} style={{ marginBottom: 16 }}>
+                                            <Text type="secondary">Thuế giá trị</Text>
+                                            <Text strong style={{ fontSize: 16, color: '#1a3353' }}>{data?.data?.tax?.toLocaleString('vi-VN')} ₫</Text>
+                                        </Flex>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name="shippingCost" label="Phí giao hàng" required>
-                                            <InputNumber 
-                                                size="large"
-                                                min={0} 
-                                                style={{ width: "100%" }}
-                                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                disabled={isOrderDisabled}
-                                                addonAfter="₫"
-                                            />
-                                        </Form.Item>
+                                        <Flex vertical gap={4} style={{ marginBottom: 16 }}>
+                                            <Text type="secondary">Phí giao hàng</Text>
+                                            <Text strong style={{ fontSize: 16, color: '#1a3353' }}>{data?.data?.shippingCost?.toLocaleString('vi-VN')} ₫</Text>
+                                        </Flex>
                                     </Col>
                                 </Row>
 
@@ -380,30 +436,35 @@ export function DetailOrder() {
                                     </div>
                                     <div className="total-summary-row">
                                         <div className="total-summary-label">Thuế suất:</div>
-                                        <div className="total-summary-value">{(taxValue || 0).toLocaleString('vi-VN')} ₫</div>
+                                        <div className="total-summary-value">{tax.toLocaleString('vi-VN')} ₫</div>
                                     </div>
                                     <div className="total-summary-row">
                                         <div className="total-summary-label">Vận chuyển:</div>
-                                        <div className="total-summary-value">{(shippingCostValue || 0).toLocaleString('vi-VN')} ₫</div>
+                                        <div className="total-summary-value">{shippingCost.toLocaleString('vi-VN')} ₫</div>
                                     </div>
                                     <div className="total-summary-row">
                                         <div className="total-summary-label" style={{ fontSize: 15, color: '#1a3353' }}>TỔNG CỘNG:</div>
                                         <div className="total-summary-value grand-total">
-                                            {((subTotalValue || 0) + (taxValue || 0) + (shippingCostValue || 0)).toLocaleString('vi-VN')} ₫
+                                            {((subTotalValue || 0) + tax + shippingCost).toLocaleString('vi-VN')} ₫
                                         </div>
                                     </div>
                                 </div>
 
-                                <Form.Item name="note" label={<span style={{ fontSize: 13, fontWeight: 600, color: '#8c8c8c' }}><FileTextOutlined /> Ghi chú đơn hàng</span>} style={{ marginTop: 16 }}>
-                                    <TextArea rows={4} disabled placeholder="Không có ghi chú nào của khách hàng." />
-                                </Form.Item>
+                                <Flex vertical gap={8} style={{ marginTop: 24, marginBottom: 8 }}>
+                                    <Text type="secondary" strong><FileTextOutlined /> Ghi chú đơn hàng</Text>
+                                    <div style={{ padding: 12, background: '#f5f5f5', borderRadius: 6, border: '1px solid #e8e8e8', minHeight: 80 }}>
+                                        <Text style={{ color: data?.data?.note ? '#1a3353' : '#bfbfbf', fontStyle: data?.data?.note ? 'normal' : 'italic' }}>
+                                            {data?.data?.note || "Không có ghi chú nào của khách hàng."}
+                                        </Text>
+                                    </div>
+                                </Flex>
                             </Card>
                         </Flex>
                     </Col>
                 </Row>
 
                 <Flex justify="center" vertical align="center" gap={16} style={{ marginTop: 32 }}>
-                    {isOrderDisabled && (
+                    {isOrderSavedAsTerminal && (
                         <Typography.Text type="danger" strong style={{ fontSize: 14 }}>
                             ⚠️ Đơn hàng này đang ở trạng thái {getLabelByValue(data?.data?.orderStatus, orderStatusOptions)} và không được sửa đổi thêm.
                         </Typography.Text>
@@ -424,7 +485,7 @@ export function DetailOrder() {
                             size="large" 
                             icon={<SaveOutlined />}
                             loading={isPending}
-                            disabled={isOrderDisabled}
+                            disabled={isOrderSavedAsTerminal}
                             style={{ borderRadius: 8, paddingLeft: 32, paddingRight: 32 }}
                         >
                             Lưu thay đổi đơn hàng

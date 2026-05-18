@@ -12,7 +12,9 @@ const serverSocket = http.createServer(app)
 
 const socketIO = new Server(serverSocket, {
     cors: {
-        origin: [process.env.WHITE_URL_1, process.env.WHITE_URL_2],
+        origin: function(origin, callback) {
+            callback(null, true);
+        },
         credentials: true
     }
 });

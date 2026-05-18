@@ -10,6 +10,7 @@ import { logout, logoutGoogle } from '../../../services/user_service';
 import { LogContext } from '../../../store/typeLog/provider';
 import { ACTION_USER, UserContext } from '../../../store/user';
 import Notification from '../../../utils/configToastify';
+import NotificationBell from '../../../components/NotificationBell';
 import "./../style/header.css";
 function HeaderClient() {
 
@@ -70,6 +71,7 @@ function HeaderClient() {
         <Header className="admin-header-main">
             <Flex justify="flex-end" align="center" className="header-content">
                 <Space size={24}>
+                    <NotificationBell userId={null} />
                     <Popover 
                         content={content} 
                         arrow={false} 

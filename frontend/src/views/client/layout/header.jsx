@@ -14,6 +14,7 @@ import { ACTION_LOG } from "../../../store/typeLog";
 import { LogContext } from "../../../store/typeLog/provider";
 import { ACTION_USER, UserContext } from "../../../store/user";
 import Notification from "../../../utils/configToastify";
+import NotificationBell from "../../../components/NotificationBell";
 import "./../style/header.css";
 import Modal_Search from "./modal_search";
 
@@ -168,6 +169,11 @@ function Headers() {
                                     <div className="qty">{cart?.state?.currentCart?.length ?? 0}</div>
                                 </button>
                             </div>
+                            {isLoggedIn && (
+                                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '-5px' }}>
+                                    <NotificationBell userId={user?.state?.currentUser?.user_id || user?.state?.currentUser?._id} />
+                                </div>
+                            )}
                             <>
                                 <div className="main_menu">
                                     <UserOutlined style={{ fontSize: '18px', cursor: "pointer" }} />

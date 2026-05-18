@@ -48,6 +48,7 @@ import customer_order from './customer/order_router.js';
 import customer_rating from './customer/rating_router.js';
 import customer_upload from './customer/upload_router.js';
 import customer_user from './customer/user_router.js';
+import notification_router from './notification_router.js';
 
 customerRouter.use('/', customer_comment);
 customerRouter.use('/', customer_chat);
@@ -56,6 +57,8 @@ customerRouter.use('/', customer_order);
 customerRouter.use('/', customer_rating);
 customerRouter.use('/', customer_upload);
 customerRouter.use('/', customer_user);
+customerRouter.use('/', notification_router);
+
 
 
 // ==========================================

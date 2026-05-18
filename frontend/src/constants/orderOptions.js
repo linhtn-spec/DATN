@@ -1,7 +1,6 @@
 /** Options for order payment status select fields */
 export const paymentStatusOptions = [
     { value: "unpaid", label: "Chưa thanh toán" },
-    { value: "partial_payment", label: "Thanh toán một phần" },
     { value: "paid", label: "Đã thanh toán" },
 ];
 

@@ -1,5 +1,6 @@
 import { order_form, order_subject, order_text } from "../form_mail/order_form.js";
 import order_model from "../models/order_model.js"
+import Notification from "../models/notification_model.js";
 import { sendEmail } from "../nodemailer/nodemailer_config.js";
 import product_model from "../models/product_model.js";
 import shipping_model from "../models/shipping_model.js";
@@ -8,6 +9,17 @@ import mongoose from "mongoose";
 import { Role } from "../helper/enum.js";
 
 const from = process.env.NODEMAILER_EMAIL
+
+const getFriendlyCustomerMessage = (status) => {
+    switch (status) {
+        case 'new': return 'Đơn hàng của bạn đã được hệ thống ghi nhận và đang chờ xử lý nhé.';
+        case 'processing': return 'Cửa hàng đang bắt đầu đóng gói và xử lý đơn hàng của bạn nhé.';
+        case 'hold': return 'Đơn hàng của bạn tạm thời đang bị giữ lại. Mong bạn liên hệ CSKH để được hỗ trợ.';
+        case 'canceled': return 'Rất tiếc! Đơn hàng của bạn đã bị huỷ. Hẹn gặp lại bạn ở những lần mua sắm sau nhé.';
+        case 'done': return 'Ting ting! Đơn hàng của bạn đã giao dịch thành công. Cảm ơn bạn luôn tin tưởng ủng hộ!';
+        default: return `Trạng thái đơn hàng của bạn đã được cập nhật thành: ${status}.`;
+    }
+};
 
 export const add_order = asyncHandler(async (req, res) => {
     const data = req.body;
@@ -83,7 +95,18 @@ export const add_order = asyncHandler(async (req, res) => {
                 customer: `${order.firstNameReceiver} ${order.lastNameReceiver}`,
                 total: order.total
             });
+            // Also notify frontend to refresh notifications via generic new_notification
+            io.emit('new_notification', { reload: true }); 
         }
+
+        // Create notification for admin via DB
+        await Notification.create({
+            title: "Có Đơn Hàng Mới",
+            message: `Khách hàng ${order.firstNameReceiver} ${order.lastNameReceiver} vừa tạo đơn hàng mới trị giá ${order.total.toLocaleString()} VNĐ.`,
+            type: "ORDER_CREATED",
+            link: `/admin/orders/${order._id}`, // Redirect to order detail
+            userId: null // Global admin notification
+        });
 
         return res.status(201).json({ order });
 
@@ -126,8 +149,31 @@ export const edit_order = asyncHandler(async (req, res) => {
         data,
         { new: true }
     );
-    if (updated_order)
+    if (updated_order) {
+        if (orderStatus && orderStatus !== order.orderStatus) {
+            // Save notification in DB for Customer
+            await Notification.create({
+                userId: order.userId,
+                title: "Cập Nhật Đơn Hàng",
+                message: getFriendlyCustomerMessage(orderStatus),
+                type: "ORDER_STATUS_CHANGED",
+                link: `/client/user/orders/${order._id}` // Link to order detail for customer
+            });
+
+            // Make sure Socket IO notifies the customer immediately
+            const io = req.app.get('socketio');
+            if (io) {
+                // Let the frontend know so it can refresh customer notifications
+                io.emit('order_status_updated', {
+                    userId: order.userId,
+                    orderId: order._id,
+                    status: orderStatus
+                });
+                io.emit('new_notification', { userId: order.userId });
+            }
+        }
         return res.status(200).json({ ...updated_order._doc });
+    }
     return res.status(400).json({ message: "Cập nhật thất bại" })
 });
 
