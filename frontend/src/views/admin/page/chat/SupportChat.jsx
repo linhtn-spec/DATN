@@ -2,7 +2,7 @@ import { SendOutlined, UserOutlined } from '@ant-design/icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Avatar, Button, Flex, Form, Input, Layout, Result, Typography } from 'antd'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { io } from 'socket.io-client'
 import { detail_room, send_message } from '../../../../services/chat_service'
 import { UserContext } from '../../../../store/user'
@@ -25,6 +25,7 @@ const defaultOptions = {
 };
 
 export const SupportChat = () => {
+    const navigate = useNavigate()
     const { chat_id } = useParams()
     const [message, setMessage] = useState([])
     const [info, setInfo] = useState({})
@@ -57,7 +58,9 @@ export const SupportChat = () => {
 
         setInfo({
             name: data?.data?.roomId?.firstName + " " + data?.data?.roomId?.lastName,
-            role: data?.data?.roomId?.role
+            role: data?.data?.roomId?.role,
+            customerId: data?.data?.roomId?._id,
+            avatar: data?.data?.roomId?.image || null
         })
 
         socket.emit("join chat", chat_id);
@@ -188,8 +191,14 @@ export const SupportChat = () => {
                 height: "70px"
             }}>
                 <Flex align="center" gap={12} style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Avatar size="large" style={{ backgroundColor: 'var(--primary-color)' }}>
-                        {info?.name?.charAt(0).toUpperCase()}
+                    <Avatar
+                        size="large"
+                        src={info?.avatar || undefined}
+                        style={{ backgroundColor: info?.avatar ? undefined : 'var(--primary-color)', cursor: info?.customerId ? 'pointer' : 'default' }}
+                        onClick={() => info?.customerId && navigate(`/admin/customers/${info.customerId}`)}
+                        title={info?.customerId ? 'Xem chi tiết khách hàng' : ''}
+                    >
+                        {!info?.avatar && info?.name?.charAt(0).toUpperCase()}
                     </Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         <Typography.Text strong style={{ fontSize: "16px", display: "block", lineHeight: "1.2" }}>

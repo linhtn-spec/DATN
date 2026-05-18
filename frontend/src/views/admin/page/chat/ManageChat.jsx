@@ -55,6 +55,7 @@ export const ManageChat = ({ isSidebar = false }) => {
                 key: item?._id,
                 roomId: item?.roomId?._id,
                 customer: item?.roomId?.firstName + " " + item?.roomId?.lastName,
+                avatar: item?.roomId?.image || null,
                 lastMessage: lastMsgObj?.content || "No messages yet",
                 unreadCount: unreadCount,
                 lastMessageTime: (lastMsgObj?.createdAt || lastMsgObj?.day) 
@@ -102,7 +103,15 @@ export const ManageChat = ({ isSidebar = false }) => {
                             style={{ position: 'relative' }}
                         >
                             <div className="room-item-avatar">
-                                {room.customer.charAt(0).toUpperCase()}
+                                {room.avatar ? (
+                                    <img 
+                                        src={room.avatar} 
+                                        alt={room.customer}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                                    />
+                                ) : (
+                                    room.customer.charAt(0).toUpperCase()
+                                )}
                             </div>
                             <div className="room-item-info">
                                 <div className="room-item-name">{room.customer}</div>

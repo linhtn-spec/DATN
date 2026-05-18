@@ -14,13 +14,13 @@ const getChatroomDetail = async (req, res) => {
             {
                 path: "roomId",
                 model: "User",
-                select: "firstName lastName role"
+                select: "firstName lastName role image"
             })
             .populate(
                 {
                     path: "message.userId",
                     model: "User",
-                    select: "firstName lastName role"
+                    select: "firstName lastName role image"
                 }
             )
         if (!chatroom)
@@ -61,7 +61,7 @@ const getChatrooms = async (req, res) => {
             {
                 path: "roomId",
                 model: "User",
-                select: "firstName lastName role"
+                select: "firstName lastName role image"
             })
         if (rooms.length === 0)
             return res.status(404).json({ message: "Phòng chat không tồn tại" });
@@ -100,12 +100,12 @@ const sendMessage = async (req, res) => {
                 {
                     path: "roomId",
                     model: "User",
-                    select: "firstName lastName role"
+                    select: "firstName lastName role image"
                 }).populate(
                     {
                         path: "message.userId",
                         model: "User",
-                        select: "firstName lastName role"
+                        select: "firstName lastName role image"
                     }
                 )
 
@@ -117,12 +117,12 @@ const sendMessage = async (req, res) => {
             {
                 path: "roomId",
                 model: "User",
-                select: "firstName lastName role"
+                select: "firstName lastName role image"
             }).populate(
                 {
                     path: "message.userId",
                     model: "User",
-                    select: "firstName lastName role"
+                    select: "firstName lastName role image"
                 }
             );
         return res.status(200).json(updatedRoom);
