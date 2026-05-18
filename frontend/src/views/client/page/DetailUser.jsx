@@ -175,7 +175,7 @@ export const DetailUser = () => {
                                 </Title>
 
                                 <Row gutter={20}>
-                                    <Col span={12}>
+                                    <Col xs={24} md={12}>
                                         <Form.Item
                                             label="Họ"
                                             name="firstName"
@@ -184,7 +184,7 @@ export const DetailUser = () => {
                                             <Input prefix={<UserOutlined />} placeholder="Nhập họ" size="large" />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xs={24} md={12}>
                                         <Form.Item
                                             label="Tên"
                                             name="lastName"
@@ -196,7 +196,7 @@ export const DetailUser = () => {
                                 </Row>
 
                                 <Row gutter={20}>
-                                    <Col span={12}>
+                                    <Col xs={24} md={12}>
                                         <Form.Item
                                             label="Số điện thoại"
                                             name="phone"
@@ -208,7 +208,7 @@ export const DetailUser = () => {
                                             <Input prefix={<PhoneOutlined />} placeholder="Số điện thoại" size="large" />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xs={24} md={12}>
                                         <Form.Item
                                             label="Giới tính"
                                             name="gender"
