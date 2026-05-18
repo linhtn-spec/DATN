@@ -47,7 +47,7 @@ const { Text, Title } = Typography;
 export function DetailOrder() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const subTotalValue = Form.useWatch('subTotal', form);
+
 
 
     const [options, setOptions] = useState([]);
@@ -72,6 +72,7 @@ export function DetailOrder() {
 
     const tax = data?.data?.tax || 0;
     const shippingCost = data?.data?.shippingCost || 0;
+    const subTotal = data?.data?.products?.reduce((prev, curr) => prev + curr.subPrice, 0) || 0;
 
     const { mutate, isPending } = useMutation({
         mutationFn: (data) => editOrder(data),
@@ -432,7 +433,7 @@ export function DetailOrder() {
                                 <div className="order-totals-card" style={{ marginTop: 12 }}>
                                     <div className="total-summary-row">
                                         <div className="total-summary-label">Tạm tính:</div>
-                                        <div className="total-summary-value">{(subTotalValue || 0).toLocaleString('vi-VN')} ₫</div>
+                                        <div className="total-summary-value">{subTotal.toLocaleString('vi-VN')} ₫</div>
                                     </div>
                                     <div className="total-summary-row">
                                         <div className="total-summary-label">Thuế suất:</div>
@@ -445,7 +446,7 @@ export function DetailOrder() {
                                     <div className="total-summary-row">
                                         <div className="total-summary-label" style={{ fontSize: 15, color: '#1a3353' }}>TỔNG CỘNG:</div>
                                         <div className="total-summary-value grand-total">
-                                            {((subTotalValue || 0) + tax + shippingCost).toLocaleString('vi-VN')} ₫
+                                            {(subTotal + tax + shippingCost).toLocaleString('vi-VN')} ₫
                                         </div>
                                     </div>
                                 </div>
