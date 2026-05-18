@@ -1,4 +1,4 @@
-import { CommentOutlined, SendOutlined } from '@ant-design/icons'
+import { CloseOutlined, CommentOutlined, SendOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Flex, FloatButton, Form, Input, Layout, Typography } from 'antd'
 import { useContext, useEffect, useRef, useState, useMemo } from 'react'
@@ -27,6 +27,7 @@ export const ChatWidget = () => {
     const userId = state?.currentUser?.user_id
     const socket = useMemo(() => io(END_POINT), [userId]);
     const contentRef = useRef(null);
+    const chatWrapperRef = useRef(null);
     const [form] = Form.useForm()
 
     const [typing, setTyping] = useState(false);
@@ -37,6 +38,17 @@ export const ChatWidget = () => {
     const [dataReceive, setDataReceive] = useState({})
     const [message, setMessage] = useState([])
     const [isOpen, setIsOpen] = useState(false);
+    const [shouldRender, setShouldRender] = useState(false);
+
+    useEffect(() => {
+        let timer;
+        if (isOpen) {
+            setShouldRender(true);
+        } else if (!isOpen && shouldRender) {
+            timer = setTimeout(() => setShouldRender(false), 300);
+        }
+        return () => clearTimeout(timer);
+    }, [isOpen, shouldRender]);
     
     const { data, refetch, isSuccess } = useQuery({
         queryKey: ['chat_user', userId, isOpen],
@@ -189,69 +201,86 @@ export const ChatWidget = () => {
         }
     }
 
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (chatWrapperRef.current && !chatWrapperRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        }
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
-        <FloatButton.Group
-            trigger='click'
-            open={isOpen}
-            onOpenChange={handleOpenChange}
-            style={{ left: "40px", bottom: "20px", margin: 0 }}
-            type="primary" 
-            icon={<CommentOutlined />}
-            badge={{ count: !isOpen ? unreadCount : 0 }}
-        >
-            <Layout className='chatbox'>
-                <div className='chatbox_header'>
-                    <Flex align='center' gap={8} style={{ width: "100%" }}>
-                        <div className="status-indicator"></div>
-                        <div>
-                            <Typography.Text className='chatbox_header--text' strong>
-                                Support Assistant
-                            </Typography.Text>
-                            <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px", marginTop: "-4px" }}>
-                                Online now
-                            </div>
-                        </div>
-                    </Flex>
-                </div>
-                
-                <Content className='chatbox_body' ref={contentRef}>
-                    <Message message={message} append={uni} currentUserId={userId} />
-                    {istyping && (
-                        <Flex justify="flex-start" style={{ padding: "0 10px", marginTop: "8px", marginBottom: "15px" }}>
-                            <div className="message-bubble-them" style={{ padding: "4px 14px", display: "flex", alignItems: "center", margin: 0 }}>
-                                <Lottie
-                                    options={defaultOptions}
-                                    width={40}
-                                    height={24}
-                                    style={{ margin: 0, opacity: 0.6 }}
-                                />
+        <div ref={chatWrapperRef}>
+            <FloatButton
+                onClick={() => handleOpenChange(!isOpen)}
+                style={{ left: "40px", bottom: "20px", margin: 0, zIndex: 10001 }}
+                type="primary" 
+                icon={isOpen ? <CloseOutlined /> : <CommentOutlined />}
+                badge={{ count: !isOpen ? unreadCount : 0 }}
+            />
+            {shouldRender && (
+                <Layout className={`chatbox ${!isOpen ? 'chatbox-closing' : ''}`}>
+                    <div className='chatbox_header'>
+                        <Flex align='center' gap={8} style={{ width: "100%" }}>
+                            <div className="status-indicator"></div>
+                            <div>
+                                <Typography.Text className='chatbox_header--text' strong>
+                                    Support Assistant
+                                </Typography.Text>
+                                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "10px", marginTop: "-4px" }}>
+                                    Online now
+                                </div>
                             </div>
                         </Flex>
-                    )}
-                </Content>
-                
-                <Footer className='chatbox_footer'>
-                    <Form onFinish={onFinish} form={form}>
-                        <Flex gap={10} align="center">
-                            <Form.Item style={{ flex: 1 }} name={'content'}>
-                                <Input 
-                                    className='chatbox_footer--input' 
-                                    placeholder='Type your message...' 
+                    </div>
+                    
+                    <Content className='chatbox_body' ref={contentRef}>
+                        <Message message={message} append={uni} currentUserId={userId} />
+                        {istyping && (
+                            <Flex justify="flex-start" style={{ padding: "0 10px", marginTop: "8px", marginBottom: "15px" }}>
+                                <div className="message-bubble-them" style={{ padding: "4px 14px", display: "flex", alignItems: "center", margin: 0 }}>
+                                    <Lottie
+                                        options={defaultOptions}
+                                        width={40}
+                                        height={24}
+                                        style={{ margin: 0, opacity: 0.6 }}
+                                    />
+                                </div>
+                            </Flex>
+                        )}
+                    </Content>
+                    
+                    <Footer className='chatbox_footer'>
+                        <Form onFinish={onFinish} form={form}>
+                            <Flex gap={10} align="center">
+                                <Form.Item style={{ flex: 1 }} name={'content'}>
+                                    <Input 
+                                        className='chatbox_footer--input' 
+                                        placeholder='Type your message...' 
+                                        size="large"
+                                        onChange={typingHandler}
+                                    />
+                                </Form.Item>
+                                <Button 
+                                    htmlType='submit' 
+                                    type='primary' 
+                                    shape="circle"
+                                    icon={<SendOutlined />} 
                                     size="large"
-                                    onChange={typingHandler}
                                 />
-                            </Form.Item>
-                            <Button 
-                                htmlType='submit' 
-                                type='primary' 
-                                shape="circle"
-                                icon={<SendOutlined />} 
-                                size="large"
-                            />
-                        </Flex>
-                    </Form>
-                </Footer>
-            </Layout>
-        </FloatButton.Group>
+                            </Flex>
+                        </Form>
+                    </Footer>
+                </Layout>
+            )}
+        </div>
     )
 }

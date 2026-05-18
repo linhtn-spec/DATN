@@ -1,8 +1,8 @@
 /* Premium Chatbox Container */
 .chatbox {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
+    position: fixed;
+    bottom: 80px;
+    left: 40px;
     height: 32rem;
     width: 24rem;
     background: rgba(255, 255, 255, 0.97);
@@ -26,6 +26,21 @@
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+}
+
+@keyframes slideOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+}
+
+.chatbox-closing {
+    animation: slideOutDown 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 /* Vibrant Header */
@@ -139,6 +154,21 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    @keyframes slideOutDownMobile {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+
+    .chatbox.chatbox-closing {
+        animation: slideOutDownMobile 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     .chatbox_header {

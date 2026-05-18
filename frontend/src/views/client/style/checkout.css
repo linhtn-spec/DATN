@@ -281,11 +281,6 @@
     .checkout_page .sumary {
         margin: 16px 0;
     }
-
-    .checkout_page .ant-descriptions-row {
-        display: flex;
-        flex-direction: row;
-    }
 }
 
 /* ==============================
